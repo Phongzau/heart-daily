@@ -6,6 +6,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@evilmartians/lefthook": "^1.7.16",
         "@popperjs/core": "^2.11.6",
         "axios": "^1.7.4",
         "bootstrap": "^5.2.3",
