@@ -13,6 +13,10 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/jqvmap/dist/jqvmap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/summernote/summernote-bs4.css') }}">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css"> --}}
+    <link rel="stylesheet"
+        href="{{ asset('admin/assets/modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('admin/assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css') }}">
@@ -65,13 +69,46 @@
     <script src="{{ asset('admin/assets/modules/owlcarousel2/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('admin/assets/modules/summernote/summernote-bs4.js') }}"></script>
     <script src="{{ asset('admin/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script> --}}
+    <script src="{{ asset('admin/assets/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/modules/cleave-js/dist/cleave.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('admin/assets/js/page/index.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/page/forms-advanced-forms.js') }}"></script>
+  
 
     <!-- Template JS File -->
     <script src="{{ asset('admin/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
+    <script>
+       
+        // $(document).ready(function() {
+        
+        //     var currentColor = $('#code').val();
+        //     if (currentColor) {
+              
+        //         $('#color-icon').css('color', currentColor);
+        //     }         
+        //     $('#code').colorpicker({
+        //         format: 'hex',
+        //         inline: false,
+        //     });
+        //     $('#color-picker-trigger').on('click', function() {
+        //         $('#code').colorpicker('show'); 
+        //     });
+        //     $('#code').on('colorpickerChange', function(event) {
+        //         var selectedColor = event.color.toString();
+              
+        //         $('#color-icon').css('color', selectedColor);
+        //     });
+
+        // });
+    </script>
+
+
 </body>
 
 </html>
