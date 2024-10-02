@@ -73,17 +73,16 @@
 
 
 $(document).ready(function() {
-  // Khởi tạo color picker cho các input group có lớp colorpickerinput
+
   $(".colorpickerinput").colorpicker({ 
       format: 'hex',
       component: '.input-group-append',
   });
 
-  // Cập nhật màu sắc của biểu tượng và giá trị input khi chọn màu
   $(".colorpickerinput").on('colorpickerChange', function(event) {
-      var selectedColor = event.color.toString(); // Lấy màu đã chọn
-      $('#color-icon').css('color', selectedColor); // Thay đổi màu của biểu tượng
-      $(this).find('input').val(selectedColor); // Cập nhật giá trị input với màu đã chọn
+      var selectedColor = event.color.toString(); 
+      $('#color-icon').css('color', selectedColor); 
+      $(this).find('input').val(selectedColor);
   });
 });
 
