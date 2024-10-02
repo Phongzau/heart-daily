@@ -14,6 +14,11 @@ class UserController extends Controller
         return view('client.page.auth.login');
     }
 
+    public function register()
+    {
+        return view('client.page.auth.register');
+    }
+
     public function postRegister(Request $request)
     {
         $request->validate([
@@ -26,7 +31,7 @@ class UserController extends Controller
 
         try {
             User::create($request->all());
-            return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');
+            return redirect()->route('register')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Đăng ký thất bại. Vui lòng thử lại.');
         }
