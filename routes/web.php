@@ -9,6 +9,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin'])->name('postLogin');
+Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'postRegister'])->name('postRegister');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
