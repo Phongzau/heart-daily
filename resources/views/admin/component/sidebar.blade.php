@@ -21,11 +21,11 @@
                     <span>Products</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.category_attributes.index') }}">Category Attribute</a></li>
-                    <li><a class="nav-link" href="{{ route('admin.attribute.index') }}">Attribute</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.attributes.index') }}">Attribute</a></li>
                     <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
                 </ul>
             </li>
-            <li><a class="nav-link" href="{{ route('admin.role.index') }}"><i class="far fa-square"></i>
+            <li><a class="nav-link" href="{{ route('admin.roles.index') }}"><i class="far fa-square"></i>
                 <span>Role</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.banners.index') }}"><i class="far fa-square"></i>
                     <span>Banners</span></a></li>

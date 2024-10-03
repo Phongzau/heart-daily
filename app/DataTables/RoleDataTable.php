@@ -23,8 +23,8 @@ class RoleDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $editBtn = "<a class='btn btn-primary' href='" . route('admin.role.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.role.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $editBtn = "<a class='btn btn-primary' href='" . route('admin.roles.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.roles.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
                 return $editBtn . $deleteBtn;
             })
             ->setRowId('id');

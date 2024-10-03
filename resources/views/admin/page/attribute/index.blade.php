@@ -14,7 +14,7 @@
                         <div class="card-header">
                             <h4>All Attributes</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('admin.attribute.create') }}" class="btn btn-primary">Create New</a>
+                                <a href="{{ route('admin.attributes.create') }}" class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -38,7 +38,7 @@
                 console.log(id);
 
                 $.ajax({
-                    url: "{{ route('admin.attribute.change-status') }}",
+                    url: "{{ route('admin.attributes.change-status') }}",
                     method: 'PUT',
                     data: {
                         status: isChecked,

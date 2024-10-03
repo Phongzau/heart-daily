@@ -44,8 +44,8 @@ class AttributeDataTable extends DataTable
             })
             ->addColumn('action', function ($row) {
                 return '
-                <a href="' . route('admin.attribute.edit', $row->id) . '" class="btn btn-primary"><i class="far fa-edit"></i></a>
-                <a href="' . route('admin.attribute.destroy', $row->id) . '" class="btn btn-danger delete-item"><i class="far fa-trash-alt"></i></a>';
+                <a href="' . route('admin.attributes.edit', $row->id) . '" class="btn btn-primary"><i class="far fa-edit"></i></a>
+                <a href="' . route('admin.attributes.destroy', $row->id) . '" class="btn btn-danger delete-item"><i class="far fa-trash-alt"></i></a>';
             })
             ->rawColumns(['action', 'status'])
             ->setRowId('id');
