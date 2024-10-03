@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AdminColorController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\HomeController;
@@ -71,6 +72,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/update/{color}', [AdminColorController::class, 'update'])->name('update');
         Route::delete('/destroy/{color}', [AdminColorController::class, 'destroy'])->name('destroy');
     });
-
+    //role
     Route::resource('role', RoleController::class);
+    //category_attributes
+    Route::put('category_attributes/change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
+        ->name('category_attributes.change-status');
+    Route::resource('category_attributes', AdminCategoryAttributeController::class);
 });
