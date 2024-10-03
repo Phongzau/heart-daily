@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AdminColorController;
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -72,10 +72,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/update/{color}', [AdminColorController::class, 'update'])->name('update');
         Route::delete('/destroy/{color}', [AdminColorController::class, 'destroy'])->name('destroy');
     });
-    //role
-    Route::resource('role', RoleController::class);
-    //category_attributes
-    Route::put('category_attributes/change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
-        ->name('category_attributes.change-status');
-    Route::resource('category_attributes', AdminCategoryAttributeController::class);
+
+    Route::prefix('banners')->name('banners.')->group(function () {
+        Route::get('/', [BannerController::class, 'index'])->name('index');
+        Route::get('/create', [BannerController::class, 'create'])->name('create');
+        Route::post('/store', [BannerController::class, 'store'])->name('store');
+        Route::get('/edit/{color}', [BannerController::class, 'edit'])->name('edit');
+        Route::put('/update/{color}', [BannerController::class, 'update'])->name('update');
+        Route::delete('/destroy/{color}', [BannerController::class, 'destroy'])->name('destroy');
+        Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
+    });
 });
