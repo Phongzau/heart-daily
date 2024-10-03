@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AdminColorController;
 use App\Http\Controllers\Admin\RoleController;
@@ -78,4 +79,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('category_attributes/change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
         ->name('category_attributes.change-status');
     Route::resource('category_attributes', AdminCategoryAttributeController::class);
+    //category_attributes
+    Route::put('attribute/change-status', [AdminAttributeController::class, 'changeStatus'])
+        ->name('attribute.change-status');
+    Route::resource('attribute', AdminAttributeController::class);
+    
 });
