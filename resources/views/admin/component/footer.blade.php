@@ -31,9 +31,6 @@
 <script src="https://cdn.datatables.net/2.1.0/js/dataTables.bootstrap5.js"></script>
 <script src="{{ asset('admin/assets/modules/cleave-js/dist/cleave.min.js') }}"></script>
 <script src="{{ asset('admin/assets/modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
-<script src="//cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/2.1.0/js/dataTables.bootstrap5.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- Page Specific JS File -->
@@ -131,6 +128,7 @@
     });
 </script>
 @stack('scripts')
+
 </body>
 
 </html>
