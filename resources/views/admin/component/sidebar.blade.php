@@ -27,6 +27,8 @@
             </li>
             <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Blank
                         Page</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.banners.index') }}"><i class="far fa-square"></i>
+                    <span>Banners</span></a></li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i>
                     <span>Bootstrap</span></a>
