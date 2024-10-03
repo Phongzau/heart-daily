@@ -11,10 +11,11 @@ use Illuminate\Http\Request;
 
 class AdminCategoryAttributeController extends Controller
 {
-    public function index(CategoryAttributeDataTable $dataTable){
+    public function index(CategoryAttributeDataTable $dataTable)
+    {
         return $dataTable->render('admin.page.category_attributes.index');
     }
-    
+
     public function changeStatus(Request $request)
     {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($request->id);
@@ -26,11 +27,18 @@ class AdminCategoryAttributeController extends Controller
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         return view('admin.page.category_attributes.create');
     }
 
-    public function store(StoreCategoryAttributeRequest $request){
+    public function store(StoreCategoryAttributeRequest $request)
+    {
+        if (CategoryAttribute::where('order', $request->order)->exists()) {
+            toastr('Giá trị order đã tồn tại!', 'error');
+            return redirect()->back()->withInput();
+        }
+
         $categoryAttribute = new CategoryAttribute();
 
         $categoryAttribute->title = $request->title;
@@ -45,13 +53,22 @@ class AdminCategoryAttributeController extends Controller
         return redirect()->route('admin.category_attributes.index');
     }
 
-    public function edit(string $id){
+    public function edit(string $id)
+    {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
         return view('admin.page.category_attributes.edit', compact('categoryAttribute'));
     }
 
-    public function update(UpdateCategoryAttributeRequest $request, string $id){
+    public function update(UpdateCategoryAttributeRequest $request, string $id)
+    {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
+        if (CategoryAttribute::where('order', $request->order)
+            ->where('id', '!=', $id) 
+            ->exists()
+        ) {
+            toastr('Giá trị order đã tồn tại!', 'error');
+            return redirect()->back()->withInput(); 
+        }
         $categoryAttribute->title = $request->title;
         $categoryAttribute->slug = $request->slug;
         $categoryAttribute->order = $request->order;
@@ -63,7 +80,8 @@ class AdminCategoryAttributeController extends Controller
         return redirect()->route('admin.category_attributes.index');
     }
 
-    public function destroy(string $id){
+    public function destroy(string $id)
+    {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
         $categoryAttribute->delete();
 
