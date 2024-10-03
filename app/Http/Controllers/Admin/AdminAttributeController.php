@@ -57,7 +57,7 @@ class AdminAttributeController extends Controller
         $attribute->save();
 
         toastr('Tạo thành công', 'success');
-        return redirect()->route('admin.attribute.index');
+        return redirect()->route('admin.attributes.index');
     }
 
     /**
@@ -88,7 +88,7 @@ class AdminAttributeController extends Controller
         $attribute->save();
 
         toastr('Sửa thành công', 'success');
-        return redirect()->route('admin.attribute.index');
+        return redirect()->route('admin.attributes.index');
     }
 
     /**

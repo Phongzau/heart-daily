@@ -15,7 +15,7 @@ class UpdateAttributeRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:attributes,slug,' . $this->route('attribute'),
+            'slug' => 'required|string|unique:attributes,slug,' . $this->route('attributes'),
             'category_attribute_id' => 'required|exists:category_attributes,id',
             'price_start' => 'nullable|numeric|min:0',
             'price_end' => 'nullable|numeric|min:0',

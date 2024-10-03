@@ -8,7 +8,7 @@
             <h1>Create Attribute</h1>
         </div>
         <div class="section-body">
-            <form method="POST" action="{{ route('admin.attribute.update', $attribute->id) }}">
+            <form method="POST" action="{{ route('admin.attributes.update', $attribute->id) }}">
                 @csrf
                 @method('PUT')
                 <div class="form-group">

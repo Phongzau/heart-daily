@@ -8,7 +8,7 @@
             <h1>Create Attribute</h1>
         </div>
         <div class="section-body">
-            <form method="POST" action="{{ route('admin.attribute.store') }}">
+            <form method="POST" action="{{ route('admin.attributes.store') }}">
                 @csrf
                 <div class="form-group">
                     <label for="title">Title</label>

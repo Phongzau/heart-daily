@@ -74,25 +74,48 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/update/{color}', [AdminColorController::class, 'update'])->name('update');
         Route::delete('/destroy/{color}', [AdminColorController::class, 'destroy'])->name('destroy');
     });
-
+    //banner
     Route::prefix('banners')->name('banners.')->group(function () {
         Route::get('/', [BannerController::class, 'index'])->name('index');
         Route::get('/create', [BannerController::class, 'create'])->name('create');
         Route::post('/store', [BannerController::class, 'store'])->name('store');
-        Route::get('/edit/{color}', [BannerController::class, 'edit'])->name('edit');
-        Route::put('/update/{color}', [BannerController::class, 'update'])->name('update');
-        Route::delete('/destroy/{color}', [BannerController::class, 'destroy'])->name('destroy');
+        Route::get('/edit/{banner}', [BannerController::class, 'edit'])->name('edit');
+        Route::put('/update/{banner}', [BannerController::class, 'update'])->name('update');
+        Route::delete('/destroy/{banner}', [BannerController::class, 'destroy'])->name('destroy');
         Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
     });
     //role
-    Route::resource('role', RoleController::class);
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::get('/{role}', [RoleController::class, 'show'])->name('show');
+        Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+    });
     //category_attributes
-    Route::put('category_attributes/change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
-        ->name('category_attributes.change-status');
-    Route::resource('category_attributes', AdminCategoryAttributeController::class);
+    Route::prefix('category_attributes')->name('category_attributes.')->group(function () {
+        Route::put('change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [AdminCategoryAttributeController::class, 'index'])->name('index');
+        Route::get('/create', [AdminCategoryAttributeController::class, 'create'])->name('create');
+        Route::post('/', [AdminCategoryAttributeController::class, 'store'])->name('store');
+        Route::get('/{category_attribute}', [AdminCategoryAttributeController::class, 'show'])->name('show');
+        Route::get('/{category_attribute}/edit', [AdminCategoryAttributeController::class, 'edit'])->name('edit');
+        Route::put('/{category_attribute}', [AdminCategoryAttributeController::class, 'update'])->name('update');
+        Route::delete('/{category_attribute}', [AdminCategoryAttributeController::class, 'destroy'])->name('destroy');
+    });
     //category_attributes
-    Route::put('attribute/change-status', [AdminAttributeController::class, 'changeStatus'])
-        ->name('attribute.change-status');
-    Route::resource('attribute', AdminAttributeController::class);
-    
+    Route::prefix('attributes')->name('attributes.')->group(function () {
+        Route::put('change-status', [AdminAttributeController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [AdminAttributeController::class, 'index'])->name('index');
+        Route::get('/create', [AdminAttributeController::class, 'create'])->name('create');
+        Route::post('/', [AdminAttributeController::class, 'store'])->name('store');
+        Route::get('/{attribute}', [AdminAttributeController::class, 'show'])->name('show');
+        Route::get('/{attribute}/edit', [AdminAttributeController::class, 'edit'])->name('edit');
+        Route::put('/{attribute}', [AdminAttributeController::class, 'update'])->name('update');
+        Route::delete('/{attribute}', [AdminAttributeController::class, 'destroy'])->name('destroy');
+    });
 });
