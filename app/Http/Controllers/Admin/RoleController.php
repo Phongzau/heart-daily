@@ -46,7 +46,7 @@ class RoleController extends Controller
 
         // Gửi thông báo thành công và chuyển hướng về trang danh sách vai trò
         toastr('Tạo thành công', 'success');
-        return redirect()->route('admin.role.index');
+        return redirect()->route('admin.roles.index');
     }
 
     /**
@@ -86,7 +86,7 @@ class RoleController extends Controller
 
         // Gửi thông báo thành công và chuyển hướng về trang danh sách vai trò
         toastr('Sửa thành công', 'success');
-        return redirect()->route('admin.role.index');
+        return redirect()->route('admin.roles.index');
     }
 
     /**
