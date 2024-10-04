@@ -82,4 +82,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/destroy/{color}', [BannerController::class, 'destroy'])->name('destroy');
         Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
     });
+
+    Route::prefix('category_attributes')->name('category_attributes.')->group(function () {
+        Route::get('/', [AdminCategoryAttributeController::class, 'index'])->name('index');
+        Route::get('/create', [AdminCategoryAttributeController::class, 'create'])->name('create');
+        Route::post('/store', [AdminCategoryAttributeController::class, 'store'])->name('store');
+        Route::get('/edit/{color}', [AdminCategoryAttributeController::class, 'edit'])->name('edit');
+        Route::put('/update/{color}', [AdminCategoryAttributeController::class, 'update'])->name('update');
+        Route::delete('/destroy/{color}', [AdminCategoryAttributeController::class, 'destroy'])->name('destroy');
+    });
 });
