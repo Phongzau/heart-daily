@@ -19,7 +19,7 @@
                             <h4>Create Role</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admin.role.store') }}">
+                            <form method="POST" action="{{ route('admin.roles.store') }}">
                                 @csrf
                                 <div class="form-group">
                                     <label for="">Name</label>

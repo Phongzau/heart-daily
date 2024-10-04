@@ -19,7 +19,7 @@
                             <h4>Edit Role</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admin.role.update', $role->id) }}">
+                            <form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">

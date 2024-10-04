@@ -22,7 +22,7 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         // Lấy id của vai trò từ URI để loại trừ chính nó khỏi quy tắc unique
-        $id = $this->route('role');
+        $id = $this->route('roles');
 
         return [
             // Quy tắc: bắt buộc, tối đa 100 ký tự, và duy nhất trong bảng roles (ngoại trừ id hiện tại)

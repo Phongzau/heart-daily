@@ -27,16 +27,18 @@
 <script src="{{ asset('admin/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script> --}}
 <script src="{{ asset('admin/assets/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
-<script src="{{ asset('admin/assets/modules/cleave-js/dist/cleave.min.js') }}"></script>
-<script src="{{ asset('admin/assets/modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
 <script src="//cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.0/js/dataTables.bootstrap5.js"></script>
-
+<script src="{{ asset('admin/assets/modules/cleave-js/dist/cleave.min.js') }}"></script>
+<script src="{{ asset('admin/assets/modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- Page Specific JS File -->
 <script src="{{ asset('admin/assets/js/page/index.js') }}"></script>
 <script src="{{ asset('admin/assets/js/page/forms-advanced-forms.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 <!-- Template JS File -->
 <script src="{{ asset('admin/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
@@ -126,6 +128,7 @@
     });
 </script>
 @stack('scripts')
+
 </body>
 
 </html>
