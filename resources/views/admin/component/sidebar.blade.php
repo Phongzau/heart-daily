@@ -12,7 +12,7 @@
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="index-0.html">General Dashboard</a></li>
-                    <li class=active><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li>
+                    <li class="active"><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li>
                 </ul>
             </li>
             <li class="menu-header">Starter</li>
@@ -25,10 +25,12 @@
                     <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
                 </ul>
             </li>
-            <li><a class="nav-link" href="{{ route('admin.roles.index') }}"><i class="far fa-square"></i>
-                <span>Role</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.banners.index') }}"><i class="far fa-square"></i>
                     <span>Banners</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.role.index') }}"><i class="far fa-square"></i>
+                    <span>Role</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.brands.index') }}"><i class="far fa-square"></i>
+                    <span>Brands</span></a></li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i>
                     <span>Bootstrap</span></a>
@@ -55,5 +57,6 @@
                     <li><a class="nav-link" href="bootstrap-typography.html">Typography</a></li>
                 </ul>
             </li>
+        </ul>
     </aside>
 </div>
