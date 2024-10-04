@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminColorController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -73,4 +74,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::resource('role', RoleController::class);
+
+    //Brands
+    Route::prefix('brands')->name('brands.')->group(function () {
+        Route::get('/', [BrandController::class, 'index'])->name('index');
+        Route::get('/create', [BrandController::class, 'create'])->name('create');
+        Route::post('/store', [BrandController::class, 'store'])->name('store');
+        Route::get('/edit/{brands}', [BrandController::class, 'edit'])->name('edit');
+        Route::put('/update/{brands}', [BrandController::class, 'update'])->name('update');
+        Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy');
+        Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
+    });
 });
