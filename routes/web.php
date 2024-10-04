@@ -16,7 +16,12 @@ Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin'])->name('postLogin');
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'postRegister'])->name('postRegister');
+Route::get('/confirm-email', [UserController::class, 'confirmEmail'])->name('confirm.email');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/forgot-password', [UserController::class, 'showForgotPasswordForm'])->name('forgot.password');
+Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('send.reset.link');
+Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
 
 
 Route::get('/wishlist', function () {
@@ -77,7 +82,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
 
-    Route::resource('role', RoleController::class);
 
     //Brands
     Route::prefix('brands')->name('brands.')->group(function () {
@@ -88,6 +92,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/update/{brands}', [BrandController::class, 'update'])->name('update');
         Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy');
         Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
+    });
     //banner
     Route::prefix('banners')->name('banners.')->group(function () {
         Route::get('/', [BannerController::class, 'index'])->name('index');
