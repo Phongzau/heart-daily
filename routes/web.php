@@ -82,7 +82,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
 
-    Route::resource('role', RoleController::class);
 
     //Brands
     Route::prefix('brands')->name('brands.')->group(function () {
@@ -93,6 +92,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/update/{brands}', [BrandController::class, 'update'])->name('update');
         Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy');
         Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
+    });
     //banner
     Route::prefix('banners')->name('banners.')->group(function () {
         Route::get('/', [BannerController::class, 'index'])->name('index');
