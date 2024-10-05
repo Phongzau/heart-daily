@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAttributeController;
-use App\Http\Controllers\Admin\AdminCategoryAttributeController;
-use App\Http\Controllers\Admin\AdminColorController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\BrandController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\AdminColorController;
+use App\Http\Controllers\Admin\AdminAttributeController;
+use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -136,5 +137,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{attribute}/edit', [AdminAttributeController::class, 'edit'])->name('edit');
         Route::put('/{attribute}', [AdminAttributeController::class, 'update'])->name('update');
         Route::delete('/{attribute}', [AdminAttributeController::class, 'destroy'])->name('destroy');
+    });
+
+    //menu
+    Route::prefix('menus')->name('menus.')->group(function () {
+        Route::put('change-status', [MenuController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::get('/create', [MenuController::class, 'create'])->name('create');
+        Route::post('/', [MenuController::class, 'store'])->name('store');
+        Route::get('/{menus}', [MenuController::class, 'show'])->name('show');
+        Route::get('/{menus}/edit', [MenuController::class, 'edit'])->name('edit');
+        Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
+        Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy');
     });
 });
