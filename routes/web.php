@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminCategoryProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\MenuController;
@@ -139,6 +140,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/{attribute}', [AdminAttributeController::class, 'destroy'])->name('destroy');
     });
 
+    //category_product
+    Route::prefix('category_products')->name('category_products.')->group(function () {
+        Route::put('change-status', action: [AdminCategoryProductController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [AdminCategoryProductController::class, 'index'])->name('index');
+        Route::get('/create', [AdminCategoryProductController::class, 'create'])->name('create');
+        Route::post('/', [AdminCategoryProductController::class, 'store'])->name('store');
+        Route::get('/{category_products}', action: [AdminCategoryProductController::class, 'show'])->name('show');
+        Route::get('/{category_products}/edit', action: [AdminCategoryProductController::class, 'edit'])->name('edit');
+        Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
+        Route::delete('/{category_products}', action: [AdminCategoryProductController::class, 'destroy'])->name('destroy');
+    });
+  
     //menu
     Route::prefix('menus')->name('menus.')->group(function () {
         Route::put('change-status', [MenuController::class, 'changeStatus'])
