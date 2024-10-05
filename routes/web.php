@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAttributeController;
-use App\Http\Controllers\Admin\AdminCategoryAttributeController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminCategoryProductController;
-use App\Http\Controllers\Admin\AdminColorController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\AdminColorController;
+use App\Http\Controllers\Admin\AdminAttributeController;
+use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -16,7 +18,12 @@ Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin'])->name('postLogin');
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'postRegister'])->name('postRegister');
+Route::get('/confirm-email', [UserController::class, 'confirmEmail'])->name('confirm.email');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/forgot-password', [UserController::class, 'showForgotPasswordForm'])->name('forgot.password');
+Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('send.reset.link');
+Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
 
 
 Route::get('/wishlist', function () {
@@ -75,6 +82,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/update/{color}', [AdminColorController::class, 'update'])->name('update');
         Route::delete('/destroy/{color}', [AdminColorController::class, 'destroy'])->name('destroy');
     });
+
+
+
+    //Brands
+    Route::prefix('brands')->name('brands.')->group(function () {
+        Route::get('/', [BrandController::class, 'index'])->name('index');
+        Route::get('/create', [BrandController::class, 'create'])->name('create');
+        Route::post('/store', [BrandController::class, 'store'])->name('store');
+        Route::get('/edit/{brands}', [BrandController::class, 'edit'])->name('edit');
+        Route::put('/update/{brands}', [BrandController::class, 'update'])->name('update');
+        Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy');
+        Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
+    });
     //banner
     Route::prefix('banners')->name('banners.')->group(function () {
         Route::get('/', [BannerController::class, 'index'])->name('index');
@@ -131,5 +151,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{category_products}/edit', action: [AdminCategoryProductController::class, 'edit'])->name('edit');
         Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
         Route::delete('/{category_products}', action: [AdminCategoryProductController::class, 'destroy'])->name('destroy');
+    });
+  
+    //menu
+    Route::prefix('menus')->name('menus.')->group(function () {
+        Route::put('change-status', [MenuController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::get('/create', [MenuController::class, 'create'])->name('create');
+        Route::post('/', [MenuController::class, 'store'])->name('store');
+        Route::get('/{menus}', [MenuController::class, 'show'])->name('show');
+        Route::get('/{menus}/edit', [MenuController::class, 'edit'])->name('edit');
+        Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
+        Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy');
     });
 });

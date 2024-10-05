@@ -26,10 +26,15 @@
                     <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
                 </ul>
             </li>
+            <li><a class="nav-link" href="{{ route('admin.brands.index') }}"><i class="far fa-square"></i>
+                    <span>Brands</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.roles.index') }}"><i class="far fa-square"></i>
-                <span>Role</span></a></li>
+                    <span>Role</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.banners.index') }}"><i class="far fa-square"></i>
                     <span>Banners</span></a></li>
+            <li class="dropdown">
+            <li><a class="nav-link" href="{{ route('admin.menus.index') }}"><i class="far fa-square"></i>
+                    <span>Menu</span></a></li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i>
                     <span>Bootstrap</span></a>

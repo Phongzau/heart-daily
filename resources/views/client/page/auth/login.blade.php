@@ -49,7 +49,7 @@
                                     <label class="custom-control-label mb-0" for="lost-password">Ghi nhớ tôi</label>
                                 </div>
 
-                                <a href="forgot-password.html" class="forget-password text-dark form-footer-right">Quên
+                                <a href="{{ route('forgot.password') }}" class="forget-password text-dark form-footer-right">Quên
                                     mật khẩu?</a>
                             </div>
                             <button type="submit" class="btn btn-dark btn-md w-100">
