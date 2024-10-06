@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\AdminColorController;
 use App\Http\Controllers\Admin\AdminAttributeController;
+use App\Http\Controllers\Admin\AdminBlogCategoryController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -152,7 +153,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
         Route::delete('/{category_products}', action: [AdminCategoryProductController::class, 'destroy'])->name('destroy');
     });
-  
+
     //menu
     Route::prefix('menus')->name('menus.')->group(function () {
         Route::put('change-status', [MenuController::class, 'changeStatus'])
@@ -164,5 +165,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{menus}/edit', [MenuController::class, 'edit'])->name('edit');
         Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
         Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('blog_categories')->name('blog_categories.')->group(function () {
+        Route::put('change-status', [AdminBlogCategoryController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [AdminBlogCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [AdminBlogCategoryController::class, 'create'])->name('create');
+        Route::post('/', [AdminBlogCategoryController::class, 'store'])->name('store');
+        Route::get('/{blog_categories}', [AdminBlogCategoryController::class, 'show'])->name('show');
+        Route::get('/{blog_categories}/edit', [AdminBlogCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{blog_categories}', [AdminBlogCategoryController::class, 'update'])->name('update');
+        Route::delete('/{blog_categories}', [AdminBlogCategoryController::class, 'destroy'])->name('destroy');
     });
 });
