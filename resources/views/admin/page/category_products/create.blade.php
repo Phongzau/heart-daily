@@ -25,16 +25,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="status">Parent Category</label>
-                                    <select name="parent_id" class="form-control">
-                                    <option value="0">Danh Mục</option>
-                                        @foreach($categoryProduct as $key => $value)
-                                        <option value="{{$value->id }}" {{ old('parent_id') == $value->id ? 'selected' : '' }}>{{$value->title}}</option>
+                                    <select name="parent_id" class="form-control parent">
+                                        <option value="0">Danh Mục</option>
+                                        @foreach ($categoryProduct as $key => $value)
+                                            <option value="{{ $value->id }}"
+                                                {{ old('parent_id') == $value->id ? 'selected' : '' }}>{{ $value->title }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="order">Order</label>
-                                    <input type="number" name="order" value="{{ old('order') }}" class="form-control">
+                                    <input type="number" name="order" value="{{ $maxOrder }}" readonly
+                                        class="form-control order">
                                 </div>
                                 <div class="form-group">
                                     <label for="status">Status</label>
@@ -52,3 +55,32 @@
         </div> <!-- End of section-body -->
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('body').on('change', '.parent', function() {
+                let id = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('admin.category_products.get-parent') }}",
+                    method: 'GET',
+                    data: {
+                        id: id,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data.order === undefined) {
+                            $('.order').val(0);
+                        } else {
+                            $('.order').val(data.order + 1);
+                        }
+                    },
+                    error: function(error) {
+                        console.log(data);
+                    },
+                })
+            })
+        })
+    </script>
+@endpush

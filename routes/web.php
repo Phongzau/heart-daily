@@ -142,17 +142,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     //category_product
     Route::prefix('category_products')->name('category_products.')->group(function () {
-        Route::put('change-status', action: [AdminCategoryProductController::class, 'changeStatus'])
+        Route::put('change-status', [AdminCategoryProductController::class, 'changeStatus'])
             ->name('change-status');
+        Route::get('get-parent', [AdminCategoryProductController::class, 'getParentCategory'])
+            ->name('get-parent');
         Route::get('/', [AdminCategoryProductController::class, 'index'])->name('index');
         Route::get('/create', [AdminCategoryProductController::class, 'create'])->name('create');
         Route::post('/', [AdminCategoryProductController::class, 'store'])->name('store');
-        Route::get('/{category_products}', action: [AdminCategoryProductController::class, 'show'])->name('show');
-        Route::get('/{category_products}/edit', action: [AdminCategoryProductController::class, 'edit'])->name('edit');
+        Route::get('/{category_products}', [AdminCategoryProductController::class, 'show'])->name('show');
+        Route::get('/{category_products}/edit', [AdminCategoryProductController::class, 'edit'])->name('edit');
         Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
-        Route::delete('/{category_products}', action: [AdminCategoryProductController::class, 'destroy'])->name('destroy');
+        Route::delete('/{category_products}', [AdminCategoryProductController::class, 'destroy'])->name('destroy');
     });
-  
+
     //menu
     Route::prefix('menus')->name('menus.')->group(function () {
         Route::put('change-status', [MenuController::class, 'changeStatus'])
