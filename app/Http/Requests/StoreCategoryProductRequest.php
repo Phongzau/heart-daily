@@ -24,7 +24,7 @@ class StoreCategoryProductRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'order' => 'required|integer',
-            'parent_id' => 'integer',
+            'parent_id' => 'required',
             'level' => 'integer',
             'status' => 'boolean',
         ];
