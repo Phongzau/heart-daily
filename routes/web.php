@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminColorController;
 use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminBlogCategoryController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
+use App\Http\Controllers\Admin\AboutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -178,5 +179,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{blog_categories}/edit', [AdminBlogCategoryController::class, 'edit'])->name('edit');
         Route::put('/{blog_categories}', [AdminBlogCategoryController::class, 'update'])->name('update');
         Route::delete('/{blog_categories}', [AdminBlogCategoryController::class, 'destroy'])->name('destroy');
+    });
+
+    //Abouts
+    /** About page Routes */
+    Route::prefix('abouts')->name('abouts.')->group(function () {
+        Route::get('/', [AboutController::class, 'index'])->name('index');
+        Route::put('/update', [AboutController::class, 'update'])->name('update');
     });
 });
