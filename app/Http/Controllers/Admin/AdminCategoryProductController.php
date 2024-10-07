@@ -31,7 +31,7 @@ class AdminCategoryProductController extends Controller
             ->where('parent_id', 0)
             ->orderBy('order', 'desc')
             ->first();
-        $maxOrder = $maxOrderChild->order + 1;
+        $maxOrder = $maxOrderChild ? $maxOrderChild->order + 1 : 0;
         return view('admin.page.category_products.create', compact('categoryProduct', 'maxOrder'));
     }
 
@@ -110,13 +110,14 @@ class AdminCategoryProductController extends Controller
     {
         // Tìm danh mục sản phẩm theo ID
         $categoryProduct = CategoryProduct::findOrFail($id);
-
-
-        if (CategoryProduct::where('parent_id', '=', $id)->first()) {
-            toastr('Danh mục này đã có danh mục con!', 'error');
-            return redirect()->back()->withInput();
+      
+        // Chỉ kiểm tra khi parent_id thay đổi
+        if ($request->parent_id != $categoryProduct->parent_id) {
+            if (CategoryProduct::where('parent_id', '=', $id)->first()) {
+                toastr('Danh mục này đã có danh mục con!', 'error');
+                return redirect()->back()->withInput();
+            }
         }
-
 
         // Kiểm tra giá trị order có tồn tại trong cùng danh mục cha (ngoại trừ bản ghi hiện tại)
         if (CategoryProduct::where('order', $request->order)

@@ -26,7 +26,7 @@
                                 <div class="form-group">
                                     <label for="status">Parent Category</label>
                                     <select name="parent_id" class="form-control parent">
-                                        <option value="0">Danh Mục</option>
+                                        <option value="0">Danh Mục Cha</option>
                                         @foreach ($categoryProduct as $key => $value)
                                             <option value="{{ $value->id }}"
                                                 {{ old('parent_id') == $value->id ? 'selected' : '' }}>{{ $value->title }}
@@ -70,7 +70,7 @@
                     },
                     success: function(data) {
                         console.log(data);
-                        if (data.order === undefined) {
+                        if (data.order === undefined || data.order === null) {
                             $('.order').val(0);
                         } else {
                             $('.order').val(data.order + 1);
