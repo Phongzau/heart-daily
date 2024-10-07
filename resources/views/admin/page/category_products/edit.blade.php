@@ -28,7 +28,7 @@
                                 <div class="form-group">
                                     <label for="status">Parent Category</label>
                                     <select name="parent_id" class="form-control parent">
-                                        <option value="0">Danh Mục</option>
+                                        <option value="0">Danh Mục Cha</option>
                                         @foreach ($categoryProductAll as $key => $value)
                                             <option {{ $categoryProduct->parent_id == $value->id ? 'selected' : '' }}
                                                 value="{{ $value->id }}">
