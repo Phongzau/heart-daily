@@ -110,7 +110,7 @@ class AdminCategoryProductController extends Controller
     {
         // Tìm danh mục sản phẩm theo ID
         $categoryProduct = CategoryProduct::findOrFail($id);
-
+      
         // Chỉ kiểm tra khi parent_id thay đổi
         if ($request->parent_id != $categoryProduct->parent_id) {
             if (CategoryProduct::where('parent_id', '=', $id)->first()) {
