@@ -40,6 +40,8 @@
             <li class="dropdown">
             <li><a class="nav-link" href="{{ route('admin.abouts.index') }}"><i class="far fa-square"></i>
                     <span>Abouts</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.blogs.index') }}"><i class="far fa-square"></i>
+                    <span>Blog</span></a></li>
             <li class="dropdown">
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="far fa-square"></i>
                     <span>Settings</span></a></li>
