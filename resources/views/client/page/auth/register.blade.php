@@ -3,8 +3,6 @@
     Đăng ký
 @endsection
 @section('section')
- 
-
     <div class="page-header">
         <div class="container d-flex flex-column align-items-center">
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -32,49 +30,52 @@
                         <form action="{{ route('postRegister') }}" method="POST">
                             @csrf
 
-                           
-                                    <label for="register-name">
-                                        Tài khoản
-                                        <span class="required">*</span>
-                                    </label>
-                                    <input type="text" class="form-input form-wide" id="register-name" name="name" required />
-                               
 
-                        
-                                    <label for="register-email">
-                                        Email
-                                        <span class="required">*</span>
-                                    </label>
-                                    <input type="email" class="form-input form-wide" id="register-email" name="email" required />
-                            
+                            <label for="register-name">
+                                Tên người dùng
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input form-wide" id="register-name" name="name" required />
 
-                                    <label for="register-password">
-                                        Mật khẩu
-                                        <span class="required">*</span>
-                                    </label>
-                                    <input type="password" class="form-input form-wide" id="register-password" name="password" required />
-                                
 
-                             
-                                    <label for="confirm-password">
-                                        Xác nhận mật khẩu
-                                        <span class="required">*</span>
-                                    </label>
-                                    <input type="password" class="form-input form-wide" id="confirm-password" name="password_confirmation" required />
-                               
 
-                                <div class="form-footer mb-2">
-                                    <button type="submit" class="btn btn-dark btn-md w-100 mr-0">Đăng ký</button>
-                                </div>
-                                <div class="text-center mt-2">
-                                    you have an account yet ?
-                                    <a href="{{ route('login') }}" class="text-dark form-footer-right">Login</a>
-                                </div>
+                            <label for="register-email">
+                                Email
+                                <span class="required">*</span>
+                            </label>
+                            <input type="email" class="form-input form-wide" id="register-email" name="email"
+                                required />
+
+
+                            <label for="register-password">
+                                Mật khẩu
+                                <span class="required">*</span>
+                            </label>
+                            <input type="password" class="form-input form-wide" id="register-password" name="password"
+                                required />
+
+
+
+                            <label for="confirm-password">
+                                Xác nhận mật khẩu
+                                <span class="required">*</span>
+                            </label>
+                            <input type="password" class="form-input form-wide" id="confirm-password"
+                                name="password_confirmation" required />
+
+
+                            <div class="form-footer mb-2">
+                                <button type="submit" class="btn btn-dark btn-md w-100 mr-0">Đăng ký</button>
                             </div>
-                        </form>
+                            <div class="text-center mt-2">
+                                you have an account yet ?
+                                <a href="{{ route('login') }}" class="text-dark form-footer-right">Login</a>
+                            </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

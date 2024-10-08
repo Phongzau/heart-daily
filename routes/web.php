@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Http\Middleware\CheckRole;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -73,7 +74,7 @@ Route::get('user/dashboard', function () {
 
 
 //admin
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(function () {
     //dashboard
     Route::get('/dashboard', function () {
         return view('admin.page.dashboard');
@@ -223,4 +224,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
     });
 });
-
