@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\UpdateBlogRequest;
+use App\Models\BlogCategory;
 
 class BlogController extends Controller
 {
@@ -22,10 +23,12 @@ class BlogController extends Controller
     }
     public function create()
     {
-        return view('admin.page.blogs.create');
+        $categories = BlogCategory::all();
+        return view('admin.page.blogs.create',compact('categories'));
     }
     public function store(BlogRequest $request)
     {
+
         DB::beginTransaction();
         try {
             $imagePath = $this->uploadImage($request, 'image', 'blogs');
@@ -33,11 +36,9 @@ class BlogController extends Controller
             $blog->title = $request->title;
             $blog->description = $request->description;
             $blog->slug = Str::slug($request->title);
-            $blog->blog_categories_id = $request->blog_categories_id;
-            $blog->user_id = $request->user_id;
+            $blog->blog_category_id = $request->blog_category_id;
             $blog->status = $request->status;
             $blog->image = $imagePath;
-            $blog->viewed = $request->viewed ?? 0;
             $blog->save();
 
             DB::commit();
@@ -59,7 +60,8 @@ class BlogController extends Controller
     public function edit($id)
     {
         $blog = Blog::query()->findOrFail($id);
-        return view('admin.page.blogs.edit', compact('blog'));
+        $categories = BlogCategory::all();
+        return view('admin.page.blogs.edit', compact('blog','categories'));
     }
 
     public function update(UpdateBlogRequest $request, $id)
@@ -70,10 +72,8 @@ class BlogController extends Controller
         $blog->title = $request->title;
         $blog->description = $request->description;
         $blog->slug = Str::slug($request->title);
-        $blog->blog_categories_id = $request->blog_categories_id;
-        $blog->user_id = $request->user_id;
+        $blog->blog_category_id = $request->blog_category_id;
         $blog->status = $request->status;
-        $blog->viewed = $request->viewed ?? 0;
         $blog->save();
         toastr('Sửa thành công', 'success');
         return redirect()->route('admin.blogs.index');

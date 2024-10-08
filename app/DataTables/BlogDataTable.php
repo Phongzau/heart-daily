@@ -45,7 +45,9 @@ class BlogDataTable extends DataTable
             }
             return $button;
         })
-
+        ->addColumn('blog_category', function($query) {
+            return $query->BlogCategory->name;
+        })
         ->rawColumns(['action', 'image', 'status'])
         ->setRowId('id');
     }
@@ -55,7 +57,7 @@ class BlogDataTable extends DataTable
      */
     public function query(Blog $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model::with('BlogCategory')->newQuery();
     }
 
     /**
@@ -86,15 +88,11 @@ class BlogDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('title'),
-            Column::make('description'),
-            Column::make('slug'),
-            Column::make('blog_categories_id'),
-            Column::make('user_id'),
+            Column::make('id')->width(70),
+            Column::make('image')->width(150),
+            Column::make('title')->width(250),
+            Column::make('blog_category')->width(200),
             Column::make('status'),
-            Column::make('image'),
-            Column::make('viewed'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

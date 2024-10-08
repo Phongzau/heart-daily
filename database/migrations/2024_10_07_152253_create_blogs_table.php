@@ -16,12 +16,16 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('slug');
-            $table->unsignedBigInteger('blog_categories_id')->nullable();
+            $table->unsignedBigInteger('blog_category_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->boolean('status');
             $table->text('image')->nullable();
             $table->integer('viewed')->default(0);
             $table->timestamps();
+
+            // Thêm khóa ngoại
+            $table->foreign('blog_category_id')->references('id')->on('blog_categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
