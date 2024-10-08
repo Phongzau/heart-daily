@@ -38,6 +38,8 @@
             <li><a class="nav-link" href="{{ route('admin.menus.index') }}"><i class="far fa-square"></i>
                     <span>Menu</span></a></li>
             <li class="dropdown">
+            <li><a class="nav-link" href="{{ route('admin.menu_items.index') }}"><i class="far fa-square"></i>
+                    <span>Menu Items</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.abouts.index') }}"><i class="far fa-square"></i>
                     <span>Abouts</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.blogs.index') }}"><i class="far fa-square"></i>
