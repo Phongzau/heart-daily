@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\AdminColorController;
 use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
+use App\Http\Controllers\Admin\BlogController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -152,7 +153,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
         Route::delete('/{category_products}', action: [AdminCategoryProductController::class, 'destroy'])->name('destroy');
     });
-  
+
     //menu
     Route::prefix('menus')->name('menus.')->group(function () {
         Route::put('change-status', [MenuController::class, 'changeStatus'])
@@ -165,4 +166,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
         Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy');
     });
+
+        //blog
+        Route::prefix('blogs')->name('blogs.')->group(function () {
+            Route::put('change-status', [BlogController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [BlogController::class, 'index'])->name('index');
+            Route::get('/create', [BlogController::class, 'create'])->name('create');
+            Route::post('/', [BlogController::class, 'store'])->name('store');
+            Route::get('/{blogs}', [BlogController::class, 'show'])->name('show');
+            Route::get('/{blogs}/edit', [BlogController::class, 'edit'])->name('edit');
+            Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
+            Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
+        });
 });

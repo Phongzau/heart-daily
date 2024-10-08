@@ -36,6 +36,9 @@
             <li><a class="nav-link" href="{{ route('admin.menus.index') }}"><i class="far fa-square"></i>
                     <span>Menu</span></a></li>
             <li class="dropdown">
+            <li><a class="nav-link" href="{{ route('admin.blogs.index') }}"><i class="far fa-square"></i>
+                    <span>Blog</span></a></li>
+            <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i>
                     <span>Bootstrap</span></a>
                 <ul class="dropdown-menu">
