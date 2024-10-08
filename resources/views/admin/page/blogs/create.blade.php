@@ -26,28 +26,30 @@
                                     <input type="file" name="image" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">title</label>
+                                    <label for="">Title</label>
                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">description</label>
-                                    <textarea name="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
+                                    <label for="">Description</label>
+                                    <textarea name="description" class="form-control summernote" rows="5" required>{{ old('description') }}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">blog_categories_name</label>
-                                    <input type="text" name="blog_categories_id" value="{{ old('blog_categories_id') }}"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">user_id</label>
-                                    <input type="text" name="user_id" value="{{ old('user_id') }}" class="form-control">
+                                    <label for="">Blog Category Name</label>
+                                    <select name="blog_category_id" class="form-control">
+                                        <option value="" hidden>--Select--</option>
+                                        @foreach($categories as $cate)
+                                            <option value="{{ $cate->id }}" {{ old('blog_category_id') == $cate->id ? 'selected' : '' }}>
+                                                {{ $cate->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group ">
                                     <label for="inputState">Status</label>
                                     <select id="inputState" name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
+                                        <option {{old('status') == '1' ? 'selected' : ''}} value="1">Active</option>
+                                        <option {{old('status') == '0' ? 'selected' : ''}} value="0">Inactive</option>
                                     </select>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Create</button>
