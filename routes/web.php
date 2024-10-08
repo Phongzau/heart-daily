@@ -205,6 +205,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{menu_items}', [MenuItemController::class, 'update'])->name('update');
         Route::delete('/{menu_items}', [MenuItemController::class, 'destroy'])->name('destroy');
     });
+
     // Settings
     /** Setting Routes */
     Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
