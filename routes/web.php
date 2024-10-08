@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminBlogCategoryController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\BlogController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -187,4 +188,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AboutController::class, 'index'])->name('index');
         Route::put('/update', [AboutController::class, 'update'])->name('update');
     });
+
+        //blog
+        Route::prefix('blogs')->name('blogs.')->group(function () {
+            Route::put('change-status', [BlogController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [BlogController::class, 'index'])->name('index');
+            Route::get('/create', [BlogController::class, 'create'])->name('create');
+            Route::post('/', [BlogController::class, 'store'])->name('store');
+            Route::get('/{blogs}', [BlogController::class, 'show'])->name('show');
+            Route::get('/{blogs}/edit', [BlogController::class, 'edit'])->name('edit');
+            Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
+            Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
+        });
 });
