@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminBlogCategoryController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\MenuItemController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -186,5 +187,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('abouts')->name('abouts.')->group(function () {
         Route::get('/', [AboutController::class, 'index'])->name('index');
         Route::put('/update', [AboutController::class, 'update'])->name('update');
+    });
+
+    //Menu Items
+    Route::prefix('menu_items')->name('menu_items.')->group(function () {
+        Route::put('change-status', [MenuItemController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('get-parent', [MenuItemController::class, 'getParentMenuItems'])
+            ->name('get-parent');
+        Route::get('/', [MenuItemController::class, 'index'])->name('index');
+        Route::get('/create', [MenuItemController::class, 'create'])->name('create');
+        Route::post('/', [MenuItemController::class, 'store'])->name('store');
+        Route::get('/{menu_items}', [MenuItemController::class, 'show'])->name('show');
+        Route::get('/{menu_items}/edit', [MenuItemController::class, 'edit'])->name('edit');
+        Route::put('/{menu_items}', [MenuItemController::class, 'update'])->name('update');
+        Route::delete('/{menu_items}', [MenuItemController::class, 'destroy'])->name('destroy');
     });
 });
