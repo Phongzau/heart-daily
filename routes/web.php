@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminBlogCategoryController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\SettingController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -187,4 +188,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AboutController::class, 'index'])->name('index');
         Route::put('/update', [AboutController::class, 'update'])->name('update');
     });
+
+   // Settings
+    /** Setting Routes */
+    Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
 });
