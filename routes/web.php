@@ -225,8 +225,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
     });
 
-    // user
-    Route::get('list-accounts', [ListAccountController::class, 'index'])->name('list-accounts.index');
-    Route::put('list-accounts/change-status', [ListAccountController::class, 'changeStatus'])->name('list-accounts.change-status');
-    Route::delete('list-accounts/{id}', [ListAccountController::class, 'destroy'])->name('list-accounts.destroy');
+    // // user
+    Route::prefix('accounts')->name('accounts.')->group(function () {
+        Route::put('change-status', [ListAccountController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [ListAccountController::class, 'index'])->name('index');
+        // Route::get('/create', [ListAccountController::class, 'create'])->name('create');
+        // Route::post('/', [ListAccountController::class, 'store'])->name('store');
+        Route::get('/{accounts}', [ListAccountController::class, 'show'])->name('show');
+        Route::get('/{accounts}/edit', [ListAccountController::class, 'edit'])->name('edit');
+        Route::put('/{accounts}', [ListAccountController::class, 'update'])->name('update');
+        Route::delete('/{accounts}', [ListAccountController::class, 'destroy'])->name('destroy');
+    });
 });

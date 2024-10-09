@@ -41,7 +41,7 @@
                 console.log(id);
 
                 $.ajax({
-                    url: "{{ route('admin.list-accounts.change-status') }}",
+                    url: "{{ route('admin.accounts.change-status') }}",
                     method: 'PUT',
                     data: {
                         status: isChecked,

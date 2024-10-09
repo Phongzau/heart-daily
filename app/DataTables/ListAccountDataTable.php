@@ -23,8 +23,9 @@ class ListAccountDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.list-accounts.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
-                return $deleteBtn;
+                $editBtn = "<a class='btn btn-primary' href='" . route('admin.accounts.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.accounts.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                return $editBtn . $deleteBtn;
             })
             ->addColumn('status', function ($query) {
                 if ($query->status == 1) {
@@ -93,7 +94,7 @@ class ListAccountDataTable extends DataTable
             Column::make('name'),
             Column::make('email'),
             Column::make('role'),
-            Column::make('status'),
+            Column::make('status')->width(150),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
