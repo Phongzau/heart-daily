@@ -33,16 +33,22 @@ class SettingController extends Controller
             'logo_footer' => ['image', 'max:3000'],
         ]);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         $logoPath = $this->updateImage($request, 'logo',  $logoSetting?->logo, 'logo');
         $faviconPath = $this->updateImage($request, 'favicon', $logoSetting?->favicon, 'logo');
         $logofooterPath = $this->updateImage($request, 'logo_footer', $logoSetting?->logo_footer, 'logo');
 =======
+=======
+>>>>>>> 1c4326c9c8aff348dbfd2bfa5b9a6e6f0116944b
         
         $logoPath = $this->updateImage($request, 'logo',  $logoSetting?->logo ?? '', 'logo');
         $faviconPath = $this->updateImage($request, 'favicon', $logoSetting?->favicon ?? '', 'logo');
         $logofooterPath = $this->updateImage($request, 'logo_footer', $logoSetting?->logo_footer ?? '','logo');
+<<<<<<< HEAD
 >>>>>>> feat: Manage GeneralSettings
+=======
+>>>>>>> 1c4326c9c8aff348dbfd2bfa5b9a6e6f0116944b
 
         LogoSetting::query()->updateOrCreate(
             ['id' => 1],
