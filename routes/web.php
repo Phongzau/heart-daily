@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Middleware\CheckRole;
 
@@ -79,6 +80,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::get('/dashboard', function () {
         return view('admin.page.dashboard');
     })->name('dashboard');
+
     //color
     Route::prefix('colors')->name('colors.')->group(function () {
         Route::get('/', [AdminColorController::class, 'index'])->name('index');
@@ -222,5 +224,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('/{blogs}/edit', [BlogController::class, 'edit'])->name('edit');
         Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
         Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
+    });
+
+    //Coupons
+    Route::prefix('coupons')->name('coupons.')->group(function () {
+        Route::put('change-status', [CouponController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [CouponController::class, 'index'])->name('index');
+        Route::get('/create', [CouponController::class, 'create'])->name('create');
+        Route::post('/', [CouponController::class, 'store'])->name('store');
+        Route::get('/{coupons}', [CouponController::class, 'show'])->name('show');
+        Route::get('/{coupons}/edit', [CouponController::class, 'edit'])->name('edit');
+        Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
+        Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy');
     });
 });
