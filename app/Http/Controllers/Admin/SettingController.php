@@ -32,7 +32,7 @@ class SettingController extends Controller
 
         $logoPath = $this->updateImage($request, 'logo',  $logoSetting?->logo, 'logo');
         $faviconPath = $this->updateImage($request, 'favicon', $logoSetting?->favicon, 'logo');
-        $logofooterPath = $this->updateImage($request, 'logo_footer', $logoSetting?->logo_footer,'logo');
+        $logofooterPath = $this->updateImage($request, 'logo_footer', $logoSetting?->logo_footer, 'logo');
 
         LogoSetting::query()->updateOrCreate(
             ['id' => 1],
