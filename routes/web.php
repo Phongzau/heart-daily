@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Middleware\CheckRole;
 
@@ -74,7 +75,7 @@ Route::get('user/dashboard', function () {
 
 
 //admin
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
     //dashboard
     Route::get('/dashboard', function () {
         return view('admin.page.dashboard');
@@ -222,5 +223,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('/{blogs}/edit', [BlogController::class, 'edit'])->name('edit');
         Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
         Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
+    });
+
+    // // user
+    Route::prefix('accounts')->name('accounts.')->group(function () {
+        Route::put('change-status', [ListAccountController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [ListAccountController::class, 'index'])->name('index');
+        // Route::get('/create', [ListAccountController::class, 'create'])->name('create');
+        // Route::post('/', [ListAccountController::class, 'store'])->name('store');
+        Route::get('/{accounts}', [ListAccountController::class, 'show'])->name('show');
+        Route::get('/{accounts}/edit', [ListAccountController::class, 'edit'])->name('edit');
+        Route::put('/{accounts}', [ListAccountController::class, 'update'])->name('update');
+        Route::delete('/{accounts}', [ListAccountController::class, 'destroy'])->name('destroy');
     });
 });

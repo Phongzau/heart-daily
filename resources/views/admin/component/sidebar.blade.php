@@ -28,6 +28,8 @@
                     <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
                 </ul>
             </li>
+            <li><a class="nav-link" href="{{ route('admin.accounts.index') }}"><i class="far fa-square"></i>
+                <span>List Account</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.brands.index') }}"><i class="far fa-square"></i>
                     <span>Brands</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.roles.index') }}"><i class="far fa-square"></i>
