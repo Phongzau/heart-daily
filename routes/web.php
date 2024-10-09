@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GeneralSettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminCategoryProductController;
 use App\Http\Controllers\HomeController;
@@ -211,6 +212,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     /** Setting Routes */
     Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
     Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
+    Route::put('general-setting-update', [SettingController::class, 'GeneralSettingUpdate'])->name('general-setting-update');
     //blog
     Route::prefix('blogs')->name('blogs.')->group(function () {
         Route::put('change-status', [BlogController::class, 'changeStatus'])
