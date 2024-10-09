@@ -328,7 +328,7 @@
 
 
         <a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
-
+        @livewireScripts
         <!-- Plugins JS File -->
         <script data-cfasync="false" src="{{ asset('frontend/assets/js/email-decode.min.js') }}"></script>
         <script src="{{ asset('frontend/assets/js/jquery.min.js') }}"></script>
@@ -339,9 +339,12 @@
 
         <!-- Main JS File -->
         <script src="{{ asset('frontend/assets/js/main.min.js') }}"></script>
+        
 
         <!-- Toastr JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        
+        @yield('js-chat')
         <script>
             @if (session('success'))
                 toastr.success('{{ session('success') }}');
@@ -350,6 +353,7 @@
                 toastr.error('{{ session('error') }}');
             @endif
         </script>
+        
         </body>
 
 
