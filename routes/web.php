@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Models\User;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -29,6 +30,13 @@ Route::get('/forgot-password', [UserController::class, 'showForgotPasswordForm']
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('send.reset.link');
 Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
+//chat
+
+Route::get('/chat/{id?}', function($id = null){
+    return view('client.page.chat',[
+        'id' => $id
+    ]);
+})->middleware(['auth'])->name('chat');
 
 
 Route::get('/wishlist', function () {
@@ -222,5 +230,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
         Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy');
     });
+    
+    
+
 });
+
 
