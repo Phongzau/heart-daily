@@ -15,43 +15,25 @@
             <div class="col-lg-9">
                 <article class="post single">
                     <div class="post-media">
-                        <img src="{{ asset('frontend/assets/images/blog/post-1.jpg') }}" alt="Post">
+                        <img src="{{ Storage::url($blog->image) }}">
                     </div><!-- End .post-media -->
 
                     <div class="post-body">
                         <div class="post-date">
-                            <span class="day">22</span>
-                            <span class="month">Jun</span>
-                        </div><!-- End .post-date -->
+                            <span class="day">{{ $blog->created_at->format('d') }}</span>
+                            <span class="month">{{ $blog->created_at->format('M') }}</span>
+                        </div>
 
-                        <h2 class="post-title">Top New Collection</h2>
+                        <h2 class="post-title">
+                            <p>{{ $blog->title }}</p>
+                        </h2>
 
                         <div class="post-meta">
                             <a href="#" class="hash-scroll">0 Comments</a>
                         </div><!-- End .post-meta -->
 
                         <div class="post-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non placerat mi.
-                                Etiam non tellus sem. Aenean pretium convallis lorem, sit amet dapibus ante
-                                mollis a. Integer bibendum interdum sem, eget volutpat purus pulvinar in. Sed
-                                tristique augue vitae sagittis porta. Phasellus ullamcorper, dolor suscipit
-                                mattis viverra, sapien elit condimentum odio, ut imperdiet nisi risus sit amet
-                                ante. Sed sem lorem, laoreet et facilisis quis, tincidunt non lorem. Etiam
-                                tempus, dolor in sollicitudin faucibus, sem massa accumsan erat.
-                            </p>
-
-                            <h3>“ Many
-                                desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                default model search for evolved over sometimes by accident, sometimes on
-                                purpose ”
-                            </h3>
-
-                            <p>Aenean lorem diam, venenatis nec venenatis id, adipiscing ac massa. Nam vel dui
-                                eget justo dictum pretium a rhoncus ipsum. Donec venenatis erat tincidunt nunc
-                                suscipit, sit amet bibendum lacus posuere. Sed scelerisque, dolor a pharetra
-                                sodales, mi augue consequat sapien, et interdum tellus leo et nunc. Nunc
-                                imperdiet eu libero ut imperdiet.
-                            </p>
+                            {!! $blog->description  !!}
                         </div><!-- End .post-content -->
 
                         <div class="post-share">
@@ -84,7 +66,7 @@
 
                             <figure>
                                 <a href="#">
-                                    <img src="assets/images/blog/author.jpg" alt="author">
+                                    <img src="" alt="author">
                                 </a>
                             </figure>
 
@@ -149,115 +131,36 @@
                         data-owl-options="{
 								'dots': false
 							}">
+
                         <article class="post">
                             <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-1.jpg" alt="Post">
+                                <a href="{{ route('blog-details', $blog->slug) }}">
+                                    <img src="{{ Storage::url($blog->image) }}">
                                 </a>
                             </div><!-- End .post-media -->
 
                             <div class="post-body">
                                 <div class="post-date">
-                                    <span class="day">29</span>
-                                    <span class="month">Jun</span>
-                                </div><!-- End .post-date -->
+                                    <span class="day">{{ $blog->created_at->format('d') }}</span>
+                                    <span class="month">{{ $blog->created_at->format('M') }}</span>
+                                </div>
 
                                 <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
+                                    <a href="{{ route('blog-details', $blog->slug) }}">
+                                        <h4>{{ $blog->title }}</h4>
+                                    </a>
+                                </h2><!-- End .post-title -->
 
                                 <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
+                                    <p>{{limitTextDescription($blog->description, 150)}}</p>
+                                    <a href="{{ route('blog-details', $blog->slug) }}" class="read-more">read more <i
                                             class="fas fa-angle-right"></i></a>
                                 </div><!-- End .post-content -->
                             </div><!-- End .post-body -->
-                        </article>
-
-                        <article class="post">
-                            <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-2.jpg" alt="Post">
-                                </a>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <div class="post-date">
-                                    <span class="day">23</span>
-                                    <span class="month">Mar</span>
-                                </div><!-- End .post-date -->
-
-                                <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
-
-                                <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
-                                            class="fas fa-angle-right"></i></a>
-                                </div><!-- End .post-content -->
-                            </div><!-- End .post-body -->
-                        </article>
-
-                        <article class="post">
-                            <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-3.jpg" alt="Post">
-                                </a>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <div class="post-date">
-                                    <span class="day">14</span>
-                                    <span class="month">May</span>
-                                </div><!-- End .post-date -->
-
-                                <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
-
-                                <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
-                                            class="fas fa-angle-right"></i></a>
-                                </div><!-- End .post-content -->
-                            </div><!-- End .post-body -->
-                        </article>
-
-                        <article class="post">
-                            <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-1.jpg" alt="Post">
-                                </a>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <div class="post-date">
-                                    <span class="day">11</span>
-                                    <span class="month">Apr</span>
-                                </div><!-- End .post-date -->
-
-                                <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
-
-                                <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
-                                            class="fas fa-angle-right"></i></a>
-                                </div><!-- End .post-content -->
-                            </div><!-- End .post-body -->
-                        </article>
+                        </article><!-- End .post -->
                     </div><!-- End .owl-carousel -->
                 </div><!-- End .related-posts -->
+
             </div><!-- End .col-lg-9 -->
 
             <div class="sidebar-toggle custom-sidebar-toggle">
@@ -268,64 +171,43 @@
                 <div class="sidebar-wrapper" data-sticky-sidebar-options='{"offsetTop": 72}'>
                     <div class="widget widget-categories">
                         <h4 class="widget-title">Blog Categories</h4>
-
                         <ul class="list">
-                            <li>
-                                <a href="#">All about clothing</a>
-
-                                <ul class="list">
-                                    <li><a href="#">Dresses</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Make-up &amp; beauty</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Fashion trends</a></li>
-                            <li><a href="#">Haircuts &amp; hairstyles</a></li>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <a href="{{route('blogs', $category->slug)}}">{{ $category->name }}</a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div><!-- End .widget -->
 
-                    <div class="widget">
+                    <div class="widget widget-post">
                         <h4 class="widget-title">Recent Posts</h4>
-
                         <ul class="simple-post-list">
-                            <li>
-                                <div class="post-media">
-                                    <a href="single.html">
-                                        <img src="assets/images/blog/widget/post-1.jpg" alt="Post">
-                                    </a>
-                                </div><!-- End .post-media -->
-                                <div class="post-info">
-                                    <a href="single.html">Post Format - Video</a>
-                                    <div class="post-meta">
-                                        April 08, 2018
-                                    </div><!-- End .post-meta -->
-                                </div><!-- End .post-info -->
-                            </li>
-
-                            <li>
-                                <div class="post-media">
-                                    <a href="single.html">
-                                        <img src="assets/images/blog/widget/post-2.jpg" alt="Post">
-                                    </a>
-                                </div><!-- End .post-media -->
-                                <div class="post-info">
-                                    <a href="single.html">Post Format - Image</a>
-                                    <div class="post-meta">
-                                        March 23, 2016
-                                    </div><!-- End .post-meta -->
-                                </div><!-- End .post-info -->
-                            </li>
+                            @foreach ($recentPosts as $recent)
+                                <li>
+                                    <div class="post-media">
+                                        <a href="{{ route('blog-details', $recent->slug) }}">
+                                            <img src="{{ Storage::url($recent->image) }}">
+                                        </a>
+                                    </div><!-- End .post-media -->
+                                    <div class="post-info">
+                                        <a href="{{ route('blog-details', $recent->slug) }}">{{ limitText($recent->title, 25) }}</a>
+                                        <div class="post-meta">{{ $recent->created_at->format('M d, Y') }}</div>
+                                    </div><!-- End .post-info -->
+                                </li>
+                            @endforeach
                         </ul>
                     </div><!-- End .widget -->
 
-                    <div class="widget">
-                        <h4 class="widget-title">Tags</h4>
 
-                        <div class="tagcloud">
-                            <a href="#">ARTICLES</a>
-                            <a href="#">CHAT</a>
-                        </div><!-- End .tagcloud -->
-                    </div><!-- End .widget -->
+                    {{--                    <div class="widget">--}}
+{{--                        <h4 class="widget-title">Tags</h4>--}}
+
+{{--                        <div class="tagcloud">--}}
+{{--                            <a href="#">ARTICLES</a>--}}
+{{--                            <a href="#">CHAT</a>--}}
+{{--                        </div><!-- End .tagcloud -->--}}
+{{--                    </div><!-- End .widget -->--}}
                 </div><!-- End .sidebar-wrapper -->
             </aside><!-- End .col-lg-3 -->
         </div><!-- End .row -->

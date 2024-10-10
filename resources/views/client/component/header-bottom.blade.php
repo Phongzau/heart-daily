@@ -136,7 +136,7 @@
                                     <li><a href="forgot-password.html">Forgot Password</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{{ route('blog') }}">Blog</a></li>
+                            <li><a href="{{ route('blogs') }}">Blog</a></li>
                             <li>
                                 <a href="#">Elements</a>
                                 <ul class="custom-scrollbar">
