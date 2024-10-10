@@ -224,6 +224,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
     Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
     Route::put('general-setting-update', [SettingController::class, 'GeneralSettingUpdate'])->name('general-setting-update');
+
     //blog
     Route::prefix('blogs')->name('blogs.')->group(function () {
         Route::put('change-status', [BlogController::class, 'changeStatus'])
@@ -262,3 +263,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy');
     });
 });
+
+    /** Client Routes */
+
+    //blog
+    Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
+    Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
