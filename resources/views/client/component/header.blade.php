@@ -16,7 +16,7 @@
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Porto - Bootstrap eCommerce Template">
     <meta name="author" content="SW-THEMES">
-
+    @livewireStyles
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/images/icons/favicon.png') }}">
 
@@ -53,7 +53,9 @@
 
     <link rel="stylesheet" type="text/css"
         href="{{ asset('frontend/assets/vendor/fontawesome-free/css/all.min.css') }}">
-</head>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @yield('css-chat')
+    </head>
 
 <body>
     <div class="page-wrapper">

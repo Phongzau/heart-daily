@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Middleware\CheckRole;
+use App\Models\User;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //auth
@@ -33,6 +34,13 @@ Route::get('/forgot-password', [UserController::class, 'showForgotPasswordForm']
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('send.reset.link');
 Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
+//chat
+
+Route::get('/chat/{id?}', function($id = null){
+    return view('client.page.chat',[
+        'id' => $id
+    ]);
+})->middleware(['auth'])->name('chat');
 
 
 Route::get('/wishlist', function () {

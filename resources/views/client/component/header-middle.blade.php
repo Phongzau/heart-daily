@@ -48,16 +48,15 @@
                         </div>
                         <!-- End .header-search -->
 
-                        <div class="header-contact d-none d-lg-flex pl-4 pr-4">
 
-                        </div>
+                        <a href="{{ route('chat') }}" class="header-icon"><i class="far fa-comment-dots"></i></a>
                         @if (Auth::check())
-                            {{ Auth::user()->name }},<a href="{{ route('logout') }}">Exit</a>                          
+                            {{ Auth::user()->name }},<a href="{{ route('logout') }}">Exit</a>
                         @else
-                             <a href="{{ route('login') }}" class="header-icon" title="login"><i
-                                class="icon-user-2"></i></a>
+                            <a href="{{ route('login') }}" class="header-icon" title="login"><i
+                                    class="icon-user-2"></i></a>
                         @endif
-                        
+
 
                         <a href="{{ route('wishlist') }}" class="header-icon" title="wishlist"><i
                                 class="icon-wishlist-2"></i></a>
