@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminAttributeController;
 use App\Http\Controllers\Admin\AdminBlogCategoryController;
 use App\Http\Controllers\Admin\AdminCategoryAttributeController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\AdvertisementsController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ListAccountController;
@@ -36,8 +37,8 @@ Route::get('/reset-password/{token}', [UserController::class, 'showResetPassword
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
 //chat
 
-Route::get('/chat/{id?}', function($id = null){
-    return view('client.page.chat',[
+Route::get('/chat/{id?}', function ($id = null) {
+    return view('client.page.chat', [
         'id' => $id
     ]);
 })->middleware(['auth'])->name('chat');
@@ -260,5 +261,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('/{coupons}/edit', [CouponController::class, 'edit'])->name('edit');
         Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
         Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy');
+    });
+
+    //advertisement
+
+    Route::prefix('advertisement')->name('advertisement.')->group(function () {
+        Route::get('/', [AdvertisementsController::class, 'index'])->name('index');
+        Route::put('homepage-banner-section-one', [AdvertisementsController::class, 'homepageBannerSectionOne'])->name('homepage-banner-section-one');
+        Route::put('homepage-banner-section-two', [AdvertisementsController::class, 'homepageBannerSectionTwo'])->name('homepage-banner-section-two');
+        Route::put('homepage-banner-section-three', [AdvertisementsController::class, 'homepageBannerSectionThree'])->name('homepage-banner-section-three');
+        Route::put('homepage-banner-section-four', [AdvertisementsController::class, 'homepageBannerSectionFour'])->name('homepage-banner-section-four');
+        Route::put('productpage-banner', [AdvertisementsController::class, 'productPageBanner'])->name('productpage-banner');
+        Route::put('cartpage-banner', [AdvertisementsController::class, 'cartPageBanner'])->name('cartpage-banner');
     });
 });
