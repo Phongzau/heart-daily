@@ -339,12 +339,21 @@
 
         <!-- Main JS File -->
         <script src="{{ asset('frontend/assets/js/main.min.js') }}"></script>
-        
+
 
         <!-- Toastr JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        
         @yield('js-chat')
+        <script>
+            // Nếu $errors tồn tại
+            @if ($errors->any())
+                // Duyệt qua tất cả mảng $errors qua biến $error
+                @foreach ($errors->all() as $error)
+                    // Hiển thị lỗi qua toastr
+                    toastr.error('{{ $error }}');
+                @endforeach
+            @endif
+        </script>
         <script>
             @if (session('success'))
                 toastr.success('{{ session('success') }}');
@@ -353,7 +362,7 @@
                 toastr.error('{{ session('error') }}');
             @endif
         </script>
-        
+        @stack('scripts')
         </body>
 
 

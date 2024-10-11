@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Helper\BadwordsHelper;
 use App\Http\Controllers\Controller;
 
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use App\Models\BlogComment;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -17,13 +20,13 @@ class BlogController extends Controller
     public function blogDetails(string $slug)
     {
         $blog = Blog::query()->where('slug', $slug)->where('status', 1)->firstOrFail();
-
-//        $moreBlogs = Blog::query()->where('slug', '!=', $slug)
-//            ->where('status', 1)
-//            ->orderBy('id', 'DESC')
-//            ->take(5)
-//            ->get();
-
+        $comments = BlogComment::query()->where('blog_id', $blog->id)->paginate(8);
+        //        $moreBlogs = Blog::query()->where('slug', '!=', $slug)
+        //            ->where('status', 1)
+        //            ->orderBy('id', 'DESC')
+        //            ->take(5)
+        //            ->get();
+        $countComments = BlogComment::query()->where('blog_id', $blog->id)->count();
         // Lấy các bài viết khác (trừ bài viết hiện tại) để hiển thị trong Recent Posts
         $recentPosts = Blog::query()
             ->where('slug', '!=', $slug) // Loại trừ bài viết hiện tại
@@ -36,7 +39,7 @@ class BlogController extends Controller
 
         $categories = BlogCategory::query()->where('status', 1)->get();
 
-        return view('client.page.blog-details', compact('blog','recentPosts' , 'categories')); // Loại bỏ biến trống và thêm comments nếu cần
+        return view('client.page.blog-details', compact('blog', 'recentPosts', 'categories', 'comments', 'countComments')); // Loại bỏ biến trống và thêm comments nếu cần
     }
 
     public function blogs(Request $request, $category = null)
@@ -53,7 +56,61 @@ class BlogController extends Controller
             }
         } else {
             $blogs = Blog::where('status', 1)->orderBy('created_at', 'desc')->paginate(9);
-            return view('client.page.blog', compact('blogs','categories'));
+            return view('client.page.blog', compact('blogs', 'categories'));
         }
+    }
+
+    public function comments(Request $request)
+    {
+        $request->validate([
+            'comment' => ['required', 'max:250', 'string'],
+            'blog_id' => ['required'],
+        ], [
+            'comment.required' => 'Bạn phải nhập bình luận.',
+            'comment.max' => 'Bình luận không được vượt quá 250 ký tự.',
+            'comment.string' => 'Bình luận phải là một chuỗi văn bản hợp lệ.',
+            'blog_id.required' => 'Thiếu ID của bài viết.'
+        ]);
+
+        // Kiểm tra từ nhạy cảm
+        if (BadwordsHelper::isProfane($request->comment)) {
+            return response([
+                'status' => 'error',
+                'message' => 'Bình luận có chứa từ ngữ nhạy cảm',
+            ]);
+        }
+
+
+        // Lưu comment vào cơ sở dữ liệu
+        $comment = new BlogComment();
+        $comment->user_id = Auth::user()->id;
+        $comment->comment = $request->comment;
+        $comment->blog_id = $request->blog_id;
+        $comment->save();
+
+        // Trả về comment mới thêm vào
+        return response([
+            'status' => 'success',
+            'message' => 'Bình luận thành công',
+            'comment' => $comment,
+        ]);
+    }
+
+    public function getAllComments(Request $request)
+    {
+        $comments = BlogComment::query()
+            ->where('blog_id', $request->blog_id)
+            ->with('user')
+            ->paginate(8);
+
+        // Sử dụng vòng lặp để thêm đường dẫn ảnh cho từng bình luận
+        foreach ($comments as $comment) {
+            if ($comment->user->image) {
+                $comment->user->profile_image_url = Storage::url($comment->user->image);
+            } else {
+                $comment->user->profile_image_url = asset('frontend/assets/images/blog/author.jpg'); // Ảnh mặc định
+            }
+        }
+        return $comments;
     }
 }
