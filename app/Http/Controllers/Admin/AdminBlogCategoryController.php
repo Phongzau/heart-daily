@@ -8,6 +8,7 @@ use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Http\Requests\UpdateBlogCategoryRequest;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminBlogCategoryController extends Controller
 {
@@ -36,7 +37,9 @@ class AdminBlogCategoryController extends Controller
     {
         $blogCategory = new BlogCategory();
         $blogCategory->name = $request->name;
-        $blogCategory->slug = $request->slug;
+        $blogCategory->slug = Str::slug($request->name);
+
+
 
         $blogCategory->status = $request->status;
         $blogCategory->save();
@@ -56,7 +59,7 @@ class AdminBlogCategoryController extends Controller
         $blogCategory = BlogCategory::query()->findOrFail($id);
 
         $blogCategory->name = $request->name;
-        $blogCategory->slug = $request->slug;
+        $blogCategory->slug = Str::slug($request->name);
 
         $blogCategory->status = $request->status;
         $blogCategory->save();

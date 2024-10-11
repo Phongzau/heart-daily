@@ -23,10 +23,7 @@
                                     <label for="name">Name</label>
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                                 </div>
-                                <div class="form-group">
-                                    <label for="slug">Slug</label>
-                                    <input type="text" name="slug" value="{{ old('slug') }}" class="form-control">
-                                </div>
+
 
                                 <div class="form-group">
                                     <label for="status">Status</label>
