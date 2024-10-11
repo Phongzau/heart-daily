@@ -29,11 +29,11 @@
                         </h2>
 
                         <div class="post-meta">
-                            <a href="#" class="hash-scroll">0 Comments</a>
+                            <a href="#" class="hash-scroll count-comments">{{ $countComments }} Comments</a>
                         </div><!-- End .post-meta -->
 
                         <div class="post-content">
-                            {!! $blog->description  !!}
+                            {!! $blog->description !!}
                         </div><!-- End .post-content -->
 
                         <div class="post-share">
@@ -61,58 +61,88 @@
                             </div><!-- End .social-icons -->
                         </div><!-- End .post-share -->
 
-                        <div class="post-author">
-                            <h3><i class="far fa-user"></i>Author</h3>
+                        <h3><i class="far fa-user"></i>Comment Blog</h3>
 
-                            <figure>
-                                <a href="#">
-                                    <img src="" alt="author">
-                                </a>
-                            </figure>
+                        <div id="commentSection" class="mt-3 mb-2">
+                            @foreach ($comments as $item)
+                                <div class="post-author">
+                                    <figure>
+                                        <a href="#">
+                                            <img src="{{ Storage::url($item->user->image) }}" alt="author">
+                                        </a>
+                                    </figure>
 
-                            <div class="author-content">
-                                <h4><a href="#">John Doe</a></h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                    odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in
-                                    adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis
-                                    placerat, felis enim ornare nisi, vitae mattis nulla ante id dui.</p>
-                            </div><!-- End .author.content -->
+                                    <div class="author-content">
+                                        <h4><a href="#">{{ $item->user->name }}</a></h4>
+                                        <p>{{ $item->comment }}</p>
+                                    </div><!-- End .author.content -->
+                                </div>
+                            @endforeach
                         </div><!-- End .post-author -->
+
+                        <nav class="toolbox toolbox-pagination">
+                            <div class="toolbox-item toolbox-show">
+                                <!-- Nếu cần hiển thị số bình luận hiện tại -->
+                                Hiển thị {{ $comments->firstItem() }}-{{ $comments->lastItem() }} của
+                                {{ $comments->total() }} bình luận
+                            </div>
+
+                            <!-- End .toolbox-item -->
+                            <ul class="pagination toolbox-item">
+                                {{-- Nếu có nhiều trang, hiển thị các trang --}}
+                                @if ($comments->hasPages())
+                                    {{-- Hiển thị nút "Previous" --}}
+                                    @if ($comments->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <a class="page-link page-link-btn" href="#"><i
+                                                    class="icon-angle-left"></i></a>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link page-link-btn" href="{{ $comments->previousPageUrl() }}"><i
+                                                    class="icon-angle-left"></i></a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Hiển thị các số trang --}}
+                                    @foreach ($comments->links()->elements[0] as $page => $url)
+                                        @if ($page == $comments->currentPage())
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">{{ $page }} <span
+                                                        class="sr-only">(current)</span></a>
+                                            </li>
+                                        @else
+                                            <li class="page-item"><a class="page-link"
+                                                    href="{{ $url }}">{{ $page }}</a></li>
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Hiển thị nút "Next" --}}
+                                    @if ($comments->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link page-link-btn" href="{{ $comments->nextPageUrl() }}"><i
+                                                    class="icon-angle-right"></i></a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <a class="page-link page-link-btn" href="#"><i
+                                                    class="icon-angle-right"></i></a>
+                                        </li>
+                                    @endif
+                                @endif
+                            </ul>
+                        </nav>
+
 
                         <div class="comment-respond">
                             <h3>Leave a Reply</h3>
 
-                            <form action="#">
-                                <p>Your email address will not be published. Required fields are marked *</p>
-
+                            <form id="commentForm">
                                 <div class="form-group">
                                     <label>Comment</label>
-                                    <textarea cols="30" rows="1" class="form-control" required></textarea>
+                                    <textarea cols="30" name="comment" rows="1" class="form-control" required></textarea>
                                 </div><!-- End .form-group -->
-
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" required>
-                                </div><!-- End .form-group -->
-
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" required>
-                                </div><!-- End .form-group -->
-
-                                <div class="form-group">
-                                    <label>Website</label>
-                                    <input type="url" class="form-control">
-                                </div><!-- End .form-group -->
-
-                                <div class="form-group-custom-control mb-2">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="save-name">
-                                        <label class="custom-control-label" for="save-name">Save my name, email,
-                                            and website in this browser for the next time I comment.</label>
-                                    </div><!-- End .custom-checkbox -->
-                                </div><!-- End .form-group-custom-control -->
-
+                                <input type="text" hidden name="blog_id" value="{{ $blog->id }}">
                                 <div class="form-footer my-0">
                                     <button type="submit" class="btn btn-sm btn-primary">Post
                                         Comment</button>
@@ -152,7 +182,7 @@
                                 </h2><!-- End .post-title -->
 
                                 <div class="post-content">
-                                    <p>{{limitTextDescription($blog->description, 150)}}</p>
+                                    <p>{{ limitTextDescription($blog->description, 150) }}</p>
                                     <a href="{{ route('blog-details', $blog->slug) }}" class="read-more">read more <i
                                             class="fas fa-angle-right"></i></a>
                                 </div><!-- End .post-content -->
@@ -174,7 +204,7 @@
                         <ul class="list">
                             @foreach ($categories as $category)
                                 <li>
-                                    <a href="{{route('blogs', $category->slug)}}">{{ $category->name }}</a>
+                                    <a href="{{ route('blogs', $category->slug) }}">{{ $category->name }}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -191,7 +221,8 @@
                                         </a>
                                     </div><!-- End .post-media -->
                                     <div class="post-info">
-                                        <a href="{{ route('blog-details', $recent->slug) }}">{{ limitText($recent->title, 25) }}</a>
+                                        <a
+                                            href="{{ route('blog-details', $recent->slug) }}">{{ limitText($recent->title, 25) }}</a>
                                         <div class="post-meta">{{ $recent->created_at->format('M d, Y') }}</div>
                                     </div><!-- End .post-info -->
                                 </li>
@@ -200,16 +231,149 @@
                     </div><!-- End .widget -->
 
 
-                    {{--                    <div class="widget">--}}
-{{--                        <h4 class="widget-title">Tags</h4>--}}
+                    {{--                    <div class="widget"> --}}
+                    {{--                        <h4 class="widget-title">Tags</h4> --}}
 
-{{--                        <div class="tagcloud">--}}
-{{--                            <a href="#">ARTICLES</a>--}}
-{{--                            <a href="#">CHAT</a>--}}
-{{--                        </div><!-- End .tagcloud -->--}}
-{{--                    </div><!-- End .widget -->--}}
+                    {{--                        <div class="tagcloud"> --}}
+                    {{--                            <a href="#">ARTICLES</a> --}}
+                    {{--                            <a href="#">CHAT</a> --}}
+                    {{--                        </div><!-- End .tagcloud --> --}}
+                    {{--                    </div><!-- End .widget --> --}}
                 </div><!-- End .sidebar-wrapper -->
             </aside><!-- End .col-lg-3 -->
         </div><!-- End .row -->
     </div><!-- End .container -->
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#commentForm').on('submit', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+
+                $.ajax({
+                    url: "{{ route('comments') }}",
+                    method: 'POST',
+                    data: formData,
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status == 'success') {
+                            getComments(data.comment.blog_id);
+                            toastr.success(data.message);
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+                        let errors = data.responseJSON.errors;
+                        if (errors) {
+                            $.each(errors, function(key, value) {
+                                toastr.error(value);
+                            })
+                        }
+                    }
+                })
+            })
+
+            function getComments(blogId) {
+                $.ajax({
+                    url: "{{ route('get-comments') }}",
+                    method: 'GET',
+                    data: {
+                        blog_id: blogId,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        renderComments(data);
+                    },
+                    error: function() {}
+                })
+            }
+
+            function renderComments(comments) {
+                let commentSection = $('#commentSection');
+                $('.count-comments').text(comments.total + ` Comments`);
+                commentSection.empty(); // Xóa các bình luận cũ
+
+                comments.data.forEach(comment => {
+                    let commentHtml = `
+                    <div class="post-author">
+                        <figure>
+                            <a href="#">
+                                <img src="${comment.user.profile_image_url}" alt="author">
+                            </a>
+                        </figure>
+
+                        <div class="author-content">
+                            <h4><a href="#">${comment.user.name}</a></h4>
+                            <p>${comment.comment}</p>
+                        </div><!-- End .author.content -->
+                    </div>
+                    `;
+                    commentSection.append(commentHtml);
+                });
+
+                // Cập nhật phân trang
+                if (comments.total > 0) {
+                    $('.toolbox-item').html(`
+                    Hiển thị ${comments.from}-${comments.to} của ${comments.total} bình luận
+                `);
+                } else {
+                    $('.toolbox-item').html(`Chưa có bình luận nào.`);
+                }
+
+                if (comments.last_page > 1) {
+                    // Tạo lại HTML cho phân trang
+                    let paginationHtml = '';
+
+                    // Previous button
+                    if (comments.current_page > 1) {
+                        paginationHtml +=
+                            `<li class="page-item"><a class="page-link page-link-btn" href="${comments.prev_page_url}"><i class="icon-angle-left"></i></a></li>`;
+                    } else {
+                        paginationHtml +=
+                            `<li class="page-item disabled"><a class="page-link page-link-btn" href="#"><i class="icon-angle-left"></i></a></li>`;
+                    }
+
+                    // Page numbers
+                    const currentUrl = new URL(window.location.href);
+                    const basePath = currentUrl
+                        .pathname; // Lấy đường dẫn hiện tại (ví dụ: /blog-details/vkalsvklaskvlakvl)
+
+                    for (let i = 1; i <= comments.last_page; i++) {
+                        // Thay đổi tham số trang trong URL
+                        currentUrl.searchParams.set('page', i);
+
+                        if (i == comments.current_page) {
+                            paginationHtml +=
+                                `<li class="page-item active"><a class="page-link" href="#">${i} <span class="sr-only">(current)</span></a></li>`;
+                        } else {
+                            paginationHtml +=
+                                `<li class="page-item"><a class="page-link" href="${currentUrl.toString()}">${i}</a></li>`;
+                        }
+                    }
+
+                    // Next button
+                    if (comments.current_page < comments.last_page) {
+                        paginationHtml +=
+                            `<li class="page-item"><a class="page-link page-link-btn" href="${comments.next_page_url}"><i class="icon-angle-right"></i></a></li>`;
+                    } else {
+                        paginationHtml +=
+                            `<li class="page-item disabled"><a class="page-link page-link-btn" href="#"><i class="icon-angle-right"></i></a></li>`;
+                    }
+
+                    $('.pagination').html(paginationHtml);
+                } else {
+                    $('.pagination').html('');
+                }
+            }
+        })
+    </script>
+@endpush

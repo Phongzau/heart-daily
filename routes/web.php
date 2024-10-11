@@ -36,8 +36,8 @@ Route::get('/reset-password/{token}', [UserController::class, 'showResetPassword
 Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
 //chat
 
-Route::get('/chat/{id?}', function($id = null){
-    return view('client.page.chat',[
+Route::get('/chat/{id?}', function ($id = null) {
+    return view('client.page.chat', [
         'id' => $id
     ]);
 })->middleware(['auth'])->name('chat');
@@ -264,8 +264,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     });
 });
 
-    /** Client Routes */
+/** Client Routes */
 
-    //blog
-    Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
-    Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
+//blog
+Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
+Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
+Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
+Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');

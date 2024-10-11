@@ -8,6 +8,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -53,9 +54,9 @@
 
     <link rel="stylesheet" type="text/css"
         href="{{ asset('frontend/assets/vendor/fontawesome-free/css/all.min.css') }}">
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @yield('css-chat')
-    </head>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('css-chat')
+</head>
 
 <body>
     <div class="page-wrapper">

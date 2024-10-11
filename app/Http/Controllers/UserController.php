@@ -93,10 +93,10 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             if (Auth::user()->role_id == 1) {
                 toastr('Đăng nhập thành công!', 'success');
-                return redirect()->route('admin.dashboard');
+                return redirect()->intended('admin/dashboard');
             }
             toastr('Đăng nhập thành công!', 'success');
-            return redirect()->route('home');
+            return redirect()->intended('/');
         } else {
             toastr('Thông tin đăng nhập không chính xác.', 'error');
             return redirect()->back();
