@@ -29,6 +29,7 @@ trait ImageUploadTrait
             $path = $image->storeAs("uploads/{$subPath}", $newImageName, 'public');
             return $path;
         }
+
         return $oldPath;
     }
 

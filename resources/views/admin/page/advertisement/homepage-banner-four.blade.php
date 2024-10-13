@@ -15,8 +15,9 @@
                 </div>
 
                 <div class="form-group">
-                    <img width="150px" src="{{ asset(@$homepage_section_banner_four->banner_one->banner_image) }}"
-                        alt="">
+                    {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_four->banner_one->banner_image) }}" alt=""> --}}
+                    <img width="150px" src="{{ Storage::url(@$homepage_section_banner_four->banner_one->banner_image) }}">
+
                 </div>
 
                 <div class="form-group">

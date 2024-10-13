@@ -16,8 +16,9 @@
                 </div>
 
                 <div class="form-group">
-                    <img width="150px" src="{{ asset(@$homepage_section_banner_three->banner_one->banner_image) }}"
-                        alt="">
+                    {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_three->banner_one->banner_image) }}" alt=""> --}}
+                    <img width="150px" src="{{ Storage::url(@$homepage_section_banner_three->banner_one->banner_image) }}">
+
                 </div>
 
                 <div class="form-group">
@@ -43,8 +44,9 @@
                 </div>
 
                 <div class="form-group">
-                    <img width="150px" src="{{ asset(@$homepage_section_banner_three->banner_two->banner_image) }}"
-                        alt="">
+                    {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_three->banner_two->banner_image) }}" alt=""> --}}
+                    <img width="150px" src="{{ Storage::url(@$homepage_section_banner_three->banner_two->banner_image) }}">
+
                 </div>
 
                 <div class="form-group">
@@ -70,8 +72,9 @@
                 </div>
 
                 <div class="form-group">
-                    <img width="150px" src="{{ asset(@$homepage_section_banner_three->banner_three->banner_image) }}"
-                        alt="">
+                    {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_three->banner_three->banner_image) }}" alt=""> --}}
+                    <img width="150px" src="{{ Storage::url(@$homepage_section_banner_three->banner_three->banner_image) }}">
+
                 </div>
 
                 <div class="form-group">
