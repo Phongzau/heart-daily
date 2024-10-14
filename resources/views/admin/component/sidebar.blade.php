@@ -52,6 +52,8 @@
                     <span>Coupons</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.blog_categories.index') }}"><i class="far fa-square"></i>
                     <span>Blog_categories</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.blog_comments.index') }}"><i class="far fa-square"></i>
+                    <span>Blog Comment</span></a></li>
             <li class="dropdown">
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="far fa-square"></i>
                     <span>Settings</span></a></li>
