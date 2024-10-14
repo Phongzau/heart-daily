@@ -15,43 +15,25 @@
             <div class="col-lg-9">
                 <article class="post single">
                     <div class="post-media">
-                        <img src="{{ asset('frontend/assets/images/blog/post-1.jpg') }}" alt="Post">
+                        <img src="{{ Storage::url($blog->image) }}">
                     </div><!-- End .post-media -->
 
                     <div class="post-body">
                         <div class="post-date">
-                            <span class="day">22</span>
-                            <span class="month">Jun</span>
-                        </div><!-- End .post-date -->
+                            <span class="day">{{ $blog->created_at->format('d') }}</span>
+                            <span class="month">{{ $blog->created_at->format('M') }}</span>
+                        </div>
 
-                        <h2 class="post-title">Top New Collection</h2>
+                        <h2 class="post-title">
+                            <p>{{ $blog->title }}</p>
+                        </h2>
 
                         <div class="post-meta">
-                            <a href="#" class="hash-scroll">0 Comments</a>
+                            <a href="#" class="hash-scroll count-comments">{{ $countComments }} Comments</a>
                         </div><!-- End .post-meta -->
 
                         <div class="post-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non placerat mi.
-                                Etiam non tellus sem. Aenean pretium convallis lorem, sit amet dapibus ante
-                                mollis a. Integer bibendum interdum sem, eget volutpat purus pulvinar in. Sed
-                                tristique augue vitae sagittis porta. Phasellus ullamcorper, dolor suscipit
-                                mattis viverra, sapien elit condimentum odio, ut imperdiet nisi risus sit amet
-                                ante. Sed sem lorem, laoreet et facilisis quis, tincidunt non lorem. Etiam
-                                tempus, dolor in sollicitudin faucibus, sem massa accumsan erat.
-                            </p>
-
-                            <h3>“ Many
-                                desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                default model search for evolved over sometimes by accident, sometimes on
-                                purpose ”
-                            </h3>
-
-                            <p>Aenean lorem diam, venenatis nec venenatis id, adipiscing ac massa. Nam vel dui
-                                eget justo dictum pretium a rhoncus ipsum. Donec venenatis erat tincidunt nunc
-                                suscipit, sit amet bibendum lacus posuere. Sed scelerisque, dolor a pharetra
-                                sodales, mi augue consequat sapien, et interdum tellus leo et nunc. Nunc
-                                imperdiet eu libero ut imperdiet.
-                            </p>
+                            {!! $blog->description !!}
                         </div><!-- End .post-content -->
 
                         <div class="post-share">
@@ -79,58 +61,88 @@
                             </div><!-- End .social-icons -->
                         </div><!-- End .post-share -->
 
-                        <div class="post-author">
-                            <h3><i class="far fa-user"></i>Author</h3>
+                        <h3><i class="far fa-user"></i>Comment Blog</h3>
 
-                            <figure>
-                                <a href="#">
-                                    <img src="assets/images/blog/author.jpg" alt="author">
-                                </a>
-                            </figure>
+                        <div id="commentSection" class="mt-3 mb-2">
+                            @foreach ($comments as $item)
+                                <div class="post-author">
+                                    <figure>
+                                        <a href="#">
+                                            <img src="{{ Storage::url($item->user->image) }}" alt="author">
+                                        </a>
+                                    </figure>
 
-                            <div class="author-content">
-                                <h4><a href="#">John Doe</a></h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                                    odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in
-                                    adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis
-                                    placerat, felis enim ornare nisi, vitae mattis nulla ante id dui.</p>
-                            </div><!-- End .author.content -->
+                                    <div class="author-content">
+                                        <h4><a href="#">{{ $item->user->name }}</a></h4>
+                                        <p>{{ $item->comment }}</p>
+                                    </div><!-- End .author.content -->
+                                </div>
+                            @endforeach
                         </div><!-- End .post-author -->
+
+                        <nav class="toolbox toolbox-pagination">
+                            <div class="toolbox-item toolbox-show">
+                                <!-- Nếu cần hiển thị số bình luận hiện tại -->
+                                Hiển thị {{ $comments->firstItem() }}-{{ $comments->lastItem() }} của
+                                {{ $comments->total() }} bình luận
+                            </div>
+
+                            <!-- End .toolbox-item -->
+                            <ul class="pagination toolbox-item">
+                                {{-- Nếu có nhiều trang, hiển thị các trang --}}
+                                @if ($comments->hasPages())
+                                    {{-- Hiển thị nút "Previous" --}}
+                                    @if ($comments->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <a class="page-link page-link-btn" href="#"><i
+                                                    class="icon-angle-left"></i></a>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link page-link-btn" href="{{ $comments->previousPageUrl() }}"><i
+                                                    class="icon-angle-left"></i></a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Hiển thị các số trang --}}
+                                    @foreach ($comments->links()->elements[0] as $page => $url)
+                                        @if ($page == $comments->currentPage())
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">{{ $page }} <span
+                                                        class="sr-only">(current)</span></a>
+                                            </li>
+                                        @else
+                                            <li class="page-item"><a class="page-link"
+                                                    href="{{ $url }}">{{ $page }}</a></li>
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Hiển thị nút "Next" --}}
+                                    @if ($comments->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link page-link-btn" href="{{ $comments->nextPageUrl() }}"><i
+                                                    class="icon-angle-right"></i></a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <a class="page-link page-link-btn" href="#"><i
+                                                    class="icon-angle-right"></i></a>
+                                        </li>
+                                    @endif
+                                @endif
+                            </ul>
+                        </nav>
+
 
                         <div class="comment-respond">
                             <h3>Leave a Reply</h3>
 
-                            <form action="#">
-                                <p>Your email address will not be published. Required fields are marked *</p>
-
+                            <form id="commentForm">
                                 <div class="form-group">
                                     <label>Comment</label>
-                                    <textarea cols="30" rows="1" class="form-control" required></textarea>
+                                    <textarea cols="30" name="comment" rows="1" class="form-control" required></textarea>
                                 </div><!-- End .form-group -->
-
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" required>
-                                </div><!-- End .form-group -->
-
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" required>
-                                </div><!-- End .form-group -->
-
-                                <div class="form-group">
-                                    <label>Website</label>
-                                    <input type="url" class="form-control">
-                                </div><!-- End .form-group -->
-
-                                <div class="form-group-custom-control mb-2">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="save-name">
-                                        <label class="custom-control-label" for="save-name">Save my name, email,
-                                            and website in this browser for the next time I comment.</label>
-                                    </div><!-- End .custom-checkbox -->
-                                </div><!-- End .form-group-custom-control -->
-
+                                <input type="text" hidden name="blog_id" value="{{ $blog->id }}">
                                 <div class="form-footer my-0">
                                     <button type="submit" class="btn btn-sm btn-primary">Post
                                         Comment</button>
@@ -149,115 +161,36 @@
                         data-owl-options="{
 								'dots': false
 							}">
+
                         <article class="post">
                             <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-1.jpg" alt="Post">
+                                <a href="{{ route('blog-details', $blog->slug) }}">
+                                    <img src="{{ Storage::url($blog->image) }}">
                                 </a>
                             </div><!-- End .post-media -->
 
                             <div class="post-body">
                                 <div class="post-date">
-                                    <span class="day">29</span>
-                                    <span class="month">Jun</span>
-                                </div><!-- End .post-date -->
+                                    <span class="day">{{ $blog->created_at->format('d') }}</span>
+                                    <span class="month">{{ $blog->created_at->format('M') }}</span>
+                                </div>
 
                                 <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
+                                    <a href="{{ route('blog-details', $blog->slug) }}">
+                                        <h4>{{ $blog->title }}</h4>
+                                    </a>
+                                </h2><!-- End .post-title -->
 
                                 <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
+                                    <p>{{ limitTextDescription($blog->description, 150) }}</p>
+                                    <a href="{{ route('blog-details', $blog->slug) }}" class="read-more">read more <i
                                             class="fas fa-angle-right"></i></a>
                                 </div><!-- End .post-content -->
                             </div><!-- End .post-body -->
-                        </article>
-
-                        <article class="post">
-                            <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-2.jpg" alt="Post">
-                                </a>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <div class="post-date">
-                                    <span class="day">23</span>
-                                    <span class="month">Mar</span>
-                                </div><!-- End .post-date -->
-
-                                <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
-
-                                <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
-                                            class="fas fa-angle-right"></i></a>
-                                </div><!-- End .post-content -->
-                            </div><!-- End .post-body -->
-                        </article>
-
-                        <article class="post">
-                            <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-3.jpg" alt="Post">
-                                </a>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <div class="post-date">
-                                    <span class="day">14</span>
-                                    <span class="month">May</span>
-                                </div><!-- End .post-date -->
-
-                                <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
-
-                                <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
-                                            class="fas fa-angle-right"></i></a>
-                                </div><!-- End .post-content -->
-                            </div><!-- End .post-body -->
-                        </article>
-
-                        <article class="post">
-                            <div class="post-media zoom-effect">
-                                <a href="single.html">
-                                    <img src="assets/images/blog/related/post-1.jpg" alt="Post">
-                                </a>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <div class="post-date">
-                                    <span class="day">11</span>
-                                    <span class="month">Apr</span>
-                                </div><!-- End .post-date -->
-
-                                <h2 class="post-title">
-                                    <a href="single.html">Post Format - Image</a>
-                                </h2>
-
-                                <div class="post-content">
-                                    <p>Euismod atras vulputate iltricies etri elit. Class aptent taciti sociosqu
-                                        ad litora torquent per conubia nostra, per incep tos himens.</p>
-
-                                    <a href="single.html" class="read-more">read more <i
-                                            class="fas fa-angle-right"></i></a>
-                                </div><!-- End .post-content -->
-                            </div><!-- End .post-body -->
-                        </article>
+                        </article><!-- End .post -->
                     </div><!-- End .owl-carousel -->
                 </div><!-- End .related-posts -->
+
             </div><!-- End .col-lg-9 -->
 
             <div class="sidebar-toggle custom-sidebar-toggle">
@@ -268,66 +201,179 @@
                 <div class="sidebar-wrapper" data-sticky-sidebar-options='{"offsetTop": 72}'>
                     <div class="widget widget-categories">
                         <h4 class="widget-title">Blog Categories</h4>
-
                         <ul class="list">
-                            <li>
-                                <a href="#">All about clothing</a>
-
-                                <ul class="list">
-                                    <li><a href="#">Dresses</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Make-up &amp; beauty</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Fashion trends</a></li>
-                            <li><a href="#">Haircuts &amp; hairstyles</a></li>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <a href="{{ route('blogs', $category->slug) }}">{{ $category->name }}</a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div><!-- End .widget -->
 
-                    <div class="widget">
+                    <div class="widget widget-post">
                         <h4 class="widget-title">Recent Posts</h4>
-
                         <ul class="simple-post-list">
-                            <li>
-                                <div class="post-media">
-                                    <a href="single.html">
-                                        <img src="assets/images/blog/widget/post-1.jpg" alt="Post">
-                                    </a>
-                                </div><!-- End .post-media -->
-                                <div class="post-info">
-                                    <a href="single.html">Post Format - Video</a>
-                                    <div class="post-meta">
-                                        April 08, 2018
-                                    </div><!-- End .post-meta -->
-                                </div><!-- End .post-info -->
-                            </li>
-
-                            <li>
-                                <div class="post-media">
-                                    <a href="single.html">
-                                        <img src="assets/images/blog/widget/post-2.jpg" alt="Post">
-                                    </a>
-                                </div><!-- End .post-media -->
-                                <div class="post-info">
-                                    <a href="single.html">Post Format - Image</a>
-                                    <div class="post-meta">
-                                        March 23, 2016
-                                    </div><!-- End .post-meta -->
-                                </div><!-- End .post-info -->
-                            </li>
+                            @foreach ($recentPosts as $recent)
+                                <li>
+                                    <div class="post-media">
+                                        <a href="{{ route('blog-details', $recent->slug) }}">
+                                            <img src="{{ Storage::url($recent->image) }}">
+                                        </a>
+                                    </div><!-- End .post-media -->
+                                    <div class="post-info">
+                                        <a
+                                            href="{{ route('blog-details', $recent->slug) }}">{{ limitText($recent->title, 25) }}</a>
+                                        <div class="post-meta">{{ $recent->created_at->format('M d, Y') }}</div>
+                                    </div><!-- End .post-info -->
+                                </li>
+                            @endforeach
                         </ul>
                     </div><!-- End .widget -->
 
-                    <div class="widget">
-                        <h4 class="widget-title">Tags</h4>
 
-                        <div class="tagcloud">
-                            <a href="#">ARTICLES</a>
-                            <a href="#">CHAT</a>
-                        </div><!-- End .tagcloud -->
-                    </div><!-- End .widget -->
+                    {{--                    <div class="widget"> --}}
+                    {{--                        <h4 class="widget-title">Tags</h4> --}}
+
+                    {{--                        <div class="tagcloud"> --}}
+                    {{--                            <a href="#">ARTICLES</a> --}}
+                    {{--                            <a href="#">CHAT</a> --}}
+                    {{--                        </div><!-- End .tagcloud --> --}}
+                    {{--                    </div><!-- End .widget --> --}}
                 </div><!-- End .sidebar-wrapper -->
             </aside><!-- End .col-lg-3 -->
         </div><!-- End .row -->
     </div><!-- End .container -->
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#commentForm').on('submit', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+
+                $.ajax({
+                    url: "{{ route('comments') }}",
+                    method: 'POST',
+                    data: formData,
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status == 'success') {
+                            getComments(data.comment.blog_id);
+                            toastr.success(data.message);
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+                        let errors = data.responseJSON.errors;
+                        if (errors) {
+                            $.each(errors, function(key, value) {
+                                toastr.error(value);
+                            })
+                        }
+                    }
+                })
+            })
+
+            function getComments(blogId) {
+                $.ajax({
+                    url: "{{ route('get-comments') }}",
+                    method: 'GET',
+                    data: {
+                        blog_id: blogId,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        renderComments(data);
+                    },
+                    error: function() {}
+                })
+            }
+
+            function renderComments(comments) {
+                let commentSection = $('#commentSection');
+                $('.count-comments').text(comments.total + ` Comments`);
+                commentSection.empty(); // Xóa các bình luận cũ
+
+                comments.data.forEach(comment => {
+                    let commentHtml = `
+                    <div class="post-author">
+                        <figure>
+                            <a href="#">
+                                <img src="${comment.user.profile_image_url}" alt="author">
+                            </a>
+                        </figure>
+
+                        <div class="author-content">
+                            <h4><a href="#">${comment.user.name}</a></h4>
+                            <p>${comment.comment}</p>
+                        </div><!-- End .author.content -->
+                    </div>
+                    `;
+                    commentSection.append(commentHtml);
+                });
+
+                // Cập nhật phân trang
+                if (comments.total > 0) {
+                    $('.toolbox-item').html(`
+                    Hiển thị ${comments.from}-${comments.to} của ${comments.total} bình luận
+                `);
+                } else {
+                    $('.toolbox-item').html(`Chưa có bình luận nào.`);
+                }
+
+                if (comments.last_page > 1) {
+                    // Tạo lại HTML cho phân trang
+                    let paginationHtml = '';
+
+                    // Previous button
+                    if (comments.current_page > 1) {
+                        paginationHtml +=
+                            `<li class="page-item"><a class="page-link page-link-btn" href="${comments.prev_page_url}"><i class="icon-angle-left"></i></a></li>`;
+                    } else {
+                        paginationHtml +=
+                            `<li class="page-item disabled"><a class="page-link page-link-btn" href="#"><i class="icon-angle-left"></i></a></li>`;
+                    }
+
+                    // Page numbers
+                    const currentUrl = new URL(window.location.href);
+                    const basePath = currentUrl
+                        .pathname; // Lấy đường dẫn hiện tại (ví dụ: /blog-details/vkalsvklaskvlakvl)
+
+                    for (let i = 1; i <= comments.last_page; i++) {
+                        // Thay đổi tham số trang trong URL
+                        currentUrl.searchParams.set('page', i);
+
+                        if (i == comments.current_page) {
+                            paginationHtml +=
+                                `<li class="page-item active"><a class="page-link" href="#">${i} <span class="sr-only">(current)</span></a></li>`;
+                        } else {
+                            paginationHtml +=
+                                `<li class="page-item"><a class="page-link" href="${currentUrl.toString()}">${i}</a></li>`;
+                        }
+                    }
+
+                    // Next button
+                    if (comments.current_page < comments.last_page) {
+                        paginationHtml +=
+                            `<li class="page-item"><a class="page-link page-link-btn" href="${comments.next_page_url}"><i class="icon-angle-right"></i></a></li>`;
+                    } else {
+                        paginationHtml +=
+                            `<li class="page-item disabled"><a class="page-link page-link-btn" href="#"><i class="icon-angle-right"></i></a></li>`;
+                    }
+
+                    $('.pagination').html(paginationHtml);
+                } else {
+                    $('.pagination').html('');
+                }
+            }
+        })
+    </script>
+@endpush

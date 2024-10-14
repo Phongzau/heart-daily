@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">Stisla</a>
+            <a href="">Stisla</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">St</a>
@@ -15,7 +15,7 @@
                     <li class=active><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li>
                 </ul>
             </li>
-            <li class="menu-header">Starter</li>
+            <li class="menu-header"> Start Menu</li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
                     <span>Products</span></a>
@@ -50,6 +50,8 @@
                     <span>Blog</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="far fa-square"></i>
                     <span>Coupons</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.blog_categories.index') }}"><i class="far fa-square"></i>
+                    <span>Blog_categories</span></a></li>
             <li class="dropdown">
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="far fa-square"></i>
                     <span>Settings</span></a></li>

@@ -16397,10 +16397,7 @@ span.toggle:before {
     color: #fff
 }
 
-.post-author {
-    margin-bottom: 2.2rem;
-    padding-bottom: 2.7rem
-}
+.post-author {}
 
 .post-author:after {
     display: block;
