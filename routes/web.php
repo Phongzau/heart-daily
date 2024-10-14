@@ -264,6 +264,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
         Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy');
     });
+    Route::prefix('blog_comments')->name('blog_comments.')->group(function () {
+        Route::get('/', [BlogCommentController::class, 'index'])->name('index');
+        Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
+    });
+
 
     //advertisement
 
