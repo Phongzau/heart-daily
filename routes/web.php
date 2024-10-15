@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
+
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -61,9 +62,7 @@ Route::get('/blog-details', function () {
     return view('client.page.blog-details');
 })->name('blog-details');
 
-Route::get('/about-us', function () {
-    return view('client.page.about');
-})->name('about');
+
 
 Route::get('/product', function () {
     return view('client.page.product');
@@ -286,10 +285,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
     });
 });
+
 /** Client Routes */
 
-//blog
-Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
-Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
-Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
-Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
+    //blog
+    Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
+    Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
+    Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
+    Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
+
+    //about
+//    Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'abouts'])->name('index');
+//Route::get('/about', [App\Http\Controllers\Client\AboutController::class, 'index']);
+Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
