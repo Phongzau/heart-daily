@@ -6,7 +6,8 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title')</title>
-
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ Storage::url($logoSetting->favicon) }}">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/fontawesome/css/all.min.css') }}">
@@ -48,3 +49,5 @@
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
+        </div>
+    </div>
