@@ -4,6 +4,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget">
+                                <img src="{{Storage::url($logoSetting->logo_footer)}}" alt="Logo" class="widget-logo mb-3" style="width: 100px; height: auto;">
+
                                 <h4 class="widget-title">Contact Info</h4>
                                 <ul class="contact-info">
                                     <li>
@@ -88,11 +90,14 @@
                                 <p>Get all the latest information on events, sales and offers. Sign up for newsletter:
                                 </p>
                                 <form action="#" class="mb-0">
+
                                     <input type="email" class="form-control m-b-3" placeholder="Email address"
                                         required>
 
                                     <input type="submit" class="btn btn-primary shadow-none" value="Subscribe">
                                 </form>
+                                <br>
+
                             </div>
                             <!-- End .widget -->
                         </div>
@@ -108,7 +113,7 @@
                 <div class="footer-bottom">
                     <div class="container d-sm-flex align-items-center">
                         <div class="footer-left">
-                            <span class="footer-copyright">© Porto eCommerce. 2021. All Rights Reserved</span>
+                            <span class="footer-copyright">© Heart Daily E.Commerce. 2024. All Rights Reserved</span>
                         </div>
 
                         <div class="footer-right ml-auto mt-1 mt-sm-0">

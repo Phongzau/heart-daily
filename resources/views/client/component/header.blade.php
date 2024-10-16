@@ -19,12 +19,10 @@
     <meta name="author" content="SW-THEMES">
     @livewireStyles
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/images/icons/favicon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ Storage::url($logoSetting->favicon) }}">
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
-
 
     <script>
         WebFontConfig = {
@@ -59,4 +57,4 @@
 </head>
 
 <body>
-    <div class="page-wrapper">
+    <div class="page-wrapper"></div>

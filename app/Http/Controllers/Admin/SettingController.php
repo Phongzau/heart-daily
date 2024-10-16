@@ -33,8 +33,6 @@ class SettingController extends Controller
             'logo_footer' => ['image', 'max:3000'],
         ]);
 
-
-        
         $logoPath = $this->updateImage($request, 'logo',  $logoSetting?->logo ?? '', 'logo');
         $faviconPath = $this->updateImage($request, 'favicon', $logoSetting?->favicon ?? '', 'logo');
         $logofooterPath = $this->updateImage($request, 'logo_footer', $logoSetting?->logo_footer ?? '','logo');
@@ -79,7 +77,6 @@ class SettingController extends Controller
     );
 
     toastr('Updated Successfully!', 'success');
-
     return redirect()->back();
 }
 

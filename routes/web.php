@@ -295,6 +295,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
 
     //about
-//    Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'abouts'])->name('index');
-//Route::get('/about', [App\Http\Controllers\Client\AboutController::class, 'index']);
-Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
+    Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
+
+    //logo
+//    Route::get('/logo', [App\Http\Controllers\Client\SettingController::class, 'index'])->name('logo');
+
