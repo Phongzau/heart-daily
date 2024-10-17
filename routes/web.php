@@ -271,7 +271,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
     });
 
-
     //advertisement
 
     Route::prefix('advertisement')->name('advertisement.')->group(function () {
@@ -283,10 +282,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('productpage-banner', [AdvertisementsController::class, 'productPageBanner'])->name('productpage-banner');
         Route::put('cartpage-banner', [AdvertisementsController::class, 'cartPageBanner'])->name('cartpage-banner');
     });
-    Route::prefix('blog_comments')->name('blog_comments.')->group(function () {
-        Route::get('/', [BlogCommentController::class, 'index'])->name('index');
-        Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
-    });
+
     //Product
     Route::prefix('products')->name('products.')->group(function () {
         // Route::put('change-status', [CouponController::class, 'changeStatus'])
