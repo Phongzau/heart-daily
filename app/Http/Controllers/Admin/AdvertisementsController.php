@@ -88,32 +88,46 @@ class AdvertisementsController extends Controller
     public function homePageBannerSectionOne(Request $request)
     {
         $request->validate([
-            'banner_image' => ['image'],
-            'banner_url' => ['url'],
+            'banner_one_image' => ['image'],
+            'banner_one_url' => ['url'],
+            'banner_two_image' => ['image'],
+            'banner_two_url' => ['url'],
+            'banner_three_image' => ['image'],
+            'banner_three_url' => ['url'],
+
         ]);
 
         // xử lí upload ảnh 
         $bannerSectionOne = Advertisement::query()->where('key', 'homepage_section_banner_one')->first();
         $sectionOne = json_decode($bannerSectionOne?->value);
-        $imagePath = $this->updateImage($request, 'banner_image', $sectionOne->banner_one->banner_image ?? '', 'advertisement');
-        // $imagePath = $this->updateImage($request, 'banner_image', 'uploads', optional($sectionOne->banner_one)->banner_image);
-
+        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionOne?->banner_one->banner_image ?? '', 'advertisement');
+        $imagePathTwo = $this->updateImage($request, 'banner_two_image', $sectionOne?->banner_two->banner_image ?? '', 'advertisement');
+        $imagePathThree = $this->updateImage($request, 'banner_three_image', $sectionOne?->banner_three->banner_image ?? '', 'advertisement');
 
         $value = [
             'banner_one' => [
                 'banner_image' => $imagePath,
-                'banner_url' => $request->banner_url,
-                'status' => $request->has('status') ? 1 : 0,
+                'banner_one_url' => $request->banner_one_url,
+                'status' => $request->has('banner_one_status') ? 1 : 0,
+            ],
+            'banner_two' => [
+                'banner_image' => $imagePathTwo,
+                'banner_two_url' => $request->banner_two_url,
+                'status' => $request->has('banner_two_status') ? 1 : 0,
+            ],
+            'banner_three' => [
+                'banner_image' => $imagePathThree,
+                'banner_three_url' => $request->banner_three_url,
+                'status' => $request->has('banner_three_status') ? 1 : 0,
             ]
         ];
-
         $value = json_encode($value);
         Advertisement::updateOrCreate(
             ['key' => 'homepage_section_banner_one'],
             ['value' => $value]
         );
 
-        toastr('Update Successfully!', 'success');
+        toastr('Updated Successfully!', 'success');
 
         return redirect()->back();
     }
@@ -123,15 +137,12 @@ class AdvertisementsController extends Controller
         $request->validate([
             'banner_one_image' => ['image'],
             'banner_one_url' => ['url'],
-            'banner_two_image' => ['image'],
-            'banner_two_url' => ['url'],
         ]);
 
         // xử lí upload ảnh 
         $bannerSectionTwo = Advertisement::query()->where('key', 'homepage_section_banner_two')->first();
         $sectionTwo = json_decode($bannerSectionTwo?->value);
         $imagePath = $this->updateImage($request, 'banner_one_image', $sectionTwo->banner_one->banner_image ?? '', 'advertisement');
-        $imagePathTwo = $this->updateImage($request, 'banner_two_image', $sectionTwo->banner_two->banner_image ?? '', 'advertisement');
 
 
         $value = [
@@ -139,11 +150,6 @@ class AdvertisementsController extends Controller
                 'banner_image' => $imagePath,
                 'banner_url' => $request->banner_one_url,
                 'status' => $request->has('banner_one_status') ? 1 : 0,
-            ],
-            'banner_two_image' => [
-                'banner_image' => $imagePathTwo,
-                'banner_url' => $request->banner_two_url,
-                'status' => $request->has('banner_two_status') ? 1 : 0,
             ]
         ];
 
@@ -163,35 +169,19 @@ class AdvertisementsController extends Controller
         $request->validate([
             'banner_one_image' => ['image'],
             'banner_one_url' => ['url'],
-            'banner_two_image' => ['image'],
-            'banner_two_url' => ['url'],
-            'banner_three_image' => ['image'],
-            'banner_three_url' => ['url'],
-
         ]);
 
         // xử lí upload ảnh 
         $bannerSectionThree = Advertisement::query()->where('key', 'homepage_section_banner_three')->first();
         $sectionThree = json_decode($bannerSectionThree?->value);
-        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionThree?->banner_one->banner_image ?? '', 'advertisement');
-        $imagePathTwo = $this->updateImage($request, 'banner_two_image', $sectionThree?->banner_two->banner_image ?? '', 'advertisement');
-        $imagePathThree = $this->updateImage($request, 'banner_three_image', $sectionThree?->banner_three->banner_image ?? '', 'advertisement');
+        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionThree->banner_one->banner_image ?? '', 'advertisement');
+
 
         $value = [
-            'banner_one' => [
+            'banner_one_image' => [
                 'banner_image' => $imagePath,
                 'banner_url' => $request->banner_one_url,
                 'status' => $request->has('banner_one_status') ? 1 : 0,
-            ],
-            'banner_two' => [
-                'banner_image' => $imagePathTwo,
-                'banner_url' => $request->banner_two_url,
-                'status' => $request->has('banner_two_status') ? 1 : 0,
-            ],
-            'banner_three' => [
-                'banner_image' => $imagePathThree,
-                'banner_url' => $request->banner_three_url,
-                'status' => $request->has('banner_three_status') ? 1 : 0,
             ]
         ];
 
@@ -201,38 +191,7 @@ class AdvertisementsController extends Controller
             ['value' => $value]
         );
 
-        toastr('Updated Successfully!', 'success');
-
-        return redirect()->back();
-    }
-
-    public function homepageBannerSectionFour(Request $request)
-    {
-        $request->validate([
-            'banner_image' => ['image'],
-            'banner_url' => ['url'],
-        ]);
-
-        // xử lí upload ảnh 
-        $bannerSectionFour = Advertisement::query()->where('key', 'homepage_section_banner_four')->first();
-        $sectionFour = json_decode($bannerSectionFour?->value);
-        $imagePath = $this->updateImage($request, 'banner_image', $sectionFour?->banner_one->banner_image ?? '', 'advertisement');
-
-        $value = [
-            'banner_one' => [
-                'banner_image' => $imagePath,
-                'banner_url' => $request->banner_url,
-                'status' => $request->has('status') ? 1 : 0,
-            ]
-        ];
-
-        $value = json_encode($value);
-        Advertisement::updateOrCreate(
-            ['key' => 'homepage_section_banner_four'],
-            ['value' => $value]
-        );
-
-        toastr('Updated Successfully!', 'success');
+        toastr('Update Successfully!', 'success');
 
         return redirect()->back();
     }
@@ -248,7 +207,6 @@ class AdvertisementsController extends Controller
         // xử lí upload ảnh
         $productPageBanner = Advertisement::query()->where('key', 'product_page_banner_section')->first();
         $productBannerPage = json_decode($productPageBanner?->value);
-        dd($productBannerPage);
         $imagePath = $this->updateImage($request, 'banner_image', $productBannerPage?->banner_one->banner_image ?? '', 'advertisement');
 
         $value = [
@@ -262,45 +220,6 @@ class AdvertisementsController extends Controller
         $value = json_encode($value);
         Advertisement::updateOrCreate(
             ['key' => 'product_page_banner_section'],
-            ['value' => $value]
-        );
-
-        toastr('Updated Successfully!', 'success');
-
-        return redirect()->back();
-    }
-
-    public function cartPageBanner(Request $request)
-    {
-        $request->validate([
-            'banner_one_image' => ['image'],
-            'banner_one_url' => ['url'],
-            'banner_two_image' => ['image'],
-            'banner_two_url' => ['url'],
-        ]);
-
-        // xử lí upload ảnh
-        $bannerSectionTwo = Advertisement::query()->where('key', 'cart_page_banner_section')->first();
-        $sectionTwo = json_decode($bannerSectionTwo?->value);
-        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionTwo?->banner_one->banner_image ?? '', 'advertisement');
-        $imagePathTwo = $this->updateImage($request, 'banner_two_image', $sectionTwo?->banner_two->banner_image ?? '', 'advertisement');
-
-        $value = [
-            'banner_one' => [
-                'banner_image' => $imagePath,
-                'banner_url' => $request->banner_one_url,
-                'status' => $request->has('banner_one_status') ? 1 : 0,
-            ],
-            'banner_two' => [
-                'banner_image' => $imagePathTwo,
-                'banner_url' => $request->banner_two_url,
-                'status' => $request->has('banner_two_status') ? 1 : 0,
-            ]
-        ];
-
-        $value = json_encode($value);
-        Advertisement::updateOrCreate(
-            ['key' => 'cart_page_banner_section'],
             ['value' => $value]
         );
 

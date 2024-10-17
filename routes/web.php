@@ -123,6 +123,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/update/{banner}', [BannerController::class, 'update'])->name('update');
         Route::delete('/destroy/{banner}', [BannerController::class, 'destroy'])->name('destroy');
         Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
+        Route::post('/upload-image', [BannerController::class, 'uploadImage'])->name('upload.image');
     });
     //role
     Route::prefix('roles')->name('roles.')->group(function () {
