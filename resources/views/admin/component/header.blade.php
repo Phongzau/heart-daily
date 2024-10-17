@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title')</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ Storage::url($logoSetting->favicon) }}">
+    <link rel="icon" type="image/x-icon" href="{{ Storage::url(@$logoSetting->favicon) }}">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/modules/fontawesome/css/all.min.css') }}">
