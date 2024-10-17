@@ -4,7 +4,7 @@
                     <div class="row">
                         <div class="col-lg-3 col-sm-6">
                             <div class="widget">
-                                <img src="{{Storage::url($logoSetting->logo_footer)}}" alt="Logo" class="widget-logo mb-3" style="width: 100px; height: auto;">
+                                <img src="{{Storage::url(@$logoSetting->logo_footer)}}" alt="Logo" class="widget-logo mb-3" style="width: 100px; height: auto;">
 
                                 <h4 class="widget-title">Contact Info</h4>
                                 <ul class="contact-info">
