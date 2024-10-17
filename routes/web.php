@@ -26,6 +26,7 @@ use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/slider', [HomeController::class, 'index'])->name('slider');
 //auth
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin'])->name('postLogin');
@@ -83,7 +84,6 @@ Route::get('/checkout', function () {
 Route::get('user/dashboard', function () {
     return view('client.page.dashboard.dashboard');
 });
-
 
 //admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(function () {
