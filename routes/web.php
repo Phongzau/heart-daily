@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
-
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -139,6 +139,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::prefix('category_attributes')->name('category_attributes.')->group(function () {
         Route::put('change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
             ->name('change-status');
+        Route::get('/get-category-attributes', [AdminCategoryAttributeController::class, 'getCategoryAttributes'])->name('get-category-attributes');
         Route::get('/', [AdminCategoryAttributeController::class, 'index'])->name('index');
         Route::get('/create', [AdminCategoryAttributeController::class, 'create'])->name('create');
         Route::post('/', [AdminCategoryAttributeController::class, 'store'])->name('store');
@@ -147,10 +148,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{category_attribute}', [AdminCategoryAttributeController::class, 'update'])->name('update');
         Route::delete('/{category_attribute}', [AdminCategoryAttributeController::class, 'destroy'])->name('destroy');
     });
-    //category_attributes
+    //attributes
     Route::prefix('attributes')->name('attributes.')->group(function () {
         Route::put('change-status', [AdminAttributeController::class, 'changeStatus'])
             ->name('change-status');
+        Route::get('/get-attributes/{id}', [AdminAttributeController::class, 'getAttributes'])->name('get-attributes');
         Route::get('/', [AdminAttributeController::class, 'index'])->name('index');
         Route::get('/create', [AdminAttributeController::class, 'create'])->name('create');
         Route::post('/', [AdminAttributeController::class, 'store'])->name('store');
@@ -285,19 +287,32 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('/', [BlogCommentController::class, 'index'])->name('index');
         Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
     });
+    //Product
+    Route::prefix('products')->name('products.')->group(function () {
+        // Route::put('change-status', [CouponController::class, 'changeStatus'])
+        //     ->name('change-status');
+        Route::delete('/variants/{variantId}', [ProductController::class, 'destroyVariant'])->name('destroy-variant');
+        Route::post('/upload', [ProductController::class, 'uploadImageGalleries'])->name('upload');
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::get('/{products}', [ProductController::class, 'show'])->name('show');
+        Route::get('/{products}/edit', [ProductController::class, 'edit'])->name('edit');
+        Route::put('/{products}', [ProductController::class, 'update'])->name('update');
+        Route::delete('/{products}', [ProductController::class, 'destroy'])->name('destroy');
+    });
 });
 
 /** Client Routes */
 
-    //blog
-    Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
-    Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
-    Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
-    Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
+//blog
+Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
+Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
+Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
+Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
 
-    //about
-    Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
+//about
+Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
 
     //logo
 //    Route::get('/logo', [App\Http\Controllers\Client\SettingController::class, 'index'])->name('logo');
-

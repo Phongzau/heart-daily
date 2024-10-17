@@ -63,11 +63,11 @@ class AdminCategoryAttributeController extends Controller
     {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
         if (CategoryAttribute::where('order', $request->order)
-            ->where('id', '!=', $id) 
+            ->where('id', '!=', $id)
             ->exists()
         ) {
             toastr('Giá trị order đã tồn tại!', 'error');
-            return redirect()->back()->withInput(); 
+            return redirect()->back()->withInput();
         }
         $categoryAttribute->title = $request->title;
         $categoryAttribute->slug = $request->slug;
@@ -89,5 +89,11 @@ class AdminCategoryAttributeController extends Controller
             'status' => 'success',
             'message' => 'Xóa thành công',
         ]);
+    }
+
+    public function getCategoryAttributes()
+    {
+        $categoryAttribute = CategoryAttribute::query()->get();
+        return response()->json($categoryAttribute);
     }
 }
