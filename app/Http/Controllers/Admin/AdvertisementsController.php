@@ -100,23 +100,23 @@ class AdvertisementsController extends Controller
         // xử lí upload ảnh 
         $bannerSectionOne = Advertisement::query()->where('key', 'homepage_section_banner_one')->first();
         $sectionOne = json_decode($bannerSectionOne?->value);
-        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionOne?->banner_one->banner_image ?? '', 'advertisement');
-        $imagePathTwo = $this->updateImage($request, 'banner_two_image', $sectionOne?->banner_two->banner_image ?? '', 'advertisement');
-        $imagePathThree = $this->updateImage($request, 'banner_three_image', $sectionOne?->banner_three->banner_image ?? '', 'advertisement');
+        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionOne?->banner_one_image->banner_one ?? '', 'advertisement');
+        $imagePathTwo = $this->updateImage($request, 'banner_two_image', $sectionOne?->banner_two_image->banner_two ?? '', 'advertisement');
+        $imagePathThree = $this->updateImage($request, 'banner_three_image', $sectionOne?->banner_three_image->banner_three ?? '', 'advertisement');
 
         $value = [
             'banner_one' => [
-                'banner_image' => $imagePath,
+                'banner_one_image' => $imagePath,
                 'banner_one_url' => $request->banner_one_url,
                 'status' => $request->has('banner_one_status') ? 1 : 0,
             ],
             'banner_two' => [
-                'banner_image' => $imagePathTwo,
+                'banner_two_image' => $imagePathTwo,
                 'banner_two_url' => $request->banner_two_url,
                 'status' => $request->has('banner_two_status') ? 1 : 0,
             ],
             'banner_three' => [
-                'banner_image' => $imagePathThree,
+                'banner_three_image' => $imagePathThree,
                 'banner_three_url' => $request->banner_three_url,
                 'status' => $request->has('banner_three_status') ? 1 : 0,
             ]
@@ -135,21 +135,21 @@ class AdvertisementsController extends Controller
     public function homePageBannerSectionTwo(Request $request)
     {
         $request->validate([
-            'banner_one_image' => ['image'],
-            'banner_one_url' => ['url'],
+            'banner_image_two' => ['image'],
+            'banner_url_two' => ['url'],
         ]);
 
         // xử lí upload ảnh 
         $bannerSectionTwo = Advertisement::query()->where('key', 'homepage_section_banner_two')->first();
         $sectionTwo = json_decode($bannerSectionTwo?->value);
-        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionTwo->banner_one->banner_image ?? '', 'advertisement');
+        $imagePath = $this->updateImage($request, 'banner_image_two', $sectionTwo->banner_image_two->banner_image ?? '', 'advertisement');
 
 
         $value = [
-            'banner_one_image' => [
+            'banner_image_two' => [
                 'banner_image' => $imagePath,
-                'banner_url' => $request->banner_one_url,
-                'status' => $request->has('banner_one_status') ? 1 : 0,
+                'banner_url' => $request->banner_url_two,
+                'status' => $request->has('status') ? 1 : 0,
             ]
         ];
 
@@ -167,21 +167,21 @@ class AdvertisementsController extends Controller
     public function homepageBannerSectionThree(Request $request)
     {
         $request->validate([
-            'banner_one_image' => ['image'],
-            'banner_one_url' => ['url'],
+            'banner_image_three' => ['image'],
+            'banner_url_three'=> ['url'],
         ]);
 
         // xử lí upload ảnh 
         $bannerSectionThree = Advertisement::query()->where('key', 'homepage_section_banner_three')->first();
         $sectionThree = json_decode($bannerSectionThree?->value);
-        $imagePath = $this->updateImage($request, 'banner_one_image', $sectionThree->banner_one->banner_image ?? '', 'advertisement');
+        $imagePath = $this->updateImage($request, 'banner_image_three', $sectionThree->banner_image_three->banner_image ?? '', 'advertisement');
 
 
         $value = [
-            'banner_one_image' => [
+            'banner_image_three' => [
                 'banner_image' => $imagePath,
-                'banner_url' => $request->banner_one_url,
-                'status' => $request->has('banner_one_status') ? 1 : 0,
+                'banner_url' => $request->banner_url_three,
+                'status' => $request->has('status') ? 1 : 0,
             ]
         ];
 

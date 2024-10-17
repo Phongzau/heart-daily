@@ -18,7 +18,7 @@
                 <div class="form-group">
                     {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_one->banner_one->banner_image) }}" alt=""> --}}
                     <img width="150px"
-                        src="{{ Storage::url(@$homepage_section_banner_one->banner_one->banner_image) }}">
+                        src="{{ Storage::url(@$homepage_section_banner_one->banner_one->banner_one_image) }}">
 
                 </div>
 
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_one->banner_two->banner_image) }}" alt=""> --}}
                     <img width="150px"
-                        src="{{ Storage::url(@$homepage_section_banner_one->banner_two->banner_image) }}">
+                        src="{{ Storage::url(@$homepage_section_banner_one->banner_two->banner_two_image) }}">
 
                 </div>
 
@@ -67,8 +67,8 @@
                     <label for="">Status</label> <br>
                     <label class='custom-switch mt-2'>
                         <input type='checkbox'
-                            {{ @$homepage_section_banner_one->banner_one->status === 1 ? 'checked' : '' }}
-                            name='banner_one_status' class='custom-switch-input'>
+                            {{ @$homepage_section_banner_one->banner_three->status === 1 ? 'checked' : '' }}
+                            name='banner_three_status' class='custom-switch-input'>
                         <span class='custom-switch-indicator'></span>
                     </label>
                 </div>
@@ -76,19 +76,19 @@
                 <div class="form-group">
                     {{-- <img width="150px" src="{{ asset(@$homepage_section_banner_one->banner_one->banner_image) }}" alt=""> --}}
                     <img width="150px"
-                        src="{{ Storage::url(@$homepage_section_banner_one->banner_one->banner_image) }}">
+                        src="{{ Storage::url(@$homepage_section_banner_one->banner_three->banner_three_image) }}">
 
                 </div>
 
                 <div class="form-group">
                     <label for="">Banner Image</label>
-                    <input type="file" name="banner_one_image" value="" class="form-control">
+                    <input type="file" name="banner_three_image" value="" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="">Banner Url</label>
-                    <input type="text" name="banner_one_url"
-                        value="{{ @$homepage_section_banner_one->banner_one->banner_three_url }}" class="form-control">
+                    <input type="text" name="banner_three_url"
+                        value="{{ @$homepage_section_banner_one->banner_three->banner_three_url }}" class="form-control">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save</button>

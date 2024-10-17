@@ -9,7 +9,7 @@
                     <label for="">Status</label> <br>
                     <label class='custom-switch mt-2'>
                         <input type='checkbox'
-                            {{ $homepage_section_banner_two->banner_one_image->status === 1 ? 'checked' : '' }}
+                            {{ @$homepage_section_banner_two->banner_image_two->status === 1 ? 'checked' : '' }}
                             name='status' class='custom-switch-input'>
                         <span class='custom-switch-indicator'></span>
                     </label>
@@ -17,19 +17,18 @@
 
                 <div class="form-group">
                     <img width="150px"
-                        src="{{ Storage::url(@$homepage_section_banner_two->banner_one_image->banner_image) }}">
+                        src="{{ Storage::url(@$homepage_section_banner_two->banner_image_two->banner_image) }}">
                 </div>
 
                 <div class="form-group">
                     <label for="">Banner Image</label>
-                    <input type="file" name="banner_image" value="" class="form-control">
+                    <input type="file" name="banner_image_two" value="" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="">Banner Url</label>
-                    <input type="text" name="banner_url"
-                        value="{{ optional(optional($homepage_section_banner_two)->banner_one_image)->banner_url ?? '' }}"
-                        class="form-control">
+                    <input type="text" name="banner_url_two"
+                    value="{{ @$homepage_section_banner_two->banner_image_two->banner_url }}" class="form-control">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save</button>
