@@ -30,7 +30,7 @@ class AdminAttributeController extends Controller
             'message' => 'Cập nhật thành công Status',
         ]);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -52,7 +52,7 @@ class AdminAttributeController extends Controller
         $attribute->price_start = $request->price_start;
         $attribute->price_end = $request->price_end;
         $attribute->status = $request->status;
-        $attribute->userid_created = auth()->id(); 
+        $attribute->userid_created = auth()->id();
 
         $attribute->save();
 
@@ -66,7 +66,7 @@ class AdminAttributeController extends Controller
     public function edit($id)
     {
         $attribute = Attribute::findOrFail($id);
-        $categoryAttributes = CategoryAttribute::all(); 
+        $categoryAttributes = CategoryAttribute::all();
         return view('admin.page.attribute.edit', compact('attribute', 'categoryAttributes'));
     }
 
@@ -83,7 +83,7 @@ class AdminAttributeController extends Controller
         $attribute->price_start = $request->price_start;
         $attribute->price_end = $request->price_end;
         $attribute->status = $request->status;
-        $attribute->userid_updated = auth()->id(); 
+        $attribute->userid_updated = auth()->id();
 
         $attribute->save();
 
@@ -103,6 +103,18 @@ class AdminAttributeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Xóa thành công',
+        ]);
+    }
+
+    public function getAttributes($id)
+    {
+        $attributes = Attribute::query()->where(['category_attribute_id' => $id, 'status' => 1])->get();
+        if (isset($attributes)) {
+            return response()->json($attributes);
+        }
+        return response([
+            'status' => 'error',
+            'message' => 'Thuộc tính không tồn tại',
         ]);
     }
 }
