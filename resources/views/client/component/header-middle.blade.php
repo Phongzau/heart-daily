@@ -5,7 +5,7 @@
                             <i class="fas fa-bars"></i>
                         </button>
                         <a href="{{ url('/') }}" class="logo">
-                            <img src="{{ Storage::url($logoSetting->logo) }}" alt="Logo">
+                            <img src="{{ Storage::url(@$logoSetting->logo) }}" alt="Logo">
                         </a>
                     </div>
                     <!-- End .header-left -->
