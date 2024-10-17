@@ -32,6 +32,18 @@ trait ImageUploadTrait
         return $oldPath;
     }
 
+    public function updateImage2(Request $request, $imageName, $oldPath = null, $subPath)
+    {
+        if ($request->hasFile($imageName)) {
+            $image = $request->{$imageName};
+            $ext = $image->getClientOriginalExtension();
+            $newImageName = 'media_' . uniqid() . '.' . $ext;
+            $path = $image->storeAs("uploads/{$subPath}", $newImageName, 'public');
+            return $path; // Trả về đường dẫn mới nhưng không xóa ảnh cũ ngay lập tức
+        }
+        return $oldPath; // Nếu không có ảnh mới, trả về ảnh cũ
+    }
+
     public function deleteImage($path)
     {
         if (Storage::disk('public')->exists($path)) {
@@ -39,7 +51,7 @@ trait ImageUploadTrait
         }
     }
 
-    public function uploadMultipleImage(Request $request, $imageName)
+    public function uploadMultipleImage(Request $request, $imageName, $subPath)
     {
         $imagePaths = [];
         if ($request->hasFile($imageName)) {
@@ -47,7 +59,7 @@ trait ImageUploadTrait
             foreach ($images as $image) {
                 $ext = $image->getClientOriginalExtension();
                 $newImageName = 'media_' . uniqid() . '.' . $ext;
-                $path = $image->storeAs('uploads', $newImageName, 'public');
+                $path = $image->storeAs("uploads/{$subPath}", $newImageName, 'public');
                 $imagePaths[] = $path;
             }
             return $imagePaths;

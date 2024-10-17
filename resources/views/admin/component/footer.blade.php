@@ -40,9 +40,20 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
+
+
+{{-- <!-- JS Libraies -->
+
+<script src="{{ asset('admin/assets/modules/dropzonejs/min/dropzone.min.js') }}"></script>
+
+<!-- Page Specific JS File -->
+<script src="{{ asset('admin/assets/js/page/components-multiple-upload.js') }}"></script> --}}
+
 <!-- Template JS File -->
 <script src="{{ asset('admin/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+
 <script>
     // Nếu $errors tồn tại
     @if ($errors->any())
@@ -129,7 +140,7 @@
     });
 </script>
 @stack('scripts')
-
+@yield('scripts')
 </body>
 
 </html>
