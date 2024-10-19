@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\MenuItemDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMenuItemRequest;
+use App\Http\Requests\UpdateMenuItemRequest;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use Illuminate\Http\Request;
@@ -39,7 +41,7 @@ class MenuItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMenuItemRequest $request)
     {
         // dd($request->all());
 
@@ -51,21 +53,22 @@ class MenuItemController extends Controller
             toastr('Giá trị order đã tồn tại trong danh mục cha!', 'error');
             return redirect()->back()->withInput();
         }
+     
+        // Tạo mới MenuItem
+    $menuItems = new MenuItem();
+    // Lưu các giá trị vào database
+    $menuItems->title = $request->title;
+    $menuItems->url = $request->url; // Lưu URL đầy đủ
+    $menuItems->parent_id = $request->parent_id;
+    $menuItems->order = $request->order;
+    $menuItems->slug = Str::slug($request->title);
+    $menuItems->menu_id = $request->menu_id;
+    $menuItems->status = $request->status;
+    $menuItems->userid_created = $request->userid_created;
+    $menuItems->userid_updated = $request->userid_updated;
 
-        $menuItems = new MenuItem();
-        $menuItems->title = $request->title;
-        $menuItems->parent_id = $request->parent_id;
-        $menuItems->order = $request->order;
-        $menuItems->slug = Str::slug($request->title);
-        $menuItems->menu_id = $request->menu_id;
-        $menuItems->status = $request->status;
-        $menuItems->userid_created = $request->userid_created;
-        $menuItems->userid_updated = $request->userid_updated;
-
-        // $menuItems->userid_created = Auth::user()->id;
-        // $menuItems->userid_updated = Auth::user()->id;
-
-        $menuItems->save();
+    // Lưu đối tượng
+    $menuItems->save();
 
         toastr('Tạo mới thành công!', 'success');
         return redirect()->route('admin.menu_items.index');
@@ -96,7 +99,7 @@ class MenuItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMenuItemRequest $request, string $id)
     {
         $menuItems = MenuItem::query()->findOrFail($id);
 
@@ -119,6 +122,7 @@ class MenuItemController extends Controller
         }
 
         $menuItems->title = $request->title;
+        $menuItems->url = $request->url; // Lưu URL đầy đủ
         $menuItems->parent_id = $request->parent_id;
         $menuItems->order = $request->order;
         $menuItems->slug = Str::slug($request->title);

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('parent_id')->default(0);
             $table->integer('order');
             $table->string('slug');
-            
+            $table->string('url');
             // Tạo menu_id và thiết lập khóa ngoại
             $table->unsignedBigInteger('menu_id')->nullable();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
