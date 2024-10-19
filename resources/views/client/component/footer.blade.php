@@ -1,4 +1,16 @@
-        <footer class="footer bg-dark">
+      @php
+      $slug = 'menu-footer'; // Slug của menu mà bạn muốn
+
+      $menuItems = App\Models\MenuItem::whereHas('menu', function($query) use ($slug) {
+                          $query->where('slug', $slug);
+                      })
+                      ->where('status', 1)
+                      ->where('parent_id', 0) // Chỉ lấy các mục gốc
+                      ->orderBy('order')
+                      ->get(); 
+      
+      @endphp 
+       <footer class="footer bg-dark">
             <div class="footer-middle">
                 <div class="container">
                     <div class="row">
@@ -44,7 +56,10 @@
                                 <h4 class="widget-title">Customer Service</h4>
 
                                 <ul class="links">
-                                    <li><a href="#">Help & FAQs</a></li>
+                                    @foreach($menuItems as $key => $value)
+                                    <li>  <a href="{{ config('app.url') . $value->url }}">{{ $value->title }}</a></li>
+                                    @endforeach
+                                    {{--  <li><a href="#">Help & FAQs</a></li>
                                     <li><a href="#">Order Tracking</a></li>
                                     <li><a href="#">Shipping & Delivery</a></li>
                                     <li><a href="#">Orders History</a></li>
@@ -53,7 +68,7 @@
                                     <li><a href="#">Careers</a></li>
                                     <li><a href="about.html">About Us</a></li>
                                     <li><a href="#">Corporate Sales</a></li>
-                                    <li><a href="#">Privacy</a></li>
+                                    <li><a href="#">Privacy</a></li>  --}}
                                 </ul>
                             </div>
                             <!-- End .widget -->

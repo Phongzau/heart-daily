@@ -25,11 +25,12 @@ class UpdateMenuItemRequest extends FormRequest
             'title' => ['required'],
             'parent_id' => ['required'],
             'order' => ['required'],
+            'url' => 'required',
             'slug' => [''],
-            'menu_id' => [''],
+            'menu_id' => ['required'],
             'status' => ['required', 'in:0,1'],
-            'userid_created' => ['required'],
-            'userid_updated' => ['required'],
+            'userid_created' => [''],
+            'userid_updated' => [''],
 
         ];
     }
