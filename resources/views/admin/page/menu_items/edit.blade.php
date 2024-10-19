@@ -28,6 +28,11 @@
                                     <input type="text" name="title" value="{{ $menuItems->title }}"
                                         class="form-control">
                                 </div>
+ 
+                                <div class="form-group">
+                                    <label for="">URL</label>
+                                    <input type="text" name="url"  value="{{ $menuItems->url }}" class="form-control">
+                                </div>
 
                                 <div class="form-group">
                                     <label for="status">Parent ID</label>
@@ -43,7 +48,7 @@
 
                                 <div class="form-group">
                                     <label for="order">Order</label>
-                                    <input type="number" name="order" readonly value="{{ $menuItems->order }}"
+                                    <input type="number" name="order" value="{{ $menuItems->order }}"
                                         class="form-control order">
                                 </div>
 

@@ -1,4 +1,4 @@
-            <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
+           <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
                 <div class="container">
                     <div class="header-left col-lg-2 w-auto pl-0">
                         <button class="mobile-menu-toggler text-primary mr-2" type="button">

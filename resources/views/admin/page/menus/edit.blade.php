@@ -33,7 +33,7 @@
                                         <option value="0">Inactive</option>
                                     </select>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Create</button>
+                                <button class="btn btn-primary" type="submit">Edit</button>
                             </form>
                         </div>
                     </div>

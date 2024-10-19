@@ -26,6 +26,11 @@
                                     <label for="">Title</label>
                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                 </div>
+                                
+                                <div class="form-group">
+                                    <label for="">URL</label>
+                                    <input type="text" name="url" value="/{{ old('URL') }}" class="form-control">
+                                </div>
 
                                 <div class="form-group">
                                     <label for="status">Parent ID</label>

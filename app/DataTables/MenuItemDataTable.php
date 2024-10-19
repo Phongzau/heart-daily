@@ -57,7 +57,7 @@ class MenuItemDataTable extends DataTable
      */
     public function query(MenuItem $model): QueryBuilder
     {
-        return $model::with(['parentId', 'menu'])->newQuery();
+        return $model::with(['parent', 'menu'])->newQuery();
     }
 
     /**
@@ -92,7 +92,7 @@ class MenuItemDataTable extends DataTable
             Column::make('title')->width(200),
             Column::make('parent_name')->width(200),
             Column::make('order')->width(150),
-            Column::make('slug')->width(150),
+            Column::make('url')->width(150),
             Column::make('menu_name')->width(150),
             Column::make('status')->width(150),
             Column::make('userid_created')->width(150),
