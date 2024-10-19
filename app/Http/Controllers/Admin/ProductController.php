@@ -217,12 +217,12 @@ class ProductController extends Controller
         $request->validate([
             'product_id' => ['required', 'exists:products,id'],
             'album' => ['required', 'array'],
-            'album.*' => ['image'],
+            // 'album.*' => ['image'],
         ], [
             'product_id.required' => 'ProductId không có',
             'product_id.exists' => 'Sản phẩm không tồn tại',
             'album.required' => 'Phải có ít nhất một ảnh để tải lên',
-            'album.*.image' => 'File phải là hình ảnh',
+            // 'album.*.image' => 'File phải là hình ảnh',
         ]);
         $productId = $request->product_id;
 
@@ -288,7 +288,7 @@ class ProductController extends Controller
             'type_product' => 'required',
             'category_id' => 'required|integer|exists:category_products,id',
             'brand_id' => 'required|integer|exists:brands,id',
-            'image_main' => 'nullable|image',
+            'image_main' => 'nullable', //image
         ];
 
         // Nếu là sản phẩm có biến thể
