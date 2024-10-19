@@ -291,7 +291,7 @@
 
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-primary" type="submit">Create</button>
+                                                <button class="btn btn-primary" type="submit">Update</button>
                                             </div>
                                         </div>
                                     </div>
@@ -355,7 +355,7 @@
                                         </div>
                                         <div class="card mt-3">
                                             <div class="card-header">
-                                                <h4>Multiple Upload <code>(Max 5 Picture)</code></h4>
+                                                <h4>Multiple Upload <code>(Max 10 Picture)</code></h4>
                                             </div>
                                             <div class="card-body">
                                                 <div style="border: 2px dashed #6777ef;" class="dropzone"
@@ -377,7 +377,6 @@
 @push('scripts')
     <script>
         const existingImages = @json($product->ProductImageGalleries);
-        console.log(existingImages);
 
         $(document).ready(function() {
             let maxVariants = 0;
