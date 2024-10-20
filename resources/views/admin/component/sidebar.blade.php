@@ -18,74 +18,76 @@
             </li>
             <li class="menu-header"> Start Menu</li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-brands fa-product-hunt"></i>
                     <span>Products</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.products.index') }}">Product</a>
                     </li>
-                    <li><a class="nav-link" href="{{ route('admin.category_attributes.index') }}">Category Attribute</a>
-                    </li>
                     <li><a class="nav-link" href="{{ route('admin.category_products.index') }}">Category Product</a>
                     </li>
+                    <li><a class="nav-link" href="{{ route('admin.brands.index') }}">
+                            <span>Brands</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.category_attributes.index') }}">Category Attribute</a>
+                    </li>
                     <li><a class="nav-link" href="{{ route('admin.attributes.index') }}">Attribute</a></li>
-                    <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
+
                 </ul>
             </li>
-            <li><a class="nav-link" href="{{ route('admin.advertisement.index') }}"><i class="far fa-square"></i>
-                <span>Advertisement</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.accounts.index') }}"><i class="far fa-square"></i>
-                    <span>List Account</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.brands.index') }}"><i class="far fa-square"></i>
-                    <span>Brands</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.roles.index') }}"><i class="far fa-square"></i>
-                    <span>Role</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.banners.index') }}"><i class="far fa-square"></i>
-                    <span>Banners</span></a></li>
+
             <li class="dropdown">
-            <li><a class="nav-link" href="{{ route('admin.menus.index') }}"><i class="far fa-square"></i>
-                    <span>Menu</span></a></li>
-            <li class="dropdown">
-            <li><a class="nav-link" href="{{ route('admin.menu_items.index') }}"><i class="far fa-square"></i>
-                    <span>Menu Items</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.abouts.index') }}"><i class="far fa-square"></i>
-                    <span>Abouts</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.blogs.index') }}"><i class="far fa-square"></i>
-                    <span>Blog</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="far fa-square"></i>
-                    <span>Coupons</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.blog_categories.index') }}"><i class="far fa-square"></i>
-                    <span>Blog_categories</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.blog_comments.index') }}"><i class="far fa-square"></i>
-                    <span>Blog Comment</span></a></li>
-            <li class="dropdown">
-            <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="far fa-square"></i>
-                    <span>Settings</span></a></li>
-            <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i>
-                    <span>Bootstrap</span></a>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-brands fa-adversal"></i>
+                    <span>Banners</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="bootstrap-alert.html">Alert</a></li>
-                    <li><a class="nav-link" href="bootstrap-badge.html">Badge</a></li>
-                    <li><a class="nav-link" href="bootstrap-breadcrumb.html">Breadcrumb</a></li>
-                    <li><a class="nav-link" href="bootstrap-buttons.html">Buttons</a></li>
-                    <li><a class="nav-link" href="bootstrap-card.html">Card</a></li>
-                    <li><a class="nav-link" href="bootstrap-carousel.html">Carousel</a></li>
-                    <li><a class="nav-link" href="bootstrap-collapse.html">Collapse</a></li>
-                    <li><a class="nav-link" href="bootstrap-dropdown.html">Dropdown</a></li>
-                    <li><a class="nav-link" href="bootstrap-form.html">Form</a></li>
-                    <li><a class="nav-link" href="bootstrap-list-group.html">List Group</a></li>
-                    <li><a class="nav-link" href="bootstrap-media-object.html">Media Object</a></li>
-                    <li><a class="nav-link" href="bootstrap-modal.html">Modal</a></li>
-                    <li><a class="nav-link" href="bootstrap-nav.html">Nav</a></li>
-                    <li><a class="nav-link" href="bootstrap-navbar.html">Navbar</a></li>
-                    <li><a class="nav-link" href="bootstrap-pagination.html">Pagination</a></li>
-                    <li><a class="nav-link" href="bootstrap-popover.html">Popover</a></li>
-                    <li><a class="nav-link" href="bootstrap-progress.html">Progress</a></li>
-                    <li><a class="nav-link" href="bootstrap-table.html">Table</a></li>
-                    <li><a class="nav-link" href="bootstrap-tooltip.html">Tooltip</a></li>
-                    <li><a class="nav-link" href="bootstrap-typography.html">Typography</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.advertisement.index') }}">
+                            <span>Advertisement</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.banners.index') }}">
+                            <span>Banner</span></a></li>
                 </ul>
             </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="far fa-user"></i>
+                    <span>Accounts</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('admin.accounts.index') }}">
+                            <span>List Account</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.roles.index') }}">
+                            <span>Role</span></a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th-large"></i>
+                    <span>Menus</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('admin.menus.index') }}">
+                            <span>Menu</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.menu_items.index') }}">
+                            <span>Menu Items</span></a></li>
+                </ul>
+            </li>
+
+            <li><a class="nav-link" href="{{ route('admin.abouts.index') }}"><i class="fa-solid fa-info"></i>
+                    <span>Abouts</span></a></li>
+
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-solid fa-newspaper"></i>
+                    <span>Blogs</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('admin.blogs.index') }}">
+                            <span>Blog</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.blog_categories.index') }}">
+                            <span>Blog_categories</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.blog_comments.index') }}">
+                            <span>Blog Comment</span></a></li>
+                </ul>
+            </li>
+            <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="fa-solid fa-ticket"></i>
+                    <span>Coupons</span></a></li>
+
+
+            <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
+                    <span>Settings</span></a></li>
+
         </ul>
     </aside>
 </div>
