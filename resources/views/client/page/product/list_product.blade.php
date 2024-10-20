@@ -500,7 +500,12 @@
                                         </a>
                                         <div class="label-group">
                                             <div class="product-label label-hot">HOT</div>
-                                            <div class="product-label label-sale">-20%</div>
+                    
+                                            ${product.offer_price ? `
+                                                <div class="product-label label-sale">
+                                                    -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                </div>
+                                            ` : ''}
                                         </div>
                                     </figure>
                                     <div class="product-details">
