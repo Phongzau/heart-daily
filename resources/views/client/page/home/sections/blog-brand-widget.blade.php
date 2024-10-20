@@ -145,12 +145,11 @@
                         data-animation-name="fadeIn" data-animation-duration="500"
                         data-owl-options="{
 					'margin': 0}">
-                        <img src="assets/images/brands/brand1.png" width="130" height="56" alt="brand">
-                        <img src="assets/images/brands/brand2.png" width="130" height="56" alt="brand">
-                        <img src="assets/images/brands/brand3.png" width="130" height="56" alt="brand">
-                        <img src="assets/images/brands/brand4.png" width="130" height="56" alt="brand">
-                        <img src="assets/images/brands/brand5.png" width="130" height="56" alt="brand">
-                        <img src="assets/images/brands/brand6.png" width="130" height="56" alt="brand">
+                    @foreach ($brands as $brand)
+                         <img src="{{ asset('storage/' . $brand->image) }}" width="130" height="56" alt="{{ $brand->name }}">
+                    @endforeach
+                       
+
                     </div>
                     <!-- End .brands-slider -->
 
@@ -362,103 +361,44 @@
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="800">
                             <h4 class="section-sub-title">Latest Products</h4>
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="assets/images/products/small/product-7.jpg" width="84"
-                                            height="84" alt="product">
-                                        <img src="assets/images/products/small/product-7-2.jpg" width="84"
-                                            height="84" alt="product">
-                                    </a>
-                                </figure>
+                            @foreach ($products->take(3) as $product)
+                                <div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="{{ asset('storage/' . $product->image) }}" width="84"
+                                                height="84" alt="{{ $product->name }}">
+                                        </a>
+                                    </figure>
 
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Brown-Black Men Casual
-                                            Glasses</a>
-                                    </h3>
+                                    <div class="product-details">
+                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        </h3>
 
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span>
+                                                <!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
+                                        <!-- End .product-container -->
 
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="assets/images/products/small/product-8.jpg" width="84"
-                                            height="84" alt="product">
-                                        <img src="assets/images/products/small/product-8-2.jpg" width="84"
-                                            height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Brown-Black Men Casual
-                                            Glasses</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top">5.00</span>
+                                        <div class="price-box">
+                                            @if ($product->offer_price)
+                                                <span class="product-price">{{ number_format($product->offer_price) }}
+                                                    VND</span>
+                                            @else
+                                                <span class="product-price">{{ number_format($product->price) }}
+                                                    VND</span>
+                                            @endif
                                         </div>
-                                        <!-- End .product-ratings -->
+                                        <!-- End .price-box -->
                                     </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
+                                    <!-- End .product-details -->
                                 </div>
-                                <!-- End .product-details -->
-                            </div>
+                            @endforeach
 
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="assets/images/products/small/product-9.jpg" width="84"
-                                            height="84" alt="product">
-                                        <img src="assets/images/products/small/product-9-2.jpg" width="84"
-                                            height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Black Men Casual Glasses</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
-                                        </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
                         </div>
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"

@@ -21,7 +21,8 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Client\ProductController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -63,15 +64,9 @@ Route::get('/blog-details', function () {
     return view('client.page.blog-details');
 })->name('blog-details');
 
-
-
-Route::get('/product', function () {
-    return view('client.page.product');
-})->name('product');
-
-Route::get('/product-details', function () {
-    return view('client.page.product-details');
-})->name('product-details');
+// Route::get('/product-details', function () {
+//     return view('client.page.product-details');
+// })->name('product-details');
 
 Route::get('/cart-details', function () {
     return view('client.page.cart-details');
@@ -102,8 +97,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/destroy/{color}', [AdminColorController::class, 'destroy'])->name('destroy');
     });
 
-
-
     //Brands
     Route::prefix('brands')->name('brands.')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('index');
@@ -114,6 +107,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy');
         Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
     });
+
     //banner
     Route::prefix('banners')->name('banners.')->group(function () {
         Route::get('/', [BannerController::class, 'index'])->name('index');
@@ -125,6 +119,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
         Route::post('/upload-image', [BannerController::class, 'uploadImage'])->name('upload.image');
     });
+
     //role
     Route::prefix('roles')->name('roles.')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
@@ -135,6 +130,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{role}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
     });
+
     //category_attributes
     Route::prefix('category_attributes')->name('category_attributes.')->group(function () {
         Route::put('change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
@@ -148,6 +144,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{category_attribute}', [AdminCategoryAttributeController::class, 'update'])->name('update');
         Route::delete('/{category_attribute}', [AdminCategoryAttributeController::class, 'destroy'])->name('destroy');
     });
+
     //attributes
     Route::prefix('attributes')->name('attributes.')->group(function () {
         Route::put('change-status', [AdminAttributeController::class, 'changeStatus'])
@@ -189,6 +186,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
         Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy');
     });
+
     Route::prefix('blog_categories')->name('blog_categories.')->group(function () {
         Route::put('change-status', [AdminBlogCategoryController::class, 'changeStatus'])
             ->name('change-status');
@@ -254,6 +252,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{accounts}', [ListAccountController::class, 'update'])->name('update');
         Route::delete('/{accounts}', [ListAccountController::class, 'destroy'])->name('destroy');
     });
+
     //Coupons
     Route::prefix('coupons')->name('coupons.')->group(function () {
         Route::put('change-status', [CouponController::class, 'changeStatus'])
@@ -266,13 +265,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
         Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy');
     });
+
     Route::prefix('blog_comments')->name('blog_comments.')->group(function () {
         Route::get('/', [BlogCommentController::class, 'index'])->name('index');
         Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
     });
 
     //advertisement
-
     Route::prefix('advertisement')->name('advertisement.')->group(function () {
         Route::get('/', [AdvertisementsController::class, 'index'])->name('index');
         Route::put('homepage-banner-section-one', [AdvertisementsController::class, 'homepageBannerSectionOne'])->name('homepage-banner-section-one');
@@ -287,15 +286,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::prefix('products')->name('products.')->group(function () {
         // Route::put('change-status', [CouponController::class, 'changeStatus'])
         //     ->name('change-status');
-        Route::delete('/variants/{variantId}', [ProductController::class, 'destroyVariant'])->name('destroy-variant');
-        Route::post('/upload', [ProductController::class, 'uploadImageGalleries'])->name('upload');
-        Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::get('/create', [ProductController::class, 'create'])->name('create');
-        Route::post('/', [ProductController::class, 'store'])->name('store');
-        Route::get('/{products}', [ProductController::class, 'show'])->name('show');
-        Route::get('/{products}/edit', [ProductController::class, 'edit'])->name('edit');
-        Route::put('/{products}', [ProductController::class, 'update'])->name('update');
-        Route::delete('/{products}', [ProductController::class, 'destroy'])->name('destroy');
+        Route::delete('/variants/{variantId}', [AdminProductController::class, 'destroyVariant'])->name('destroy-variant');
+        Route::post('/upload', [AdminProductController::class, 'uploadImageGalleries'])->name('upload');
+        Route::get('/', [AdminProductController::class, 'index'])->name('index');
+        Route::get('/create', [AdminProductController::class, 'create'])->name('create');
+        Route::post('/', [AdminProductController::class, 'store'])->name('store');
+        Route::get('/{products}', [AdminProductController::class, 'show'])->name('show');
+        Route::get('/{products}/edit', [AdminProductController::class, 'edit'])->name('edit');
+        Route::put('/{products}', [AdminProductController::class, 'update'])->name('update');
+        Route::delete('/{products}', [AdminProductController::class, 'destroy'])->name('destroy');
     });
 });
 
@@ -312,3 +311,10 @@ Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'inde
 
     //logo
 //    Route::get('/logo', [App\Http\Controllers\Client\SettingController::class, 'index'])->name('logo');
+
+//product
+
+Route::prefix('product')->name('product.')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('getProducts');
+    Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('ajaxGetProducts');
+});

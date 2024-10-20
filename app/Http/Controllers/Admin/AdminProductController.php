@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class AdminProductController extends Controller
 {
     use ImageUploadTrait;
     /**
