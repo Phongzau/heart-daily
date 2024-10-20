@@ -48,8 +48,9 @@
                         <!-- End .header-search -->
 
 
-                        <a href="{{ route('chat') }}" class="header-icon"><i class="far fa-comment-dots"></i></a>
+                        
                         @if (Auth::check())
+                            <a href="{{ route('chat') }}" class="header-icon"><i class="far fa-comment-dots"></i></a>
                             {{ Auth::user()->name }},<a href="{{ route('logout') }}">Exit</a>
                         @else
                             <a href="{{ route('login') }}" class="header-icon" title="login"><i
