@@ -87,16 +87,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         return view('admin.page.dashboard');
     })->name('dashboard');
 
-    //color
-    Route::prefix('colors')->name('colors.')->group(function () {
-        Route::get('/', [AdminColorController::class, 'index'])->name('index');
-        Route::get('/create', [AdminColorController::class, 'create'])->name('create');
-        Route::post('/store', [AdminColorController::class, 'store'])->name('store');
-        Route::get('/edit/{color}', [AdminColorController::class, 'edit'])->name('edit');
-        Route::put('/update/{color}', [AdminColorController::class, 'update'])->name('update');
-        Route::delete('/destroy/{color}', [AdminColorController::class, 'destroy'])->name('destroy');
-    });
-
     //Brands
     Route::prefix('brands')->name('brands.')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('index');
