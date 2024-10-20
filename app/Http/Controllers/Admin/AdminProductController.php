@@ -59,7 +59,7 @@ class AdminProductController extends Controller
             'type_product' => 'required',
             'category_id' => 'required|integer|exists:category_products,id',
             'brand_id' => 'required|integer|exists:brands,id',
-            'image_main' => 'required|image',
+            'image_main' => 'required',
         ];
 
         // Nếu là sản phẩm có biến thể
