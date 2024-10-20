@@ -24,10 +24,7 @@
                                     <label for="title">Title</label>
                                     <input type="text" name="title" value="{{ old('title', $categoryAttribute->title) }}" class="form-control" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="slug">Slug</label>
-                                    <input type="text" name="slug" value="{{ old('slug', $categoryAttribute->slug) }}" class="form-control" required>
-                                </div>
+                             
                                 <div class="form-group">
                                     <label for="order">Order</label>
                                     <input type="number" name="order" value="{{ old('order', $categoryAttribute->order) }}" class="form-control" required>

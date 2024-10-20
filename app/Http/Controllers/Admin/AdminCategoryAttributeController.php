@@ -6,6 +6,7 @@ use App\DataTables\CategoryAttributeDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryAttributeRequest;
 use App\Http\Requests\UpdateCategoryAttributeRequest;
+use Illuminate\Support\Str;
 use App\Models\CategoryAttribute;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,7 @@ class AdminCategoryAttributeController extends Controller
         $categoryAttribute = new CategoryAttribute();
 
         $categoryAttribute->title = $request->title;
-        $categoryAttribute->slug = $request->slug;
+        $categoryAttribute->slug = Str::slug($request->title);
         $categoryAttribute->order = $request->order;
         $categoryAttribute->status = $request->status;
         $categoryAttribute->created_by = auth()->id();
@@ -70,7 +71,7 @@ class AdminCategoryAttributeController extends Controller
             return redirect()->back()->withInput();
         }
         $categoryAttribute->title = $request->title;
-        $categoryAttribute->slug = $request->slug;
+        $categoryAttribute->slug = Str::slug($request->title);
         $categoryAttribute->order = $request->order;
         $categoryAttribute->status = $request->status;
         $categoryAttribute->updated_by = auth()->id();
