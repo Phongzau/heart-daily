@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateAttributeRequest;
 use App\Models\Attribute;
 use App\Models\CategoryAttribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminAttributeController extends Controller
 {
@@ -47,7 +48,7 @@ class AdminAttributeController extends Controller
     {
         $attribute = new Attribute();
         $attribute->title = $request->title;
-        $attribute->slug = $request->slug;
+        $attribute->slug = Str::slug($request->title);
         $attribute->category_attribute_id = $request->category_attribute_id;
         $attribute->price_start = $request->price_start;
         $attribute->price_end = $request->price_end;
@@ -78,7 +79,7 @@ class AdminAttributeController extends Controller
         $attribute = Attribute::findOrFail($id);
 
         $attribute->title = $request->title;
-        $attribute->slug = $request->slug;
+        $attribute->slug = Str::slug($request->title);
         $attribute->category_attribute_id = $request->category_attribute_id;
         $attribute->price_start = $request->price_start;
         $attribute->price_end = $request->price_end;

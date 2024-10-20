@@ -45,7 +45,7 @@ class MenuItemDataTable extends DataTable
                 return $query->parentId ? $query->parentId->title : 'Danh mục cha';
             })
             ->addColumn('menu_name', function($query) {
-                return $query->menu->title;
+                return $query->menu? $query->menu->title : 'N/A';
             })
 
             ->rawColumns(['action', 'status'])

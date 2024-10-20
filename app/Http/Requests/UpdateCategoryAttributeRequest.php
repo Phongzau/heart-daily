@@ -15,7 +15,6 @@ class UpdateCategoryAttributeRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:category_attributes,slug,' . $this->route('category_attribute'),
             'order' => 'integer',
             'status' => 'boolean',
         ];

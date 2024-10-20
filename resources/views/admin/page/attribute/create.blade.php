@@ -14,10 +14,7 @@
                     <label for="title">Title</label>
                     <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
                 </div>
-                <div class="form-group">
-                    <label for="slug">Slug</label>
-                    <input type="text" name="slug" class="form-control" value="{{ old('slug') }}" required>
-                </div>
+            
                 <div class="form-group">
                     <label for="category_attribute_id">Category Attribute</label>
                     <select name="category_attribute_id" class="form-control">
