@@ -15,7 +15,6 @@ class StoreCategoryAttributeRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:category_attributes,slug',
             'order' => 'integer',
             'status' => 'boolean',
         ];
