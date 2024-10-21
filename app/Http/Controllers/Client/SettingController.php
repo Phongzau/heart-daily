@@ -8,10 +8,18 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function index(Request $request)
-    {
-        $logoSetting = LogoSetting::query()->first();
+    // public function index(Request $request)
+    // {
+    //     $logoSetting = LogoSetting::query()->first();
 
-        return view('client.component.header-middle', compact('logoSetting'));
-    }
+    //     return view('client.component.header-middle', compact('logoSetting'));
+    // }
+
+    // public function index(Request $request)
+    // {
+    //     $generalSettings = GeneralSetting::query()->first();
+    //     return view('client.component.footer', compact('generalSettings'));
+    // }
+
+    //không nhất thiết phải cần controller
 }

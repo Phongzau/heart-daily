@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\LogoSetting;
+use App\Models\GeneralSetting; 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -24,7 +25,11 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $logoSetting = LogoSetting::query()->first();
-            $view->with(['logoSetting' => $logoSetting]);
+            $generalSettings = GeneralSetting::query()->first();
+            $view->with([
+                'logoSetting' => $logoSetting,
+                'generalSettings' => $generalSettings,
+            ]);
         });
 
         Paginator::useBootstrapFive();
