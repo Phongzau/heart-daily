@@ -217,6 +217,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
     Route::put('general-setting-update', [SettingController::class, 'GeneralSettingUpdate'])->name('general-setting-update');
 
+
     //blog
     Route::prefix('blogs')->name('blogs.')->group(function () {
         Route::put('change-status', [BlogController::class, 'changeStatus'])
