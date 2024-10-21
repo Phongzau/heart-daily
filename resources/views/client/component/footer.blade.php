@@ -21,30 +21,33 @@
                                 <h4 class="widget-title">Contact Info</h4>
                                 <ul class="contact-info">
                                     <li>
-                                        <span class="contact-info-label">Address:</span>123 Street Name, City, England
+                                        <span class="contact-info-label">Address:</span>
+                                        <i class="fas fa-map-marker-alt fa-sm"></i> {{@$generalSettings->contact_address}}
                                     </li>
                                     <li>
-                                        <span class="contact-info-label">Phone:</span><a href="tel:">(123)
-                                            456-7890</a>
+                                        <span class="contact-info-label">Phone:</span>
+                                        <a href="tel:{{@$generalSettings->contact_phone}}">
+                                            <i class="fas fa-phone fa-rotate-90 fa-sm"></i> {{@$generalSettings->contact_phone}}
+                                        </a>
                                     </li>
                                     <li>
-                                        <span class="contact-info-label">Email:</span> <a
-                                            href="https://portotheme.com/cdn-cgi/l/email-protection#533e323a3f13362b323e233f367d303c3e"><span
-                                                class="__cf_email__"
-                                                data-cfemail="701d11191c301508111d001c155e131f1d">[email&#160;protected]</span></a>
+                                        <span class="contact-info-label">Email:</span>
+                                        <a href="tel:{{@$generalSettings->contact_phone}}">
+                                            <i class="fas fa-envelope fa-sm"></i> {{@$generalSettings->contact_email}}
+                                        </a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <span class="contact-info-label">Working Days/Hours:</span> Mon - Sun / 9:00
                                         AM
                                         - 8:00 PM
-                                    </li>
+                                    </li> -->
                                 </ul>
                                 <div class="social-icons">
                                     <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
                                         title="Facebook"></a>
                                     <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
                                         title="Twitter"></a>
-                                    <a href="#" class="social-icon social-instagram icon-instagram"
+                                    <a href="" class="social-icon social-instagram icon-instagram"
                                         target="_blank" title="Instagram"></a>
                                 </div>
                                 <!-- End .social-icons -->
