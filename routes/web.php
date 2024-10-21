@@ -216,7 +216,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::get('setting', [SettingController::class, 'index'])->name('settings.index');
     Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
     Route::put('general-setting-update', [SettingController::class, 'GeneralSettingUpdate'])->name('general-setting-update');
-    Route::put('socical-setting-update', [SettingController::class, 'SocicalLinkUpdate'])->name('socical-setting-update');
 
 
     //blog

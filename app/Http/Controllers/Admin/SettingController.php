@@ -81,26 +81,4 @@ class SettingController extends Controller
         toastr('Updated Successfully!', 'success');
         return redirect()->back();
     }
-
-    public function SocicalLinkUpdate(Request $request)
-    {
-        $request->validate([
-            'facebook' => ['required', 'string', 'max:255'],
-            'instagram' => ['required', 'string', 'max:255'],
-            'twitter' => ['required', 'string', 'max:255'],
-        ]);
-
-        // Cập nhật hoặc tạo mới bản ghi SocicalLink
-        SocicalLink::query()->updateOrCreate(
-            ['id' => 1], // Cập nhật theo ID
-            [
-                'facebook' => $request->input('facebook'),
-                'instagram' => $request->input('instagram'),
-                'twitter' => $request->input('twitter'),
-            ]
-        );
-
-        toastr('Updated Successfully!', 'success');
-        return redirect()->back();
-    }
 }

@@ -26,8 +26,6 @@
                                             data-toggle="list" href="#list-email" role="tab">Email Configuration</a>
                                         <a class="list-group-item list-group-item-action" id="list-logo-list"
                                             data-toggle="list" href="#list-logo" role="tab">Logo and Favicon</a>
-                                        <a class="list-group-item list-group-item-action" id="list-socical-list"
-                                            data-toggle="list" href="#list-socical" role="tab">Socical Link</a>
                                     </div>
                                 </div>
 
@@ -51,12 +49,6 @@
                                         <div class="tab-pane fade" id="list-logo" role="tabpanel"
                                             aria-labelledby="list-logo-list">
                                             @include('admin.page.settings.logo_settings')
-                                        </div>
-
-                                        <!-- Socical Link -->
-                                        <div class="tab-pane fade" id="list-socical" role="tabpanel"
-                                            aria-labelledby="list-socical-list">
-                                            @include('admin.page.settings.socical_links')
                                         </div>
                                     </div>
                                 </div>
