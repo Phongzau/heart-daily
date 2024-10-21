@@ -33,6 +33,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="{{ asset('admin/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('admin/assets/js/bootstrap-iconpicker.bundle.min.js') }}"></script>
 <!-- Page Specific JS File -->
 <script src="{{ asset('admin/assets/js/page/index.js') }}"></script>
 <script src="{{ asset('admin/assets/js/page/forms-advanced-forms.js') }}"></script>

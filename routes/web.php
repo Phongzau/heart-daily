@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
@@ -286,6 +287,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('/{products}/edit', [AdminProductController::class, 'edit'])->name('edit');
         Route::put('/{products}', [AdminProductController::class, 'update'])->name('update');
         Route::delete('/{products}', [AdminProductController::class, 'destroy'])->name('destroy');
+    });
+
+    //Coupons
+    Route::prefix('socials')->name('socials.')->group(function () {
+        Route::put('change-status', [SocialController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [SocialController::class, 'index'])->name('index');
+        Route::get('/create', [SocialController::class, 'create'])->name('create');
+        Route::post('/', [SocialController::class, 'store'])->name('store');
+        Route::get('/{socials}', [SocialController::class, 'show'])->name('show');
+        Route::get('/{socials}/edit', [SocialController::class, 'edit'])->name('edit');
+        Route::put('/{socials}', [SocialController::class, 'update'])->name('update');
+        Route::delete('/{socials}', [SocialController::class, 'destroy'])->name('destroy');
     });
 });
 
