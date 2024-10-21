@@ -299,7 +299,7 @@ Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'get
 //about
 Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
 
-    //logo
+//logo
 //    Route::get('/logo', [App\Http\Controllers\Client\SettingController::class, 'index'])->name('logo');
 
 //product
@@ -307,4 +307,5 @@ Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'inde
 Route::prefix('product')->name('product.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('getProducts');
     Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('ajaxGetProducts');
+    Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
 });

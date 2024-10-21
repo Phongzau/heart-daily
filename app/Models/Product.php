@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class Product extends Model
 {
@@ -20,7 +21,17 @@ class Product extends Model
     }
 
     public function brand()
-{
-    return $this->belongsTo(Brand::class);
-}
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    // public function categoryProduct()
+    // {
+    //     return $this->belongsTo(CategoryProduct::class);
+    // }
+
+    public function category()
+    {
+        return $this->belongsTo(CategoryProduct::class);
+    }
 }

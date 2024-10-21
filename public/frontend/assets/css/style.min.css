@@ -22331,3 +22331,12 @@ p {
     text-align: center;
     width: 32px
 }
+
+.product-image {
+    width: 100% !important;
+    /* hoặc một kích thước cố định như 200px */
+    height: 200px !important;
+    /* hoặc điều chỉnh theo tỷ lệ mong muốn */
+    object-fit: cover !important;
+    /* Cắt hoặc phóng to ảnh vừa với khung mà không làm biến dạng */
+}

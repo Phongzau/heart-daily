@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Str;
 
 function limitText($text, $limit = 20)
@@ -17,4 +18,17 @@ function limitTextDescription($text, $limit)
     }
 
     return $cleanText;
+}
+
+/** Check if product have discount */
+
+function checkDiscount($product)
+{
+    $currentDate = date('Y-m-d');
+
+    if ($product->offer_price > 0 && $currentDate >= $product->offer_start_date && $currentDate <= $product->offer_end_date) {
+        return true;
+    }
+
+    return false;
 }

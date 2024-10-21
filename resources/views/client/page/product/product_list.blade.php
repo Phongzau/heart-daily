@@ -2,8 +2,8 @@
     <div class="col-6 col-sm-4 col-md-3">
         <div class="product-default">
             <figure height="220">
-                <a href="#">
-                    <img src="{{ asset('storage/' . $product->image) }}" width="280" height="280"
+                <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
+                    <img src="{{ asset('storage/' . $product->image) }}" class="product-image"
                         alt="{{ $product->name }}" />
                 </a>
 
@@ -21,11 +21,13 @@
             <div class="product-details">
                 <div class="category-wrap">
                     <div class="category-list">
-                        <a href="#" class="product-category">{{ $product->brand->name ?? ' ' }}</a>
+                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
+                            class="product-category">{{ $product->brand->name ?? ' ' }}</a>
                     </div>
                 </div>
 
-                <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a> </h3>
+                <h3 class="product-title"> <a
+                        href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a> </h3>
 
                 <div class="ratings-container">
                     <div class="product-ratings">
@@ -51,7 +53,8 @@
 
                 <div class="product-action">
                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
-                    <a href="product.html" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
+                    <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
+                        class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
                             OPTIONS</span></a>
                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                             class="fas fa-external-link-alt"></i></a>

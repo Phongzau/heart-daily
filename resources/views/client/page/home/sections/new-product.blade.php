@@ -15,57 +15,59 @@
 							}
 						}
 					}">
-                    @foreach ($products as $product)
-                        <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
-                            <figure>
-                                <a href="#">
-                                    <img src="{{ asset('storage/' . $product->image) }}" width="220" height="220"
-                                        alt="{{ $product->name }}">
-                                </a>
-                                <div class="label-group">
-                                    <div class="product-label label-hot">HOT</div>
-                                </div>
-                            </figure>
-                            <div class="product-details">
-                                <div class="category-list">
-                                    <a href="#" class="product-category">{{ $product->brand->name ?? ' ' }}</a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="#">{{ $product->name }}</a>
-                                </h3>
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:80%"></span>
-                                        <!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
+                        @foreach ($products as $product)
+                            <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
+                                <figure>
+                                    <a href="#">
+                                        <img src="{{ asset('storage/' . $product->image) }}" class="product-image"
+                                            alt="{{ $product->name }}">
+                                    </a>
+                                    <div class="label-group">
+                                        <div class="product-label label-hot">HOT</div>
                                     </div>
-                                    <!-- End .product-ratings -->
-                                </div>
-                                <!-- End .product-container -->
-                                <div class="price-box">
+                                </figure>
+                                <div class="product-details">
+                                    <div class="category-list">
+                                        <a href="#"
+                                            class="product-category">{{ $product->brand->name ?? ' ' }}</a>
+                                    </div>
+                                    <h3 class="product-title">
+                                        <a href="#">{{ $product->name }}</a>
+                                    </h3>
+                                    <div class="ratings-container">
+                                        <div class="product-ratings">
+                                            <span class="ratings" style="width:80%"></span>
+                                            <!-- End .ratings -->
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <!-- End .product-ratings -->
+                                    </div>
+                                    <!-- End .product-container -->
+                                    <div class="price-box">
 
-                                    @if ($product->offer_price)
-                                        <del class="old-price">{{ number_format($product->price) }}</del>
-                                        <span class="product-price">{{ number_format($product->offer_price) }} VND</span>
-                                    @else
-                                        <span class="product-price">{{ number_format($product->price) }} VND</span>
-                                    @endif
+                                        @if ($product->offer_price)
+                                            <del class="old-price">{{ number_format($product->price) }}</del>
+                                            <span class="product-price">{{ number_format($product->offer_price) }}
+                                                VND</span>
+                                        @else
+                                            <span class="product-price">{{ number_format($product->price) }} VND</span>
+                                        @endif
+                                    </div>
+                                    <!-- End .price-box -->
+                                    <div class="product-action">
+                                        <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
+                                                class="icon-heart"></i></a>
+                                        <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
+                                                class="icon-shopping-cart"></i><span>ADD TO CART</span></a>
+                                        <a href="ajax/product-quick-view.html" class="btn-quickview"
+                                            title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                                    </div>
                                 </div>
-                                <!-- End .price-box -->
-                                <div class="product-action">
-                                    <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
-                                            class="icon-heart"></i></a>
-                                    <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i><span>ADD TO CART</span></a>
-                                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
-                                            class="fas fa-external-link-alt"></i></a>
-                                </div>
+                                <!-- End .product-details -->
                             </div>
-                            <!-- End .product-details -->
-                        </div>
-                    @endforeach
-                        
-                       
+                        @endforeach
+
+
                     </div>
                     <!-- End .featured-proucts -->
 
