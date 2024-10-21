@@ -18,7 +18,6 @@ class SettingController extends Controller
     {
         $logoSetting = LogoSetting::query()->first();
         $generalSettings = GeneralSetting::query()->first();
-        $socicalLinks = SocicalLink::query()->first();
         return view('admin.page.settings.index', compact('logoSetting', 'generalSettings', 'socicalLinks'));
     }
 
