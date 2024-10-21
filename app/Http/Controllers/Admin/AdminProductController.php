@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
 {
@@ -149,6 +150,7 @@ class AdminProductController extends Controller
                 $product = new Product();
                 $product->type_product = $request->type_product;
                 $product->name = $request->name;
+                $product->slug = Str::slug($request->name);
                 $product->sku = $request->sku;
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
@@ -177,6 +179,7 @@ class AdminProductController extends Controller
                 $product = new Product();
                 $product->type_product = $request->type_product;
                 $product->name = $request->name;
+                $product->slug = Str::slug($request->name);
                 $product->sku = $request->sku;
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
@@ -377,6 +380,7 @@ class AdminProductController extends Controller
                 // Thực hiện validate với toàn bộ các quy tắc
                 $product->type_product = $request->type_product;
                 $product->name = $request->name;
+                $product->slug = Str::slug($request->name);
                 $product->sku = $request->sku;
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
@@ -411,6 +415,7 @@ class AdminProductController extends Controller
             } else if ($request->type_product === 'product_simple') {
                 $product->type_product = $request->type_product;
                 $product->name = $request->name;
+                $product->slug = Str::slug($request->name);
                 $product->sku = $request->sku;
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
