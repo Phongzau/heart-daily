@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     use HasFactory;
+    public function categoryAttribute()
+    {
+        return $this->belongsTo(CategoryAttribute::class);
+    }
 }
