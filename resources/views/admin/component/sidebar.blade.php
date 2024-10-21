@@ -18,7 +18,8 @@
             </li>
             <li class="menu-header"> Start Menu</li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-brands fa-product-hunt"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-brands fa-product-hunt"></i>
                     <span>Products</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.products.index') }}">Product</a>
@@ -35,7 +36,8 @@
             </li>
 
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-brands fa-adversal"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-brands fa-adversal"></i>
                     <span>Banners</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.advertisement.index') }}">
@@ -70,7 +72,8 @@
                     <span>Abouts</span></a></li>
 
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-solid fa-newspaper"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-solid fa-newspaper"></i>
                     <span>Blogs</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.blogs.index') }}">
@@ -87,6 +90,8 @@
 
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
                     <span>Settings</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-solid fa-gear"></i>
+                    <span>Socials</span></a></li>
 
         </ul>
     </aside>

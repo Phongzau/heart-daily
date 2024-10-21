@@ -51,20 +51,50 @@
                        @if (Auth::check())
                            <a href="{{ route('chat') }}" class="header-icon"><i class="far fa-comment-dots"></i></a>
 
-                           {{-- <i class="fas fa-sign-out-alt">logout</i> --}}
-                           <a href="" class="header-icon" title="login"><i class="icon-user-2"></i>
-
+                           <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown"><i
+                                   class="icon-user-2"></i>
                            </a>
-                           <i class="fas fa-sign-in-alt"></i>
-                           <i class="fas fa-user"></i>
-                           <i class="fas fa-user-shield"></i>
-                           {{-- {{ Auth::user()->name }}, --}}
-                           <a href="{{ route('logout') }}"> <i class="fas fa-sign-in-alt fa-flip-horizontal"></i>
-                           </a>
+                           <ul class="dropdown-menu">
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> <span>logout</span></a>
+                               </li>
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href=""><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+                               </li>
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href=""><i class="fas fa-user"></i><span>MY Account</span></a>
+                               </li>
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href=""><i class="fas fa-user-shield"></i><span>Admin</span></a>
+                               </li>
+                           </ul>
+                           {{-- </li> --}}
                        @else
-                           <a href="{{ route('login') }}" class="header-icon" title="login"><i class="icon-user-2"></i>
+                           {{-- <a href="{{ route('login') }}" class="header-icon" title="login"><i class="icon-user-2"></i>
 
+                           </a> --}}
+
+                           <a href="{{ route('login') }}" class="header-icon has-dropdown" title="login"
+                               data-toggle="dropdown"><i class="icon-user-2"></i>
                            </a>
+                           <ul class="dropdown-menu">
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href=""><i class="fas fa-sign-out-alt"></i> <span>logout</span></a>
+                               </li>
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+                               </li>
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href=""><i class="fas fa-user"></i><span>MY Account</span></a>
+                               </li>
+                           </ul>
                        @endif
 
 
