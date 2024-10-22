@@ -10,9 +10,9 @@
                         <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
                             <figure>
                                 <a href="product.html">
-                                    <img src="assets/images/products/product-1.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
-                                    <img src="assets/images/products/product-1-2.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
                                 </a>
                                 <div class="label-group">
@@ -56,9 +56,9 @@
                         <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
                             <figure>
                                 <a href="product.html">
-                                    <img src="assets/images/products/product-2.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
-                                    <img src="assets/images/products/product-2-2.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
                                 </a>
                                 <div class="label-group">
@@ -102,9 +102,9 @@
                         <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
                             <figure>
                                 <a href="product.html">
-                                    <img src="assets/images/products/product-3.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
-                                    <img src="assets/images/products/product-3-2.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
                                 </a>
                             </figure>
@@ -143,9 +143,9 @@
                         <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
                             <figure>
                                 <a href="product.html">
-                                    <img src="assets/images/products/product-4.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
-                                    <img src="assets/images/products/product-4-2.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
                                 </a>
                                 <div class="label-group">
@@ -188,9 +188,9 @@
                         <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
                             <figure>
                                 <a href="product.html">
-                                    <img src="assets/images/products/product-5.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
-                                    <img src="assets/images/products/product-5-2.jpg" width="280" height="280"
+                                    <img src="" width="280" height="280"
                                         alt="product">
                                 </a>
                                 <div class="label-group">

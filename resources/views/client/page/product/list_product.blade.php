@@ -274,9 +274,9 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="assets/images/products/small/product-4.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-4-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
                                             </a>
                                         </figure>
@@ -302,9 +302,9 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="assets/images/products/small/product-5.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-5-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
                                             </a>
                                         </figure>
@@ -330,9 +330,9 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="assets/images/products/small/product-6.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-6-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
                                             </a>
                                         </figure>
@@ -362,9 +362,9 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="assets/images/products/small/product-1.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-1-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
                                             </a>
                                         </figure>
@@ -390,9 +390,9 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="assets/images/products/small/product-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-2-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
                                             </a>
                                         </figure>
@@ -418,9 +418,9 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="assets/images/products/small/product-3.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
-                                                <img src="assets/images/products/small/product-3-2.jpg" width="75"
+                                                <img src="" width="75"
                                                     height="75" alt="product" />
                                             </a>
                                         </figure>
@@ -474,11 +474,11 @@
 
     <script>
         //show
-        function loadProducts() {
+        function loadProducts(page = 1) {
             const count = document.getElementById('product-count').value;
             const orderby = document.querySelector('select[name="orderby"]').value;
 
-            fetch(`{{ route('product.ajaxGetProducts') }}?count=${count}&orderby=${orderby}`)
+            fetch(`{{ route('product.ajaxGetProducts') }}?count=${count}&orderby=${orderby}&page=${page}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -491,79 +491,94 @@
 
                     data.products.data.forEach(product => {
                         const brandName = product.brand ? product.brand.name : ' ';
+                        const currentDate = new Date().toISOString().split('T')[0];
+                        const hasDiscount = product.offer_price > 0 && currentDate >= product
+                            .offer_start_date && currentDate <= product.offer_end_date;
                         html += `                       
-                            <div class="col-6 col-sm-4 col-md-3">
-                                <div class="product-default">
-                                    <figure>
-                                        <a href="#">
-                                            <img src="{{ asset('storage') }}/${product.image}" width="280" height="280" alt="${product.name}" />
-                                        </a>
-                                        <div class="label-group">
-                                            <div class="product-label label-hot">HOT</div>
-                    
-                                            ${product.offer_price ? `
-                                                <div class="product-label label-sale">
-                                                    -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                </div>
-                                            ` : ''}
-                                        </div>
-                                    </figure>
-                                    <div class="product-details">
-                                        <div class="category-wrap">
-                                            <div class="category-list">
-                                                <a href="#" class="product-category">${brandName}</a>
-                                            </div>
-                                        </div>
-                                        <h3 class="product-title"><a href="product.html">${product.name}</a></h3>
-                                        <div class="price-box">
-                                            ${product.offer_price ? `
-                                                                    <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                                                    <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                                                                ` : `
-                                                                    <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                                                                `}
-                                        </div>
-                                        <div class="product-action">
-                                            <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
-                                            <a href="product.html" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
-                                            <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
-                                        </div>
+                    <div class="col-6 col-sm-4 col-md-3">
+                        <div class="product-default">
+                            <figure height="220">
+                                <a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}">
+                                    <img src="{{ asset('storage') }}/${product.image}" class="product-image" alt="${product.name}" />
+                                </a>
+                                <div class="label-group">
+                                    <div class="product-label label-hot">HOT</div>
+                
+                                    ${hasDiscount  ? `
+                                                    <div class="product-label label-sale">
+                                                        -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                    </div>
+                                                    ` : ''}
+                                </div>
+                            </figure>
+                            <div class="product-details">
+                                <div class="category-wrap">
+                                    <div class="category-list">
+                                        <a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}" class="product-category">${brandName}</a>
                                     </div>
                                 </div>
+                                <h3 class="product-title"><a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}">${product.name}</a></h3>
+                                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:100%"></span>
+                        <span class="tooltiptext tooltip-top"></span>
+                    </div>
+                </div>
+                                <div class="price-box">
+                                    ${hasDiscount  ? `
+                                                    <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                                    <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                                                    ` : `
+                                                    <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                                                    `}
+                                </div>
+                                <div class="product-action">
+                                    <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
+                                    <a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
+                                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
                             </div>
-                        `;
+                        </div>
+                    </div>
+                `;
                     });
+
                     productList.innerHTML = html;
+
                     const paginationLinks = document.getElementById('pagination-links');
                     let paginationHtml = '';
 
                     if (data.products.current_page > 1) {
                         paginationHtml += `
-                <li class="page-item">
-                    <a class="page-link" href="#" onclick="loadPage(${data.products.current_page - 1})">Previous</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadPage(${data.products.current_page - 1})">Previous</a>
+                    </li>
                 `;
                     }
 
                     for (let i = 1; i <= data.products.last_page; i++) {
                         paginationHtml += `
-                <li class="page-item ${i === data.products.current_page ? 'active' : ''}">
-                    <a class="page-link" href="#" onclick="loadPage(${i})">${i}</a>
-                </li>
+                    <li class="page-item ${i === data.products.current_page ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadPage(${i})">${i}</a>
+                    </li>
                 `;
                     }
 
                     if (data.products.current_page < data.products.last_page) {
                         paginationHtml += `
-                <li class="page-item">
-                    <a class="page-link" href="#" onclick="loadPage(${data.products.current_page + 1})">Next</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadPage(${data.products.current_page + 1})">Next</a>
+                    </li>
                 `;
                     }
 
                     paginationLinks.innerHTML = paginationHtml;
                 })
                 .catch(error => console.error('Error loading products:', error));
+        }
+
+        function loadPage(page) {
+            loadProducts(page);
         }
     </script>
 @endsection
