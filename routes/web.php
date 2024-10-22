@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Middleware\CheckRole;
@@ -300,6 +301,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('/{socials}/edit', [SocialController::class, 'edit'])->name('edit');
         Route::put('/{socials}', [SocialController::class, 'update'])->name('update');
         Route::delete('/{socials}', [SocialController::class, 'destroy'])->name('destroy');
+    });
+
+    //popup
+    Route::prefix('popups')->name('popups.')->group(function () {
+        Route::get('/', [NewletterPopupController::class, 'index'])->name('index');
+        Route::get('/create', [NewletterPopupController::class, 'create'])->name('create');
+        Route::post('/store', [NewletterPopupController::class, 'store'])->name('store');
+        Route::get('/edit/{popup}', [NewletterPopupController::class, 'edit'])->name('edit');
+        Route::put('/update/{popup}', [NewletterPopupController::class, 'update'])->name('update');
+        Route::delete('/destroy/{popup}', [NewletterPopupController::class, 'destroy'])->name('destroy');
+        Route::put('change-status', [NewletterPopupController::class, 'changeStatus'])->name('change-status');
+        Route::post('/upload-image', [NewletterPopupController::class, 'uploadImage'])->name('upload.image');
     });
 });
 

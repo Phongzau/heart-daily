@@ -87,11 +87,13 @@
             <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="fa-solid fa-ticket"></i>
                     <span>Coupons</span></a></li>
 
-
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
                     <span>Settings</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-solid fa-gear"></i>
                     <span>Socials</span></a></li>
+
+            <li><a class="nav-link" href="{{ route('admin.popups.index') }}"><i class="fa-solid fa-gear"></i>
+                    <span>Newlett Popup</span></a></li>
 
         </ul>
     </aside>
