@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -19,28 +20,49 @@ class ProductController extends Controller
     }
 
     public function ajaxIndex(Request $request)
-    {
-        $perPage = $request->input('count', 12);
-        $orderby  = $request->input('orderby', 'menu_order');
+{
+    $perPage = $request->input('count', 12);
+    $orderby = $request->input('orderby', 'menu_order');
+    $currentDate = Carbon::now()->toDateString(); 
 
-        $query = Product::with('brand')->where('status', 1);
+    $query = Product::with('brand')->where('status', 1);
 
-        if ($orderby == 'price') {
-            $query->orderBy('price', 'asc');
-        } elseif ($orderby == 'price-desc') {
-            $query->orderBy('price', 'desc');
-        } elseif ($orderby == 'date') {
-            $query->orderBy('created_at', 'desc');
-        } else {
-            $query->orderBy('created_at', 'asc'); 
-        }
+    if ($orderby == 'price') {
+        $query->where(function ($q) use ($currentDate) {
+            $q->where('offer_price', '>', 0)
+              ->where('offer_start_date', '<=', $currentDate)
+              ->where('offer_end_date', '>=', $currentDate);
+        })->orWhere(function ($q) {
+            $q->where('offer_price', null);
+        });
 
-        $products = $query->paginate($perPage);
-        
-        return response()->json([
-            'products' => $products,
-        ]);
+        $query->orderByRaw('COALESCE(offer_price, price) ASC');
     }
+
+    if ($orderby == 'price-desc') {
+        $query->where(function ($q) use ($currentDate) {
+            $q->where('offer_price', '>', 0)
+              ->where('offer_start_date', '<=', $currentDate)
+              ->where('offer_end_date', '>=', $currentDate);
+        })->orWhere(function ($q) {
+            $q->where('offer_price', null);
+        });
+
+        $query->orderByRaw('COALESCE(offer_price, price) DESC');
+    }
+
+    if ($orderby == 'date') {
+        $query->orderBy('created_at', 'desc');
+    } else {
+        $query->orderBy('created_at', 'asc'); 
+    }
+
+    $products = $query->paginate($perPage);
+    
+    return response()->json([
+        'products' => $products,
+    ]);
+}
 
     public function productDetail(string $slug)
     {
