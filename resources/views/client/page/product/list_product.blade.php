@@ -28,9 +28,9 @@
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="demo4.html"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Men</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Accessories</li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Product</a></li>
+                {{-- <li class="breadcrumb-item active" aria-current="page">Accessories</li> --}}
             </ol>
         </nav>
 
@@ -274,10 +274,8 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
                                             </a>
                                         </figure>
                                         <div class="product-details">
@@ -302,10 +300,8 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
                                             </a>
                                         </figure>
                                         <div class="product-details">
@@ -330,10 +326,8 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
                                             </a>
                                         </figure>
                                         <div class="product-details">
@@ -362,10 +356,8 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
                                             </a>
                                         </figure>
                                         <div class="product-details">
@@ -390,10 +382,8 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
                                             </a>
                                         </figure>
                                         <div class="product-details">
@@ -418,10 +408,8 @@
                                     <div class="product-default left-details product-widget">
                                         <figure>
                                             <a href="product.html">
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
-                                                <img src="" width="75"
-                                                    height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
+                                                <img src="" width="75" height="75" alt="product" />
                                             </a>
                                         </figure>
                                         <div class="product-details">
@@ -494,30 +482,31 @@
                         const currentDate = new Date().toISOString().split('T')[0];
                         const hasDiscount = product.offer_price > 0 && currentDate >= product
                             .offer_start_date && currentDate <= product.offer_end_date;
+                        const productDetailUrl = "{{ url('product') }}/" + product.slug;
                         html += `                       
                     <div class="col-6 col-sm-4 col-md-3">
                         <div class="product-default">
                             <figure height="220">
-                                <a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}">
+                                <a href="${productDetailUrl}">
                                     <img src="{{ asset('storage') }}/${product.image}" class="product-image" alt="${product.name}" />
                                 </a>
                                 <div class="label-group">
                                     <div class="product-label label-hot">HOT</div>
                 
                                     ${hasDiscount  ? `
-                                                    <div class="product-label label-sale">
-                                                        -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                    </div>
-                                                    ` : ''}
+                                                        <div class="product-label label-sale">
+                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                        </div>
+                                                        ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
                                 <div class="category-wrap">
                                     <div class="category-list">
-                                        <a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}" class="product-category">${brandName}</a>
+                                        <a href="${productDetailUrl}" class="product-category">${brandName}</a>
                                     </div>
                                 </div>
-                                <h3 class="product-title"><a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}">${product.name}</a></h3>
+                                <h3 class="product-title"><a href="${productDetailUrl}">${product.name}</a></h3>
                                 <div class="ratings-container">
                     <div class="product-ratings">
                         <span class="ratings" style="width:100%"></span>
@@ -526,15 +515,15 @@
                 </div>
                                 <div class="price-box">
                                     ${hasDiscount  ? `
-                                                    <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                                    <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                                                    ` : `
-                                                    <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                                                    `}
+                                                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                                                        ` : `
+                                                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                                                        `}
                                 </div>
                                 <div class="product-action">
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
-                                    <a href="{{ route('product.detail', ['slug' => "' + product->slug + '"]) }}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
+                                    <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
                                 </div>
                             </div>
