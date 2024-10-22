@@ -291,7 +291,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
 
     //Coupons
     Route::prefix('socials')->name('socials.')->group(function () {
-        Route::put('change-status', [SocialController::class, 'changeStatus'])
+        Route::put('change-status', [SocialController::class, 'socialsChangeStatus'])
             ->name('change-status');
         Route::get('/', [SocialController::class, 'index'])->name('index');
         Route::get('/create', [SocialController::class, 'create'])->name('create');
