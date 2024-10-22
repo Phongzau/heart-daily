@@ -9,7 +9,7 @@
 
                 <div class="label-group">
                     <div class="product-label label-hot">HOT</div>
-                    @if ($product->offer_price)
+                    @if (checkDiscount($product))
                         @php
                             $discount = (($product->price - $product->offer_price) / $product->price) * 100;
                         @endphp
@@ -40,7 +40,7 @@
                 <!-- End .product-container -->
 
                 <div class="price-box">
-                    @if ($product->offer_price)
+                    @if (checkDiscount($product))
                         <span class="old-price">{{ number_format($product->price) }}</span>
                         <span class="product-price">{{ number_format($product->offer_price) }}
                             VND</span>

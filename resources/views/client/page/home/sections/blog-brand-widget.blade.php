@@ -29,7 +29,7 @@
                         <article class="post">
                             <div class="post-media">
                                 <a href="single.html">
-                                    <img src="assets/images/blog/home/post-1.jpg" alt="Post" width="225"
+                                    <img src="" alt="Post" width="225"
                                         height="280">
                                 </a>
                                 <div class="post-date">
@@ -57,7 +57,7 @@
                         <article class="post">
                             <div class="post-media">
                                 <a href="single.html">
-                                    <img src="assets/images/blog/home/post-2.jpg" alt="Post" width="225"
+                                    <img src="" alt="Post" width="225"
                                         height="280">
                                 </a>
                                 <div class="post-date">
@@ -85,7 +85,7 @@
                         <article class="post">
                             <div class="post-media">
                                 <a href="single.html">
-                                    <img src="assets/images/blog/home/post-3.jpg" alt="Post" width="225"
+                                    <img src="" alt="Post" width="225"
                                         height="280">
                                 </a>
                                 <div class="post-date">
@@ -113,7 +113,7 @@
                         <article class="post">
                             <div class="post-media">
                                 <a href="single.html">
-                                    <img src="assets/images/blog/home/post-4.jpg" alt="Post" width="225"
+                                    <img src="" alt="Post" width="225"
                                         height="280">
                                 </a>
                                 <div class="post-date">
@@ -162,9 +162,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-1.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-1-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -195,9 +195,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-2-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -227,9 +227,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-3.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-3-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -264,9 +264,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-4.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-4-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -296,9 +296,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-5.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-5-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -328,9 +328,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-6.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-6-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -407,9 +407,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-10.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-10-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -440,9 +440,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-11.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-11-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>
@@ -472,9 +472,9 @@
                             <div class="product-default left-details product-widget">
                                 <figure>
                                     <a href="product.html">
-                                        <img src="assets/images/products/small/product-12.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
-                                        <img src="assets/images/products/small/product-12-2.jpg" width="84"
+                                        <img src="" width="84"
                                             height="84" alt="product">
                                     </a>
                                 </figure>

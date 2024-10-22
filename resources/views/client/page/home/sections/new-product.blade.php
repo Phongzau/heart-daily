@@ -17,22 +17,29 @@
 					}">
                         @foreach ($products as $product)
                             <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
-                                <figure>
-                                    <a href="#">
+                                <figure height="220">
+                                    <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                         <img src="{{ asset('storage/' . $product->image) }}" class="product-image"
                                             alt="{{ $product->name }}">
                                     </a>
                                     <div class="label-group">
                                         <div class="product-label label-hot">HOT</div>
+                                        @if (checkDiscount($product))
+                                            @php
+                                                $discount =
+                                                    (($product->price - $product->offer_price) / $product->price) * 100;
+                                            @endphp
+                                            <div class="product-label label-sale">-{{ round($discount) }}%</div>
+                                        @endif
                                     </div>
                                 </figure>
                                 <div class="product-details">
                                     <div class="category-list">
-                                        <a href="#"
+                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
                                             class="product-category">{{ $product->brand->name ?? ' ' }}</a>
                                     </div>
                                     <h3 class="product-title">
-                                        <a href="#">{{ $product->name }}</a>
+                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     </h3>
                                     <div class="ratings-container">
                                         <div class="product-ratings">
@@ -45,7 +52,7 @@
                                     <!-- End .product-container -->
                                     <div class="price-box">
 
-                                        @if ($product->offer_price)
+                                        @if (checkDiscount($product))
                                             <del class="old-price">{{ number_format($product->price) }}</del>
                                             <span class="product-price">{{ number_format($product->offer_price) }}
                                                 VND</span>

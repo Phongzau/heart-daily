@@ -32,11 +32,11 @@ class ProductController extends Controller
         } elseif ($orderby == 'date') {
             $query->orderBy('created_at', 'desc');
         } else {
-            $query->orderBy('created_at', 'asc'); // Mặc định
+            $query->orderBy('created_at', 'asc'); 
         }
 
         $products = $query->paginate($perPage);
-
+        
         return response()->json([
             'products' => $products,
         ]);
@@ -102,6 +102,6 @@ class ProductController extends Controller
         }
         // dd($variantGroups);
 
-        return view('client.page.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated'));
+        return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated'));
     }
 }
