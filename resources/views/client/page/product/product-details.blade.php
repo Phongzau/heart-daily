@@ -114,9 +114,8 @@
 
                     @if (checkDiscount($product))
                         <div class="price-box">
-                            <span class="product-price">{{ number_format($product->price) }} VND</span>
+                            <span class="old-price">{{ number_format($product->price) }}</span>
                             <span class="product-price"><del>{{ number_format($product->offer_price) }}</del> VND</span>
-                            <span class="product-price"> $35.00</span>
                         </div>
                     @else
                         <div class="price-box">
@@ -463,9 +462,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-1.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-1-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -495,9 +494,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-2-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -526,9 +525,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-3.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-3-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -560,9 +559,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-4.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-4-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -592,9 +591,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-5.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-5-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -623,9 +622,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-6.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-6-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -657,9 +656,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-7.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-7-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -689,9 +688,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-8.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-8-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -721,9 +720,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-9.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-9-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -755,9 +754,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-10.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-10-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -786,9 +785,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-11.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-11-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
@@ -817,9 +816,9 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="assets/images/products/small/product-12.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
-                            <img src="assets/images/products/small/product-12-2.jpg" width="74" height="74"
+                            <img src="" width="74" height="74"
                                 alt="product">
                         </a>
                     </figure>
