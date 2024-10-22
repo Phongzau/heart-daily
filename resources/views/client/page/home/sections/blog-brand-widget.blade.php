@@ -1,7 +1,6 @@
             <section class="blog-section pb-0">
                 <div class="container">
 
-<<<<<<< HEAD
                     <div class="owl-carousel owl-theme appear-animate" data-animation-name="fadeIn"
                         data-owl-options="{
 						'loop': false,
@@ -137,8 +136,6 @@
                         </article>
                         <!-- End .post -->
                     </div>
-=======
->>>>>>> 6278d1e (feat: render_LatestNews_home)
 
                     <hr class="mt-0 m-b-5">
 
