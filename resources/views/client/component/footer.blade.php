@@ -10,6 +10,11 @@
               ->get();
 
       @endphp
+
+      @php
+          $socials = \App\Models\Social::query()->where('status', 1)->get();
+
+      @endphp
       <footer class="footer bg-dark">
           <div class="footer-middle">
               <div class="container">
@@ -43,12 +48,18 @@
                                     </li> -->
                                 </ul>
                                 <div class="social-icons">
-                                    <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
+                                    <!-- <a href="" class="social-icon social-facebook icon-facebook" target="_blank"
                                         title="Facebook"></a>
                                     <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
                                         title="Twitter"></a>
                                     <a href="" class="social-icon social-instagram icon-instagram"
-                                        target="_blank" title="Instagram"></a>
+                                        target="_blank" title="Instagram"></a> -->
+
+                                    @foreach($socials as $social)
+                                            <a href="{{ $social->url }}" class="social-icon" target="_blank">
+                                                <i class="{{ @$social->icon }}"></i>
+                                            </a>
+                                    @endforeach
                                 </div>
                                 <!-- End .social-icons -->
                             </div>
@@ -56,12 +67,9 @@
                         </div>
                         <!-- End .col-lg-3 -->
 
-                             
-
                       <div class="col-lg-3 col-sm-6">
                           <div class="widget">
                               <h4 class="widget-title">Customer Service</h4>
-
                               <ul class="links">
                                   @foreach ($menuItems as $key => $value)
                                       <li> <a href="{{ config('app.url') . $value->url }}">{{ $value->title }}</a></li>
