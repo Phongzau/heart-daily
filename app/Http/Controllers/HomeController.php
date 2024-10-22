@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -19,6 +20,7 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $slider = Banner::all();
-        return view('client.page.home.home', compact('slider', 'products','brands'));
+        $blogs = Blog::where('status', 1)->orderBy('created_at', 'desc')->paginate(10);
+        return view('client.page.home.home', compact('slider', 'products','brands','blogs',));
     }
 }
