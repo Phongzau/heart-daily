@@ -15,15 +15,19 @@ class NewletterPopupNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $popup;
-    public $user;
+    public $subscriber;
+    protected $socials;
+  
 
     /**
      * Create a new message instance.
      */
-    public function __construct(NewletterPopup $popup, $user)
+    public function __construct(NewletterPopup $popup, $subscriber, $socials)
     {
         $this->popup = $popup;
-        $this->user = $user;
+        $this->subscriber = $subscriber;
+        $this->socials = $socials;
+       
     }
 
     /**
@@ -37,7 +41,8 @@ class NewletterPopupNotification extends Mailable
                         'popupTitle' => $this->popup->title,
                         'popupDescription' => $this->popup->description,
                         'popupImage' => $this->popup->image,
-                        'user' => $this->user,
+                        'socials' => $this->socials,
+                       
                     ]);
     }
 }

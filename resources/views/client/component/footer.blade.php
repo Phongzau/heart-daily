@@ -37,7 +37,7 @@
                                     </li>
                                     <li>
                                         <span class="contact-info-label">Email:</span>
-                                        <a href="tel:{{@$generalSettings->contact_phone}}">
+                                        <a href="tel:{{@$generalSettings->contact_email}}">
                                             <i class="fas fa-envelope fa-sm"></i> {{@$generalSettings->contact_email}}
                                         </a>
                                     </li>

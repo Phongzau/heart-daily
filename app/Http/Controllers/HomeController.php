@@ -8,6 +8,7 @@ use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\NewletterPopup;
 use App\Models\Product;
+use App\Models\Social;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

@@ -22,7 +22,7 @@ class UpdateNewletterPopupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => ['required', 'max:4000', 'image'],
+            'image' => ['nullable', 'max:4000', 'image'],
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
             'status' => ['required', 'in:0,1'],

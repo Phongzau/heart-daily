@@ -8,6 +8,8 @@ use App\Http\Requests\StoreNewletterPopupRequest;
 use App\Http\Requests\UpdateNewletterPopupRequest;
 use App\Mail\NewletterPopupNotification;
 use App\Models\NewletterPopup;
+use App\Models\NewsletterSubscriber;
+use App\Models\Social;
 use App\Models\User;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Database\QueryException;
@@ -25,7 +27,9 @@ class NewletterPopupController extends Controller
 
     public function index(NewletterPopupDataTable $dataTable)
     {
-        return $dataTable->render('admin.page.popups.index');
+        $popupExists = NewletterPopup::exists();
+        $subscribers = NewsletterSubscriber::all();
+        return $dataTable->render('admin.page.popups.index', compact('subscribers', 'popupExists'));
     }
 
     /**
@@ -41,6 +45,11 @@ class NewletterPopupController extends Controller
      */
     public function store(StoreNewletterPopupRequest $request)
     {
+        $existingPopup = NewletterPopup::first();
+        if ($existingPopup) {
+            toastr('Chỉ có thể thêm một popup.', 'error');
+            return redirect()->back()->withInput();
+        }
         // Bắt đầu transaction
         DB::beginTransaction();
 
@@ -58,9 +67,11 @@ class NewletterPopupController extends Controller
 
             // Commit transaction
             DB::commit();
-            $users = User::all();
-            foreach ($users as $user) {
-                Mail::to($user->email)->send(new NewletterPopupNotification($popups, $user));
+
+            $subscribers = NewsletterSubscriber::all();
+            $socials = Social::query()->where('status', 1)->get();
+            foreach ($subscribers as $subscriber) {
+                Mail::to($subscriber->email)->send(new NewletterPopupNotification($popups, $subscriber, $socials));
             }
             toastr('Tạo thành công', 'success');
             return redirect()->route('admin.popups.index');
@@ -106,10 +117,12 @@ class NewletterPopupController extends Controller
         $popups->description = $request->description;
         $popups->status = $request->status;
         $popups->save();
-        $users = User::all();
-            foreach ($users as $user) {
-                Mail::to($user->email)->send(new NewletterPopupNotification($popups, $user));
-            }
+
+        $subscribers = NewsletterSubscriber::all();
+        $socials = Social::query()->where('status', 1)->get();
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->send(new NewletterPopupNotification($popups, $subscriber, $socials));
+        }
         toastr('Sửa thành công', 'success');
         return redirect()->route('admin.popups.index');
     }
@@ -128,7 +141,39 @@ class NewletterPopupController extends Controller
             'message' => 'Deleted Successfully!',
         ]);
     }
+    public function subscribe(Request $request)
+    {
+        $email = $request->input('email');
 
+        // Kiểm tra email đã tồn tại hay chưa
+        if (NewsletterSubscriber::where('email', $email)->exists()) {
+            toastr('Email này đã được đăng ký!', 'error');
+            return redirect()->back();
+        }
+
+        // Lưu email vào bảng subscribers
+        $subscriber = new NewsletterSubscriber();
+        $subscriber->email = $email;
+        $subscriber->save();
+
+        // Gửi mail thông báo
+        $popup = NewletterPopup::query()->latest()->first();
+        $socials = Social::query()->where('status', 1)->get();
+        Mail::to($email)->send(new NewletterPopupNotification($popup, $email, $socials));
+
+        toastr('Đăng ký thành công!', 'success');
+        return redirect()->back();
+    }
+    public function destroySubscribe($id)
+    {
+        $subscriber = NewsletterSubscriber::query()->findOrFail($id);
+        $subscriber->delete();
+
+        return response([
+            'status' => 'success',
+            'message' => 'Deleted Successfully!',
+        ]);
+    }
     public function changeStatus(Request $request)
     {
         $popups = NewletterPopup::query()->findOrFail($request->id);

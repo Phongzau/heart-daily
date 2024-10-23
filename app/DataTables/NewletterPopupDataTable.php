@@ -70,6 +70,11 @@ class NewletterPopupDataTable extends DataTable
             //->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
+            ->paging(false)
+            ->searching(false)
+            ->language([
+                'info' => '', 
+            ])
             ->buttons([
                 Button::make('excel'),
                 Button::make('csv'),
