@@ -37,11 +37,13 @@
 
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fa-brands fa-adversal"></i>
+                        class="fa-solid fa-rectangle-ad"></i>
                     <span>Banners</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('admin.advertisement.index') }}">
                             <span>Advertisement</span></a></li>
+                    <li><a class="nav-link" href="{{ route('admin.popups.index') }}">
+                            <span>Newlett Popup</span></a></li>
                     <li><a class="nav-link" href="{{ route('admin.banners.index') }}">
                             <span>Banner</span></a></li>
                 </ul>
@@ -86,14 +88,13 @@
             </li>
             <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="fa-solid fa-ticket"></i>
                     <span>Coupons</span></a></li>
-
+            <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-solid fa-icons"></i>
+                    <span>Socials</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
                     <span>Settings</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-solid fa-gear"></i>
-                    <span>Socials</span></a></li>
 
-            <li><a class="nav-link" href="{{ route('admin.popups.index') }}"><i class="fa-solid fa-gear"></i>
-                    <span>Newlett Popup</span></a></li>
+
+
 
         </ul>
     </aside>

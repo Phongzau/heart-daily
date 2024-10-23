@@ -28,4 +28,5 @@
     {{-- Blog & Brand & Widget  --}}
     @include('client.page.home.sections.blog-brand-widget')
     {{-- End Blog & Brand & Widget  --}}
+    @include('client.component.newletter-popup')
 @endsection

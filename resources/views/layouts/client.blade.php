@@ -15,4 +15,4 @@
 </main>
 <!-- End .main -->
 @include('client.component.footer')
-@include('client.component.newletter-popup')
+
