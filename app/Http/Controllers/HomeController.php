@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advertisement;
 use App\Models\Banner;
 use App\Models\Blog;
 use App\Models\Brand;
@@ -20,9 +21,11 @@ class HomeController extends Controller
             ->where('created_at', '>=', Carbon::now()->subDays(30))
             ->orderBy('created_at', 'desc')
             ->get();
-        $slider = Banner::all();
         $blogs = Blog::where('status', 1)->orderBy('created_at', 'desc')->paginate(10);
         $popup = NewletterPopup::query()->first();
-        return view('client.page.home.home', compact('slider', 'products','brands','blogs','popup'));
+            $slider = Banner::where('status', 1)->get();
+        $homepage_section_banner_one = Advertisement::query()->where('key', 'homepage_section_banner_one')->first();
+        $homepage_section_banner_one = json_decode($homepage_section_banner_one?->value);
+        return view('client.page.home.home', compact('slider','blogs','popup', 'products', 'brands', 'homepage_section_banner_one'));
     }
 }

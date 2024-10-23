@@ -1,10 +1,14 @@
 <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="3000">
     <div class="carousel-inner">
         @foreach ($slider as $slide)
+            @if ($slide->status)
             <div class="carousel-item @if ($loop->first) active @endif">
-                <img src="{{ Storage::url($slide->image) }}" class="d-block w-100" alt=""
+                <a href="{{$slide->url}}">
+                    <img src="{{ Storage::url($slide->image) }}" class="d-block w-100" alt=""
                      style="max-height: 500px; max-width: 100%; height: auto; object-fit: cover;">
+                </a>
             </div>
+            @endif
         @endforeach
     </div>
     <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
