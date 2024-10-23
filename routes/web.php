@@ -268,6 +268,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
 
     //advertisement
     Route::prefix('advertisement')->name('advertisement.')->group(function () {
+        Route::put('change-status', [AdvertisementsController::class, 'changeStatus'])
+            ->name('change-status');
         Route::get('/', [AdvertisementsController::class, 'index'])->name('index');
         Route::put('homepage-banner-section-one', [AdvertisementsController::class, 'homepageBannerSectionOne'])->name('homepage-banner-section-one');
         Route::put('homepage-banner-section-two', [AdvertisementsController::class, 'homepageBannerSectionTwo'])->name('homepage-banner-section-two');
