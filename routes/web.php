@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\SocialController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
@@ -341,3 +342,12 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('ajaxGetProducts');
     Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
 });
+
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('cart', [CartController::class, 'cartDetails'])->name('cart-details');
+Route::post('cart/update-quantity', [CartController::class, 'updateProductQty'])->name('cart.update-quantity');
+Route::get('cart/product-total', [CartController::class, 'cartTotal'])->name('cart.product-total');
+Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+Route::get('coupon-calculation', [CartController::class, 'couponCalculation'])->name('coupon-calculation');
+Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear.cart');
+Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProduct'])->name('cart.remove-product');

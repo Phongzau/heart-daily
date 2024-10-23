@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 function limitText($text, $limit = 20)
@@ -31,4 +32,50 @@ function checkDiscount($product)
     }
 
     return false;
+}
+
+/** Get Cart Total */
+function getCartTotal()
+{
+    $carts = session()->get('cart', []);
+    $total = 0;
+    foreach ($carts as $product) {
+        $total += $product['price'] * $product['qty'];
+    }
+    return $total;
+}
+
+// Get Cart Total
+function getMainCartTotal()
+{
+    if (Session::has('coupon')) {
+        $coupon = Session::get('coupon');
+        $subTotal = getCartTotal();
+        if ($coupon['discount_type'] === 'amount') {
+            $total = $subTotal - $coupon['discount'];
+        } else if ($coupon['discount_type'] === 'percent') {
+            $discount = $subTotal * $coupon['discount'] / 100;
+            $total = $subTotal - $discount;
+        }
+        return $total;
+    } else {
+        return getCartTotal();
+    }
+}
+
+// Get cart discount
+function getCartDiscount()
+{
+    if (Session::has('coupon')) {
+        $coupon = Session::get('coupon');
+        $subTotal = getCartTotal();
+        if ($coupon['discount_type'] === 'amount') {
+            return $coupon['discount'];
+        } else if ($coupon['discount_type'] === 'percent') {
+            $discount = $subTotal * $coupon['discount'] / 100;
+            return $discount;
+        }
+    } else {
+        return 0;
+    }
 }

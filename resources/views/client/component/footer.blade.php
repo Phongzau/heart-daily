@@ -367,7 +367,7 @@
       <script src="{{ asset('frontend/assets/js/optional/isotope.pkgd.min.js') }}"></script>
       <script src="{{ asset('frontend/assets/js/plugins.min.js') }}"></script>
       <script src="{{ asset('frontend/assets/js/jquery.appear.min.js') }}"></script>
-
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <!-- Main JS File -->
       <script src="{{ asset('frontend/assets/js/main.min.js') }}"></script>
 
