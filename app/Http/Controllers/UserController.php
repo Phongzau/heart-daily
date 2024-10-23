@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Mail\ResetPassword;
 use App\Mail\ConfirmEmail;
 use App\Models\User;
+use App\Traits\ImageUploadTrait;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
@@ -14,7 +17,7 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-
+    use ImageUploadTrait;
     public function index()
     {
         return view('client.page.auth.login');
@@ -133,23 +136,32 @@ class UserController extends Controller
 
     public function resetPassword(Request $request)
     {
+        // Validate đầu vào
         $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'token' => 'required'
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        // Lấy ra user
+        $user = User::find(Auth::id());
 
-        if ($user) {
-            $user->password = Hash::make($request->password);
-            $user->save();
-
-            toastr('Mật khẩu của bạn đã được đặt lại thành công!', 'success');
-            return redirect()->route('login');
+        // Kiểm tra mật khẩu hiện tại có khớp không
+        if (!Hash::check($request->current_password, $user->password)) {
+            toastr('Mật khẩu hiện tại không đúng.', 'error');
+            return back();
         }
 
-        toastr('Có lỗi xảy ra, vui lòng thử lại.', 'error');
+        // Kiểm tra mật khẩu mới không giống mật khẩu hiện tại
+        if (Hash::check($request->new_password, $user->password)) {
+            toastr('Mật khẩu mới không được trùng với mật khẩu hiện tại.', 'error');
+            return back();
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        toastr('Mật khẩu của bạn đã được cập nhật thành công!', 'success');
         return back();
     }
 
@@ -158,5 +170,61 @@ class UserController extends Controller
         Auth::logout();
         toastr('Bạn đã đăng xuất thành công.', 'success');
         return redirect()->route('home');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // Validate dữ liệu
+        $request->validate([
+            'first_name' => ['required', 'max:100'],
+            'last_name' => ['required', 'max:100'],
+            'display_name' => ['required', 'max:100'],
+            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
+            'image' => ['image', 'max:2048'],
+        ]);
+
+        // Bắt đầu transaction
+        DB::beginTransaction();
+        try {
+            // Lấy người dùng hiện tại
+            $user = User::find(Auth::id());
+
+            if (!$user->image) {
+                // Kiểm tra nếu có file ảnh được tải lên
+                if ($request->hasFile('image')) {
+                    // Upload ảnh và lấy đường dẫn
+                    $imagePath = $this->uploadImage($request, 'image', 'users');
+                }
+            } else {
+                $imagePath = $this->updateImage($request, 'image', $user->image, 'users');
+            }
+
+            // Cập nhật các thông tin khác
+            $user->image = $imagePath;
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->display_name = $request->display_name;
+            $user->email = $request->email;
+            $user->save();
+
+            // Commit transaction
+            DB::commit();
+
+            // Thông báo thành công
+            toastr()->success('Profile updated successfully');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            // Rollback nếu có lỗi
+            DB::rollBack();
+
+            // Xóa ảnh nếu có lỗi
+            if (isset($imagePath)) {
+                $this->deleteImage($imagePath);
+            }
+
+            // Thông báo lỗi
+            toastr('Có lỗi xảy ra: ' . $e->getMessage(), 'error');
+            return redirect()->back()->withInput();
+        }
     }
 }
