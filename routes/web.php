@@ -40,7 +40,9 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/forgot-password', [UserController::class, 'showForgotPasswordForm'])->name('forgot.password');
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('send.reset.link');
 Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
-Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
+Route::put('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
+Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+
 //chat
 
 Route::get('/chat/{id?}', function ($id = null) {
