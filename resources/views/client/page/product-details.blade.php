@@ -1,5 +1,53 @@
 @extends('layouts.client')
 
+@section('css')
+    <style>
+        .size-options.disabled {
+            color: gray;
+            /* Màu chữ xám cho các kích cỡ bị disable */
+            cursor: not-allowed;
+            /* Đổi con trỏ chuột thành hình tay không cho biết không thể nhấp vào */
+            position: relative;
+            /* Để thêm dấu X */
+            text-decoration: none;
+            /* Xóa gạch ngang chữ */
+        }
+
+        /* Tạo đường kẻ chéo tạo thành hình X */
+        .size-options.disabled::before,
+        .size-options.disabled::after {
+            content: '';
+            /* Không có nội dung, chỉ cần đường kẻ */
+            position: absolute;
+            /* Đặt vị trí tuyệt đối */
+            background-color: gray;
+            /* Màu sắc của đường kẻ */
+            width: 100%;
+            /* Đặt chiều rộng */
+            height: 1px;
+            /* Đặt chiều cao của đường kẻ mỏng hơn */
+            left: 0;
+            /* Đặt vị trí bên trái */
+        }
+
+        /* Đường kẻ chéo thứ nhất */
+        .size-options.disabled::before {
+            transform: rotate(45deg);
+            /* Xoay 45 độ */
+            top: 50%;
+            /* Đặt giữa chiều cao của phần tử */
+        }
+
+        /* Đường kẻ chéo thứ hai */
+        .size-options.disabled::after {
+            transform: rotate(-45deg);
+            /* Xoay -45 độ */
+            top: 50%;
+            /* Đặt giữa chiều cao của phần tử */
+        }
+    </style>
+@endsection
+
 @section('section')
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -154,23 +202,28 @@
                         </li> --}}
                     </ul>
                     <div class="product-filters-container">
-                        @foreach ($variantGroups as $key => $value)
-                            @php
-                                $key = strtolower($key);
-                            @endphp
-                            <div class="product-single-filter">
-                                <label>{{ $key }}</label>
-                                <ul class="config-size-list">
-                                    @foreach ($value as $item)
-                                        <li><a href="javascript:;"
-                                                class="d-flex align-items-center justify-content-center {{ $key }}-options"
-                                                data-{{ $key }}="{{ $item }}"
-                                                data-attribute="{{ $key }}"
-                                                data-value="{{ $item }}">{{ $item }}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                        @php
+                            // Sắp xếp các nhóm thuộc tính để color trước size
+                            $orderedKeys = ['Color', 'Size'];
+                        @endphp
+
+                        @foreach ($orderedKeys as $key)
+                            @if (array_key_exists($key, $variantGroups))
+                                <div class="product-single-filter">
+                                    <label>{{ strtolower($key) }}</label>
+                                    <ul class="config-size-list">
+                                        @foreach ($variantGroups[$key] as $index => $item)
+                                            <li>
+                                                <a href="javascript:;"
+                                                    class="d-flex align-items-center justify-content-center {{ strtolower($key) }}-options {{ $key === 'Color' && $index === 0 ? 'default-selected' : '' }}"
+                                                    data-{{ strtolower($key) }}="{{ $item }}"
+                                                    data-attribute="{{ strtolower($key) }}"
+                                                    data-value="{{ $item }}">{{ $item }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                         @endforeach
 
                         <div class="product-single-filter">
@@ -183,7 +236,8 @@
                         <div class="product-action">
 
                             <div class="product-single-qty">
-                                <input class="horizontal-quantity form-control" type="text">
+                                <input class="horizontal-quantity form-control" name="qty" type="text">
+                                <input type="text" hidden name="product_id" value="{{ $product->id }}">
                             </div>
                             <!-- End .product-single-qty -->
 
@@ -455,7 +509,7 @@
         </div>
         <!-- End .products-section -->
 
-        <hr class="mt-0 m-b-5" />
+        {{-- <hr class="mt-0 m-b-5" />
 
         <div class="product-widgets-container row pb-2">
             <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
@@ -845,7 +899,7 @@
                     <!-- End .product-details -->
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- End .row -->
     </div>
     <!-- End .container -->
@@ -858,6 +912,12 @@
         console.log(variantData);
 
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             // Xử lý sự kiện nhấp vào tùy chọn màu
             $('.color-options').click(function() {
                 // Bỏ chọn tất cả các màu trước đó
@@ -875,16 +935,26 @@
 
                     // Hiển thị các kích cỡ liên quan đến màu đã chọn
                     if (availableSizes) {
-                        $.each(availableSizes, function(index, size) {
-                            ulElement.append(
+                        $.each(availableSizes, function(size, qty) {
+                            var sizeLink = $(
                                 '<li><a href="javascript:;" class="d-flex align-items-center justify-content-center size-options" data-size="' +
                                 size + '" data-attribute="size" data-value="' + size + '">' +
-                                size +
-                                '</a></li>');
+                                size + '</a></li>'
+                            );
+
+                            // Kiểm tra số lượng
+                            if (qty <= 0) {
+                                sizeLink.find('a').addClass('disabled').css('pointer-events',
+                                    'none');;
+                            }
+
+                            ulElement.append(sizeLink);
                         });
                     }
                 }
             });
+
+            $('.color-options.default-selected').trigger('click');
 
             // Xử lý sự kiện nhấp vào tùy chọn kích cỡ
             $('.config-size-list').on('click', '.size-options', function() {
@@ -904,8 +974,21 @@
                 console.log("Filters cleared");
             });
 
-            $('#add-to-cart').on('click', function(e) {
+            function checkSelectOptions() {
+                let totalFilter = $('.product-single-filter').length - 1;
+                let selectedCount = $('.product-single-filter a.selected').length;
+
+                return totalFilter === selectedCount;
+            }
+
+            $('#add-to-cart').on('submit', function(e) {
                 e.preventDefault();
+
+                if (!checkSelectOptions()) {
+                    toastr.error('Vui lòng chọn biến thể sản phẩm');
+                    return false;
+                }
+
                 // Đối tượng để lưu trữ các tùy chọn đã chọn
                 let selectedOptions = {};
 
@@ -917,6 +1000,27 @@
                     // Cập nhật vào đối tượng selectedOptions
                     selectedOptions[attribute] = value;
                 });
+
+                let formData = $(this).serialize();
+                $.ajax({
+                    url: "{{ route('add-to-cart') }}",
+                    method: 'POST',
+                    data: {
+                        formData: formData,
+                        variants: selectedOptions,
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            toastr.success(data.message);
+                        } else if (data.status === 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+
+                    },
+                })
+
 
                 // In ra kết quả
                 console.log(selectedOptions);

@@ -54,6 +54,7 @@
         href="{{ asset('frontend/assets/vendor/fontawesome-free/css/all.min.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('css-chat')
+    @yield('css')
 </head>
 
 <body>
