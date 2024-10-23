@@ -108,17 +108,13 @@ class ProductController extends Controller
                     $variantArray[$color] = [];
                 }
 
-                // Thêm kích cỡ vào màu sắc tương ứng, tránh trùng lặp
-                if (!in_array($size, $variantArray[$color])) {
-                    $variantArray[$color][] = $size;
-                }
+                $variantArray[$color][$size] = $variant->qty;
             }
         }
-
+        // dd($variantGroups);
         // Chuyển đổi mảng PHP thành JSON
         $variantDataJson = json_encode($variantArray);
         // dd($variantDataJson);
-
         foreach ($variantGroups as $category => $attributes) {
             $variantGroups[$category] = array_values(array_unique($attributes));
         }

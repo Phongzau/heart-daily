@@ -65,7 +65,7 @@ class AdminProductController extends Controller
 
         // Nếu là sản phẩm có biến thể
         if ($request->type_product === 'product_variant') {
-            $rules['variant.*.qty'] = 'required|numeric|min:1';
+            $rules['variant.*.qty'] = 'required|numeric|min:0';
             $rules['variant.*.variant_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
             $rules['variant.*.variant_id.*'] = 'required|exists:category_attributes,id'; // yêu cầu từng phần tử phải tồn tại trong bảng variants
             $rules['variant.*.value_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
@@ -74,7 +74,7 @@ class AdminProductController extends Controller
 
         // Nếu là sản phẩm đơn giản
         if ($request->type_product === 'product_simple') {
-            $rules['qty'] = 'required|numeric|min:1';
+            $rules['qty'] = 'required|numeric|min:0';
         }
 
         // Xác định các thông báo lỗi
@@ -170,7 +170,7 @@ class AdminProductController extends Controller
                     foreach ($request->variant as $variant) {
                         $productVariant = new ProductVariant();
                         $productVariant->product_id = $product->id;
-                        $productVariant->id_variant = json_encode($variant['value_id']);
+                        $productVariant->id_variant = json_encode(array_map('intval', $variant['value_id']));
                         $productVariant->qty = $variant['qty'];
                         $productVariant->save();
                     }
@@ -296,7 +296,7 @@ class AdminProductController extends Controller
 
         // Nếu là sản phẩm có biến thể
         if ($request->type_product === 'product_variant') {
-            $rules['variant.*.qty'] = 'required|numeric|min:1';
+            $rules['variant.*.qty'] = 'required|numeric|min:0';
             $rules['variant.*.variant_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
             $rules['variant.*.variant_id.*'] = 'required|exists:category_attributes,id'; // yêu cầu từng phần tử phải tồn tại trong bảng variants
             $rules['variant.*.value_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
@@ -305,7 +305,7 @@ class AdminProductController extends Controller
 
         // Nếu là sản phẩm đơn giản
         if ($request->type_product === 'product_simple') {
-            $rules['qty'] = 'required|numeric|min:1';
+            $rules['qty'] = 'required|numeric|min:0';
         }
 
         // Xác định các thông báo lỗi
@@ -407,7 +407,8 @@ class AdminProductController extends Controller
                             $productVariant->product_id = $product->id;
                         }
 
-                        $productVariant->id_variant = json_encode($variant['value_id']); // Lưu value_id dưới dạng JSON
+                        $productVariant->id_variant = json_encode(array_map('intval', $variant['value_id']));
+                        // Lưu value_id dưới dạng JSON
                         $productVariant->qty = $variant['qty'];
                         $productVariant->save();
                     }
