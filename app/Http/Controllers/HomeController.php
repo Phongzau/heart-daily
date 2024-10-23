@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Blog;
 use App\Models\Brand;
+use App\Models\NewletterPopup;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class HomeController extends Controller
             ->get();
         $slider = Banner::all();
         $blogs = Blog::where('status', 1)->orderBy('created_at', 'desc')->paginate(10);
-        return view('client.page.home.home', compact('slider', 'products','brands','blogs',));
+        $popup = NewletterPopup::query()->first();
+        return view('client.page.home.home', compact('slider', 'products','brands','blogs','popup'));
     }
 }

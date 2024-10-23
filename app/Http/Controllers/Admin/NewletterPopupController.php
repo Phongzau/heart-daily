@@ -6,12 +6,14 @@ use App\DataTables\NewletterPopupDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNewletterPopupRequest;
 use App\Http\Requests\UpdateNewletterPopupRequest;
+use App\Mail\NewletterPopupNotification;
 use App\Models\NewletterPopup;
+use App\Models\User;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
 
 class NewletterPopupController extends Controller
 {
@@ -56,7 +58,10 @@ class NewletterPopupController extends Controller
 
             // Commit transaction
             DB::commit();
-
+            $users = User::all();
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new NewletterPopupNotification($popups, $user));
+            }
             toastr('Tạo thành công', 'success');
             return redirect()->route('admin.popups.index');
         } catch (QueryException $e) {
@@ -101,6 +106,10 @@ class NewletterPopupController extends Controller
         $popups->description = $request->description;
         $popups->status = $request->status;
         $popups->save();
+        $users = User::all();
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new NewletterPopupNotification($popups, $user));
+            }
         toastr('Sửa thành công', 'success');
         return redirect()->route('admin.popups.index');
     }

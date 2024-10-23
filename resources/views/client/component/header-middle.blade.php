@@ -4,7 +4,7 @@
                        <button class="mobile-menu-toggler text-primary mr-2" type="button">
                            <i class="fas fa-bars"></i>
                        </button>
-                       <a href="{{ url('/') }}" class="logo">
+                       <a href="{{ route('home') }}" class="logo">
                            <img src="{{ Storage::url(@$logoSetting->logo) }}" alt="Logo">
                        </a>
                    </div>
