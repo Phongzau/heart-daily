@@ -186,21 +186,22 @@
 @endsection
 @section('js-chat')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        });
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                event.target.closest('form').dispatchEvent(new Event('submit'));
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatContainer = document.getElementById("chat-container");
 
-        Livewire.on('messageSent', () => {
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            function scrollToBottom() {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            scrollToBottom();
+            Livewire.on('messageSent', () => {
+                scrollToBottom();
+            });
         });
-
-        // function handleFileUpload(input) {
-        //     if (input.files && input.files[0]) {
-        //         const fileName = input.files[0].name;
-        //         alert('Tệp đã chọn: ' + fileName);
-        //     }
-        // }
     </script>
 @endsection

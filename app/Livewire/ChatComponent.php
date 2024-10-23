@@ -12,7 +12,7 @@ use Livewire\WithFileUploads;
 class ChatComponent extends Component
 {
     use WithFileUploads;
-    public $users; 
+    public $users;
     public $user;
     public $sender_id;
     public $receiver_id;
@@ -25,24 +25,24 @@ class ChatComponent extends Component
         $this->sender_id = auth()->user()->id;
         $this->receiver_id = $user_id;
 
-     
+
         $this->users = User::where('id', '!=', $this->sender_id)->get();
 
-  
-        $messages = Message::where(function($query){
+
+        $messages = Message::where(function ($query) {
             $query->where('sender_id', $this->sender_id)
-                  ->where('receiver_id', $this->receiver_id);
-        })->orWhere(function($query){
+                ->where('receiver_id', $this->receiver_id);
+        })->orWhere(function ($query) {
             $query->where('sender_id', $this->receiver_id)
-                  ->where('receiver_id', $this->sender_id);
+                ->where('receiver_id', $this->sender_id);
         })
-        ->with('sender:id,name', 'receiver:id,name')
-        ->get();
+            ->with('sender:id,name', 'receiver:id,name')
+            ->get();
 
         foreach ($messages as $message) {
             $this->appendChatMessage($message);
         }
-
+        $this->markMessagesAsRead();
         $this->user = User::whereId($user_id)->first();
     }
 
@@ -68,28 +68,28 @@ class ChatComponent extends Component
         } else {
             $chatMessage->message = [
                 'text' => $this->message,
-                'file' => null 
+                'file' => null
             ];
         }
-        
+
         $chatMessage->save();
-    
+
         $this->appendChatMessage($chatMessage);
         broadcast(new MessageSendEvent($chatMessage))->toOthers();
-    
+
         $this->message = '';
         $this->file = null;
-        $this->dispatch('messageSent'); 
+        $this->dispatch('messageSent');
     }
-    
+
 
     #[On('echo-private:chat-channel.{sender_id},MessageSendEvent')]
     public function listenForMessage($event)
     {
         $chatMessage = Message::whereId($event['message']['id'])
-        ->with('sender:id,name', 'receiver:id,name')
-        ->first();
-        
+            ->with('sender:id,name', 'receiver:id,name')
+            ->first();
+
         $this->appendChatMessage($chatMessage);
     }
 
@@ -102,5 +102,12 @@ class ChatComponent extends Component
             'receiver' => $message->receiver->name,
             'created_at' => $message->created_at
         ];
+    }
+    public function markMessagesAsRead()
+    {
+        Message::where('receiver_id', $this->sender_id)
+            ->where('sender_id', $this->receiver_id)
+            ->where('status', 0) // Chỉ lấy tin nhắn chưa đọc
+            ->update(['status' => 1]); // Đánh dấu là đã đọc
     }
 }
