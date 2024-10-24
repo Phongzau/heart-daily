@@ -48,19 +48,25 @@ function getCartTotal()
 // Get Cart Total
 function getMainCartTotal()
 {
+    $subTotal = getCartTotal();
+    $cod = getCartCod();
     if (Session::has('coupon')) {
         $coupon = Session::get('coupon');
-        $subTotal = getCartTotal();
+        // $subTotal = getCartTotal();
         if ($coupon['discount_type'] === 'amount') {
             $total = $subTotal - $coupon['discount'];
         } else if ($coupon['discount_type'] === 'percent') {
             $discount = $subTotal * $coupon['discount'] / 100;
             $total = $subTotal - $discount;
         }
-        return $total;
+        // return $total;
     } else {
-        return getCartTotal();
+        // return getCartTotal();
+        $total = $subTotal;
     }
+    $total += $cod;
+
+    return $total;
 }
 
 // Get cart discount
@@ -77,5 +83,26 @@ function getCartDiscount()
         }
     } else {
         return 0;
+    
     }
+}
+function fetchCartDiscountInfo()
+{
+    if (Session::has('coupon')) {
+        $coupon = Session::get('coupon'); 
+        return [
+            'coupon_name' => $coupon['coupon_name'], 
+            'coupon_code' => $coupon['coupon_code'],
+            'discount_type' => $coupon['discount_type'], 
+            'discount' => $coupon['discount'],
+        ];
+    } else {
+        return null; 
+    }
+}
+
+function getCartCod()
+{
+    $cod = 30000;
+    return $cod;
 }

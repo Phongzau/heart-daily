@@ -271,7 +271,7 @@ class CartController extends Controller
             }
         }
 
-        $coupon = Coupon::query()->where(['code' => $request->coupon_code, 'status' => 1])->first();
+        $coupon = Coupon::where(['code' => $request->coupon_code, 'status' => 1])->first();
         // Kiểm tra ngày bắt đầu và ngày hết hạn với Carbon
         $currentDate = Carbon::now()->format('Y-m-d');
         if ($coupon === null) {

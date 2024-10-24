@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
@@ -355,3 +356,10 @@ Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProdu
 //popup
 Route::post('/newsletter-subscribe', [NewletterPopupController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::delete('/subscribers/{id}', [NewletterPopupController::class, 'destroySubscribe'])->name('subscribers.destroy');
+//checkout
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/order-complete', [CheckoutController::class, 'orderComplete'])->name('order.complete');
+Route::get('/payment', [CheckoutController::class, 'createPayment'])->name('payment.create');
+Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
+
