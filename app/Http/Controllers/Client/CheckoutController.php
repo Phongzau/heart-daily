@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -22,7 +21,6 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-
         $carts = session('cart', []);
         $request->validate([
             'name' => 'required|string|max:255',
@@ -33,35 +31,10 @@ class CheckoutController extends Controller
             'district' => 'required|string|max:100',
             'ward' => 'required|string|max:100',
             'payment_method' => 'required|string|in:cod,vnpay',
+        ]);
 
-        ]);
-        $subTotal = getCartTotal();
-        $shippingCost = getCartCod();
-        $discountInfo = fetchCartDiscountInfo();
-        $totalAmount = getMainCartTotal();
-        // do {
-        //     $invoiceId = rand(100000, 999999);
-        // } while (Order::where('invoice_id', $invoiceId)->exists());
-        $order = new Order();
-        $order->invoice_id = (string) Str::uuid();
-        $order->user_id = Auth::id();
-        $order->sub_total = $subTotal;
-        $order->amount = $totalAmount;
-        $order->product_qty = array_sum(array_column($carts, 'qty'));
-        $order->payment_status = false;
-        $order->order_address = json_encode([
-            'name' => $request->input('name'),
-            'phone' => $request->input('phone'),
-            'email' => $request->input('email'),
-            'address' => $request->input('address'),
-            'city' => $request->input('city'),
-            'district' => $request->input('district'),
-            'ward' => $request->input('ward'),
-            'order_comments' => $request->input('order_comments'),
-        ]);
-        $order->cod = $shippingCost;
-        $order->order_status = now();
-        $order->coupon_method = json_encode($discountInfo ?? []);
+        // Sử dụng hàm createOrder để tạo đơn hàng
+        $order = $this->createOrder($request);
 
         if ($request->input('payment_method') === 'vnpay') {
             return $this->createPayment($order);
@@ -75,14 +48,39 @@ class CheckoutController extends Controller
             return redirect()->route('order.complete');
         }
     }
+
     public function orderComplete()
     {
         return view('client.page.complete');
     }
-    // private function getOrderAddress($request)
-    // {
-    //     return $request->address . ', ' . $request->ward . ', ' . $request->district . ', ' . $request->city;
-    // }
+
+    private function createOrder($request)
+    {
+        $carts = session('cart', []);
+        $order = new Order();
+        $order->invoice_id = (string) Str::uuid();
+        $order->user_id = Auth::id();
+        $order->sub_total = getCartTotal();
+        $order->amount = getMainCartTotal();
+        $order->product_qty = array_sum(array_column($carts, 'qty'));
+        $order->payment_status = false;
+        $order->order_address = json_encode([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'address' => $request->input('address'),
+            'city' => $request->input('city'),
+            'district' => $request->input('district'),
+            'ward' => $request->input('ward'),
+            'order_comments' => $request->input('order_comments'),
+        ]);
+        $order->cod = getCartCod();
+        $order->order_status = now();
+        $order->coupon_method = json_encode(fetchCartDiscountInfo() ?? []);
+
+        return $order;
+    }
+
     private function createPayment($order)
     {
         $vnp_TmnCode = config('vnpay.vnp_TmnCode');
@@ -111,7 +109,6 @@ class CheckoutController extends Controller
             "vnp_OrderType" => $vnp_OrderType,
             "vnp_ReturnUrl" => $vnp_ReturnUrl,
             "vnp_TxnRef" => $vnp_TxnRef,
-
         ];
 
         ksort($inputData);
@@ -139,10 +136,8 @@ class CheckoutController extends Controller
 
     public function vnpayReturn(Request $request)
     {
-        // $vnp_HashSecret = config('vnpay.vnp_HashSecret');
         $vnp_SecureHash  = $request->vnp_SecureHash;
         $inputData = $request->all();
-        // $vnp_SecureHash = $inputData['vnp_SecureHash'];
         unset($inputData['vnp_SecureHash']);
         ksort($inputData);
         $hashData = '';
@@ -151,37 +146,12 @@ class CheckoutController extends Controller
         }
         $hashData = rtrim($hashData, '&');
         $secureHash = hash_hmac('sha512', $hashData, config('vnpay.vnp_HashSecret'));
+
         if ($secureHash === $vnp_SecureHash) {
             if ($request->vnp_ResponseCode == '00') {
-                $carts = session('cart', []);
-                $subTotal = getCartTotal();
-                $shippingCost = getCartCod();
-                $discountInfo = fetchCartDiscountInfo();
-                $totalAmount = getMainCartTotal();
-                // do {
-                //     $invoiceId = rand(100000, 999999);
-                // } while (Order::where('invoice_id', $invoiceId)->exists());
-                $order = new Order();
-                $order->invoice_id = (string) Str::uuid();
-                $order->user_id = Auth::id();
-                $order->sub_total = $subTotal;
-                $order->amount = $totalAmount;
-                $order->product_qty = array_sum(array_column($carts, 'qty'));
+                $order = $this->createOrder($request);
                 $order->payment_status = true;
                 $order->payment_method = 'VNPay';
-                $order->order_address = json_encode([
-                    'name' => $request->input('name'),
-                    'phone' => $request->input('phone'),
-                    'email' => $request->input('email'),
-                    'address' => $request->input('address'),
-                    'city' => $request->input('city'),
-                    'district' => $request->input('district'),
-                    'ward' => $request->input('ward'),
-                    'order_comments' => $request->input('order_comments'),
-                ]);
-                $order->cod = $shippingCost;
-                $order->order_status = now();
-                $order->coupon_method = json_encode($discountInfo ?? []);
                 $order->save();
                 $this->sendOrderConfirmation($order);
                 session()->forget('cart');
@@ -197,7 +167,6 @@ class CheckoutController extends Controller
             return redirect()->route('checkout');
         }
     }
-
 
     private function sendOrderConfirmation($order)
     {

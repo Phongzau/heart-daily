@@ -1,5 +1,7 @@
 @extends('layouts.client')
-
+@section('title')
+    Thanh toán đơn hàng
+@endsection
 @section('section')
     <div class="container checkout-container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">

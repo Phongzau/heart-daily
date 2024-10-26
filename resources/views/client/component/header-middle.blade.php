@@ -49,20 +49,12 @@
 
                        <i class="fa-solid fa-right-from-bracket"></i>
                        @if (Auth::check())
-                           <a href="{{ route('chat') }}" class="header-icon"><i class="far fa-comment-dots"></i></a>
-
+                           <a href="{{ route('chat') }}" class="header-icon" title="chat"><i
+                                   class="far fa-comment-dots" style="opacity: 0.95;"></i></a>
                            <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown"><i
                                    class="icon-user-2"></i>
                            </a>
                            <ul class="dropdown-menu">
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> <span>logout</span></a>
-                               </li>
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href=""><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
-                               </li>
                                <li
                                    style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
                                    <a href=""><i class="fas fa-user"></i><span>MY Account</span></a>
@@ -71,6 +63,11 @@
                                    style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
                                    <a href=""><i class="fas fa-user-shield"></i><span>Admin</span></a>
                                </li>
+                               <li
+                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                                   <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i>
+                                       <span>logout</span></a>
+                               </li>
                            </ul>
                            {{-- </li> --}}
                        @else
@@ -78,17 +75,14 @@
 
                            </a> --}}
 
-                           <a href="{{ route('login') }}" class="header-icon has-dropdown" title="login"
-                               data-toggle="dropdown"><i class="icon-user-2"></i>
+                           <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown"><i
+                                   class="icon-user-2"></i>
                            </a>
                            <ul class="dropdown-menu">
                                <li
                                    style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href=""><i class="fas fa-sign-out-alt"></i> <span>logout</span></a>
-                               </li>
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+                                   <a href="{{ route('login') }}"><i
+                                           class="fas fa-sign-in-alt"></i><span>Login</span></a>
                                </li>
                                <li
                                    style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
@@ -96,8 +90,6 @@
                                </li>
                            </ul>
                        @endif
-
-
                        <a href="{{ route('wishlist') }}" class="header-icon" title="wishlist"><i
                                class="icon-wishlist-2"></i></a>
 
@@ -106,7 +98,7 @@
                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                data-display="static">
                                <i class="minicart-icon"></i>
-                               <span class="cart-count badge-circle">3</span>
+                               <span class="cart-count badge-circle">{{ count($carts) }}</span>
                            </a>
 
                            <div class="cart-overlay"></div>
@@ -119,83 +111,44 @@
                                    <!-- End .dropdown-cart-header -->
 
                                    <div class="dropdown-cart-products">
-                                       <div class="product">
-                                           <div class="product-details">
-                                               <h4 class="product-title">
-                                                   <a href="product.html">Ultimate 3D Bluetooth Speaker</a>
-                                               </h4>
+                                       @foreach ($carts as $keyCart => $item)
+                                           <div class="product">
+                                               <div class="product-details">
+                                                   <h4 class="product-title">
+                                                       <a
+                                                           href="{{ route('product.detail', ['slug' => $item['options']['slug']]) }}">{{ $item['name'] }}</a>
+                                                   </h4>
 
-                                               <span class="cart-product-info">
-                                                   <span class="cart-product-qty">1</span> × $99.00
-                                               </span>
+                                                   <span class="cart-product-info">
+                                                       <span class="cart-product-qty">{{ $item['qty'] }}</span> ×
+                                                       {{ number_format($item['price']) }}
+                                                       VND
+                                                   </span>
+                                               </div>
+                                               <!-- End .product-details -->
+
+                                               <figure class="product-image-container">
+                                                   <a href="{{ route('product.detail', ['slug' => $item['options']['slug']]) }}"
+                                                       class="product-image">
+                                                       <img src="{{ Storage::url($item['options']['image']) }}"
+                                                           alt="{{ $item['name'] }}" width="80" height="80">
+                                                   </a>
+
+                                                   <a href="{{ route('cart.remove-product', ['cartKey' => $keyCart]) }}"
+                                                       class="btn-remove" title="Remove Product"><span>×</span></a>
+                                               </figure>
                                            </div>
-                                           <!-- End .product-details -->
-
-                                           <figure class="product-image-container">
-                                               <a href="product.html" class="product-image">
-                                                   <img src="{{ asset('frontend/assets/images/products/product-1.jpg') }}"
-                                                       alt="product" width="80" height="80">
-                                               </a>
-
-                                               <a href="#" class="btn-remove"
-                                                   title="Remove Product"><span>×</span></a>
-                                           </figure>
-                                       </div>
-                                       <!-- End .product -->
-
-                                       <div class="product">
-                                           <div class="product-details">
-                                               <h4 class="product-title">
-                                                   <a href="product.html">Brown Women Casual HandBag</a>
-                                               </h4>
-
-                                               <span class="cart-product-info">
-                                                   <span class="cart-product-qty">1</span> × $35.00
-                                               </span>
-                                           </div>
-                                           <!-- End .product-details -->
-
-                                           <figure class="product-image-container">
-                                               <a href="product.html" class="product-image">
-                                                   <img src="{{ asset('frontend/assets/images/products/product-2.jpg') }}"
-                                                       alt="product" width="80" height="80">
-                                               </a>
-
-                                               <a href="#" class="btn-remove"
-                                                   title="Remove Product"><span>×</span></a>
-                                           </figure>
-                                       </div>
-                                       <!-- End .product -->
-
-                                       <div class="product">
-                                           <div class="product-details">
-                                               <h4 class="product-title">
-                                                   <a href="product.html">Circled Ultimate 3D Speaker</a>
-                                               </h4>
-
-                                               <span class="cart-product-info">
-                                                   <span class="cart-product-qty">1</span> × $35.00
-                                               </span>
-                                           </div>
-                                           <!-- End .product-details -->
-
-                                           <figure class="product-image-container">
-                                               <a href="product.html" class="product-image">
-                                                   <img src="{{ asset('frontend/assets/images/products/product-3.jpg') }}"
-                                                       alt="product" width="80" height="80">
-                                               </a>
-                                               <a href="#" class="btn-remove"
-                                                   title="Remove Product"><span>×</span></a>
-                                           </figure>
-                                       </div>
-                                       <!-- End .product -->
+                                           <!-- End .product -->
+                                       @endforeach
                                    </div>
+
                                    <!-- End .cart-product -->
 
                                    <div class="dropdown-cart-total">
                                        <span>SUBTOTAL:</span>
 
-                                       <span class="cart-total-price float-right">$134.00</span>
+                                       <span class="cart-total-price float-right">{{ number_format(getCartTotal()) }}
+                                           VND</span>
                                    </div>
                                    <!-- End .dropdown-cart-total -->
 
