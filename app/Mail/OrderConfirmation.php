@@ -20,6 +20,11 @@ class OrderConfirmation extends Mailable
 
     public function build()
     {
-        return $this->subject('Order Confirmation')->view('client.page.auth.emails.order_confirmation');
+        return $this->view('client.page.auth.emails.order_confirmation')
+            ->subject('Order Confirmation')
+            ->with([
+                'order' => $this->order,
+                
+            ]);;
     }
 }

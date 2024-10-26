@@ -24,11 +24,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
+            $carts = session()->get('cart', []);
             $logoSetting = LogoSetting::query()->first();
             $generalSettings = GeneralSetting::query()->first();
             $view->with([
                 'logoSetting' => $logoSetting,
                 'generalSettings' => $generalSettings,
+                'carts'=> $carts,
             ]);
         });
 
