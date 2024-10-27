@@ -34,5 +34,12 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'momo' => [
+        'access_key' => env('MOMO_ACCESS_KEY'),
+        'secret_key' => env('MOMO_SECRET_KEY'),
+        'partner_code' => env('MOMO_PARTNER_CODE'),
+        'endpoint' => env('MOMO_ENDPOINT'),
+        'return_url' => env('MOMO_RETURN_URL'),
+    ],
 
 ];

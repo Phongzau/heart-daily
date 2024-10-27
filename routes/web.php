@@ -384,3 +384,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::get('/order-complete', [CheckoutController::class, 'orderComplete'])->name('order.complete');
     Route::get('/payment', [CheckoutController::class, 'createPayment'])->name('payment.create');
     Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
+    Route::get('/momo', [CheckoutController::class, 'createMoMoPayment'])->name('momo.create');
+    Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('momo.return');
+

@@ -217,6 +217,7 @@
                                 <option value="" disabled selected>-- Chọn phương thức --</option>
                                 <option value="cod">Khi nhận hàng</option>
                                 <option value="vnpay">Thanh toán qua VNPay</option>
+                                <option value="momo">Thanh toán qua MoMo</option>
                             </select>
                         </div>
                     </div>

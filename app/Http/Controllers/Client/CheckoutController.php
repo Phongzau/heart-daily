@@ -8,11 +8,34 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
+    public function execPostRequest($url, $data)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data)
+            )
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        //execute post
+        $result = curl_exec($ch);
+        //close connection
+        curl_close($ch);
+        return $result;
+    }
     public function index()
     {
         $carts = session('cart', []);
@@ -30,7 +53,7 @@ class CheckoutController extends Controller
             'city' => 'required|string|max:100',
             'district' => 'required|string|max:100',
             'ward' => 'required|string|max:100',
-            'payment_method' => 'required|string|in:cod,vnpay',
+            'payment_method' => 'required|string|in:cod,vnpay,momo',
         ]);
 
         // Sử dụng hàm createOrder để tạo đơn hàng
@@ -38,6 +61,8 @@ class CheckoutController extends Controller
 
         if ($request->input('payment_method') === 'vnpay') {
             return $this->createPayment($order);
+        } elseif ($request->input('payment_method') === 'momo') {
+            return $this->createMoMoPayment($order);
         } else {
             $order->payment_method = 'COD';
             $order->save();
@@ -164,6 +189,70 @@ class CheckoutController extends Controller
             }
         } else {
             toastr('Chữ ký bảo mật không chính xác!', 'error');
+            return redirect()->route('checkout');
+        }
+    }
+    private function createMoMoPayment($order)
+    {
+        $endpoint = config('services.momo.endpoint');
+        $partnerCode = config('services.momo.partner_code');
+        $accessKey = config('services.momo.access_key');
+        $secretKey = config('services.momo.secret_key');
+        // $serectkey = $secretKey;
+        $orderId = $order->invoice_id;
+        $orderInfo = "Thanh toán đơn hàng " . $orderId;
+        $amount = $order->amount;
+        $redirectUrl = config('services.momo.return_url');
+        $ipnUrl = $redirectUrl;
+        $extraData = "";
+        $requestId = time() . "";
+        $requestType = "payWithATM"; //captureWallet
+
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+
+        $data = [
+            'partnerCode' => $partnerCode,
+            'accessKey' => $accessKey,
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'redirectUrl' => $redirectUrl,
+            'ipnUrl' => $ipnUrl,
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature,
+        ];
+
+        $response = Http::post($endpoint, $data);
+
+        if ($response->successful()) {
+            $responseBody = $response->json();
+
+            return redirect($responseBody['payUrl']);
+        } else {
+            toastr('Có lỗi xảy ra khi tạo thanh toán qua MoMo', 'error');
+            return redirect()->route('checkout');
+        }
+    }
+    public function momoReturn(Request $request)
+    {
+        $orderId = $request->input('orderId');
+        $order = Order::where('invoice_id', $orderId)->first();
+
+        if ($order && $request->input('errorCode') == '0') {
+            $order->payment_status = true;
+            $order->payment_method = 'MoMo';
+            $order->save();
+
+            $this->sendOrderConfirmation($order);
+            session()->forget('cart');
+            session()->forget('coupon');
+            toastr('Thanh toán qua MoMo thành công!', 'success');
+            return redirect()->route('order.complete');
+        } else {
+            toastr('Thanh toán qua MoMo thất bại!', 'error');
             return redirect()->route('checkout');
         }
     }
