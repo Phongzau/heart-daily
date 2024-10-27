@@ -22,6 +22,13 @@ class User extends Authenticatable
         'password',
         'token',
         'status',
+        'first_name',
+        'last_name',
+        'phone',
+        'province_id',
+        'district_id',
+        'commune_id',
+        'address',
     ];
 
     /**
@@ -46,5 +53,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class, 'commune_id');
     }
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
 use App\Mail\ConfirmEmail;
+use App\Models\Commune;
+use App\Models\District;
+use App\Models\Province;
 use App\Models\User;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Database\QueryException;
@@ -226,5 +229,58 @@ class UserController extends Controller
             toastr('Có lỗi xảy ra: ' . $e->getMessage(), 'error');
             return redirect()->back()->withInput();
         }
+    }
+
+    public function createOrUpdateAddress(Request $request)
+    {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'province_id' => 'required|exists:provinces,id',
+            'district_id' => 'required|exists:districts,id',
+            'commune_id' => 'required|exists:communes,id',
+            'address' => 'required|string|max:500',
+        ]);
+
+        $user = User::updateOrCreate(
+            ['id' => Auth::id()], // Điều kiện: tìm user theo id
+            [
+                'first_name' => $validatedData['first_name'],
+                'last_name' => $validatedData['last_name'],
+                'phone' => $validatedData['phone'],
+                'province_id' => $validatedData['province_id'],
+                'district_id' => $validatedData['district_id'],
+                'commune_id' => $validatedData['commune_id'],
+                'address' => $validatedData['address'],
+            ]
+        );
+
+        // return response()->json([
+        //     'message' => 'Thông tin địa chỉ đã được cập nhật thành công.',
+        //     'user' => $user,
+        // ]);
+
+        return redirect()->back();
+    }
+
+    public function getProvinces()
+    {
+        $provinces = Province::all();
+        return response()->json($provinces);
+        // return view('client.page.dashboard.dashboard', compact('provinces'));
+    }
+
+    public function getDistrictsByProvince($province_id)
+    {
+        $districts = District::where('province_id', $province_id)->get();
+        return response()->json($districts);
+        // return view('client.page.dashboard.dashboard', compact('districts'));
+    }
+
+    public function getCommunesByDistrict($district_id)
+    {
+        $communes = Commune::where('district_id', $district_id)->get();
+        return response()->json($communes);
     }
 }
