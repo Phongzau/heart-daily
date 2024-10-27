@@ -45,6 +45,10 @@ Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name(
 Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::put('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password.submit');
 Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+Route::post('/user/update-address', [UserController::class, 'createOrUpdateAddress'])->name('user.updateAddress');
+Route::get('/provinces', [UserController::class, 'getProvinces']);
+Route::get('/provinces/{province_id}/districts', [UserController::class, 'getDistrictsByProvince']);
+Route::get('/districts/{district_id}/communes', [UserController::class, 'getCommunesByDistrict']);
 
 //chat
 
