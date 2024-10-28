@@ -291,6 +291,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::prefix('products')->name('products.')->group(function () {
         // Route::put('change-status', [CouponController::class, 'changeStatus'])
         //     ->name('change-status');
+        Route::delete('/product-attributes/{prdAttributeId}', [AdminProductController::class, 'destroyProductAttribute'])->name('destroy-product-attributes');
         Route::delete('/variants/{variantId}', [AdminProductController::class, 'destroyVariant'])->name('destroy-variant');
         Route::post('/upload', [AdminProductController::class, 'uploadImageGalleries'])->name('upload');
         Route::get('/', [AdminProductController::class, 'index'])->name('index');
