@@ -219,6 +219,9 @@
                                 <option value="{{ $method->method }}">{{ $method->name }}</option>
                                 @endforeach
                                 <option value="momo">Thanh toán qua MoMo</option>
+                                <option value="cod">Khi nhận hàng</option>
+                                <option value="vnpay">Thanh toán qua VNPay</option>
+                                <option value="paypal">Thanh toán qua Paypal</option>
                             </select>
                         </div>
                     </div>

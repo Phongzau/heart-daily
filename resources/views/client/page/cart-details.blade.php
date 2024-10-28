@@ -123,7 +123,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>Ship COD:</td>
-                                                        <td id="discount" style="color: black; font-weight: 700">
+                                                        <td style="color: black; font-weight: 700">
                                                             {{ number_format(getCartCod()) }} VND</td>
                                                     </tr>
                                                     <tr>

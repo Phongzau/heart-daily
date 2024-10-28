@@ -33,3 +33,8 @@ composer dump-autoload
 -   **style**: những thay đổi không làm thay đổi ý nghĩa của code như thay đổi css/ui chẳng hạn.
 -   **perf**: code cải tiến về mặt hiệu năng xử lý
 -   **vendor**: cập nhật version cho các dependencies, packages.
+
+
+* Paypal:
+TK: sb-ezuwn33667932@personal.example.com
+MK: R^Pwv/0h
