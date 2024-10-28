@@ -4,14 +4,20 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OrderConfirmation;
+use App\Models\GeneralSetting;
 use App\Models\Order;
 use App\Models\PaymentSetting;
+use App\Models\OrderProduct;
+use App\Models\PaypalSetting;
+use App\Models\Product;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class CheckoutController extends Controller
 {
@@ -46,7 +52,6 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-        $carts = session('cart', []);
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
@@ -55,8 +60,18 @@ class CheckoutController extends Controller
             'city' => 'required|string|max:100',
             'district' => 'required|string|max:100',
             'ward' => 'required|string|max:100',
-            'payment_method' => 'required|string|in:cod,vnpay,momo',
+            'payment_method' => 'required|string|in:cod,vnpay,paypal,momo',
         ]);
+
+        session(['address' => $request->only([
+            'name',
+            'phone',
+            'email',
+            'address',
+            'city',
+            'district',
+            'ward',
+        ])]);
 
         // Sử dụng hàm createOrder để tạo đơn hàng
         $order = $this->createOrder($request);
@@ -65,20 +80,63 @@ class CheckoutController extends Controller
             return $this->createPayment($order);
         } elseif ($request->input('payment_method') === 'momo') {
             return $this->createMoMoPayment($order);
+        } else if ($request->input('payment_method') === 'paypal') {
+            return $this->payWithPaypal();
         } else {
-            $order->payment_method = 'COD';
-            $order->save();
-            $this->sendOrderConfirmation($order);
-            session()->forget('cart');
-            session()->forget('coupon');
-            toastr('Đơn hàng của bạn đã được đặt thành công!', 'success');
-            return redirect()->route('order.complete');
+            // $order->payment_method = 'COD';
+            // $order->save();
+            // $this->sendOrderConfirmation($order);
+            // session()->forget('cart');
+            // session()->forget('coupon');
+            // toastr('Đơn hàng của bạn đã được đặt thành công!', 'success');
+            // return redirect()->route('order.complete');
         }
     }
 
     public function orderComplete()
     {
         return view('client.page.complete');
+    }
+
+    public function storeOrder($paymentMethod, $paymentStatus, $transactionId, $paidAmount, $paidCurrencyName)
+    {
+        $carts = session('cart', []);
+
+        $order = new Order();
+        $order->invoice_id = (string) Str::uuid();
+        $order->user_id = Auth::user()->id;
+        $order->sub_total = getCartTotal();
+        $order->amount = getMainCartTotal();
+        $order->product_qty = count($carts);
+        $order->payment_method = $paymentMethod;
+        $order->payment_status = $paymentStatus;
+        $order->order_address = json_encode(session()->get('address'));
+        $order->cod = getCartCod();
+        $order->coupon_method = json_encode(session()->get('coupon'));
+        $order->order_status = 'pending';
+        $order->save();
+
+        // store order products
+        foreach ($carts as $item) {
+            $orderProduct = new OrderProduct();
+            $orderProduct->order_id = $order->id;
+            $orderProduct->product_id = $item['product_id'];
+            $orderProduct->product_name = $item['name'];
+            $orderProduct->variants = json_encode($item['options']['variants']);
+            $orderProduct->unit_price = $item['price'];
+            $orderProduct->qty = $item['qty'];
+            $orderProduct->save();
+        }
+
+        // store transaction details
+        $transaction = new Transaction();
+        $transaction->order_id = $order->id;
+        $transaction->transaction_id = $transactionId;
+        $transaction->payment_method = $paymentMethod;
+        $transaction->amount = getMainCartTotal();
+        $transaction->amount_real_currency = $paidAmount;
+        $transaction->amount_real_currency_name = $paidCurrencyName;
+        $transaction->save();
     }
 
     private function createOrder($request)
@@ -266,5 +324,107 @@ class CheckoutController extends Controller
     {
         $user = Auth::user();
         Mail::to($user->email)->send(new OrderConfirmation($order));
+    }
+
+    public function paypalConfig()
+    {
+        $paypalSetting  = PaypalSetting::query()->firstOrFail();
+        $config = [
+            'mode'    => $paypalSetting->mode === 1 ? 'live' : 'sandbox',
+            'sandbox' => [
+                'client_id'         => $paypalSetting->client_id,
+                'client_secret'     => $paypalSetting->secret_key,
+                'app_id'            => 'APP-80W284485P519543T',
+            ],
+            'live' => [
+                'client_id'         => $paypalSetting->client_id,
+                'client_secret'     => $paypalSetting->secret_key,
+                'app_id'            => env('PAYPAL_LIVE_APP_ID', ''),
+            ],
+
+            'payment_action' => 'Sale',
+            'currency'       => $paypalSetting->currency_name,
+            'notify_url'     => '',
+            'locale'         => 'en_US',
+            'validate_ssl'   => true,
+        ];
+        return $config;
+    }
+
+    public function payWithPaypal()
+    {
+        $config = $this->paypalConfig();
+        $paypalSetting  = PaypalSetting::query()->findOrFail(1);
+
+        $provider = new PayPalClient($config);
+        $provider->getAccessToken();
+        // $provider->setApiCredentials($config);
+        // Tính giá trị chuyển đổi thành USD
+        $total = getMainCartTotal();
+        $payableAmount = round($total / $paypalSetting->currency_rate, 2);
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+
+            "application_context" => [
+                "return_url" => route('paypal.success'),
+                "cancel_url" => route('paypal.cancel'),
+            ],
+            "purchase_units" => [
+                [
+                    "amount" => [
+                        "currency_code" => $config['currency'],
+                        "value" => $payableAmount,
+                    ],
+                ]
+            ]
+        ]);
+
+        if (isset($response['id']) && $response['id'] != null) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] === 'approve') {
+                    return redirect()->away($link['href']);
+                }
+            }
+        } else {
+            return redirect()->route('paypal.cancel');
+        }
+    }
+
+    public function paypalSuccess(Request $request)
+    {
+        $config = $this->paypalConfig();
+        $provider = new PayPalClient($config);
+        $provider->getAccessToken();
+
+        $response = $provider->capturePaymentOrder($request->token);
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+            // calculate payable amount depending on currency rate
+            $paypalSetting = PaypalSetting::query()->findOrFail(1);
+            $total = getMainCartTotal();
+            $paidAmount = round($total / $paypalSetting->currency_rate, 2);
+
+            $this->storeOrder('paypal', 1, $response['id'], $paidAmount, $paypalSetting->currency_name);
+
+            // clear session
+            $this->clearSession();
+            toastr('Thanh toán qua Paypal thành công!', 'success');
+            return redirect()->route('order.complete');
+        }
+
+        return redirect()->route('paypal.cancel');
+    }
+
+    public function paypalCancel()
+    {
+        toastr('Bạn vui lòng thử lại', 'error');
+        return redirect()->route('checkout');
+    }
+
+    public function clearSession()
+    {
+        session()->forget('cart');
+        session()->forget('coupon');
+        session()->forget('address');
     }
 }

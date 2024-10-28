@@ -29,6 +29,8 @@ use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\PaymentSettingController as PaymentSettingControllerBackup;
+use App\Http\Controllers\PaypalSettingController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -347,6 +349,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::get('', [PaymentSettingController::class, 'index'])->name('index');
         Route::put('/{id}', [PaymentSettingController::class, 'update'])->name('update');
     });
+
+    Route::get('payment-settings', [PaymentSettingControllerBackup::class, 'index'])->name('payment-settings.index');
+
+    //Paypal
+    Route::prefix('paypal-setting')->name('paypal-setting.')->group(function () {
+        Route::put('/{paypal_setting}', [PaypalSettingController::class, 'update'])->name('update');
+        Route::post('/', [PaypalSettingController::class, 'store'])->name('store');
+    });
 });
 
 /** Client Routes */
@@ -392,3 +402,6 @@ Route::get('/payment', [CheckoutController::class, 'createPayment'])->name('paym
 Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
 Route::get('/momo', [CheckoutController::class, 'createMoMoPayment'])->name('momo.create');
 Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('momo.return');
+Route::get('paypal/payment', [CheckoutController::class, 'payWithPaypal'])->name('paypal.payment');
+Route::get('paypal/success', [CheckoutController::class, 'paypalSuccess'])->name('paypal.success');
+Route::get('paypal/cancel', [CheckoutController::class, 'paypalCancel'])->name('paypal.cancel');

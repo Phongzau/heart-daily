@@ -94,8 +94,10 @@
                     <span>Socials</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
                     <span>Settings</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.payment-settings.index') }}"><i class="fa-solid fa-gear"></i>
+                    <span>Payment settings</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.tags.index') }}"><i class="fas fa-tags"></i>
-            <span>Tags</span></a></li>
+                    <span>Tags</span></a></li>
 
 
         </ul>
