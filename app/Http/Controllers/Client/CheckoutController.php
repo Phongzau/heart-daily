@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderConfirmation;
 use App\Models\Order;
+use App\Models\PaymentSetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,8 @@ class CheckoutController extends Controller
     public function index()
     {
         $carts = session('cart', []);
-        return view('client.page.checkout', compact('carts'));
+        $paymentMethods = PaymentSetting::where('status', 1)->get();
+        return view('client.page.checkout', compact('carts','paymentMethods'));
     }
 
     public function process(Request $request)
@@ -108,9 +110,11 @@ class CheckoutController extends Controller
 
     private function createPayment($order)
     {
-        $vnp_TmnCode = config('vnpay.vnp_TmnCode');
-        $vnp_HashSecret = config('vnpay.vnp_HashSecret');
-        $vnp_Url = config('vnpay.vnp_Url');
+        $paymentMethods = PaymentSetting::where('method', 'vnpay')->first();
+
+        $vnp_TmnCode = $paymentMethods->vnp_tmncode;
+        $vnp_HashSecret = $paymentMethods->vnp_hashsecret;
+        $vnp_Url = $paymentMethods->vnp_url;
         $vnp_ReturnUrl = config('vnpay.vnp_Returnurl');
 
         $vnp_TxnRef = $order->invoice_id;
@@ -161,6 +165,7 @@ class CheckoutController extends Controller
 
     public function vnpayReturn(Request $request)
     {
+        $paymentMethods = PaymentSetting::where('method', 'vnpay')->first();
         $vnp_SecureHash  = $request->vnp_SecureHash;
         $inputData = $request->all();
         unset($inputData['vnp_SecureHash']);
@@ -170,7 +175,7 @@ class CheckoutController extends Controller
             $hashData .= urlencode($key) . "=" . urlencode($value) . "&";
         }
         $hashData = rtrim($hashData, '&');
-        $secureHash = hash_hmac('sha512', $hashData, config('vnpay.vnp_HashSecret'));
+        $secureHash = hash_hmac('sha512', $hashData, $paymentMethods->vnp_hashsecret);
 
         if ($secureHash === $vnp_SecureHash) {
             if ($request->vnp_ResponseCode == '00') {

@@ -215,8 +215,9 @@
                             <label for="payment_method">Chọn phương thức thanh toán</label>
                             <select id="payment_method" name="payment_method" class="form-control" required>
                                 <option value="" disabled selected>-- Chọn phương thức --</option>
-                                <option value="cod">Khi nhận hàng</option>
-                                <option value="vnpay">Thanh toán qua VNPay</option>
+                                @foreach ($paymentMethods as $method)
+                                <option value="{{ $method->method }}">{{ $method->name }}</option>
+                                @endforeach
                                 <option value="momo">Thanh toán qua MoMo</option>
                             </select>
                         </div>

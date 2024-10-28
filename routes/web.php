@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\NewletterPopupController;
+use App\Http\Controllers\Admin\PaymentSettingController;
 use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
@@ -341,6 +342,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/{tags}', [TagController::class, 'destroy'])->name('destroy');
     });
     
+    //payment srtting
+    Route::get('payment-settings', [PaymentSettingController::class, 'index'])->name('payment-settings.index');
+    Route::put('payment-settings/{id}', [PaymentSettingController::class, 'update'])->name('payment-settings.update');
 });
 
     /** Client Routes */
