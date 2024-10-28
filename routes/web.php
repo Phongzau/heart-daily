@@ -341,53 +341,54 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::put('/{tags}', [TagController::class, 'update'])->name('update');
         Route::delete('/{tags}', [TagController::class, 'destroy'])->name('destroy');
     });
-    
+
     //payment srtting
-    Route::get('payment-settings', [PaymentSettingController::class, 'index'])->name('payment-settings.index');
-    Route::put('payment-settings/{id}', [PaymentSettingController::class, 'update'])->name('payment-settings.update');
+    Route::prefix('payment-settings')->name('payment-settings.')->group(function () {
+        Route::get('', [PaymentSettingController::class, 'index'])->name('index');
+        Route::put('/{id}', [PaymentSettingController::class, 'update'])->name('update');
+    });
 });
 
-    /** Client Routes */
+/** Client Routes */
 
-    //blog
-    Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
-    Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
-    Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
-    Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
+//blog
+Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
+Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
+Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
+Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
 
-    //about
-    Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
+//about
+Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');
 
-    //logo
-    //    Route::get('/logo', [App\Http\Controllers\Client\SettingController::class, 'index'])->name('logo');
+//logo
+//    Route::get('/logo', [App\Http\Controllers\Client\SettingController::class, 'index'])->name('logo');
 
-    //product
+//product
 
-    Route::prefix('product')->name('product.')->group(function () {
+Route::prefix('product')->name('product.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('getProducts');
     Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('ajaxGetProducts');
     Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
-    });
+});
 
-    Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
-    Route::get('cart', [CartController::class, 'cartDetails'])->name('cart-details');
-    Route::post('cart/update-quantity', [CartController::class, 'updateProductQty'])->name('cart.update-quantity');
-    Route::get('cart/product-total', [CartController::class, 'cartTotal'])->name('cart.product-total');
-    Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
-    Route::get('coupon-calculation', [CartController::class, 'couponCalculation'])->name('coupon-calculation');
-    Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear.cart');
-    Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProduct'])->name('cart.remove-product');
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('cart', [CartController::class, 'cartDetails'])->name('cart-details');
+Route::post('cart/update-quantity', [CartController::class, 'updateProductQty'])->name('cart.update-quantity');
+Route::get('cart/product-total', [CartController::class, 'cartTotal'])->name('cart.product-total');
+Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+Route::get('coupon-calculation', [CartController::class, 'couponCalculation'])->name('coupon-calculation');
+Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear.cart');
+Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProduct'])->name('cart.remove-product');
 
-    //popup
-    Route::post('/newsletter-subscribe', [NewletterPopupController::class, 'subscribe'])->name('newsletter.subscribe');
-    Route::delete('/subscribers/{id}', [NewletterPopupController::class, 'destroySubscribe'])->name('subscribers.destroy');
+//popup
+Route::post('/newsletter-subscribe', [NewletterPopupController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::delete('/subscribers/{id}', [NewletterPopupController::class, 'destroySubscribe'])->name('subscribers.destroy');
 
-    //checkout
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-    Route::get('/order-complete', [CheckoutController::class, 'orderComplete'])->name('order.complete');
-    Route::get('/payment', [CheckoutController::class, 'createPayment'])->name('payment.create');
-    Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
-    Route::get('/momo', [CheckoutController::class, 'createMoMoPayment'])->name('momo.create');
-    Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('momo.return');
-
+//checkout
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/order-complete', [CheckoutController::class, 'orderComplete'])->name('order.complete');
+Route::get('/payment', [CheckoutController::class, 'createPayment'])->name('payment.create');
+Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
+Route::get('/momo', [CheckoutController::class, 'createMoMoPayment'])->name('momo.create');
+Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('momo.return');

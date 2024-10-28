@@ -86,6 +86,8 @@
                             <span>Blog Comment</span></a></li>
                 </ul>
             </li>
+            <li><a class="nav-link" href="{{ route('admin.payment-settings.index') }}"><i class="fa-solid fa-money-check-dollar"></i>
+                <span>Payment settings</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="fa-solid fa-ticket"></i>
                     <span>Coupons</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-solid fa-icons"></i>
