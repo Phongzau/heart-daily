@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\CategoryAttribute;
 use App\Models\CategoryProduct;
 use App\Models\Product;
+use App\Models\ProductAttribute;
 use App\Models\ProductImageGallery;
 use App\Models\ProductVariant;
 use App\Traits\ImageUploadTrait;
@@ -45,6 +46,7 @@ class AdminProductController extends Controller
      */
     public function store(Request $request)
     {
+
         // dd($request->all());
         // Tạo mảng chứa các quy tắc chung
         $rules = [
@@ -63,14 +65,14 @@ class AdminProductController extends Controller
             'image_main' => 'required',
         ];
 
-        // Nếu là sản phẩm có biến thể
-        if ($request->type_product === 'product_variant') {
-            $rules['variant.*.qty'] = 'required|numeric|min:0';
-            $rules['variant.*.variant_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
-            $rules['variant.*.variant_id.*'] = 'required|exists:category_attributes,id'; // yêu cầu từng phần tử phải tồn tại trong bảng variants
-            $rules['variant.*.value_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
-            $rules['variant.*.value_id.*'] = 'required|exists:attributes,id';
-        }
+        // // Nếu là sản phẩm có biến thể
+        // if ($request->type_product === 'product_variant') {
+        //     $rules['variant.*.qty'] = 'required|numeric|min:0';
+        //     $rules['variant.*.variant_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
+        //     $rules['variant.*.variant_id.*'] = 'required|exists:category_attributes,id'; // yêu cầu từng phần tử phải tồn tại trong bảng variants
+        //     $rules['variant.*.value_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
+        //     $rules['variant.*.value_id.*'] = 'required|exists:attributes,id';
+        // }
 
         // Nếu là sản phẩm đơn giản
         if ($request->type_product === 'product_simple') {
@@ -126,19 +128,19 @@ class AdminProductController extends Controller
             // Hình ảnh chính
             'image_main.required' => 'Ảnh chính là bắt buộc.',
             'image_main.image' => 'File phải là ảnh.',
-            'variant.*.qty.required' => 'Số lượng là bắt buộc.',
-            'variant.*.qty.numeric' => 'Số lượng phải là một số.',
-            'variant.*.qty.min' => 'Số lượng phải lớn hơn 0.',
-            'variant.*.variant_id.required' => 'Thuộc tính biến thể không được bỏ trống.',
-            'variant.*.variant_id.array' => 'variant_id phải là một mảng.',
-            'variant.*.variant_id.min' => 'Ít nhất một variant_id là bắt buộc.',
-            'variant.*.variant_id.*.required' => 'Tất cả thuộc tính biến thể không được bỏ trống.',
-            'variant.*.variant_id.*.exists' => 'Thuộc tính không tồn tại không tồn tại.',
-            'variant.*.value_id.required' => 'Giá trị thuộc tính không được để trống.',
-            'variant.*.value_id.array' => 'value_id phải là một mảng.',
-            'variant.*.value_id.min' => 'Ít nhất một value_id là bắt buộc.',
-            'variant.*.value_id.*.required' => 'Tất cả giá trị thuộc tính không được để trống.',
-            'variant.*.value_id.*.exists' => 'Giá trị thuộc tính không tồn tại.',
+            // 'variant.*.qty.required' => 'Số lượng là bắt buộc.',
+            // 'variant.*.qty.numeric' => 'Số lượng phải là một số.',
+            // 'variant.*.qty.min' => 'Số lượng phải lớn hơn 0.',
+            // 'variant.*.variant_id.required' => 'Thuộc tính biến thể không được bỏ trống.',
+            // 'variant.*.variant_id.array' => 'variant_id phải là một mảng.',
+            // 'variant.*.variant_id.min' => 'Ít nhất một variant_id là bắt buộc.',
+            // 'variant.*.variant_id.*.required' => 'Tất cả thuộc tính biến thể không được bỏ trống.',
+            // 'variant.*.variant_id.*.exists' => 'Thuộc tính không tồn tại không tồn tại.',
+            // 'variant.*.value_id.required' => 'Giá trị thuộc tính không được để trống.',
+            // 'variant.*.value_id.array' => 'value_id phải là một mảng.',
+            // 'variant.*.value_id.min' => 'Ít nhất một value_id là bắt buộc.',
+            // 'variant.*.value_id.*.required' => 'Tất cả giá trị thuộc tính không được để trống.',
+            // 'variant.*.value_id.*.exists' => 'Giá trị thuộc tính không tồn tại.',
         ];
         $request->validate($rules, $messages);
         // Bắt đầu transaction
@@ -165,15 +167,65 @@ class AdminProductController extends Controller
                 $product->userid_created = Auth::user()->id;
                 $product->save();
 
-                // Xử lý các biến thể (lưu value_id dưới mảng JSON)
-                if (!empty($request->variant)) {
-                    foreach ($request->variant as $variant) {
-                        $productVariant = new ProductVariant();
-                        $productVariant->product_id = $product->id;
-                        $productVariant->id_variant = json_encode(array_map('intval', $variant['value_id']));
-                        $productVariant->qty = $variant['qty'];
-                        $productVariant->save();
+                // Chuyển đổi từ JSON string thành mảng
+                $attributeData = json_decode($request->input('attributeData'), true);
+
+                if (is_array($attributeData) && !empty($attributeData)) {
+                    foreach ($attributeData as $attribute) {
+                        if (isset($attribute['id'], $attribute['values']) && is_array($attribute['values'])) {
+                            $categoryAttributeId = $attribute['id'];
+                            $values = $attribute['values'];
+
+                            $productAttribute = new ProductAttribute();
+                            $productAttribute->product_id = $product->id;
+                            $productAttribute->category_attribute_id = $categoryAttributeId;
+                            $productAttribute->name_category_attribute = $attribute['name'];
+                            $productAttribute->id_attributes = json_encode($values);
+                            $productAttribute->save();
+                        } else {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'Thuộc tính hoặc giá trị thuộc tính bị thiếu.'
+                            ]);
+                        }
                     }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Dữ liệu thuộc tính bị thiếu',
+                    ]);
+                }
+
+                // Xử lý variant data
+                $variantsArray = json_decode($request->input('variants'), true);
+
+                if (is_array($variantsArray) && !empty($variantsArray)) {
+                    foreach ($variantsArray as $variant) {
+                        if (
+                            isset($variant['value_variant'], $variant['price_variant'], $variant['qty_variant']) &&
+                            is_array($variant['title_variant']) &&
+                            is_numeric($variant['price_variant']) &&
+                            is_numeric($variant['qty_variant'])
+                        ) {
+                            $productVariant = new ProductVariant();
+                            $productVariant->product_id = $product->id;
+                            $productVariant->id_variant = json_encode(array_map('intval', $variant['value_variant']));
+                            $productVariant->title_variant = json_encode($variant['title_variant']);
+                            $productVariant->price_variant = $variant['price_variant'];
+                            $productVariant->qty = $variant['qty_variant'];
+                            $productVariant->save();
+                        } else {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'Dữ liệu biến thể không hợp lệ.',
+                            ]);
+                        }
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Dữ liệu biến thể bị thiếu',
+                    ]);
                 }
             } else if ($request->type_product === 'product_simple') {
                 $product = new Product();
@@ -264,10 +316,39 @@ class AdminProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::query()->with(['ProductVariants', 'ProductImageGalleries'])->findOrFail($id);
+        $product = Product::query()->with(['ProductVariants', 'ProductImageGalleries', 'ProductAttributes'])->findOrFail($id);
         $categoryAttributes = CategoryAttribute::query()->get();
         $brands = Brand::query()->where('status', 1)->get();
         $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
+        // Chuyển đổi dữ liệu sang định dạng JavaScript
+        if ($product->type_product == 'product_variant') {
+            $convertedData = [];
+            $formattedVariants = [];
+            foreach ($product->ProductAttributes as $attribute) {
+                $idAttributes = json_decode($attribute['id_attributes'], true); // Chuyển đổi chuỗi JSON thành mảng
+
+                $values = [];
+                foreach ($idAttributes as $key => $value) {
+                    $values[$key] = $value; // Tạo mảng giá trị
+                }
+
+                $convertedData[] = [
+                    'id' => strval($attribute['category_attribute_id']),
+                    'name' => $attribute['name_category_attribute'], // Sử dụng tên thuộc tính
+                    'values' => $values,
+                ];
+            }
+            foreach ($product->ProductVariants as $variant) {
+                $idKey = implode('_', json_decode($variant['id_variant'], true));
+                $formattedVariants[$idKey] = [
+                    'value_variant' => array_map('strval', json_decode($variant['id_variant'], true)),
+                    'title_variant' => json_decode($variant['title_variant'], true),
+                    'price_variant' => $variant['price_variant'],
+                    'qty_variant' => $variant['qty'],
+                ];
+            }
+            return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants'));
+        }
         return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes'));
     }
 
@@ -293,15 +374,6 @@ class AdminProductController extends Controller
             'brand_id' => 'required|integer|exists:brands,id',
             'image_main' => 'nullable', //image
         ];
-
-        // Nếu là sản phẩm có biến thể
-        if ($request->type_product === 'product_variant') {
-            $rules['variant.*.qty'] = 'required|numeric|min:0';
-            $rules['variant.*.variant_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
-            $rules['variant.*.variant_id.*'] = 'required|exists:category_attributes,id'; // yêu cầu từng phần tử phải tồn tại trong bảng variants
-            $rules['variant.*.value_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
-            $rules['variant.*.value_id.*'] = 'required|exists:attributes,id';
-        }
 
         // Nếu là sản phẩm đơn giản
         if ($request->type_product === 'product_simple') {
@@ -356,19 +428,6 @@ class AdminProductController extends Controller
 
             // Hình ảnh chính
             'image_main.image' => 'File phải là ảnh.',
-            'variant.*.qty.required' => 'Số lượng là bắt buộc.',
-            'variant.*.qty.numeric' => 'Số lượng phải là một số.',
-            'variant.*.qty.min' => 'Số lượng phải lớn hơn 0.',
-            'variant.*.variant_id.required' => 'Thuộc tính biến thể không được bỏ trống.',
-            'variant.*.variant_id.array' => 'variant_id phải là một mảng.',
-            'variant.*.variant_id.min' => 'Ít nhất một variant_id là bắt buộc.',
-            'variant.*.variant_id.*.required' => 'Tất cả thuộc tính biến thể không được bỏ trống.',
-            'variant.*.variant_id.*.exists' => 'Thuộc tính không tồn tại không tồn tại.',
-            'variant.*.value_id.required' => 'Giá trị thuộc tính không được để trống.',
-            'variant.*.value_id.array' => 'value_id phải là một mảng.',
-            'variant.*.value_id.min' => 'Ít nhất một value_id là bắt buộc.',
-            'variant.*.value_id.*.required' => 'Tất cả giá trị thuộc tính không được để trống.',
-            'variant.*.value_id.*.exists' => 'Giá trị thuộc tính không tồn tại.',
         ];
         $request->validate($rules, $messages);
         // Bắt đầu transaction
@@ -395,23 +454,87 @@ class AdminProductController extends Controller
                 $product->userid_created = Auth::user()->id;
                 $product->save();
 
-                // Xử lý các biến thể
-                if (!empty($request->variant)) {
-                    foreach ($request->variant as $variant) {
-                        if (isset($variant['id_product_variant'])) {
-                            // Nếu tồn tại id_product_variant, tức là biến thể này đã tồn tại, cập nhật biến thể
-                            $productVariant = ProductVariant::findOrFail($variant['id_product_variant']);
-                        } else {
-                            // Nếu không có id_product_variant, tạo mới biến thể
-                            $productVariant = new ProductVariant();
-                            $productVariant->product_id = $product->id;
-                        }
+                // Chuyển đổi từ JSON string thành mảng
+                $attributeData = json_decode(
+                    $request->input('attributeData'),
+                    true
+                );
 
-                        $productVariant->id_variant = json_encode(array_map('intval', $variant['value_id']));
-                        // Lưu value_id dưới dạng JSON
-                        $productVariant->qty = $variant['qty'];
-                        $productVariant->save();
+                if (is_array($attributeData) && !empty($attributeData)) {
+                    foreach ($attributeData as $attribute) {
+                        if (isset($attribute['id'], $attribute['values']) && is_array($attribute['values'])) {
+                            $categoryAttributeId = $attribute['id'];
+                            $values = $attribute['values'];
+                            $productAttribute = ProductAttribute::query()
+                                ->where([
+                                    'product_id' => $product->id,
+                                    'category_attribute_id' => $categoryAttributeId
+                                ])
+                                ->first() ?? new ProductAttribute();
+
+                            $productAttribute->product_id = $product->id;
+                            $productAttribute->category_attribute_id = $categoryAttributeId;
+                            $productAttribute->name_category_attribute = $attribute['name'];
+                            $productAttribute->id_attributes = json_encode($values);
+
+                            $productAttribute->save();
+                        } else {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'Thuộc tính hoặc giá trị thuộc tính bị thiếu.'
+                            ]);
+                        }
                     }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Dữ liệu thuộc tính bị thiếu',
+                    ]);
+                }
+
+                // Xử lý variant data
+                $variantsArray = json_decode($request->input('variants'), true);
+
+                if (is_array($variantsArray) && !empty($variantsArray)) {
+                    foreach ($variantsArray as $variant) {
+                        if (
+                            isset($variant['value_variant'], $variant['price_variant'], $variant['qty_variant']) &&
+                            is_array($variant['title_variant']) &&
+                            is_numeric($variant['price_variant']) &&
+                            is_numeric($variant['qty_variant'])
+                        ) {
+                            // Tạo khóa unique cho variant dựa vào 'value_variant'
+                            $idVariant = json_encode(array_map('intval', $variant['value_variant']));
+
+                            $productVariant = ProductVariant::where([
+                                'product_id' => $product->id,
+                                'id_variant' => $idVariant
+                            ])->first();
+
+                            // Nếu biến thể tồn tại, cập nhật; nếu không, tạo mới
+                            if (!$productVariant) {
+                                $productVariant = new ProductVariant();
+                                $productVariant->product_id = $product->id;
+                                $productVariant->id_variant = $idVariant;
+                            }
+
+                            // Cập nhật hoặc thiết lập các giá trị khác
+                            $productVariant->title_variant = json_encode($variant['title_variant']);
+                            $productVariant->price_variant = $variant['price_variant'];
+                            $productVariant->qty = $variant['qty_variant'];
+                            $productVariant->save();
+                        } else {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'Dữ liệu biến thể không hợp lệ.',
+                            ]);
+                        }
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Dữ liệu biến thể bị thiếu',
+                    ]);
                 }
             } else if ($request->type_product === 'product_simple') {
                 $product->type_product = $request->type_product;
@@ -472,6 +595,18 @@ class AdminProductController extends Controller
                 'message' => 'Có lỗi xảy ra: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function destroyProductAttribute(string $id)
+    {
+        $productAttribute = ProductAttribute::query()->findOrFail($id);
+        $nameAttr = $productAttribute->name_category_attribute;
+        $productAttribute->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Xóa thuộc tính ' . $nameAttr .  ' thành công',
+        ]);
     }
 
     public function destroyVariant(string $id)
