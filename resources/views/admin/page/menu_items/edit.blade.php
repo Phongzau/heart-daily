@@ -31,7 +31,7 @@
  
                                 <div class="form-group">
                                     <label for="">URL</label>
-                                    <input type="text" name="url"  value="{{ $menuItems->url }}" class="form-control">
+                                    <input type="text" name="url"  value="/{{ $menuItems->url }}" class="form-control">
                                 </div>
 
                                 <div class="form-group">

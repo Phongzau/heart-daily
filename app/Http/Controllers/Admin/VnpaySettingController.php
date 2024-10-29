@@ -3,21 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\PaymentSetting;
+use App\Models\VnpaySetting;
+use App\Models\PaypalSetting;
 use Illuminate\Http\Request;
 
-class PaymentSettingController extends Controller
+class VnpaySettingController  extends Controller
 {
     public function index()
     {
-        $vnpay = PaymentSetting::where('method', 'vnpay')->first();
-        $cod = PaymentSetting::where('method', 'cod')->first();
-        return view('admin.page.payment-settings.index', ['vnpay' => $vnpay, 'cod' => $cod]);
+        $vnpay = VnpaySetting::where('method', 'vnpay')->first();
+        $cod = VnpaySetting::where('method', 'cod')->first();
+        $paypal = PaypalSetting::where('method', 'paypal')->first();
+        return view('admin.page.payment-settings.index', ['vnpay' => $vnpay, 'cod' => $cod, 'paypal' => $paypal]);
     }
 
     public function update(Request $request, $id)
     {
-        $paymentSetting = PaymentSetting::query()->findOrFail($id);
+        $paymentSetting = VnpaySetting::query()->findOrFail($id);
         $request->validate([
             'status' => 'required|boolean',
             'vnp_tmncode' => 'nullable|string',

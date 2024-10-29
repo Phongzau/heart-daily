@@ -210,18 +210,16 @@
                     </table>
 
                     <div class="payment-methods">
-                        <h4>Payment methods</h4>
+                        <h4>Chọn phương thức thanh toán</h4>
                         <div class="form-group">
-                            <label for="payment_method">Chọn phương thức thanh toán</label>
+                            {{-- <label for="payment_method">Chọn phương thức thanh toán</label> --}}
                             <select id="payment_method" name="payment_method" class="form-control" required>
                                 <option value="" disabled selected>-- Chọn phương thức --</option>
                                 @foreach ($paymentMethods as $method)
                                 <option value="{{ $method->method }}">{{ $method->name }}</option>
                                 @endforeach
-                                <option value="momo">Thanh toán qua MoMo</option>
-                                <option value="cod">Khi nhận hàng</option>
-                                <option value="vnpay">Thanh toán qua VNPay</option>
-                                <option value="paypal">Thanh toán qua Paypal</option>
+                                {{-- <option value="momo">Thanh toán qua MoMo</option> --}}
+                               
                             </select>
                         </div>
                     </div>

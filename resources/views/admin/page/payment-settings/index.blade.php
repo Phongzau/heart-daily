@@ -16,17 +16,19 @@
                                 <div class="col-2">
                                     <div class="list-group" id="list-tab" role="tablist">
 
-                                        <a class="list-group-item list-group-item-action active"
-                                            id="list-home-list" data-toggle="list" href="#list-home"
-                                            role="tab">VNPay</a>
-                                        <a class="list-group-item list-group-item-action"
-                                            id="list-profile-list" data-toggle="list" href="#list-settings" role="tab">COD</a>
+                                        <a class="list-group-item list-group-item-action active" id="list-home-list"
+                                            data-toggle="list" href="#list-home" role="tab">VNPay</a>
+                                        <a class="list-group-item list-group-item-action" id="list-profile-list"
+                                            data-toggle="list" href="#list-settings" role="tab">COD</a>
+                                        <a class="list-group-item list-group-item-action" id="list-messages-list"
+                                            data-toggle="list" href="#list-messages" role="tab">PayPal</a>
                                     </div>
                                 </div>
                                 <div class="col-10">
                                     <div class="tab-content" id="nav-tabContent">
-                                        @include('admin.page.payment-settings.vnpay')
-                                        @include('admin.page.payment-settings.cod')
+                                        @include('admin.page.payment-settings.sections.vnpay')
+                                        @include('admin.page.payment-settings.sections.cod')
+                                        @include('admin.page.payment-settings.sections.paypal')
                                     </div>
                                 </div>
                             </div>

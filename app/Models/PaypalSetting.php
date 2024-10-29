@@ -10,6 +10,8 @@ class PaypalSetting extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
+        'method',
         'status',
         'mode',
         'currency_name',

@@ -1,7 +1,7 @@
 <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
     <div class="card">
         <div class="card-body border">
-            <form action="{{ route('admin.payment-settings.update', $vnpay->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.payment-settings.vnpay-setting.update', $vnpay->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <h5>VNPAY</h5>
