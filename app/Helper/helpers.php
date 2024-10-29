@@ -83,21 +83,31 @@ function getCartDiscount()
         }
     } else {
         return 0;
-    
     }
 }
 function fetchCartDiscountInfo()
 {
     if (Session::has('coupon')) {
-        $coupon = Session::get('coupon'); 
+        $coupon = Session::get('coupon');
         return [
-            'coupon_name' => $coupon['coupon_name'], 
+            'coupon_name' => $coupon['coupon_name'],
             'coupon_code' => $coupon['coupon_code'],
-            'discount_type' => $coupon['discount_type'], 
+            'discount_type' => $coupon['discount_type'],
             'discount' => $coupon['discount'],
         ];
     } else {
-        return null; 
+        return null;
+    }
+}
+
+// get order discount
+function getOrderDiscount($discountType, $subTotal, $discount)
+{
+    if ($discountType === 'amount') {
+        return $discount;
+    } else if ($discountType === 'percent') {
+        $discountValue = $subTotal * $discount / 100;
+        return $discountValue;
     }
 }
 

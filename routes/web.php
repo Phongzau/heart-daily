@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\NewletterPopupController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
@@ -355,8 +356,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         });
     });
 
-    // Route::get('payment-settings', [PaymentSettingControllerBackup::class, 'index'])->name('payment-settings.index');
-
+    /** Order Route **/
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('payment-status', [OrderController::class, 'changePaymentStatus'])->name('payment.status');
+        Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/{orders}', [OrderController::class, 'show'])->name('show');
+        Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy');
+    });
 });
 
 /** Client Routes */
