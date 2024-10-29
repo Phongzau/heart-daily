@@ -86,7 +86,7 @@
                             <span>Blog Comment</span></a></li>
                 </ul>
             </li>
-            <li><a class="nav-link" href="{{ route('admin.payment-settings.index') }}"><i class="fa-solid fa-money-check-dollar"></i>
+            <li><a class="nav-link" href="{{ route('admin.payment-settings.vnpay-setting.index') }}"><i class="fa-solid fa-money-check-dollar"></i>
                 <span>Payment settings</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.coupons.index') }}"><i class="fa-solid fa-ticket"></i>
                     <span>Coupons</span></a></li>
@@ -94,8 +94,7 @@
                     <span>Socials</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
                     <span>Settings</span></a></li>
-            <li><a class="nav-link" href="{{ route('admin.payment-settings.index') }}"><i class="fa-solid fa-gear"></i>
-                    <span>Payment settings</span></a></li>
+     
             <li><a class="nav-link" href="{{ route('admin.tags.index') }}"><i class="fas fa-tags"></i>
                     <span>Tags</span></a></li>
 

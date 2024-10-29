@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\PaypalSetting;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,9 @@ class PaypalSettingController extends Controller
 {
     public function update(Request $request, string $id)
     {
+
         $request->validate([
+            'name' => ['required', 'string'],
             'status' => ['required', 'boolean'],
             'mode' => ['required', 'boolean'],
             'currency_name' => ['required', 'string', 'max:200'],
@@ -21,6 +24,7 @@ class PaypalSettingController extends Controller
         PaypalSetting::updateOrCreate(
             ['id' => $id],
             [
+                'name' => $request->name,
                 'status' => $request->status,
                 'mode' => $request->mode,
                 'currency_name' => $request->currency_name,

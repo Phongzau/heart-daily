@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Mail\OrderConfirmation;
 use App\Models\GeneralSetting;
 use App\Models\Order;
-use App\Models\PaymentSetting;
 use App\Models\OrderProduct;
 use App\Models\PaypalSetting;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\VnpaySetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,33 +21,22 @@ use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class CheckoutController extends Controller
 {
-    public function execPostRequest($url, $data)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_HTTPHEADER,
-            array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data)
-            )
-        );
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        //execute post
-        $result = curl_exec($ch);
-        //close connection
-        curl_close($ch);
-        return $result;
-    }
+   
     public function index()
     {
         $carts = session('cart', []);
-        $paymentMethods = PaymentSetting::where('status', 1)->get();
-        return view('client.page.checkout', compact('carts','paymentMethods'));
+        $paymentSetting = VnpaySetting::where('status', 1)->get(['method', 'name']);
+        $paypalSetting = PaypalSetting::where('status', 1)->get(['method', 'name']);
+
+
+        $paymentMethods = collect();
+        if ($paymentSetting->isNotEmpty()) {
+            $paymentMethods = $paymentMethods->merge($paymentSetting);
+        }
+        if ($paypalSetting->isNotEmpty()) {
+            $paymentMethods = $paymentMethods->merge($paypalSetting);
+        }
+        return view('client.page.checkout', compact('carts', 'paymentMethods'));
     }
 
     public function process(Request $request)
@@ -78,9 +67,11 @@ class CheckoutController extends Controller
 
         if ($request->input('payment_method') === 'vnpay') {
             return $this->createPayment($order);
-        } elseif ($request->input('payment_method') === 'momo') {
-            return $this->createMoMoPayment($order);
-        } else if ($request->input('payment_method') === 'paypal') {
+        } 
+        // elseif ($request->input('payment_method') === 'momo') {
+        //     return $this->createMoMoPayment($order);
+        // } 
+        else if ($request->input('payment_method') === 'paypal') {
             return $this->payWithPaypal();
         } else {
             // $order->payment_method = 'COD';
@@ -168,7 +159,7 @@ class CheckoutController extends Controller
 
     private function createPayment($order)
     {
-        $paymentMethods = PaymentSetting::where('method', 'vnpay')->first();
+        $paymentMethods = VnpaySetting::where('method', 'vnpay')->first();
 
         $vnp_TmnCode = $paymentMethods->vnp_tmncode;
         $vnp_HashSecret = $paymentMethods->vnp_hashsecret;
@@ -223,7 +214,7 @@ class CheckoutController extends Controller
 
     public function vnpayReturn(Request $request)
     {
-        $paymentMethods = PaymentSetting::where('method', 'vnpay')->first();
+        $paymentMethods = VnpaySetting::where('method', 'vnpay')->first();
         $vnp_SecureHash  = $request->vnp_SecureHash;
         $inputData = $request->all();
         unset($inputData['vnp_SecureHash']);
@@ -255,71 +246,7 @@ class CheckoutController extends Controller
             return redirect()->route('checkout');
         }
     }
-    private function createMoMoPayment($order)
-    {
-        $endpoint = config('services.momo.endpoint');
-        $partnerCode = config('services.momo.partner_code');
-        $accessKey = config('services.momo.access_key');
-        $secretKey = config('services.momo.secret_key');
-        // $serectkey = $secretKey;
-        $orderId = $order->invoice_id;
-        $orderInfo = "Thanh toán đơn hàng " . $orderId;
-        $amount = $order->amount;
-        $redirectUrl = config('services.momo.return_url');
-        $ipnUrl = $redirectUrl;
-        $extraData = "";
-        $requestId = time() . "";
-        $requestType = "payWithATM"; //captureWallet
-
-        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
-        $signature = hash_hmac("sha256", $rawHash, $secretKey);
-
-        $data = [
-            'partnerCode' => $partnerCode,
-            'accessKey' => $accessKey,
-            'requestId' => $requestId,
-            'amount' => $amount,
-            'orderId' => $orderId,
-            'orderInfo' => $orderInfo,
-            'redirectUrl' => $redirectUrl,
-            'ipnUrl' => $ipnUrl,
-            'extraData' => $extraData,
-            'requestType' => $requestType,
-            'signature' => $signature,
-        ];
-
-        $response = Http::post($endpoint, $data);
-
-        if ($response->successful()) {
-            $responseBody = $response->json();
-
-            return redirect($responseBody['payUrl']);
-        } else {
-            toastr('Có lỗi xảy ra khi tạo thanh toán qua MoMo', 'error');
-            return redirect()->route('checkout');
-        }
-    }
-    public function momoReturn(Request $request)
-    {
-        $orderId = $request->input('orderId');
-        $order = Order::where('invoice_id', $orderId)->first();
-
-        if ($order && $request->input('errorCode') == '0') {
-            $order->payment_status = true;
-            $order->payment_method = 'MoMo';
-            $order->save();
-
-            $this->sendOrderConfirmation($order);
-            session()->forget('cart');
-            session()->forget('coupon');
-            toastr('Thanh toán qua MoMo thành công!', 'success');
-            return redirect()->route('order.complete');
-        } else {
-            toastr('Thanh toán qua MoMo thất bại!', 'error');
-            return redirect()->route('checkout');
-        }
-    }
-
+    
     private function sendOrderConfirmation($order)
     {
         $user = Auth::user();
