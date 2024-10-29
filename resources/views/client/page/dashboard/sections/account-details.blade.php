@@ -7,17 +7,17 @@
             @method('PUT')
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="form-group" style="display: flex; flex-direction: column;">
                         <!-- Hiển thị ảnh cũ -->
                         <div style="width: 200px; display: flex; flex-direction: column; align-items: center;">
                             <label style="width: 100%; text-align: center" for="">Profile Picture</label>
                             <br>
-                            <img id="currentImage" style="width: 100%; padding: 0 10px;max-height: 300px;"
+                            <img id="currentImage" style="width: 100%; padding: 0 10px;max-height: 300px; border-radius: 50%"
                                 src="{{ Storage::url(Auth::user()->image) }}">
 
                             <!-- Hiển thị ảnh preview cho ảnh mới, mặc định sẽ ẩn -->
                             <img id="imagePreview"
-                                style="width: 100%; padding: 0 10px;max-height: 300px; display: none;"
+                                style="width: 100%; padding: 0 10px;max-height: 300px; display: none; border-radius: 50%"
                                 alt="New Image Preview">
                         </div>
 
@@ -51,7 +51,7 @@
                     <div class="form-group">
                         <label for="acc-lastname">Last name <span class="required">*</span></label>
                         <input type="text" class="form-control" id="last_name" name="last_name"
-                            value="{{ old('first_name', Auth::user()->last_name) }}"required />
+                            value="{{ old('last_name', Auth::user()->last_name) }}"required />
                     </div>
                 </div>
             </div>
@@ -59,18 +59,18 @@
             <div class="form-group mb-2">
                 <label for="display_name">Display name <span class="required">*</span></label>
                 <input type="text" class="form-control" id="display_name" name="display_name" placeholder="Editor"
-                    value="{{ old('first_name', Auth::user()->display_name) }}" required />
+                    value="{{ old('display_name', Auth::user()->display_name) }}" required />
                 <p>This will be how your name will be displayed in the account section and
                     in
                     reviews</p>
             </div>
 
-            <div class="form-group mb-4">
+            <div class="form-group mb-2">
                 <label for="acc-email">Email address <span class="required">*</span></label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="editor@gmail.com"
-                    readonly value="{{ old('first_name', Auth::user()->email) }}" required />
+                    readonly value="{{ old('email', Auth::user()->email) }}" required />
             </div>
-            <button type="submit" class="btn btn-dark mr-0">
+            <button type="submit" class="btn btn-dark mr-0 mb-4">
                 Save changes
             </button>
         </form>

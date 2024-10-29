@@ -8,7 +8,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>First name <span class="required">*</span></label>
-                        <input type="text" name="first_name" class="form-control" required
+                        <input type="text" name="first_name" class="form-control" required placeholder="Fist Name"
                             value="{{ old('first_name', Auth::user()->first_name) }}" />
                     </div>
                 </div>
@@ -16,34 +16,37 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Last name <span class="required">*</span></label>
-                        <input type="text" name="last_name" class="form-control" required
-                            value="{{ old('first_name', Auth::user()->last_name) }}" />
+                        <input type="text" name="last_name" class="form-control" required placeholder="Last Name"
+                            value="{{ old('last_name', Auth::user()->last_name) }}" />
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Phone </label>
-                <input type="text" name="phone" class="form-control"
-                    value="{{ old('first_name', Auth::user()->phone) }}">
+                <input type="text" name="phone" class="form-control" placeholder="Phone"
+                    value="{{ old('phone', Auth::user()->phone) }}">
             </div>
 
-            <select id="province" name="province_id">
-                <option value="">Select Province</option>
+            <select id="province" name="province_id"
+                style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                <option value="" hidden>Province</option>
             </select>
 
-            <select id="district" name="district_id" disabled>
-                <option value="">Select District</option>
+            <select id="district" name="district_id" disabled
+                style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                <option value="" hidden>District</option>
             </select>
 
-            <select id="commune" name="commune_id" disabled>
-                <option value="">Select Commune</option>
+            <select id="commune" name="commune_id" disabled
+                style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                <option value="" hidden>Commune</option>
             </select>
 
             <div class="form-group">
                 <label>Address<span class="required">*</span></label>
-                <input type="text" name="address" class="form-control" required
-                    value="{{ old('first_name', Auth::user()->address) }}" />
+                <input type="text" name="address" class="form-control" required placeholder="Address"
+                    value="{{ old('address', Auth::user()->address) }}" />
             </div>
 
             <div class="form-footer mb-0">
@@ -82,7 +85,7 @@
             if (province_id) {
                 $('#district').prop('disabled', false);
                 $.getJSON(`/provinces/${province_id}/districts`, function(districts) {
-                    $('#district').html('<option value="">Select District</option>');
+                    $('#district').html('');
                     $('#district').append(districts.map(function(district) {
                         return `<option value="${district.id}" ${district.id == userDistrictId ? 'selected' : ''}>${district.title}</option>`;
                     }));
@@ -93,8 +96,8 @@
                     }
                 });
             } else {
-                $('#district').prop('disabled', true).html('<option value="">Select District</option>');
-                $('#commune').prop('disabled', true).html('<option value="">Select Commune</option>');
+                $('#district').prop('disabled', true).html('');
+                $('#commune').prop('disabled', true).html('');
             }
         });
 
@@ -104,13 +107,13 @@
             if (district_id) {
                 $('#commune').prop('disabled', false);
                 $.getJSON(`/districts/${district_id}/communes`, function(communes) {
-                    $('#commune').html('<option value="">Select Commune</option>');
+                    $('#commune').html('');
                     $('#commune').append(communes.map(function(commune) {
                         return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'selected' : ''}>${commune.title}</option>`;
                     }));
                 });
             } else {
-                $('#commune').prop('disabled', true).html('<option value="">Select Commune</option>');
+                $('#commune').prop('disabled', true).html('');
             }
         });
     });

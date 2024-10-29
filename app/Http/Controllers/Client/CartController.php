@@ -15,11 +15,12 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
+
+        
         $formDataString = $request->input('formData');
         parse_str($formDataString, $formDataArray);
         $qty = $formDataArray['qty'] ?? null;
         $product_id = $formDataArray['product_id'] ?? null;
-
         $variants = $request->input('variants', []);
         $attributeIdArray = [];
         $product = Product::query()->where('id', $product_id)->first();

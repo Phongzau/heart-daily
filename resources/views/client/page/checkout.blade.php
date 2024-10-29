@@ -53,51 +53,61 @@
 
                         <form method="POST" action="{{ route('checkout.process') }}" id="checkout-form">
                             @csrf
-                            <label>Liên hệ</label>
+                            <label>Contact</label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="name" name="name" required
-                                    placeholder="Họ và tên" />
+                                {{-- <input type="text" class="form-control" id="name" name="name" required
+                                    placeholder="Fist name" /> --}}
+                                <input type="text" name="first_name" class="form-control" required
+                                    value="{{ old('first_name', Auth::user()->first_name) }}" />
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="tel" class="form-control" id="phone" name="phone" required
-                                            placeholder="Số điện thoại" />
+                                        <input type="text" name="phone" class="form-control"
+                                            value="{{ old('phone', Auth::user()->phone) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="email" class="form-control" id="email" name="email" required
-                                            placeholder="Email" />
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            placeholder="editor@gmail.com"
+                                            value="{{ old('email', Auth::user()->email) }}" required />
                                     </div>
                                 </div>
                             </div>
-                            <label>Địa chỉ</label>
+                            <label>Address</label>
 
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="city" name="city" required
-                                            placeholder="Tỉnh/Thành phố" />
+                                        <select id="province" name="province_id"
+                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                                            <option value="">Province</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="district" name="district" required
-                                            placeholder="Quận/Huyện" />
+                                        <select id="district" name="district_id" disabled
+                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                                            <option value="">District</option>
+                                        </select>
+
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="ward" name="ward" required
-                                            placeholder="Phường/Xã" />
+                                        <select id="commune" name="commune_id" disabled
+                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                                            <option value="">Commune</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control" id="address" name="address" required
-                                    placeholder="Tên dường, Tòa nhà, Số nhà." />
+                                <input type="text" name="address" class="form-control" required
+                                    value="{{ old('address', Auth::user()->address) }}" />
                             </div>
 
                             {{-- <div class="form-group mb-1">
@@ -216,7 +226,7 @@
                             <select id="payment_method" name="payment_method" class="form-control" required>
                                 <option value="" disabled selected>-- Chọn phương thức --</option>
                                 @foreach ($paymentMethods as $method)
-                                <option value="{{ $method->method }}">{{ $method->name }}</option>
+                                    <option value="{{ $method->method }}">{{ $method->name }}</option>
                                 @endforeach
                                 {{-- <option value="momo">Thanh toán qua MoMo</option> --}}
                                
@@ -237,4 +247,62 @@
         <!-- End .row -->
     </div>
     <!-- End .container -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let userProvinceId = "{{ old('province_id', Auth::user()->province_id) }}";
+            let userDistrictId = "{{ old('district_id', Auth::user()->district_id) }}";
+            let userCommuneId = "{{ old('commune_id', Auth::user()->commune_id) }}";
+
+            // Load all provinces on page load
+            $.getJSON('/provinces', function(provinces) {
+                $('#province').append(provinces.map(function(province) {
+                    return `<option value="${province.id}" ${province.id == userProvinceId ? 'selected' : ''}>${province.title}</option>`;
+                }));
+
+                // Trigger change event to load districts if a province is pre-selected
+                if (userProvinceId) {
+                    $('#province').trigger('change');
+                }
+            });
+
+            // Load districts when a province is selected
+            $('#province').on('change', function() {
+                let province_id = $(this).val();
+                if (province_id) {
+                    $('#district').prop('disabled', false);
+                    $.getJSON(`/provinces/${province_id}/districts`, function(districts) {
+                        $('#district').html('<option value="">Select District</option>');
+                        $('#district').append(districts.map(function(district) {
+                            return `<option value="${district.id}" ${district.id == userDistrictId ? 'selected' : ''}>${district.title}</option>`;
+                        }));
+
+                        // Trigger change event to load communes if a district is pre-selected
+                        if (userDistrictId) {
+                            $('#district').trigger('change');
+                        }
+                    });
+                } else {
+                    $('#district').prop('disabled', true).html('<option value="">Select District</option>');
+                    $('#commune').prop('disabled', true).html('<option value="">Select Commune</option>');
+                }
+            });
+
+            // Load communes when a district is selected
+            $('#district').on('change', function() {
+                let district_id = $(this).val();
+                if (district_id) {
+                    $('#commune').prop('disabled', false);
+                    $.getJSON(`/districts/${district_id}/communes`, function(communes) {
+                        $('#commune').html('<option value="">Select Commune</option>');
+                        $('#commune').append(communes.map(function(commune) {
+                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'selected' : ''}>${commune.title}</option>`;
+                        }));
+                    });
+                } else {
+                    $('#commune').prop('disabled', true).html('<option value="">Select Commune</option>');
+                }
+            });
+        });
+    </script>
 @endsection

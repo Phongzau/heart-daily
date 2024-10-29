@@ -42,24 +42,24 @@ class CheckoutController extends Controller
     public function process(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
             'email' => 'required|email',
             'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
-            'district' => 'required|string|max:100',
-            'ward' => 'required|string|max:100',
+            'province_id' => 'required|string|max:100',
+            'district_id' => 'required|string|max:100',
+            'commune_id' => 'required|string|max:100',
             'payment_method' => 'required|string|in:cod,vnpay,paypal,momo',
         ]);
 
         session(['address' => $request->only([
-            'name',
+            'first_name',
             'phone',
             'email',
             'address',
-            'city',
-            'district',
-            'ward',
+            'province_id',
+            'district_id',
+            'commune_id',
         ])]);
 
         // Sử dụng hàm createOrder để tạo đơn hàng
@@ -141,13 +141,13 @@ class CheckoutController extends Controller
         $order->product_qty = array_sum(array_column($carts, 'qty'));
         $order->payment_status = false;
         $order->order_address = json_encode([
-            'name' => $request->input('name'),
+            'first_name' => $request->input('first_name'),
             'phone' => $request->input('phone'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
-            'city' => $request->input('city'),
-            'district' => $request->input('district'),
-            'ward' => $request->input('ward'),
+            'province_id' => $request->input('province_id'),
+            'district_id' => $request->input('district_id'),
+            'commune_id' => $request->input('commune_id'),
             'order_comments' => $request->input('order_comments'),
         ]);
         $order->cod = getCartCod();
