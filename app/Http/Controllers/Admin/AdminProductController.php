@@ -609,6 +609,17 @@ class AdminProductController extends Controller
         ]);
     }
 
+    public function changeStatus(Request $request)
+    {
+        $product = Product::query()->findOrFail($request->id);
+        $product->status = $request->status == 'true' ? 1 : 0;
+        $product->save();
+
+        return response([
+            'message' => 'Status cập nhật thành công',
+        ]);
+    }
+
     public function destroyVariant(string $id)
     {
         $productVariant = ProductVariant::query()->findOrFail($id);

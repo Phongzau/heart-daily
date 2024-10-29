@@ -70,8 +70,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="email" class="form-control" id="email" name="email"
-                                            placeholder="editor@gmail.com"
-                                            value="{{ old('email', Auth::user()->email) }}" required />
+                                            placeholder="editor@gmail.com" value="{{ old('email', Auth::user()->email) }}"
+                                            required />
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                                     <option value="{{ $method->method }}">{{ $method->name }}</option>
                                 @endforeach
                                 {{-- <option value="momo">Thanh toán qua MoMo</option> --}}
-                               
+
                             </select>
                         </div>
                     </div>
@@ -253,7 +253,6 @@
             let userProvinceId = "{{ old('province_id', Auth::user()->province_id) }}";
             let userDistrictId = "{{ old('district_id', Auth::user()->district_id) }}";
             let userCommuneId = "{{ old('commune_id', Auth::user()->commune_id) }}";
-
             // Load all provinces on page load
             $.getJSON('/provinces', function(provinces) {
                 $('#province').append(provinces.map(function(province) {
