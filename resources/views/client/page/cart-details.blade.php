@@ -52,13 +52,15 @@
                                     <td class="product-col">
                                         <h5 class="product-title text-center">
                                             <a href="{{ route('product.detail', ['slug' => $item['options']['slug']]) }}">
-                                            @if(isset($item['options']['variants']))
-                                                {{ $item['name'] }} <br>
-                                                @foreach ($item['options']['variants'] as $key => $variant)
-                                                    <span>
-                                                        {{ $key }}: {{ $variant }}
-                                                    </span> <br>
-                                                @endforeach
+                                                @if (isset($item['options']['variants']))
+                                                    {{ $item['name'] }}
+                                                    @foreach ($item['options']['variants'] as $key => $variant)
+                                                        <span>
+                                                            {{ $key }}: {{ $variant }}
+                                                        </span> <br>
+                                                    @endforeach
+                                                @else
+                                                    {{ $item['name'] }}
                                                 @endif
                                             </a>
                                         </h5>

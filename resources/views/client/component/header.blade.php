@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.min.css') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('frontend/assets/vendor/simple-line-icons/css/simple-line-icons.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css"
         href="{{ asset('frontend/assets/vendor/fontawesome-free/css/all.min.css') }}">

@@ -35,10 +35,13 @@
                                 <div class="col-md-6 text-md-right">
                                     <address>
                                         <strong>Billed To:</strong><br>
-                                        <b>Name: </b>{{ $address->name }}<br>
+                                        <b>Name: </b>{{ $address->first_name }}<br>
                                         <b>Email: </b>{{ $address->email }}<br>
                                         <b>Phone: </b>{{ $address->phone }}<br>
-                                        <b>Address: </b>{{ $address->city }}
+                                        <b>Address: </b>{{ $address->address }}
+                                        {{ $address->province_id }},
+                                        {{ $address->district_id }},
+                                        {{ $address->commune_id }}
                                     </address>
                                 </div>
                             </div>
@@ -77,21 +80,28 @@
                                     </tr>
                                     @foreach ($order->orderProducts as $index => $product)
                                         @php
-                                            $variants = json_decode($product->variants);
+                                            if ($product->product->type_product === 'product_variant') {
+                                                $variants = json_decode($product->variants);
+                                            }
                                         @endphp
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             @if (isset($product->product->slug))
                                                 <td><a target="_blank"
-                                                        href="{{ route('product-detail', $product->product->slug) }}">{{ $product->product_name }}</a>
+                                                        href="{{ route('product.detail', $product->product->slug) }}">{{ $product->product_name }}</a>
                                                 </td>
                                             @else
                                                 <td>{{ $product->product_name }}</td>
                                             @endif
                                             <td>
-                                                @foreach ($variants as $key => $variant)
-                                                    <b>{{ $key }}: </b> {{ $variant }} <br>
-                                                @endforeach
+                                                @if ($product->product->type_product === 'product_simple')
+                                                    {{ $product->variants }}
+                                                @elseif($product->product->type_product === 'product_variant')
+                                                    @foreach ($variants as $key => $variant)
+                                                        <b>{{ $key }}: </b> {{ $variant }} <br>
+                                                    @endforeach
+                                                @endif
+
                                             </td>
                                             <td class="text-center">{{ number_format($product->unit_price) }} VNĐ</td>
                                             <td class="text-center">{{ $product->qty }}</td>

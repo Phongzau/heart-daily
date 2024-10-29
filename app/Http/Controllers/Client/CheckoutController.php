@@ -9,11 +9,14 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\PaypalSetting;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Transaction;
 use App\Models\VnpaySetting;
+use App\Models\Attribute;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -21,7 +24,7 @@ use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class CheckoutController extends Controller
 {
-   
+
     public function index()
     {
         $carts = session('cart', []);
@@ -67,10 +70,10 @@ class CheckoutController extends Controller
 
         if ($request->input('payment_method') === 'vnpay') {
             return $this->createPayment($order);
-        } 
+        }
         // elseif ($request->input('payment_method') === 'momo') {
         //     return $this->createMoMoPayment($order);
-        // } 
+        // }
         else if ($request->input('payment_method') === 'paypal') {
             return $this->payWithPaypal();
         } else {
@@ -91,43 +94,77 @@ class CheckoutController extends Controller
 
     public function storeOrder($paymentMethod, $paymentStatus, $transactionId, $paidAmount, $paidCurrencyName)
     {
-        $carts = session('cart', []);
+        DB::beginTransaction();
 
-        $order = new Order();
-        $order->invoice_id = (string) Str::uuid();
-        $order->user_id = Auth::user()->id;
-        $order->sub_total = getCartTotal();
-        $order->amount = getMainCartTotal();
-        $order->product_qty = count($carts);
-        $order->payment_method = $paymentMethod;
-        $order->payment_status = $paymentStatus;
-        $order->order_address = json_encode(session()->get('address'));
-        $order->cod = getCartCod();
-        $order->coupon_method = json_encode(session()->get('coupon'));
-        $order->order_status = 'pending';
-        $order->save();
+        try {
+            $carts = session('cart', []);
 
-        // store order products
-        foreach ($carts as $item) {
-            $orderProduct = new OrderProduct();
-            $orderProduct->order_id = $order->id;
-            $orderProduct->product_id = $item['product_id'];
-            $orderProduct->product_name = $item['name'];
-            $orderProduct->variants = json_encode($item['options']['variants']);
-            $orderProduct->unit_price = $item['price'];
-            $orderProduct->qty = $item['qty'];
-            $orderProduct->save();
+            // Lưu thông tin đơn hàng
+            $order = new Order();
+            $order->invoice_id = (string) Str::uuid();
+            $order->user_id = Auth::user()->id;
+            $order->sub_total = getCartTotal();
+            $order->amount = getMainCartTotal();
+            $order->product_qty = count($carts);
+            $order->payment_method = $paymentMethod;
+            $order->payment_status = $paymentStatus;
+            $order->order_address = json_encode(session()->get('address'));
+            $order->cod = getCartCod();
+            $order->coupon_method = json_encode(session()->get('coupon'));
+            $order->order_status = 'pending';
+            $order->save();
+
+            // Lưu sản phẩm trong đơn hàng
+            foreach ($carts as $item) {
+                $product = Product::query()->findOrFail($item['product_id']);
+                $orderProduct = new OrderProduct();
+                $orderProduct->order_id = $order->id;
+                $orderProduct->product_id = $item['product_id'];
+                $orderProduct->product_name = $item['name'];
+
+                if ($product->type_product == 'product_simple') {
+                    $orderProduct->variants = "Không";
+                    $product->qty -= $item['qty'];
+                    $product->save();
+                } else if ($product->type_product == 'product_variant') {
+                    $orderProduct->variants = json_encode($item['options']['variants']);
+                    $attributeIdArray = [];
+                    foreach ($item['options']['variants'] as $variant) {
+                        $slugVariant = strtolower($variant);
+                        $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
+                        $attributeIdArray[] = $attributeId;
+                    }
+
+                    $productVariant = ProductVariant::where('product_id', $item['product_id'])
+                        ->whereJsonContains('id_variant', $attributeIdArray)
+                        ->first();
+                    $productVariant->qty -= $item['qty'];
+                    $productVariant->save(); // Cập nhật số lượng cho biến thể
+                }
+
+                $orderProduct->unit_price = $item['price'];
+                $orderProduct->qty = $item['qty'];
+                $orderProduct->save();
+            }
+
+            // Lưu thông tin giao dịch
+            $transaction = new Transaction();
+            $transaction->order_id = $order->id;
+            $transaction->transaction_id = $transactionId;
+            $transaction->payment_method = $paymentMethod;
+            $transaction->amount = getMainCartTotal();
+            $transaction->amount_real_currency = $paidAmount;
+            $transaction->amount_real_currency_name = $paidCurrencyName;
+            $transaction->save();
+
+            // Commit transaction
+            DB::commit();
+        } catch (\Exception $e) {
+            // Rollback transaction nếu có lỗi
+            DB::rollBack();
+            // Xử lý lỗi hoặc ghi log nếu cần
+            throw $e;
         }
-
-        // store transaction details
-        $transaction = new Transaction();
-        $transaction->order_id = $order->id;
-        $transaction->transaction_id = $transactionId;
-        $transaction->payment_method = $paymentMethod;
-        $transaction->amount = getMainCartTotal();
-        $transaction->amount_real_currency = $paidAmount;
-        $transaction->amount_real_currency_name = $paidCurrencyName;
-        $transaction->save();
     }
 
     private function createOrder($request)
@@ -246,7 +283,7 @@ class CheckoutController extends Controller
             return redirect()->route('checkout');
         }
     }
-    
+
     private function sendOrderConfirmation($order)
     {
         $user = Auth::user();

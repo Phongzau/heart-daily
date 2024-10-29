@@ -36,7 +36,7 @@
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
-    {{-- <script>
+    <script>
         $(document).ready(function() {
             $('body').on('click', '.change-status', function() {
                 let isChecked = $(this).is(':checked');
@@ -44,7 +44,7 @@
                 console.log(id);
 
                 $.ajax({
-                    url: "{{ route('admin.product.change-status') }}",
+                    url: "{{ route('admin.products.change-status') }}",
                     method: 'PUT',
                     data: {
                         status: isChecked,
@@ -59,5 +59,5 @@
                 })
             })
         })
-    </script> --}}
+    </script>
 @endpush

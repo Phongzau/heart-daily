@@ -1170,14 +1170,21 @@
                                     productId = response.data.id;
                                     toastr.success("Thêm sản phẩm thành công!");
 
-                                    dropzoneInstance.on("sending", function(file,
-                                        xhr, formData) {
-                                        formData.append("product_id",
-                                            productId);
-                                    });
-
-                                    dropzoneInstance
-                                        .processQueue();
+                                    if (dropzoneInstance.getQueuedFiles().length >
+                                        0) {
+                                        dropzoneInstance.on("sending", function(
+                                            file,
+                                            xhr, formData) {
+                                            formData.append("product_id",
+                                                productId);
+                                        });
+                                        dropzoneInstance.processQueue();
+                                    } else {
+                                        setTimeout(function() {
+                                            window.location.href =
+                                                "{{ route('admin.products.index') }}";
+                                        }, 1500);
+                                    }
                                 } else if (response.status == 'error') {
                                     toastr.error(response.message);
                                 }

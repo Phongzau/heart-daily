@@ -23,49 +23,51 @@
                           <div class="widget">
                               <img src="{{ Storage::url(@$logoSetting->logo_footer) }}" alt="Logo"
                                   class="widget-logo mb-3" style="width: 100px; height: auto;">
-                                <h4 class="widget-title">Contact Info</h4>
-                                <ul class="contact-info">
-                                    <li>
-                                        <span class="contact-info-label">Address:</span>
-                                        <i class="fas fa-map-marker-alt fa-sm"></i> {{@$generalSettings->contact_address}}
-                                    </li>
-                                    <li>
-                                        <span class="contact-info-label">Phone:</span>
-                                        <a href="tel:{{@$generalSettings->contact_phone}}">
-                                            <i class="fas fa-phone fa-rotate-90 fa-sm"></i> {{@$generalSettings->contact_phone}}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <span class="contact-info-label">Email:</span>
-                                        <a href="tel:{{@$generalSettings->contact_email}}">
-                                            <i class="fas fa-envelope fa-sm"></i> {{@$generalSettings->contact_email}}
-                                        </a>
-                                    </li>
-                                    <!-- <li>
+                              <h4 class="widget-title">Contact Info</h4>
+                              <ul class="contact-info">
+                                  <li>
+                                      <span class="contact-info-label">Address:</span>
+                                      <i class="fas fa-map-marker-alt fa-sm"></i>
+                                      {{ @$generalSettings->contact_address }}
+                                  </li>
+                                  <li>
+                                      <span class="contact-info-label">Phone:</span>
+                                      <a href="tel:{{ @$generalSettings->contact_phone }}">
+                                          <i class="fas fa-phone fa-rotate-90 fa-sm"></i>
+                                          {{ @$generalSettings->contact_phone }}
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <span class="contact-info-label">Email:</span>
+                                      <a href="tel:{{ @$generalSettings->contact_email }}">
+                                          <i class="fas fa-envelope fa-sm"></i> {{ @$generalSettings->contact_email }}
+                                      </a>
+                                  </li>
+                                  <!-- <li>
                                         <span class="contact-info-label">Working Days/Hours:</span> Mon - Sun / 9:00
                                         AM
                                         - 8:00 PM
                                     </li> -->
-                                </ul>
-                                <div class="social-icons">
-                                    <!-- <a href="" class="social-icon social-facebook icon-facebook" target="_blank"
+                              </ul>
+                              <div class="social-icons">
+                                  <!-- <a href="" class="social-icon social-facebook icon-facebook" target="_blank"
                                         title="Facebook"></a>
                                     <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
                                         title="Twitter"></a>
                                     <a href="" class="social-icon social-instagram icon-instagram"
                                         target="_blank" title="Instagram"></a> -->
 
-                                    @foreach($socials as $social)
-                                            <a href="{{ $social->url }}" class="social-icon" target="_blank">
-                                                <i class="{{ @$social->icon }}"></i>
-                                            </a>
-                                    @endforeach
-                                </div>
-                                <!-- End .social-icons -->
-                            </div>
-                            <!-- End .widget -->
-                        </div>
-                        <!-- End .col-lg-3 -->
+                                  @foreach ($socials as $social)
+                                      <a href="{{ $social->url }}" class="social-icon" target="_blank">
+                                          <i class="{{ @$social->icon }}"></i>
+                                      </a>
+                                  @endforeach
+                              </div>
+                              <!-- End .social-icons -->
+                          </div>
+                          <!-- End .widget -->
+                      </div>
+                      <!-- End .col-lg-3 -->
 
                       <div class="col-lg-3 col-sm-6">
                           <div class="widget">
@@ -368,6 +370,7 @@
       <script src="{{ asset('frontend/assets/js/plugins.min.js') }}"></script>
       <script src="{{ asset('frontend/assets/js/jquery.appear.min.js') }}"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
       <!-- Main JS File -->
       <script src="{{ asset('frontend/assets/js/main.min.js') }}"></script>
 
