@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SocialController;
@@ -94,6 +95,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     Route::get('/dashboard', function () {
         return view('admin.page.dashboard');
     })->name('dashboard');
+
+    // admin profile
+    Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');
+
+    // Route::post(
+    //     '/profile/edit',
+    //     [AdminProfileController::class, 'AdminProfileEdit']
+    // )->name('profile.edit');
+
+    Route::post('/update', [AdminProfileController::class, 'AdminProfileUpdate'])->name('profile.update');
+    Route::post('profile/update/password', [AdminProfileController::class, 'updatePassword'])->name('password.update');
+
+    // Route::post('/profile/update', [AdminProfileController::class, 'AdminProfileStore'])->name('profile.store');
+
+    // Route::post('/profile/change/password', [AdminProfileController::class, 'AdminChangePassword'])->name('profile.change.password');
 
     //Brands
     Route::prefix('brands')->name('brands.')->group(function () {
