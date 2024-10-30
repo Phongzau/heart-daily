@@ -378,11 +378,11 @@
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                                        ` : `
-                                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                                    `}
+                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                        ` : `
+                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                        `}
                     </div>
                     <div class="product-action">
                         <a href="#" data-productid="${product.id}" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
@@ -429,3 +429,4 @@
         }
     </script>
 @endsection
+
