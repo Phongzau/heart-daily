@@ -31,6 +31,7 @@ use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PaypalSettingController;
 use App\Http\Controllers\Admin\VnpaySettingController;
+use App\Http\Controllers\Client\WishlistController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -62,10 +63,6 @@ Route::get('/chat/{id?}', function ($id = null) {
 })->middleware(['auth'])->name('chat');
 
 
-Route::get('/wishlist', function () {
-    return view('client.page.wishlist');
-})->name('wishlist');
-
 Route::get('/contact', function () {
     return view('client.page.contact');
 })->name('contact');
@@ -86,9 +83,6 @@ Route::get('/cart-details', function () {
     return view('client.page.cart-details');
 })->name('cart-details');
 
-Route::get('/checkout', function () {
-    return view('client.page.checkout');
-})->name('checkout');
 
 Route::get('user/dashboard', function () {
     return view('client.page.dashboard.dashboard');
@@ -412,3 +406,12 @@ Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('mom
 Route::get('paypal/payment', [CheckoutController::class, 'payWithPaypal'])->name('paypal.payment');
 Route::get('paypal/success', [CheckoutController::class, 'paypalSuccess'])->name('paypal.success');
 Route::get('paypal/cancel', [CheckoutController::class, 'paypalCancel'])->name('paypal.cancel');
+
+
+//wishlist
+Route::prefix('wishlist')->name('wishlist.')->group(function () {
+    Route::post('/update_wishlist', [ProductController::class, 'updateWishlist'])->name('updateWishlist');
+    Route::get('/total_wishlist', [ProductController::class, 'totalWishlist'])->name('totalWishlist');
+    Route::delete('/{id}', [WishlistController::class, 'remove'])->name('remove');
+    Route::get('/', [WishlistController::class, 'index'])->name('index');
+});

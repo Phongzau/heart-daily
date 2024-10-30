@@ -134,7 +134,7 @@ class UserController extends Controller
 
     public function showResetPasswordForm($token)
     {
-        return view('client.page.auth.reset-password', ['token' => $token]);
+        return view('client.page.auth.reset-password', compact('token'));
     }
 
     public function resetPassword(Request $request)

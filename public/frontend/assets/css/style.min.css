@@ -12333,6 +12333,20 @@ header a {
     font-family: "Open Sans", sans-serif;
     text-align: center
 }
+.total_wishlist {
+    position: absolute;
+    top: 33px;
+    right: 70px;
+    width: 1.6rem;
+    border-radius: 50%;
+    color: #fff;
+    background: #ff5b5b;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.6rem;
+    font-family: "Open Sans", sans-serif;
+    text-align: center
+}
 
 header .social-icon {
     border-radius: 50%;

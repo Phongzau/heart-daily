@@ -52,7 +52,7 @@
                 <!-- End .price-box -->
 
                 <div class="product-action">
-                    <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
+                    <a href="#" data-productid="{{ $product->id }}" class="btn-icon-wish {{ Auth::user()->wishlist()->where('product_id', $product->id)->exists() ? 'added-wishlist' : '' }}" title="wishlist"><i class="icon-heart"></i></a>
                     <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
                         class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
                             OPTIONS</span></a>
@@ -64,4 +64,5 @@
         </div>
     </div>
 @endforeach
+
 <!-- End .col-sm-4 -->

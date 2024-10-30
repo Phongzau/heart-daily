@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Wishlist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -122,4 +124,28 @@ class ProductController extends Controller
 
         return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated'));
     }
+    public function updateWishlist(Request $request){
+        if($request->ajax()){
+            $data = $request->all();
+            // print_r($data);
+            $countWishlist = Wishlist::countWishlist($data['product_id']);
+
+            $wishlist = new Wishlist;
+            if($countWishlist == 0){
+                $wishlist->product_id = $data['product_id'];
+                $wishlist->user_id = $data['user_id'];
+                $wishlist->save();
+                return response()->json(['action' => 'add']);
+            }else{
+                Wishlist::where(['user_id' => Auth::user()->id, 'product_id' => $data['product_id']])->delete();
+                return response()->json(['action' => 'remove']);
+            }
+        }
+    }
+
+    public function totalWishlist(Request $request){
+        $total_wishlist = Wishlist::where(['user_id' => Auth::user()->id])->count();
+        echo json_encode($total_wishlist);
+    }
+    
 }

@@ -389,14 +389,55 @@
           @endif
       </script>
       <script>
-          @if (session('success'))
-              toastr.success('{{ session('success') }}');
-          @endif
-          @if (session('error'))
-              toastr.error('{{ session('error') }}');
-          @endif
+          totalWishlist();
+
+          function totalWishlist() {
+              $.ajax({
+                  type: 'GET',
+                  url: '{{ route('wishlist.totalWishlist') }}',
+                  success: function(response) {
+                      var response = JSON.parse(response);
+                      $('.total_wishlist').text(response);
+                  }
+              })
+          }
+          var user_id = "{{ Auth::id() }}";
+          $(document).ready(function() {
+              $('.btn-icon-wish').click(function(e) {
+                  e.preventDefault();
+                  var heartIcon = $(this).find('i');
+                  var button = $(this);
+                  $.ajaxSetup({
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                      }
+                  });
+                  var product_id = button.data('productid');
+                  // alert(product_id);
+                  $.ajax({
+                      type: 'POST',
+                      url: '{{ route('wishlist.updateWishlist') }}',
+                      data: {
+                          product_id: product_id,
+                          user_id: user_id,
+                      },
+                      success: function(response) {
+                          console.log(response);
+                          if (response.action == 'add') {
+                              totalWishlist();
+                              button.addClass('added-wishlist');
+                          } else if (response.action == 'remove') {
+                              totalWishlist();
+                              button.removeClass('added-wishlist');
+                          }
+
+                      }
+                  });
+              });
+          });
       </script>
       @stack('scripts')
+
       </body>
 
 
