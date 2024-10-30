@@ -25,6 +25,16 @@
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+    <style>
+        .promo-section {
+    background-size: cover; /* Đảm bảo ảnh bao phủ toàn bộ */
+    background-position: center; /* Căn giữa ảnh */
+    height: 240px; /* Điều chỉnh chiều cao theo ý muốn */
+    cursor: pointer; /* Hiển thị con trỏ tay để thể hiện đây là phần có thể nhấp */
+}
+
+    </style>
+
     <script>
         WebFontConfig = {
             google: {

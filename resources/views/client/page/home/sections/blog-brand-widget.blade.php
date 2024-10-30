@@ -402,5 +402,58 @@
                     </div>
                     <!-- End .row -->
 
+                    <div class="owl-carousel owl-theme appear-animate" data-animation-name="fadeIn"
+                        data-owl-options="{
+                        'loop': false,
+                        'margin': 20,
+                        'autoHeight': true,
+                        'autoplay': false,
+                        'dots': false,
+                        'items': 2,
+                        'responsive': {
+                            '0': {
+                                'items': 1
+                            },
+                            '480': {
+                                'items': 2
+                            },
+                            '576': {
+                                'items': 3
+                            },
+                            '768': {
+                                'items': 4
+                            }
+                        }
+                    }">
+                        @foreach ($blogs as $blog)
+                        <article class="post">
+                            <div class="post-media">
+                                <a href="{{ route('blog-details', $blog->slug) }}">
+                                    <img src="{{ Storage::url($blog->image) }}" alt="{{ $blog->title }}">
+                                </a>
+                                <div class="post-date">
+                                    <span class="day">{{ $blog->created_at->format('d') }}</span>
+                                    <span class="month">{{ $blog->created_at->format('M') }}</span>
+                                </div>
+                            </div>
+                            <!-- End .post-media -->
+
+                            <div class="post-body">
+                                <h2 class="post-title">
+                                    <a href="{{ route('blog-details', $blog->slug) }}">
+                                        {{ $blog->title }}
+                                    </a>
+                                </h2>
+                                <div class="post-content">
+                                    <p>{{ limitTextDescription($blog->description, 160) }}</p>
+                                </div>
+                                <!-- End .post-content -->
+
+                            </div>
+                            <!-- End .post-body -->
+                        </article>
+                        <!-- End .post -->
+                        @endforeach
+                    </div>
                 </div>
             </section>

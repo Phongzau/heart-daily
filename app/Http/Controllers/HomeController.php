@@ -27,6 +27,10 @@ class HomeController extends Controller
             $slider = Banner::where('status', 1)->get();
         $homepage_section_banner_one = Advertisement::query()->where('key', 'homepage_section_banner_one')->first();
         $homepage_section_banner_one = json_decode($homepage_section_banner_one?->value);
-        return view('client.page.home.home', compact('slider','blogs','popup', 'products', 'brands', 'homepage_section_banner_one'));
+
+        $homepage_section_banner_two = Advertisement::query()->where('key', 'homepage_section_banner_two')->first();
+        $homepage_section_banner_two = json_decode($homepage_section_banner_two?->value);
+
+        return view('client.page.home.home', compact('slider','blogs','popup', 'products', 'brands', 'homepage_section_banner_one','homepage_section_banner_two'));
     }
 }
