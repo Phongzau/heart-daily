@@ -22,49 +22,49 @@ class ProductController extends Controller
     }
 
     public function ajaxIndex(Request $request)
-{
-    $perPage = $request->input('count', 12);
-    $orderby = $request->input('orderby', 'menu_order');
-    $currentDate = Carbon::now()->toDateString(); 
+    {
+        $perPage = $request->input('count', 12);
+        $orderby = $request->input('orderby', 'menu_order');
+        $currentDate = Carbon::now()->toDateString();
 
-    $query = Product::with('brand')->where('status', 1);
+        $query = Product::with('brand')->where('status', 1);
 
-    if ($orderby == 'price') {
-        $query->where(function ($q) use ($currentDate) {
-            $q->where('offer_price', '>', 0)
-              ->where('offer_start_date', '<=', $currentDate)
-              ->where('offer_end_date', '>=', $currentDate);
-        })->orWhere(function ($q) {
-            $q->where('offer_price', null);
-        });
+        if ($orderby == 'price') {
+            $query->where(function ($q) use ($currentDate) {
+                $q->where('offer_price', '>', 0)
+                    ->where('offer_start_date', '<=', $currentDate)
+                    ->where('offer_end_date', '>=', $currentDate);
+            })->orWhere(function ($q) {
+                $q->where('offer_price', null);
+            });
 
-        $query->orderByRaw('COALESCE(offer_price, price) ASC');
+            $query->orderByRaw('COALESCE(offer_price, price) ASC');
+        }
+
+        if ($orderby == 'price-desc') {
+            $query->where(function ($q) use ($currentDate) {
+                $q->where('offer_price', '>', 0)
+                    ->where('offer_start_date', '<=', $currentDate)
+                    ->where('offer_end_date', '>=', $currentDate);
+            })->orWhere(function ($q) {
+                $q->where('offer_price', null);
+            });
+
+            $query->orderByRaw('COALESCE(offer_price, price) DESC');
+        }
+
+        if ($orderby == 'date') {
+            $query->orderBy('created_at', 'desc');
+        } else {
+            $query->orderBy('created_at', 'asc');
+        }
+
+        $products = $query->paginate($perPage);
+
+        return response()->json([
+            'products' => $products,
+        ]);
     }
-
-    if ($orderby == 'price-desc') {
-        $query->where(function ($q) use ($currentDate) {
-            $q->where('offer_price', '>', 0)
-              ->where('offer_start_date', '<=', $currentDate)
-              ->where('offer_end_date', '>=', $currentDate);
-        })->orWhere(function ($q) {
-            $q->where('offer_price', null);
-        });
-
-        $query->orderByRaw('COALESCE(offer_price, price) DESC');
-    }
-
-    if ($orderby == 'date') {
-        $query->orderBy('created_at', 'desc');
-    } else {
-        $query->orderBy('created_at', 'asc'); 
-    }
-
-    $products = $query->paginate($perPage);
-    
-    return response()->json([
-        'products' => $products,
-    ]);
-}
 
     public function productDetail(string $slug)
     {
@@ -124,28 +124,35 @@ class ProductController extends Controller
 
         return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated'));
     }
-    public function updateWishlist(Request $request){
-        if($request->ajax()){
+    public function updateWishlist(Request $request)
+    {
+        if ($request->ajax()) {
+            if (!Auth::check()) {
+                return response()->json(['action' => 'not_logged_in'], 403); // Trả về mã lỗi 403
+            }
             $data = $request->all();
             // print_r($data);
             $countWishlist = Wishlist::countWishlist($data['product_id']);
 
             $wishlist = new Wishlist;
-            if($countWishlist == 0){
+            if ($countWishlist == 0) {
                 $wishlist->product_id = $data['product_id'];
                 $wishlist->user_id = $data['user_id'];
                 $wishlist->save();
                 return response()->json(['action' => 'add']);
-            }else{
+            } else {
                 Wishlist::where(['user_id' => Auth::user()->id, 'product_id' => $data['product_id']])->delete();
                 return response()->json(['action' => 'remove']);
             }
         }
     }
 
-    public function totalWishlist(Request $request){
+    public function totalWishlist(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
         $total_wishlist = Wishlist::where(['user_id' => Auth::user()->id])->count();
         echo json_encode($total_wishlist);
     }
-    
 }
