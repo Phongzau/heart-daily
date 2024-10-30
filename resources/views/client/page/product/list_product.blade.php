@@ -475,7 +475,7 @@
                 })
                 .then(data => {
                     const productList = document.getElementById('product-list');
-                    let html = '';
+                    let html = ''
 
                     data.products.data.forEach(product => {
                         const brandName = product.brand ? product.brand.name : ' ';
@@ -494,10 +494,10 @@
                                     <div class="product-label label-hot">HOT</div>
                 
                                     ${hasDiscount  ? `
-                                                        <div class="product-label label-sale">
-                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                        </div>
-                                                        ` : ''}
+                                                                        <div class="product-label label-sale">
+                                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                                        </div>
+                                                                        ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -513,22 +513,22 @@
                         <span class="tooltiptext tooltip-top"></span>
                     </div>
                 </div>
-                                <div class="price-box">
-                                    ${hasDiscount  ? `
-                                                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                                                        ` : `
-                                                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                                                        `}
-                                </div>
-                                <div class="product-action">
-                                    <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
-                                    <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
-                                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="price-box">
+                        ${hasDiscount  ? `
+                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                        ` : `
+                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                        `}
                     </div>
+                    <div class="product-action">
+                        <a href="#" data-productid="${product.id}" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
+                        <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
+                        <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                </div>
+                </div>
                 `;
                     });
 
@@ -571,3 +571,4 @@
         }
     </script>
 @endsection
+

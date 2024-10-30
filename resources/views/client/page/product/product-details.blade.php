@@ -271,6 +271,7 @@
                         <a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
                                 class="icon-wishlist-2"></i><span>Add to
                                 Wishlist</span></a>
+
                     </div>
                     <!-- End .product single-share -->
                 </div>
@@ -491,8 +492,9 @@
 
                             <!-- End .price-box -->
                             <div class="product-action">
-                                <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                        class="icon-heart"></i></a>
+                                <a href="#" data-productid="{{ $product->id }}"
+                                    class="btn-icon-wish {{ Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
+                                    title="wishlist"><i class="icon-heart"></i></a>
                                 <a href="product.html" class="btn-icon btn-add-cart"><i
                                         class="fa fa-arrow-right"></i><span>SELECT
                                         OPTIONS</span></a>

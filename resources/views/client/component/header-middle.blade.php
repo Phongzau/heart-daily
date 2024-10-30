@@ -86,12 +86,12 @@
                                </li>
                                <li
                                    style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href=""><i class="fas fa-user"></i><span>MY Account</span></a>
+                                   <a href="{{ route('login') }}"><i class="fas fa-user"></i><span>MY Account</span></a>
                                </li>
                            </ul>
                        @endif
-                       <a href="{{ route('wishlist') }}" class="header-icon" title="wishlist"><i
-                               class="icon-wishlist-2"></i></a>
+                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
+                               class="icon-wishlist-2"></i><span class="cart-count badge-circle total_wishlist"></span></a>
 
                        <div class="dropdown cart-dropdown">
                            <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle"
