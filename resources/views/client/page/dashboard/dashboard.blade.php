@@ -54,7 +54,7 @@
                             aria-controls="edit" aria-selected="false">Shopping Addres</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('wishlist') }}">Wishlist</a>
+                        <a class="nav-link" href="{{ route('wishlist.index') }}">Wishlist</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.html">Logout</a>
