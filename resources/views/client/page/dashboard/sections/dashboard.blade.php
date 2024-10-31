@@ -57,7 +57,7 @@
 
             <div class="col-6 col-md-4">
                 <div class="feature-box text-center pb-4">
-                    <a href="{{ route('wishlist') }}"><i class="sicon-heart"></i></a>
+                    <a href="{{ route('wishlist.index') }}"><i class="sicon-heart"></i></a>
                     <div class="feature-box-content">
                         <h3>WISHLIST</h3>
                     </div>
