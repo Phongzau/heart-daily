@@ -56,33 +56,53 @@
     <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown">
         <i class="icon-user-2"></i>
     </a>
-    <ul class="dropdown-menu">
-
-        
-        @if (Auth::user()->role_id == 1) <!-- Check if the user role is 1 -->
-        <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-            <a href="{{ route('user.dashboard') }}"><i class="fas fa-user"></i><span>MY Account</span></a>
-        </li>
-            <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-user-shield"></i><span>Admin</span></a>
+    <ul class="dropdown-menu" style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);">
+    
+        @if (Auth::user()->role_id == 1)
+            <!-- Check if the user role is 1 -->
+            <li style="padding: 8px 10px; display: flex; align-items: center;">
+                <a href="{{ route('user.dashboard') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                    <i class="fas fa-user" style="margin-right: 8px; color: #007bff;"></i>
+                    <span>My Account</span>
+                </a>
+            </li>
+            <li style="padding: 8px 10px; display: flex; align-items: center;">
+                <a href="{{ route('admin.dashboard') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                    <i class="fas fa-user-shield" style="margin-right: 8px; color: #dc3545;"></i>
+                    <span>Admin</span>
+                </a>
             </li>
         @endif
-        
-        <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-            <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    
+        <li style="padding: 8px 10px; display: flex; align-items: center;">
+            <a href="{{ route('logout') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                <i class="fas fa-sign-out-alt" style="margin-right: 8px; color: #28a745;"></i>
+                <span>Logout</span>
+            </a>
         </li>
     </ul>
-@else
-    <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown">
+    
+    @else
+    <a href="#" class="header-icon has-dropdown" title="Login" data-toggle="dropdown">
         <i class="icon-user-2"></i>
     </a>
-    <ul class="dropdown-menu">
-        <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-            <a href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+    <ul class="dropdown-menu" style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);">
+        <li style="padding: 8px 10px; display: flex; align-items: center;">
+            <a href="{{ route('login') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                <i class="fas fa-sign-in-alt" style="margin-right: 8px; color: #007bff;"></i>
+                <span>Login</span>
+            </a>
+        </li>
+        <li style="padding: 8px 10px; display: flex; align-items: center;">
+            <a href="{{ route('register') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                <i class="fas fa-user-plus" style="margin-right: 8px; color: #17a2b8;"></i>
+                <span>Register</span>
+            </a>
         </li>
     </ul>
 @endif
 
+    
                        <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
                                class="icon-wishlist-2"></i></a>
 
