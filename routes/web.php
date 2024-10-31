@@ -87,7 +87,7 @@ Route::get('/cart-details', function () {
 
 Route::get('user/dashboard', function () {
     return view('client.page.dashboard.dashboard');
-});
+})->name('user.dashboard');
 
 //admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(function () {

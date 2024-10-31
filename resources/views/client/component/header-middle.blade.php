@@ -49,49 +49,42 @@
 
                        <i class="fa-solid fa-right-from-bracket"></i>
                        @if (Auth::check())
-                           <a href="{{ route('chat') }}" class="header-icon" title="chat"><i
-                                   class="far fa-comment-dots" style="opacity: 0.95;"></i></a>
-                           <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown"><i
-                                   class="icon-user-2"></i>
-                           </a>
-                           <ul class="dropdown-menu">
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href=""><i class="fas fa-user"></i><span>MY Account</span></a>
-                               </li>
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href=""><i class="fas fa-user-shield"></i><span>Admin</span></a>
-                               </li>
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i>
-                                       <span>logout</span></a>
-                               </li>
-                           </ul>
-                           {{-- </li> --}}
-                       @else
-                           {{-- <a href="{{ route('login') }}" class="header-icon" title="login"><i class="icon-user-2"></i>
 
-                           </a> --}}
+    <a href="{{ route('chat') }}" class="header-icon" title="chat">
+        <i class="far fa-comment-dots" style="opacity: 0.95;"></i>
+    </a>
+    <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown">
+        <i class="icon-user-2"></i>
+    </a>
+    <ul class="dropdown-menu">
 
-                           <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown"><i
-                                   class="icon-user-2"></i>
-                           </a>
-                           <ul class="dropdown-menu">
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href="{{ route('login') }}"><i
-                                           class="fas fa-sign-in-alt"></i><span>Login</span></a>
-                               </li>
-                               <li
-                                   style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
-                                   <a href="{{ route('login') }}"><i class="fas fa-user"></i><span>MY Account</span></a>
-                               </li>
-                           </ul>
-                       @endif
-                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
-                               class="icon-wishlist-2"></i><span class="cart-count badge-circle total_wishlist"></span></a>
+        
+        @if (Auth::user()->role_id == 1) <!-- Check if the user role is 1 -->
+        <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+            <a href="{{ route('user.dashboard') }}"><i class="fas fa-user"></i><span>MY Account</span></a>
+        </li>
+            <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-user-shield"></i><span>Admin</span></a>
+            </li>
+        @endif
+        
+        <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+            <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </li>
+    </ul>
+@else
+    <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown">
+        <i class="icon-user-2"></i>
+    </a>
+    <ul class="dropdown-menu">
+        <li style="font-size: 15px; align-items: center; display: flex; margin-left: 5px; margin-right: 5px">
+            <a href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+        </li>
+    </ul>
+@endif
+
+                       <a href="{{ route('wishlist') }}" class="header-icon" title="wishlist"><i
+                               class="icon-wishlist-2"></i></a>
 
                        <div class="dropdown cart-dropdown">
                            <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle"
