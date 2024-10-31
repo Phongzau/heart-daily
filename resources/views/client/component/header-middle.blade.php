@@ -83,7 +83,7 @@
     </ul>
 @endif
 
-                       <a href="{{ route('wishlist') }}" class="header-icon" title="wishlist"><i
+                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
                                class="icon-wishlist-2"></i></a>
 
                        <div class="dropdown cart-dropdown">
