@@ -38,7 +38,7 @@ class OrderUserController extends Controller
                 })
                 ->orderByDesc('created_at');
 
-            $orders = $ordersQuery->paginate(1, ['*'], 'page', $page)->appends([
+            $orders = $ordersQuery->paginate(7, ['*'], 'page', $page)->appends([
                 'status' => $status,
                 'from_date' => $fromDate,
                 'to_date' => $toDate,
@@ -89,7 +89,7 @@ class OrderUserController extends Controller
                 })
                 ->orderByDesc('created_at');
 
-            $orders = $ordersQuery->paginate(1, ['*'], 'page', $page)->appends([
+            $orders = $ordersQuery->paginate(7, ['*'], 'page', $page)->appends([
                 'status' => $status,
                 'from_date' => $fromDate,
                 'to_date' => $toDate,
