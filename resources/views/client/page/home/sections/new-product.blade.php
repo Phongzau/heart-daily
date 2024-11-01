@@ -39,7 +39,8 @@
                                             class="product-category">{{ $product->brand->name ?? ' ' }}</a>
                                     </div>
                                     <h3 class="product-title">
-                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                        <a
+                                            href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     </h3>
                                     <div class="ratings-container">
                                         <div class="product-ratings">
@@ -62,7 +63,12 @@
                                     </div>
                                     <!-- End .price-box -->
                                     <div class="product-action">
-                                        <a href="#" data-productid="{{ $product->id }}" class="btn-icon-wish {{ Auth::check() && Auth::user()->wishlist()->where('product_id', $product->id)->exists() ? 'added-wishlist' : '' }}" title="wishlist"><i class="icon-heart"></i></a>
+                                        <a href="#" data-productid="{{ $product->id }}"
+                                            class="btn-icon-wish
+                                                @if (Auth::check()) {{ Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }} @endif
+                                             {{-- {{ Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }} --}}
+                                             "
+                                            title="wishlist"><i class="icon-heart"></i></a>
                                         <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
                                                 class="icon-shopping-cart"></i><span>ADD TO CART</span></a>
                                         <a href="ajax/product-quick-view.html" class="btn-quickview"

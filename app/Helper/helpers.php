@@ -8,6 +8,77 @@ function limitText($text, $limit = 20)
     return Str::limit($text, $limit);
 }
 
+/** Check the product type */
+function orderType($type)
+{
+    switch ($type) {
+        case 'pending':
+            return "CHỜ XÁC NHẬN";
+            break;
+        case 'processed_and_ready_to_ship':
+            return "ĐƠN HÀNG ĐÃ SẴN SÀNG VẬN CHUYỂN";
+            break;
+        case 'dropped_off':
+            return "ĐƠN HÀNG ĐÃ GỬI CHO ĐƠN VỊ VẬN CHUYỂN";
+            break;
+        case 'shipped':
+            return "ĐANG GIAO HÀNG";
+            break;
+        case 'delivered':
+            return "ĐÃ NHẬN HÀNG";
+            break;
+        case 'canceled':
+            return "ĐÃ HỦY ĐƠN HÀNG";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
+
+function renderOrderButtons($order_status, $id)
+{
+    $buttons = '';
+
+    switch ($order_status) {
+        case 'pending':
+            $buttons .= '<button class="btn btn-danger cancel-order-button" data-order-id="' . $id . '">Hủy Đơn Hàng</button>';
+            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            break;
+
+        case 'processed_and_ready_to_ship':
+            $buttons .= '<button class="btn btn-danger" disabled>Hủy Đơn Hàng</button>';
+            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            break;
+
+        case 'dropped_off':
+            $buttons .= '<button class="btn btn-success" disabled>Đã Nhận Hàng</button>';
+            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            break;
+
+        case 'shipped':
+            $buttons .= '<button class="btn btn-success confirm-order-button" data-order-id="' . $id . '">Đã Nhận Hàng</button>';
+            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            break;
+
+        case 'delivered':
+            $buttons .= '<button class="btn btn-primary">Đánh Giá</button>';
+            $buttons .= '<button class="btn btn-primary">Mua Lại</button>';
+            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            break;
+
+        case 'canceled':
+            $buttons .= '<button class="btn btn-primary">Mua lại</button>';
+            break;
+
+        default:
+            break;
+    }
+
+    return $buttons;
+}
+
+
 function limitTextDescription($text, $limit)
 {
     // Loại bỏ các thẻ HTML nhưng giữ lại nội dung văn bản

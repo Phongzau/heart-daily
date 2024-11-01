@@ -25,7 +25,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <address>
-                                        <strong>Billed To:</strong><br>
+                                        <strong>Người đặt:</strong><br>
                                         <b>Name: </b>{{ $order->user->first_name }} {{ $order->user->last_name }}<br>
                                         <b>Email: </b>{{ $order->user->email }}<br>
                                         <b>Phone: </b>{{ $order->user->phone }}<br>
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="col-md-6 text-md-right">
                                     <address>
-                                        <strong>Billed To:</strong><br>
+                                        <strong>Người nhận:</strong><br>
                                         <b>Name: </b>{{ $address->first_name }}<br>
                                         <b>Email: </b>{{ $address->email }}<br>
                                         <b>Phone: </b>{{ $address->phone }}<br>

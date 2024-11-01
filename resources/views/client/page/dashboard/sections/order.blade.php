@@ -1,30 +1,26 @@
 <div class="tab-pane fade" id="order" role="tabpanel">
-    <div class="order-content">
-        <h3 class="account-sub-title d-none d-md-block"><i class="sicon-social-dropbox align-middle mr-3"></i>Orders</h3>
-        <div class="order-table-container text-center">
-            <table class="table table-order text-left">
-                <thead>
-                    <tr>
-                        <th class="order-id">ORDER</th>
-                        <th class="order-date">DATE</th>
-                        <th class="order-status">STATUS</th>
-                        <th class="order-price">TOTAL</th>
-                        <th class="order-action">ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center p-0" colspan="5">
-                            <p class="mb-5 mt-5">
-                                No Order has been made yet.
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr class="mt-0 mb-3 pb-2" />
+    <div class="filter-section">
+        <label for="status">Trạng thái:</label>
+        <select style="margin-left: 5px;" id="status" name="status">
+            <option value="">Tất cả</option>
+            <option value="pending">Đang chờ xác nhận</option>
+            <option value="processed_and_ready_to_ship">Đơn hàng đã đóng gói</option>
+            <option value="dropped_off">Đơn hàng đã giao cho đơn vị vận chuyển</option>
+            <option value="shipped">Đang giao</option>
+            <option value="delivered">Đã giao</option>
+            <option value="canceled">Đã hủy</option>
+        </select>
 
-            <a href="category.html" class="btn btn-dark">Go Shop</a>
+        <label for="from_date">Từ ngày:</label>
+        <input type="date" id="from_date" name="from_date">
+
+        <label for="to_date">Đến ngày:</label>
+        <input type="date" id="to_date" name="to_date">
+        <div class="button-container">
+            <button type="button" id="btn-search-order">Tìm kiếm</button>
         </div>
+    </div>
+    <div id="order-list">
+        @include('client.page.dashboard.sections.order-list', ['orders' => $orders])
     </div>
 </div><!-- End .tab-pane -->

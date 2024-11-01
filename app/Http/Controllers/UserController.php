@@ -6,6 +6,7 @@ use App\Mail\ResetPassword;
 use App\Mail\ConfirmEmail;
 use App\Models\Commune;
 use App\Models\District;
+use App\Models\Order;
 use App\Models\Province;
 use App\Models\User;
 use App\Traits\ImageUploadTrait;
@@ -262,6 +263,35 @@ class UserController extends Controller
         // ]);
 
         return redirect()->back();
+    }
+
+    public function userDashboard(Request $request)
+    {
+        // Khởi tạo query để lấy danh sách đơn hàng của người dùng
+        $query = Order::query()->with('orderProducts')
+            ->where('user_id', Auth::user()->id);
+
+        // Lọc theo trạng thái nếu có chọn
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('order_status', $request->status);
+        }
+
+        // Lọc theo khoảng thời gian nếu có chọn
+        if ($request->has('from_date') && !empty($request->from_date)) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+        if ($request->has('to_date') && !empty($request->to_date)) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        // Phân trang đơn hàng
+        $orders = $query->orderBy('created_at', 'desc')->paginate(1);
+
+        if ($request->ajax()) {
+            return view('client.page.dashboard.sections.order-list', compact('orders'))->render();
+        }
+
+        return view('client.page.dashboard.dashboard', compact('orders'));
     }
 
     public function getProvinces()
