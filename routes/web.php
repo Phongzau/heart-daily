@@ -32,6 +32,7 @@ use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PaypalSettingController;
 use App\Http\Controllers\Admin\VnpaySettingController;
+use App\Http\Controllers\Client\OrderUserController;
 use App\Http\Controllers\Client\WishlistController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
@@ -85,9 +86,7 @@ Route::get('/cart-details', function () {
 })->name('cart-details');
 
 
-Route::get('user/dashboard', function () {
-    return view('client.page.dashboard.dashboard');
-})->name('user.dashboard');
+Route::get('user/dashboard', [UserController::class, 'userDashboard'])->name('user.dashboard');
 
 //admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(function () {
@@ -431,3 +430,7 @@ Route::prefix('wishlist')->name('wishlist.')->group(function () {
     Route::delete('/{id}', [WishlistController::class, 'remove'])->name('remove');
     Route::get('/', [WishlistController::class, 'index'])->name('index');
 });
+
+//Order User
+Route::post('cancel-order', [OrderUserController::class, 'cancelOrder'])->name('cancel-order');
+Route::post('confirm-order', [OrderUserController::class, 'confirmOrder'])->name('confirm-order');
