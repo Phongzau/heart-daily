@@ -81,7 +81,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <select id="province" name="province_id"
-                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:100%; padding: 0.3rem 0.5rem;">
                                             <option value="">Province</option>
                                         </select>
                                     </div>
@@ -89,7 +89,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <select id="district" name="district_id" disabled
-                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:100%; padding: 0.3rem 0.5rem;">
                                             <option value="">District</option>
                                         </select>
 
@@ -98,7 +98,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <select id="commune" name="commune_id" disabled
-                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
+                                            style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:100%; padding: 0.3rem 0.5rem;">
                                             <option value="">Commune</option>
                                         </select>
                                     </div>

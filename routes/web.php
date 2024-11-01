@@ -105,7 +105,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     // )->name('profile.edit');
 
     Route::post('/update', [AdminProfileController::class, 'AdminProfileUpdate'])->name('profile.update');
-    Route::post('profile/update/password', [AdminProfileController::class, 'updatePassword'])->name('password.update');
+    Route::put('profile/update/password', [AdminProfileController::class, 'updatePassword'])->name('password.update');
 
     // Route::post('/profile/update', [AdminProfileController::class, 'AdminProfileStore'])->name('profile.store');
 

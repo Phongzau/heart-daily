@@ -40,27 +40,33 @@ class AdminProfileController extends Controller
     public function updatePassword(Request $request)
     {
 
+        // Validate đầu vào
         $request->validate([
-
-
-            'current_password' => ['required', 'current_password'],
-            'password' => [
-                'required',
-                'confirmed',
-                'min:8',
-                'regex:/[a-z]/',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/'
-            ]
-
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
         ]);
 
-        $request->user()->update([
-            'password' => bcrypt($request->password),
-        ]);
-        toastr('Đã cập nhật mật khẩu thành công  ', 'success');
-        return redirect()->back();
+        // Lấy ra user
+        $user = User::find(Auth::id());
+
+        // Kiểm tra mật khẩu hiện tại có khớp không
+        if (!Hash::check($request->current_password, $user->password)) {
+            toastr('Mật khẩu hiện tại không đúng.', 'error');
+            return back();
+        }
+
+        // Kiểm tra mật khẩu mới không giống mật khẩu hiện tại
+        if (Hash::check($request->new_password, $user->password)) {
+            toastr('Mật khẩu mới không được trùng với mật khẩu hiện tại.', 'error');
+            return back();
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        toastr('Mật khẩu của bạn đã được cập nhật thành công!', 'success');
+        return back();
     }
     // public function AdminChangePassword()
     // {

@@ -200,36 +200,38 @@
             </div>
         </li>
         <li class="dropdown">
-    <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-        <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1" style="width: 40px; height: 40px;">
-        <div class="d-sm-none d-lg-inline-block">
-            Welcome back, {{ Auth::user()->name }}!
-        </div>
-    </a>
-    <div class="dropdown-menu dropdown-menu-right" style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);">
-        @php
-            $userData = DB::table('users')->first();
-        @endphp
-        <a href="{{ route('home') }}" class="dropdown-item has-icon" style="font-size: 15px;">
-            <i class="fas fa-home" style="color: #28a745;"></i>
-            <span style="margin-left: 8px;">Home</span>
-        </a>
-        <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon" style="font-size: 15px;">
-            <i class="far fa-user" style="color: #007bff;"></i>
-            <span style="margin-left: 8px;">Profile</span>
-        </a>
-        {{-- Uncomment if you want to add Change Password functionality --}}
-        {{-- <a href="{{ route('admin.change.password') }}" class="dropdown-item has-icon" style="font-size: 15px;">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <img alt="image" src="{{ Storage::url(Auth::user()->image) }}" class="rounded-circle mr-1"
+                    style="width: 40px; height: 40px;">
+                <div class="d-sm-none d-lg-inline-block">
+                    {{ Auth::user()->name }}!
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right"
+                style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);">
+                @php
+                    $userData = DB::table('users')->first();
+                @endphp
+                <a href="{{ route('home') }}" class="dropdown-item has-icon" style="font-size: 15px;">
+                    <i class="fas fa-home" style="color: #28a745;"></i>
+                    <span style="margin-left: 8px;">Home</span>
+                </a>
+                <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon" style="font-size: 15px;">
+                    <i class="far fa-user" style="color: #007bff;"></i>
+                    <span style="margin-left: 8px;">Profile</span>
+                </a>
+                {{-- Uncomment if you want to add Change Password functionality --}}
+                {{-- <a href="{{ route('admin.change.password') }}" class="dropdown-item has-icon" style="font-size: 15px;">
             <i class="fas fa-bolt" style="color: #dc3545;"></i>
             <span style="margin-left: 8px;">Change Password</span>
         </a> --}}
-        <div class="dropdown-divider"></div>
-        <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" style="font-size: 15px;">
-            <i class="fas fa-sign-out-alt"></i>
-            <span style="margin-left: 8px;">Logout</span>
-        </a>
-    </div>
-</li>
+                <div class="dropdown-divider"></div>
+                <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" style="font-size: 15px;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span style="margin-left: 8px;">Logout</span>
+                </a>
+            </div>
+        </li>
 
     </ul>
 </nav>
