@@ -57,15 +57,15 @@
         <i class="icon-user-2"></i>
     </a>
     <ul class="dropdown-menu" style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);">
-    
+        <li style="padding: 8px 10px; display: flex; align-items: center;">
+            <a href="{{ route('user.dashboard') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                <i class="fas fa-user" style="margin-right: 8px; color: #007bff;"></i>
+                <span>My Account</span>
+            </a>
+        </li>
         @if (Auth::user()->role_id == 1)
             <!-- Check if the user role is 1 -->
-            <li style="padding: 8px 10px; display: flex; align-items: center;">
-                <a href="{{ route('user.dashboard') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
-                    <i class="fas fa-user" style="margin-right: 8px; color: #007bff;"></i>
-                    <span>My Account</span>
-                </a>
-            </li>
+
             <li style="padding: 8px 10px; display: flex; align-items: center;">
                 <a href="{{ route('admin.dashboard') }}" style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                     <i class="fas fa-user-shield" style="margin-right: 8px; color: #dc3545;"></i>
