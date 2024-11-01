@@ -27,21 +27,22 @@
                 <input type="text" name="phone" class="form-control" placeholder="Phone"
                     value="{{ old('phone', Auth::user()->phone) }}">
             </div>
+            <div class="form-group d-flex" style="gap: 10px">
+                <select id="province" name="province_id"
+                    style="border: 1px solid #dfdfdf; height: 40px; color: #777; padding: 0.3rem 0.5rem; flex: 1;">
+                    <option value="" hidden>Province</option>
+                </select>
 
-            <select id="province" name="province_id"
-                style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
-                <option value="" hidden>Province</option>
-            </select>
+                <select id="district" name="district_id" disabled
+                    style="border: 1px solid #dfdfdf; height: 40px; color: #777; padding: 0.3rem 0.5rem; flex: 1;">
+                    <option value="" hidden>District</option>
+                </select>
 
-            <select id="district" name="district_id" disabled
-                style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
-                <option value="" hidden>District</option>
-            </select>
-
-            <select id="commune" name="commune_id" disabled
-                style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:180px">
-                <option value="" hidden>Commune</option>
-            </select>
+                <select id="commune" name="commune_id" disabled
+                    style="border: 1px solid #dfdfdf; height: 40px; color: #777; padding: 0.3rem 0.5rem; flex: 1;">
+                    <option value="" hidden>Commune</option>
+                </select>
+            </div>
 
             <div class="form-group">
                 <label>Address<span class="required">*</span></label>
