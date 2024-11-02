@@ -111,64 +111,20 @@
                     <div class="widget">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true"
-                                aria-controls="widget-body-2">Categories</a>
+                                aria-controls="widget-body-2">Danh Mục</a>
                         </h3>
 
                         <div class="collapse show" id="widget-body-2">
                             <div class="widget-body">
                                 <ul class="cat-list">
-                                    <li>
-                                        <a href="#widget-category-1" data-toggle="collapse" role="button"
-                                            aria-expanded="true" aria-controls="widget-category-1">
-                                            Accessories<span class="products-count">(3)</span>
-                                            <span class="toggle"></span>
-                                        </a>
-                                        <div class="collapse show" id="widget-category-1">
-                                            <ul class="cat-sublist">
-                                                <li>Caps<span class="products-count">(1)</span></li>
-                                                <li>Watches<span class="products-count">(2)</span></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#widget-category-2" class="collapsed" data-toggle="collapse"
-                                            role="button" aria-expanded="false" aria-controls="widget-category-2">
-                                            Dress<span class="products-count">(4)</span>
-                                            <span class="toggle"></span>
-                                        </a>
-                                        <div class="collapse" id="widget-category-2">
-                                            <ul class="cat-sublist">
-                                                <li>Clothing<span class="products-count">(4)</span></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#widget-category-3" class="collapsed" data-toggle="collapse"
-                                            role="button" aria-expanded="false" aria-controls="widget-category-3">
-                                            Electronics<span class="products-count">(2)</span>
-                                            <span class="toggle"></span>
-                                        </a>
-                                        <div class="collapse" id="widget-category-3">
-                                            <ul class="cat-sublist">
-                                                <li>Headphone<span class="products-count">(1)</span></li>
-                                                <li>Watch<span class="products-count">(1)</span></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#widget-category-4" class="collapsed" data-toggle="collapse"
-                                            role="button" aria-expanded="false" aria-controls="widget-category-4">
-                                            Fashion<span class="products-count">(6)</span>
-                                            <span class="toggle"></span>
-                                        </a>
-                                        <div class="collapse" id="widget-category-4">
-                                            <ul class="cat-sublist">
-                                                <li>Shoes<span class="products-count">(4)</span></li>
-                                                <li>Bag<span class="products-count">(2)</span></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li><a href="#">Music</a><span class="products-count">(2)</span></li>
+                                    @foreach ($categories as $category)
+                                        <li id="category-{{ $category->id }}">
+                                            <a href="#"
+                                                onclick="setFilter('category', {{ $category->id }}); return false;">
+                                                {{ $category->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <!-- End .widget-body -->
@@ -181,27 +137,61 @@
                     <div class="widget">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true"
-                                aria-controls="widget-body-3">Price</a>
+                                aria-controls="widget-body-3">Brand</a>
                         </h3>
 
                         <div class="collapse show" id="widget-body-3">
+                            <div class="widget-body">
+                                <ul class="cat-list">
+                                    @foreach ($brands as $brand)
+                                        <li id="brand-{{ $brand->id }}">
+                                            <a href="#"
+                                                onclick="setFilter('brand', {{ $brand->id }}); return false;">
+                                                {{ $brand->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <!-- End .widget-body -->
+
+                        </div>
+                        <!-- End .collapse -->
+                    </div>
+                    <!-- End .widget -->
+
+                    <div class="widget">
+                        <h3 class="widget-title">
+                            <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="true"
+                                aria-controls="widget-body-5">Khoảng Giá</a>
+                        </h3>
+
+                        <div class="collapse show" id="widget-body-5">
                             <div class="widget-body pb-0">
-                                <form action="#">
-                                    <div class="price-slider-wrapper">
-                                        <div id="price-slider"></div>
+                                <form id="price-filter-form" action="#" method="GET">
+                                    <div class="shopee-price-range-filter__inputs">
+                                        {{-- <div id="price-slider"></div> --}}
+                                        <input type="number" class="shopee-price-range-filter__input" id="min-price"
+                                            name="min_price" maxlength="13" placeholder="₫ TỪ" step="1000"
+                                            min="0">
+                                        <div class="shopee-price-range-filter__range-line"></div>
+                                        <input type="number" class="shopee-price-range-filter__input" id="max-price"
+                                            name="max_price" maxlength="13" placeholder="₫ ĐẾN" step="1000"
+                                            min="1000000000">
                                         <!-- End #price-slider -->
                                     </div>
                                     <!-- End .price-slider-wrapper -->
 
                                     <div
                                         class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
-                                        <div class="filter-price-text">
+                                        {{-- <div class="filter-price-text">
                                             Price:
                                             <span id="filter-price-range"></span>
-                                        </div>
+                                        </div> --}}
                                         <!-- End .filter-price-text -->
 
-                                        <button type="submit" class="btn btn-primary">Filter</button>
+                                        <button type="button" style="width: 100%" class="btn btn-primary"
+                                            onclick="applyPriceFilter()">Áp dụng</button>
                                     </div>
                                     <!-- End .filter-price-action -->
                                 </form>
@@ -221,21 +211,14 @@
                         <div class="collapse show" id="widget-body-4">
                             <div class="widget-body pb-0">
                                 <ul class="config-swatch-list">
-                                    <li class="active">
-                                        <a href="#" style="background-color: #000;"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" style="background-color: #0188cc;"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" style="background-color: #81d742;"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" style="background-color: #6085a5;"></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" style="background-color: #ab6e6e;"></a>
-                                    </li>
+                                    @foreach ($colors as $color)
+                                        <li id="color-{{ $color->id }}">
+                                            <a href="#" style="background-color: {{ $color->code }};"
+                                                onclick="setFilter('color', {{ $color->id }}); return false;">
+
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <!-- End .widget-body -->
@@ -246,17 +229,21 @@
 
                     <div class="widget widget-size">
                         <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="true"
-                                aria-controls="widget-body-5">Sizes</a>
+                            <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="true"
+                                aria-controls="widget-body-6">Sizes</a>
                         </h3>
 
-                        <div class="collapse show" id="widget-body-5">
+                        <div class="collapse show" id="widget-body-6">
                             <div class="widget-body pb-0">
                                 <ul class="config-size-list">
-                                    <li class="active"><a href="#">XL</a></li>
-                                    <li><a href="#">L</a></li>
-                                    <li><a href="#">M</a></li>
-                                    <li><a href="#">S</a></li>
+                                    @foreach ($sizes as $size)
+                                        <li id="size-{{ $size->id }}">
+                                            <a href="#"
+                                                onclick="setFilter('size', {{ $size->id }}); return false;">
+                                                {{ $size->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <!-- End .widget-body -->
@@ -265,188 +252,6 @@
                     </div>
                     <!-- End .widget -->
 
-                    <div class="widget widget-featured">
-                        <h3 class="widget-title">Featured</h3>
-
-                        <div class="widget-body">
-                            <div class="owl-carousel widget-featured-products">
-                                <div class="featured-col">
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="" width="75" height="75" alt="product" />
-                                                <img src="" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Blue Backpack for
-                                                    the Young - S</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="" width="75" height="75" alt="product" />
-                                                <img src="" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Casual Spring Blue
-                                                    Shoes</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="" width="75" height="75" alt="product" />
-                                                <img src="" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Men Black Gentle
-                                                    Belt</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                </div>
-                                <!-- End .featured-col -->
-
-                                <div class="featured-col">
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="" width="75" height="75" alt="product" />
-                                                <img src="" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Ultimate 3D
-                                                    Bluetooth Speaker</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="" width="75" height="75" alt="product" />
-                                                <img src="" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Brown Women Casual
-                                                    HandBag</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                    <div class="product-default left-details product-widget">
-                                        <figure>
-                                            <a href="product.html">
-                                                <img src="" width="75" height="75" alt="product" />
-                                                <img src="" width="75" height="75" alt="product" />
-                                            </a>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-title"> <a href="product.html">Circled Ultimate
-                                                    3D Speaker</a> </h3>
-                                            <div class="ratings-container">
-                                                <div class="product-ratings">
-                                                    <span class="ratings" style="width:100%"></span>
-                                                    <!-- End .ratings -->
-                                                    <span class="tooltiptext tooltip-top"></span>
-                                                </div>
-                                                <!-- End .product-ratings -->
-                                            </div>
-                                            <!-- End .product-container -->
-                                            <div class="price-box">
-                                                <span class="product-price">$49.00</span>
-                                            </div>
-                                            <!-- End .price-box -->
-                                        </div>
-                                        <!-- End .product-details -->
-                                    </div>
-                                </div>
-                                <!-- End .featured-col -->
-                            </div>
-                            <!-- End .widget-featured-slider -->
-                        </div>
-                        <!-- End .widget-body -->
-                    </div>
-                    <!-- End .widget -->
-
-                    <div class="widget widget-block">
-                        <h3 class="widget-title">Custom HTML Block</h3>
-                        <h5>This is a custom sub-title.</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non placerat mi. Etiam non tellus
-                        </p>
-                    </div>
-                    <!-- End .widget -->
                 </div>
                 <!-- End .sidebar-wrapper -->
 
@@ -461,12 +266,70 @@
     <!-- margin -->
 
     <script>
+        let filters = {
+            category: null,
+            brand: null,
+            color: null,
+            size: null,
+            min_price: 0,
+            max_price: 1000000000
+        };
+
+        function setFilter(type, value) {
+            if (filters[type] === value) {
+                filters[type] = null; // Bỏ chọn bộ lọc
+                document.getElementById(`${type}-${value}`).classList.remove('active'); // Xóa class "active"
+            } else {
+                filters[type] = value;
+
+                if (type === 'category') {
+                    document.querySelectorAll('.cat-list a').forEach(el => el.classList.remove('active'));
+                    document.getElementById(`category-${value}`).classList.add('active');
+                }
+                if (type === 'brand') {
+                    document.querySelectorAll('.brand-list a').forEach(el => el.classList.remove('active'));
+                    document.getElementById(`brand-${value}`).classList.add('active');
+                }
+                if (type === 'color') {
+                    document.querySelectorAll('.color-list a').forEach(el => el.classList.remove('active'));
+                    document.getElementById(`color-${value}`).classList.add('active');
+                }
+                if (type === 'size') {
+                    document.querySelectorAll('.size-list a').forEach(el => el.classList.remove('active'));
+                    document.getElementById(`size-${value}`).classList.add('active');
+                }
+            }
+
+            loadProducts();
+        }
+
+        function applyPriceFilter() {
+            const minPrice = document.getElementById('min-price').value;
+            const maxPrice = document.getElementById('max-price').value;
+
+            filters.min_price = minPrice;
+            filters.max_price = maxPrice;
+
+            loadProducts();
+        }
+
         //show
         function loadProducts(page = 1) {
             const count = document.getElementById('product-count').value;
             const orderby = document.querySelector('select[name="orderby"]').value;
+            const query = new URLSearchParams({
+                count: count,
+                orderby: orderby,
+                page: page,
+                category: filters.category || '',
+                brand: filters.brand || '',
+                color: filters.color || '',
+                size: filters.size || '',
+                min_price: filters.min_price,
+                max_price: filters.max_price
+            });
 
-            fetch(`{{ route('product.ajaxGetProducts') }}?count=${count}&orderby=${orderby}&page=${page}`)
+            fetch(`{{ route('product.ajaxGetProducts') }}?count=${count}&${query.toString()}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -494,10 +357,10 @@
                                     <div class="product-label label-hot">HOT</div>
                 
                                     ${hasDiscount  ? `
-                                                                        <div class="product-label label-sale">
-                                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                                        </div>
-                                                                        ` : ''}
+                                                <div class="product-label label-sale">
+                                                    -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                </div>
+                                                ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -515,11 +378,11 @@
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                        ` : `
-                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                        `}
+                                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                                        ` : `
+                                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                                    `}
                     </div>
                     <div class="product-action">
                         <a href="#" data-productid="${product.id}" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
@@ -534,36 +397,31 @@
 
                     productList.innerHTML = html;
 
-                    const paginationLinks = document.getElementById('pagination-links');
-                    let paginationHtml = '';
-
-                    if (data.products.current_page > 1) {
-                        paginationHtml += `
-                    <li class="page-item">
-                        <a class="page-link" href="#" onclick="loadPage(${data.products.current_page - 1})">Previous</a>
-                    </li>
-                `;
-                    }
-
-                    for (let i = 1; i <= data.products.last_page; i++) {
-                        paginationHtml += `
-                    <li class="page-item ${i === data.products.current_page ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="loadPage(${i})">${i}</a>
-                    </li>
-                `;
-                    }
-
-                    if (data.products.current_page < data.products.last_page) {
-                        paginationHtml += `
-                    <li class="page-item">
-                        <a class="page-link" href="#" onclick="loadPage(${data.products.current_page + 1})">Next</a>
-                    </li>
-                `;
-                    }
-
-                    paginationLinks.innerHTML = paginationHtml;
+                    updatePagination(data.products);
                 })
                 .catch(error => console.error('Error loading products:', error));
+        }
+
+        function updatePagination(products) {
+            const paginationLinks = document.getElementById('pagination-links');
+            let paginationHtml = '';
+
+            if (products.current_page > 1) {
+                paginationHtml +=
+                    `<li class="page-item"><a class="page-link" href="#" onclick="loadProducts(${products.current_page - 1})">Previous</a></li>`;
+            }
+
+            for (let i = 1; i <= products.last_page; i++) {
+                paginationHtml +=
+                    `<li class="page-item ${i === products.current_page ? 'active' : ''}"><a class="page-link" href="#" onclick="loadProducts(${i})">${i}</a></li>`;
+            }
+
+            if (products.current_page < products.last_page) {
+                paginationHtml +=
+                    `<li class="page-item"><a class="page-link" href="#" onclick="loadProducts(${products.current_page + 1})">Next</a></li>`;
+            }
+
+            paginationLinks.innerHTML = paginationHtml;
         }
 
         function loadPage(page) {
@@ -571,4 +429,3 @@
         }
     </script>
 @endsection
-

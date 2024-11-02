@@ -14755,7 +14755,43 @@ span.toggle:before {
     color: #fff;
     text-decoration: none
 }
+/* color */
+.config-color-list {
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    list-style: none
+}
 
+.config-color-list li {
+    display: -ms-inline-flexbox;
+    display: inline-flex
+}
+
+.config-color-list a {
+    display: block;
+    position: relative;
+    min-width: 32px;
+    text-align: center;
+    margin: 3px 6px 3px 0;
+    padding: 4px 8px;
+    transition: all 0.3s;
+    border: 1px solid #e9e9e9;
+    color: #777;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    text-decoration: none
+}
+
+.config-color-list a.active,
+.config-color-list a:focus,
+.config-color-list a:hover {
+    border-color: #08C;
+    background-color: #08C;
+    color: #fff;
+    text-decoration: none
+}
 .price-slider-wrapper {
     padding: 1.5rem 0.4rem 0.5rem 0.6rem
 }
@@ -16142,6 +16178,61 @@ main .sticky-header .product-ratings:before {
     line-height: 1;
     content: ""
 }
+/* color */
+.product-single-filter .config-color-list li {
+    margin-bottom: 0;
+    margin-right: 0;
+    color: #777
+}
+
+.product-single-filter .config-color-list li a {
+    margin: 3px 6px 3px 0;
+    min-width: 3.2rem;
+    height: 2.6rem;
+    border: 1px solid #eee;
+    color: inherit;
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 2.6rem;
+    background-color: #fff
+}
+
+.product-single-filter .config-color-list li a:not(.disabled):hover {
+    border-color: #08C;
+    background-color: #08C;
+    color: #fff
+}
+
+.product-single-filter .config-color-list li a.disabled {
+    cursor: not-allowed;
+    text-decoration: none;
+    background-color: transparent;
+    opacity: 0.5
+}
+
+.product-single-filter .config-color-list li a.filter-color {
+    height: 2.8rem;
+    min-width: 2.8rem
+}
+
+.product-single-filter .config-color-list li.active a {
+    border-color: #08C;
+    outline: none;
+    color: #fff;
+    background-color: #08C
+}
+
+.product-single-filter .config-color-list li.active a.filter-color:before {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-family: "porto";
+    font-size: 1.1rem;
+    line-height: 1;
+    content: ""
+}
 
 .product-single-filter .config-img-list li a {
     height: 100%
@@ -16896,7 +16987,14 @@ main .sticky-header .product-ratings:before {
     color: #222529;
     background-color: #f4f4f4
 }
-
+/* color */
+.custom-product-filters .config-color-list li a {
+    height: 28px;
+    font-size: 13px;
+    border: 1px solid #e9e9e9;
+    color: #222529;
+    background-color: #f4f4f4
+}
 .custom-product-filters .config-color-list img {
     width: 30px;
     height: 30px
@@ -17188,6 +17286,12 @@ main .sticky-header .product-ratings:before {
     background-color: #f4f4f4;
     border: 1px solid #e9e9e9
 }
+/* color */
+.product-transparent-image .config-color-list li:not(.active):not(:hover) a {
+    font-weight: 500;
+    background-color: #f4f4f4;
+    border: 1px solid #e9e9e9
+}
 
 .product-transparent-image .product-single-details .product-nav {
     top: 1.3rem
@@ -17405,6 +17509,9 @@ main .sticky-header .product-ratings:before {
 }
 
 .product-full-width .product-single-filter .config-size-list a {
+    height: 100%
+}
+.product-full-width .product-single-filter .config-color-list a {
     height: 100%
 }
 
@@ -18464,6 +18571,14 @@ aside .widget-info i {
 }
 
 .product-single-grid .product-single-filter .config-size-list a {
+    height: 28px;
+    font-size: 13px;
+    border: 1px solid #e9e9e9;
+    color: #222529;
+    background-color: #f4f4f4
+}
+/* color */
+.product-single-grid .product-single-filter .config-color-list a {
     height: 28px;
     font-size: 13px;
     border: 1px solid #e9e9e9;
@@ -22353,4 +22468,34 @@ p {
     /* hoặc điều chỉnh theo tỷ lệ mong muốn */
     object-fit: cover !important;
     /* Cắt hoặc phóng to ảnh vừa với khung mà không làm biến dạng */
+}
+
+.shopee-price-range-filter__inputs {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 1.25rem 0 .625rem;
+} 
+.shopee-price-range-filter__input {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .26);
+    border-radius: 3px;
+    box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, .05);
+    box-sizing: border-box;
+    font-size: 11px;
+    height: 30px;
+    outline: none;
+    padding-left: 7px;
+    width: 105px;
+}
+.shopee-price-range-filter__range-line {
+    background: #bdbdbd;
+    flex: 1;
+    height: 1px;
+    margin: 0 .625rem;
+}
+
+.active-filter {
+    color: #007bff; /* Màu xanh hoặc màu chính của giao diện */
+   
 }

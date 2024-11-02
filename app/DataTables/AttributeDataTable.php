@@ -94,6 +94,7 @@ class AttributeDataTable extends DataTable
             Column::make('price_start'),
             Column::make('price_end'),
             Column::make('status'),
+            Column::make('code'),
             Column::make('userid_created')->title('Created By'),
             Column::make('userid_updated')->title('Updated By'),
             Column::computed('action')
