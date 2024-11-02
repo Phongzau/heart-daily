@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public function index()
-    {
+    {  
         $brands = Brand::query()->where('status', 1)->get();
         $products = Product::with('brand')
             ->where('status', 1)
@@ -33,6 +33,8 @@ class HomeController extends Controller
             ->pluck('product_id');
 
         $topProducts = Product::whereIn('id', $topProductIds)->take(3)->get();
+
+        // truy vấn ra 6 sản phẩm có lượt bán nhiều nhất 
         $featuredProduct = Product::whereIn('id', $topProductIds)->take(6)->get();
 
         // Truy vấn 3 sản phẩm có lượt xem nhiều nhất
