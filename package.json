@@ -1,0 +1,28 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "start": "concurrently \"npm run dev\" \"npm run serve\" \"npm run reverb\" ",
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "php artisan serve",
+        "reverb": "php artisan reverb:start"
+    },
+    "devDependencies": {
+        "@evilmartians/lefthook": "^1.7.16",
+        "@popperjs/core": "^2.11.6",
+        "axios": "^1.7.4",
+        "bootstrap": "^5.2.3",
+        "concurrently": "^9.0.1",
+        "laravel-echo": "^1.16.1",
+        "laravel-vite-plugin": "^1.0",
+        "pusher-js": "^8.4.0-rc2",
+        "sass": "^1.56.1",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "reverb": "^0.2.0",
+        "toastr": "^2.1.4",
+        "ws": "^8.18.0"
+    }
+}
