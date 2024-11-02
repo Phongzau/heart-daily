@@ -76,191 +76,85 @@
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="200">
                             <h4 class="section-sub-title">Featured Products</h4>
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
+                            @foreach ($topProducts as $product)
+                                <div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="{{ asset('storage/' . $product->image) }}" width="84"
+                                                height="84" alt="{{ $product->name }}">
+                                        </a>
+                                    </figure>
 
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Ultimate 3D Bluetooth
-                                            Speaker</a>
-                                    </h3>
+                                    <div class="product-details">
+                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        </h3>
 
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span>
+                                                <!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
+                                        <!-- End .product-container -->
 
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Brown Women Casual HandBag</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top">5.00</span>
+                                        <div class="price-box">
+                                            @if ($product->offer_price)
+                                                <span class="product-price">{{ number_format($product->offer_price) }}
+                                                    VND</span>
+                                            @else
+                                                <span class="product-price">{{ number_format($product->price) }}
+                                                    VND</span>
+                                            @endif
                                         </div>
-                                        <!-- End .product-ratings -->
+                                        <!-- End .price-box -->
                                     </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
+                                    <!-- End .product-details -->
                                 </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Circled Ultimate 3D
-                                            Speaker</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
-                                        </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
+                            @endforeach
                         </div>
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="500">
                             <h4 class="section-sub-title">Best Selling Products</h4>
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
+                            @foreach ($topProducts as $product)
+                                <div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="{{ asset('storage/' . $product->image) }}" width="84"
+                                                height="84" alt="{{ $product->name }}">
+                                        </a>
+                                    </figure>
 
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Blue Backpack for the Young -
-                                            S</a> </h3>
+                                    <div class="product-details">
+                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        </h3>
 
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top">5.00</span>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span>
+                                                <!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
+                                        <!-- End .product-container -->
 
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Casual Spring Blue Shoes</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
+                                        <div class="price-box">
+                                            @if ($product->offer_price)
+                                                <span class="product-price">{{ number_format($product->offer_price) }}
+                                                    VND</span>
+                                            @else
+                                                <span class="product-price">{{ number_format($product->price) }}
+                                                    VND</span>
+                                            @endif
                                         </div>
-                                        <!-- End .product-ratings -->
+                                        <!-- End .price-box -->
                                     </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
+                                    <!-- End .product-details -->
                                 </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Men Black Gentle Belt</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top">5.00</span>
-                                        </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
+                            @endforeach
                         </div>
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
@@ -308,96 +202,44 @@
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="1100">
-                            <h4 class="section-sub-title">Top Rated Products</h4>
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
+                            <h4 class="section-sub-title">Most Viewed Product</h4>
+                            @foreach ($topViewedProducts as $product)
+                                <div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="{{ asset('storage/' . $product->image) }}" width="84"
+                                                height="84" alt="{{ $product->name }}">
+                                        </a>
+                                    </figure>
 
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Basketball Sports Blue
-                                            Shoes</a>
-                                    </h3>
+                                    <div class="product-details">
+                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        </h3>
 
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span>
+                                                <!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div>
+                                            <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
+                                        <!-- End .product-container -->
 
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Men Sports Travel Bag</a>
-                                    </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top">5.00</span>
+                                        <div class="price-box">
+                                            @if ($product->offer_price)
+                                                <span class="product-price">{{ number_format($product->offer_price) }}
+                                                    VND</span>
+                                            @else
+                                                <span class="product-price">{{ number_format($product->price) }}
+                                                    VND</span>
+                                            @endif
                                         </div>
-                                        <!-- End .product-ratings -->
+                                        <!-- End .price-box -->
                                     </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
+                                    <!-- End .product-details -->
                                 </div>
-                                <!-- End .product-details -->
-                            </div>
-
-                            <div class="product-default left-details product-widget">
-                                <figure>
-                                    <a href="product.html">
-                                        <img src="" width="84" height="84" alt="product">
-                                        <img src="" width="84" height="84" alt="product">
-                                    </a>
-                                </figure>
-
-                                <div class="product-details">
-                                    <h3 class="product-title"> <a href="product.html">Brown HandBag</a> </h3>
-
-                                    <div class="ratings-container">
-                                        <div class="product-ratings">
-                                            <span class="ratings" style="width:100%"></span>
-                                            <!-- End .ratings -->
-                                            <span class="tooltiptext tooltip-top"></span>
-                                        </div>
-                                        <!-- End .product-ratings -->
-                                    </div>
-                                    <!-- End .product-container -->
-
-                                    <div class="price-box">
-                                        <span class="product-price">$49.00</span>
-                                    </div>
-                                    <!-- End .price-box -->
-                                </div>
-                                <!-- End .product-details -->
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <!-- End .row -->
