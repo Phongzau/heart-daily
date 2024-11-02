@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Brand;
-use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Wishlist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -20,15 +18,7 @@ class ProductController extends Controller
 
         $perPage = $request->input('count', 12);
         $products = Product::query()->where('status', 1)->paginate($perPage);
-        $categories = CategoryProduct::all();
-        $brands = Brand::all();
-        $colors = Attribute::whereHas('categoryAttribute', function ($query) {
-            $query->where('title', 'Color');
-        })->get();
-        $sizes = Attribute::whereHas('categoryAttribute', function ($query) {
-            $query->where('title', 'Size');
-        })->get();
-        return view('client.page.product.list_product', compact('products', 'categories', 'brands', 'colors', 'sizes'));
+        return view('client.page.product.list_product', compact('products'));
     }
 
     public function ajaxIndex(Request $request)
@@ -38,57 +28,6 @@ class ProductController extends Controller
         $currentDate = Carbon::now()->toDateString();
 
         $query = Product::with('brand')->where('status', 1);
-        if ($request->has('category') && $request->category) {
-            $query->where('category_id', $request->category);
-        }
-        if ($request->has('brand') && $request->brand) {
-            $query->where('brand_id', $request->brand);
-        }
-
-        $query->whereHas('ProductVariants', function ($q) use ($request) {
-            // Lọc theo màu sắc
-            if ($request->has('color') && $request->color) {
-                $q->whereExists(function ($subQuery) use ($request) {
-                    $subQuery->select(DB::raw(1))
-                        ->from('attributes')
-                        ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
-                        ->where('category_attributes.title', 'Color')
-                        ->where('attributes.id', $request->color)
-                        ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
-                });
-            }
-
-            // Lọc theo kích cỡ
-            if ($request->has('size') && $request->size) {
-                $q->whereExists(function ($subQuery) use ($request) {
-                    $subQuery->select(DB::raw(1))
-                        ->from('attributes')
-                        ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
-                        ->where('category_attributes.title', 'Size')
-                        ->where('attributes.id', $request->size)
-                        ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
-                });
-            }
-        });
-        $minPrice = $request->input('min_price', 0);
-        $maxPrice = $request->input('max_price', 1000000000);
-        if ($request->has('min_price') || $request->has('max_price')) {
-
-            $query->where(function ($q) use ($minPrice, $maxPrice, $currentDate) {
-                // Điều kiện cho sản phẩm có giá khuyến mãi
-                $q->where(function ($subQ) use ($minPrice, $maxPrice, $currentDate) {
-                    $subQ->where('offer_price', '>', 0)
-                        ->where('offer_start_date', '<=', $currentDate)
-                        ->where('offer_end_date', '>=', $currentDate)
-                        ->whereBetween('offer_price', [$minPrice, $maxPrice]);
-                })
-                    // Điều kiện cho sản phẩm không có giá khuyến mãi
-                    ->orWhere(function ($subQ) use ($minPrice, $maxPrice) {
-                        $subQ->whereNull('offer_price')
-                            ->whereBetween('price', [$minPrice, $maxPrice]);
-                    });
-            });
-        }
 
         if ($orderby == 'price') {
             $query->where(function ($q) use ($currentDate) {

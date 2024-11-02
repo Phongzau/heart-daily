@@ -18,7 +18,7 @@
         
                 <div class="form-group">
                     <label for="">Category Attribute</label>
-                    <select name="category_attribute_id" class="form-control" id="categorySelect">
+                    <select name="category_attribute_id" class="form-control">
                         @foreach ($categoryAttributes as $category)
                             <option value="{{ $category->id }}"
                                 {{ $category->id == $attribute->category_attribute_id ? 'selected' : '' }}>
@@ -26,17 +26,6 @@
                             </option>
                         @endforeach
                     </select>
-                </div>
-                <div class="form-group" id="additionalInput" style="display: {{ $attribute->category_attribute_id == 2 ? 'block' : 'none' }};">
-                    <label for="code">Code</label>
-                    <div class="input-group colorpickerinput">
-                        <input type="text" name="code" class="form-control" value="{{ old('code', $attribute->code) }}">
-                        <div class="input-group-append" id="color-picker-trigger">
-                            <div class="input-group-text">
-                                <i class="fas fa-fill-drip" id="color-icon"></i>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -60,17 +49,4 @@
             </form>
         </div>
     </section>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#categorySelect').change(function() {
-                var selectedValue = $(this).val();
-                if (selectedValue == 2) {
-                    $('#additionalInput').show(); // Hiện input khi giá trị là 2
-                } else {
-                    $('#additionalInput').hide(); // Ẩn input nếu không phải là 2
-                }
-            });
-        });
-    </script>
 @endsection

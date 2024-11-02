@@ -54,7 +54,6 @@ class AdminAttributeController extends Controller
         $attribute->price_end = $request->price_end;
         $attribute->status = $request->status;
         $attribute->userid_created = auth()->id();
-        $attribute->code = $request->code;
 
         $attribute->save();
 
@@ -86,7 +85,6 @@ class AdminAttributeController extends Controller
         $attribute->price_end = $request->price_end;
         $attribute->status = $request->status;
         $attribute->userid_updated = auth()->id();
-        $attribute->code = $request->code;
 
         $attribute->save();
 

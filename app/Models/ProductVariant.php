@@ -12,6 +12,4 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(CategoryAttribute::class);
     }
-   
-    
 }
