@@ -28,7 +28,7 @@ class AdminAttributeController extends Controller
         $attribute->save();
 
         return response([
-            'message' => 'Cập nhật thành công Status',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 
@@ -47,6 +47,7 @@ class AdminAttributeController extends Controller
     public function store(StoreAttributeRequest $request)
     {
         $attribute = new Attribute();
+
         $attribute->title = $request->title;
         $attribute->slug = Str::slug($request->title);
         $attribute->category_attribute_id = $request->category_attribute_id;
@@ -57,7 +58,6 @@ class AdminAttributeController extends Controller
         $attribute->code = $request->code;
 
         $attribute->save();
-
         toastr('Tạo thành công', 'success');
         return redirect()->route('admin.attributes.index');
     }
@@ -90,7 +90,7 @@ class AdminAttributeController extends Controller
 
         $attribute->save();
 
-        toastr('Sửa thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.attributes.index');
     }
 
@@ -102,7 +102,6 @@ class AdminAttributeController extends Controller
         $attribute = Attribute::findOrFail($id);
 
         $attribute->delete();
-
         return response()->json([
             'status' => 'success',
             'message' => 'Xóa thành công',

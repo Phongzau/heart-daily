@@ -22,7 +22,6 @@ class AdminBlogCategoryController extends Controller
         $blogCategory = BlogCategory::query()->findOrFail($request->id);
         $blogCategory->status = $request->status == 'true' ? 1 : 0;
         $blogCategory->save();
-
         return response([
             'message' => 'Cập nhật thành công Status',
         ]);
@@ -36,14 +35,11 @@ class AdminBlogCategoryController extends Controller
     public function store(StoreBlogCategoryRequest $request)
     {
         $blogCategory = new BlogCategory();
+
         $blogCategory->name = $request->name;
         $blogCategory->slug = Str::slug($request->name);
-
-
-
         $blogCategory->status = $request->status;
         $blogCategory->save();
-
         toastr('Tạo thuộc tính danh mục thành công', 'success');
         return redirect()->route('admin.blog_categories.index');
     }
@@ -60,10 +56,8 @@ class AdminBlogCategoryController extends Controller
 
         $blogCategory->name = $request->name;
         $blogCategory->slug = Str::slug($request->name);
-
         $blogCategory->status = $request->status;
         $blogCategory->save();
-
         toastr('Cập nhật thuộc tính danh mục thành công', 'success');
         return redirect()->route('admin.blog_categories.index');
     }

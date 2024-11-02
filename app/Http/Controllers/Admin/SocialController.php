@@ -43,7 +43,7 @@ class SocialController extends Controller
         $socials->url = $request->url;
         $socials->status = $request->status;
         $socials->save();
-        toastr('Created Successfully!', 'success');
+        toastr('Tạo thành công!', 'success');
         return redirect()->route('admin.socials.index');
     }
 
@@ -82,7 +82,7 @@ class SocialController extends Controller
         $socials->url = $request->url;
         $socials->status = $request->status;
         $socials->save();
-        toastr('Updated Successfully!', 'success');
+        toastr('Cập nhật thành công !', 'success');
         return redirect()->route('admin.socials.index'); //
 
     }
@@ -97,7 +97,7 @@ class SocialController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!'
+            'message' => 'Xóa thành công !'
         ]);
     }
 

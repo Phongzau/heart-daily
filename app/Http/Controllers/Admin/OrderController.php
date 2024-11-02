@@ -32,7 +32,7 @@ class OrderController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -44,7 +44,7 @@ class OrderController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Cập nhật trạng thái đơn hàng thành công'
+            'message' => 'Cập nhật trạng thái thành công'
         ]);
     }
 
@@ -56,7 +56,7 @@ class OrderController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Cập nhật trạng thái thanh toán thành công'
+            'message' => 'Cập nhật trạng thái thành công'
         ]);
     }
 }

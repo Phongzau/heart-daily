@@ -616,7 +616,7 @@ class AdminProductController extends Controller
         $product->save();
 
         return response([
-            'message' => 'Status cập nhật thành công',
+            'message' => 'Cập nhật trạng thái thành công',
         ]);
     }
 

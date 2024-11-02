@@ -82,7 +82,7 @@ class ListAccountController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -93,7 +93,7 @@ class ListAccountController extends Controller
         $admin->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }

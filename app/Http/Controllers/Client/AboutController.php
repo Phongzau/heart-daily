@@ -13,7 +13,7 @@ class AboutController extends Controller
         $about = About::query()->first();
 
         if (!$about) {
-            return view('client.page.about')->with('error', 'No about data found.');
+            return view('client.page.about')->with('error', 'Không có dữ liệu nào được tìm thấy.');
         }
 
         return view('client.page.about', compact('about'));

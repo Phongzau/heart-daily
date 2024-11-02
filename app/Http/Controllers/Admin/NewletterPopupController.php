@@ -47,7 +47,7 @@ class NewletterPopupController extends Controller
     {
         $existingPopup = NewletterPopup::first();
         if ($existingPopup) {
-            toastr('Chỉ có thể thêm một popup.', 'error');
+            toastr('Chỉ có thể thêm một mã giảm giá.', 'error');
             return redirect()->back()->withInput();
         }
         // Bắt đầu transaction
@@ -123,7 +123,7 @@ class NewletterPopupController extends Controller
         foreach ($subscribers as $subscriber) {
             Mail::to($subscriber->email)->send(new NewletterPopupNotification($popups, $subscriber, $socials));
         }
-        toastr('Sửa thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.popups.index');
     }
 
@@ -138,7 +138,7 @@ class NewletterPopupController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
     public function subscribe(Request $request)
@@ -171,7 +171,7 @@ class NewletterPopupController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
     public function changeStatus(Request $request)
@@ -181,7 +181,7 @@ class NewletterPopupController extends Controller
         $popups->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }

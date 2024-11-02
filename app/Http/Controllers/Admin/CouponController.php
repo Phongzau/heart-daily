@@ -85,7 +85,7 @@ class CouponController extends Controller
         $coupon->status = $request->status;
         $coupon->save();
 
-        toastr('Sửa Coupon thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.coupons.index');
     }
 
@@ -99,7 +99,7 @@ class CouponController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -110,7 +110,7 @@ class CouponController extends Controller
         $coupon->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }

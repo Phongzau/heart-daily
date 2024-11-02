@@ -41,7 +41,7 @@ class MenuController extends Controller
         $menu->slug = Str::slug($request->title);
         $menu->status = $request->status;
         $menu->save();
-        toastr('Sửa thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.menus.index');
     }
 
@@ -52,7 +52,7 @@ class MenuController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -63,7 +63,7 @@ class MenuController extends Controller
         $menu->save();
 
         return response([
-            'message' => 'Cập nhật thành công Status',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }

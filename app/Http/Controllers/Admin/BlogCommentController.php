@@ -22,7 +22,7 @@ class BlogCommentController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công!',
         ]);
     }
 }

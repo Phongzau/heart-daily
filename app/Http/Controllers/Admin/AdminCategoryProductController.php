@@ -79,7 +79,6 @@ class AdminCategoryProductController extends Controller
         return redirect()->route('admin.category_products.index');
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -200,7 +199,7 @@ class AdminCategoryProductController extends Controller
         $categoryProduct->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Trạng thái đã được cập nhật',
             'id_array' => $idArray,
         ]);
     }

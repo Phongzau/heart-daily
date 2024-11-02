@@ -191,14 +191,13 @@ class AdvertisementsController extends Controller
             ['value' => $value]
         );
 
-        toastr('Update Successfully!', 'success');
+        toastr('Cập nhật thành công!', 'success');
 
         return redirect()->back();
     }
 
     public function productPageBanner(Request $request)
     {
-
         $request->validate([
             'banner_image' => ['image'],
             'banner_url' => ['url'],
@@ -223,7 +222,7 @@ class AdvertisementsController extends Controller
             ['value' => $value]
         );
 
-        toastr('Updated Successfully!', 'success');
+        toastr('Cập nhật thành công!', 'success');
 
         return redirect()->back();
     }

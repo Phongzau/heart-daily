@@ -47,7 +47,7 @@ class SettingController extends Controller
 
             ]
         );
-        toastr('Updated Successfully!', 'success');
+        toastr('Cập nhật thành công !', 'success');
 
         return redirect()->back();
     }
@@ -77,7 +77,7 @@ class SettingController extends Controller
             ]
         );
 
-        toastr('Updated Successfully!', 'success');
+        toastr('Cập nhật thành công !', 'success');
         return redirect()->back();
     }
 }
