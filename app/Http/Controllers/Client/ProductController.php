@@ -72,6 +72,11 @@ class ProductController extends Controller
             ->with(['ProductImageGalleries', 'ProductVariants'])
             ->where(['status' => 1, 'slug' => $slug])
             ->first();
+
+        // Tăng lượt xem
+        $product->increment('views');
+
+        // Tìm sản phẩm liên quan
         $productRelated = Product::query()
             ->with(['ProductImageGalleries', 'category'])
             ->where('id', '!=', $product->id)
