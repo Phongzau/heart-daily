@@ -32,8 +32,6 @@ class AdminColorController extends Controller
         return redirect()->route('admin.colors.index')->with('success', 'Color created successfully.');
     }
 
-   
-
     public function edit(Color $color)
     {
         return view('admin.page.colors.edit', compact('color')); // Hiển thị form chỉnh sửa
@@ -49,13 +47,13 @@ class AdminColorController extends Controller
 
         $color->update($request->all()); // Cập nhật thông tin color
 
-        return redirect()->route('admin.colors.index')->with('success', 'Color updated successfully.');
+        return redirect()->route('admin.colors.index')->with('success', 'Màu đã được cập nhật.');
     }
 
     public function destroy(Color $color)
     {
         $color->delete(); // Xóa color
 
-        return redirect()->route('admin.colors.index')->with('success', 'Color deleted successfully.');
+        return redirect()->route('admin.colors.index')->with('success', 'Xóa màu thành công');
     }
 }

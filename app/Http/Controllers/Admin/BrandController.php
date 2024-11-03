@@ -80,7 +80,7 @@ class BrandController extends Controller
         $brands->description = $request->description;
         $brands->status = $request->status;
         $brands->save();
-        toastr('Sửa thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.brands.index');
     }
 
@@ -92,7 +92,7 @@ class BrandController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -103,7 +103,7 @@ class BrandController extends Controller
         $brands->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }

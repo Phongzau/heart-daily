@@ -43,7 +43,7 @@ class TagController extends Controller
     $tags->status = $request->status;
     $tags->save();
 
-    toastr('Created Successfully!', 'success');
+    toastr('Tạo thành công !', 'success');
     return redirect()->route('admin.tags.index');
 }
 
@@ -79,7 +79,7 @@ class TagController extends Controller
         $tags->slug = Str::slug($request->name);
         $tags->save();
 
-        toastr('Updated Successfully!', 'success');
+        toastr('Cập nhật thành công !', 'success');
         return redirect()->route('admin.tags.index');
     }
 
@@ -93,7 +93,7 @@ class TagController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -103,7 +103,7 @@ class TagController extends Controller
         $tags->status = $request->status == 'true' ? 1 : 0;
         $tags->save();
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }

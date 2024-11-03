@@ -39,9 +39,7 @@ class AdminCategoryAttributeController extends Controller
             toastr('Giá trị order đã tồn tại!', 'error');
             return redirect()->back()->withInput();
         }
-
         $categoryAttribute = new CategoryAttribute();
-
         $categoryAttribute->title = $request->title;
         $categoryAttribute->slug = Str::slug($request->title);
         $categoryAttribute->order = $request->order;
@@ -63,6 +61,7 @@ class AdminCategoryAttributeController extends Controller
     public function update(UpdateCategoryAttributeRequest $request, string $id)
     {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
+        
         if (CategoryAttribute::where('order', $request->order)
             ->where('id', '!=', $id)
             ->exists()

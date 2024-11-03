@@ -111,7 +111,6 @@ class MenuItemController extends Controller
             }
         }
 
-
         if (MenuItem::where('order', $request->order)
             ->where('parent_id', $request->parent_id)
             ->where('id', '!=', $menuItems->id) // Loại bỏ bản ghi hiện tại ra khỏi điều kiện
@@ -180,7 +179,7 @@ class MenuItemController extends Controller
         $menuItem->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công !',
             'id_array' => $idArray,
         ]);
     }

@@ -75,7 +75,7 @@ class BannerController extends Controller
         $banner->description = $request->description;
         $banner->status = $request->status;
         $banner->save();
-        toastr('Sửa thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.banners.index');
     }
 
@@ -87,7 +87,7 @@ class BannerController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công!',
         ]);
     }
 
@@ -98,7 +98,7 @@ class BannerController extends Controller
         $banner->save();
 
         return response([
-            'message' => 'Status has been updated',
+            'message' => 'Cập nhật trạng thái thành công',
         ]);
     }
 }

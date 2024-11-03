@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | List Account
+    Heart Daily | Danh sách tài khoản
 @endsection
 
 @section('section')
@@ -9,15 +9,14 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>List Account</h1>
+            <h1>Danh sách tài khoản</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All List Account Table</h4>
-                            
+                            <h4>Tất cả tài khoản</h4>
                         </div>
                         <div class="card-body">
                             {{ $dataTable->table() }}
@@ -25,7 +24,7 @@
                     </div>
                 </div>
             </div>
-
+            
         </div>
     </section>
 @endsection

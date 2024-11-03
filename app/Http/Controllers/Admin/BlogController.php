@@ -75,7 +75,7 @@ class BlogController extends Controller
         $blog->blog_category_id = $request->blog_category_id;
         $blog->status = $request->status;
         $blog->save();
-        toastr('Sửa thành công', 'success');
+        toastr('Cập nhật thành công', 'success');
         return redirect()->route('admin.blogs.index');
     }
 
@@ -86,7 +86,7 @@ class BlogController extends Controller
         $blog->delete();
         return response([
             'status' => 'success',
-            'message' => 'Deleted Successfully!',
+            'message' => 'Xóa thành công !',
         ]);
     }
 
@@ -97,7 +97,7 @@ class BlogController extends Controller
         $blog->save();
 
         return response([
-            'message' => 'Cập nhật thành công Status',
+            'message' => 'Cập nhật trạng thái thành công !',
         ]);
     }
 }
