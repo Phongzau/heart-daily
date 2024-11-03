@@ -19,6 +19,7 @@ class UpdateAttributeRequest extends FormRequest
             'price_start' => 'nullable|numeric|min:0',
             'price_end' => 'nullable|numeric|min:0',
             'status' => 'required|boolean',
+            'code' => 'nullable|string|max:255',
         ];
     }
 }

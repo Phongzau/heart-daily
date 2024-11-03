@@ -104,7 +104,7 @@
 
     
                        <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
-                               class="icon-wishlist-2"></i></a>
+                               class="icon-wishlist-2"></i><span class="cart-count badge-circle total_wishlist"></span></a>
 
                        <div class="dropdown cart-dropdown">
                            <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle"
