@@ -864,7 +864,7 @@
                     // Hiển thị popup
                     $('#attributeModal').modal('show');
                 } else {
-                    alert('Không có thuộc tính nào được chọn!');
+                    toastr.error('Không có thuộc tính nào được chọn!');
                 }
             });
 

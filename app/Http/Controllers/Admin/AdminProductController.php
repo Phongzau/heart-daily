@@ -554,6 +554,10 @@ class AdminProductController extends Controller
                 $product->qty = $request->qty;
                 $product->userid_created = Auth::user()->id;
                 $product->save();
+
+                // Xóa các thuộc tính và biến thể hiện có nếu tồn tại
+                $product->ProductAttributes()->delete();
+                $product->ProductVariants()->delete();
             }
 
             // Lấy các ID ảnh đã xóa từ request
