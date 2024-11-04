@@ -52,7 +52,7 @@ class CheckoutController extends Controller
             'province_id' => 'required|string|max:100',
             'district_id' => 'required|string|max:100',
             'commune_id' => 'required|string|max:100',
-            'payment_method' => 'required|string|in:cod,vnpay,paypal,momo',
+            'payment_method' => 'required|string|in:cod,vnpay,paypal',
         ]);
 
         session(['address' => $request->only([
@@ -65,26 +65,26 @@ class CheckoutController extends Controller
             'commune_id',
         ])]);
 
-        // Sử dụng hàm createOrder để tạo đơn hàng
+        $paymentMethod = $request->input('payment_method');
         $order = $this->createOrder($request);
 
-        if ($request->input('payment_method') === 'vnpay') {
+        if ($paymentMethod === 'vnpay') {
             return $this->createPayment($order);
-        }
-        // elseif ($request->input('payment_method') === 'momo') {
-        //     return $this->createMoMoPayment($order);
-        // }
-        else if ($request->input('payment_method') === 'paypal') {
+        } elseif ($paymentMethod === 'paypal') {
             return $this->payWithPaypal();
         } else {
-            // $order->payment_method = 'COD';
-            // $order->save();
-            // $this->sendOrderConfirmation($order);
-            // session()->forget('cart');
-            // session()->forget('coupon');
-            // toastr('Đơn hàng của bạn đã được đặt thành công!', 'success');
-            // return redirect()->route('order.complete');
+            return $this->handleCodPayment();
         }
+    }
+    private function handleCodPayment()
+    {
+        $transactionId = Str::random(10);
+        $paidAmount = getMainCartTotal();
+        $paidCurrencyName = 'VND';
+        $this->storeOrder('cod', 0, $transactionId, $paidAmount, $paidCurrencyName);
+        $this->clearSession();
+        toastr('Đơn hàng của bạn đã được đặt thành công!', 'success');
+        return redirect()->route('order.complete');
     }
 
     public function orderComplete()
@@ -266,13 +266,12 @@ class CheckoutController extends Controller
 
         if ($secureHash === $vnp_SecureHash) {
             if ($request->vnp_ResponseCode == '00') {
-                $order = $this->createOrder($request);
-                $order->payment_status = true;
-                $order->payment_method = 'VNPay';
-                $order->save();
-                $this->sendOrderConfirmation($order);
-                session()->forget('cart');
-                session()->forget('coupon');
+                $transactionId = $request->vnp_TransactionNo;
+                $paidAmount = $request->vnp_Amount / 100;
+                $paidCurrencyName = 'VND';
+                $this->storeOrder('vnpay', true, $transactionId, $paidAmount, $paidCurrencyName);
+                $this->clearSession();
+
                 toastr('Thanh toán qua VNPay thành công!', 'success');
                 return redirect()->route('order.complete');
             } else {

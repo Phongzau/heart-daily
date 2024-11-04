@@ -17,7 +17,7 @@ class CheckRole
     {
         if ($request->user()->role_id != $role) {
             toastr('Bạn không đủ quyền hạn', 'error');
-            return redirect()->route('home');
+            return redirect()->back();
         }
         return $next($request);
     }

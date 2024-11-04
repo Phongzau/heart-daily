@@ -121,6 +121,7 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate($perPage);
+        
 
         return response()->json([
             'products' => $products,
