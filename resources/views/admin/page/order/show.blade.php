@@ -38,10 +38,24 @@
                                         <b>Name: </b>{{ $address->first_name }}<br>
                                         <b>Email: </b>{{ $address->email }}<br>
                                         <b>Phone: </b>{{ $address->phone }}<br>
-                                        <b>Address: </b>{{ $address->address }}
-                                        {{ $address->province_id }},
-                                        {{ $address->district_id }},
-                                        {{ $address->commune_id }}
+                                        <b>Address: </b>{{ $address->address }} <br>
+                                        @php
+                                            $provinceTitle = \App\Models\Province::query()
+                                                ->where('id', $address->province_id)
+                                                ->pluck('title')
+                                                ->first();
+                                            $districtTitle = \App\Models\District::query()
+                                                ->where('id', $address->province_id)
+                                                ->pluck('title')
+                                                ->first();
+                                            $communeTitle = \App\Models\Commune::query()
+                                                ->where('id', $address->province_id)
+                                                ->pluck('title')
+                                                ->first();
+                                        @endphp
+                                        {{ $provinceTitle }},
+                                        {{ $districtTitle }},
+                                        {{ $communeTitle }}
                                     </address>
                                 </div>
                             </div>
