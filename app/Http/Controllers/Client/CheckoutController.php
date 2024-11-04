@@ -130,7 +130,8 @@ class CheckoutController extends Controller
                     $orderProduct->variants = json_encode($item['options']['variants']);
                     $attributeIdArray = [];
                     foreach ($item['options']['variants'] as $variant) {
-                        $slugVariant = strtolower($variant);
+                        $nameVariant = strtolower($variant);
+                        $slugVariant = Str::slug($nameVariant);
                         $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
                         $attributeIdArray[] = $attributeId;
                     }

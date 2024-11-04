@@ -321,9 +321,9 @@ class AdminProductController extends Controller
         $brands = Brand::query()->where('status', 1)->get();
         $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
         // Chuyển đổi dữ liệu sang định dạng JavaScript
+        $convertedData = [];
+        $formattedVariants = [];
         if ($product->type_product == 'product_variant') {
-            $convertedData = [];
-            $formattedVariants = [];
             foreach ($product->ProductAttributes as $attribute) {
                 $idAttributes = json_decode($attribute['id_attributes'], true); // Chuyển đổi chuỗi JSON thành mảng
 
@@ -347,9 +347,8 @@ class AdminProductController extends Controller
                     'qty_variant' => $variant['qty'],
                 ];
             }
-            return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants'));
         }
-        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes'));
+        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants'));
     }
 
     /**
@@ -452,6 +451,7 @@ class AdminProductController extends Controller
                 $product->category_id = $request->category_id;
                 $product->brand_id = $request->brand_id;
                 $product->userid_created = Auth::user()->id;
+                $product->qty = null;
                 $product->save();
 
                 // Chuyển đổi từ JSON string thành mảng

@@ -140,7 +140,7 @@
 
         .product-image {
             width: 18% !important;
-            height: 80px !important;
+            height: 70px !important;
             object-fit: cover !important;
             border-radius: 10px;
             border: 1px solid #bdb3b3;

@@ -52,10 +52,22 @@
                 <!-- End .price-box -->
 
                 <div class="product-action">
-                    <a href="#" data-productid="{{ $product->id }}" class="btn-icon-wish {{ Auth::check() && Auth::user()->wishlist()->where('product_id', $product->id)->exists() ? 'added-wishlist' : '' }}" title="wishlist"><i class="icon-heart"></i></a>
-                    <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
-                        class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
-                            OPTIONS</span></a>
+                    <a href="#" data-productid="{{ $product->id }}"
+                        class="btn-icon-wish {{ Auth::check() &&Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
+                        title="wishlist"><i class="icon-heart"></i></a>
+                    @if ($product->type_product === 'product_simple')
+                        <form class="shopping-cart-form">
+                            <input name="qty" hidden value="1" type="number">
+                            <input type="text" hidden name="product_id" value="{{ $product->id }}">
+                            <button type="submit"
+                                class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
+                                    class="icon-shopping-cart"></i><span>ADD TO CART</span></button>
+                        </form>
+                    @elseif ($product->type_product === 'product_variant')
+                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
+                            class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
+                                OPTIONS</span></a>
+                    @endif
                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                             class="fas fa-external-link-alt"></i></a>
                 </div>

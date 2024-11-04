@@ -603,16 +603,16 @@
     <script>
         $(document).ready(function() {
             // Chuyển đổi dữ liệu PHP sang JSON
-            const attributeData = @json($convertedData);
+            let attributeData = @json($convertedData);
+            if (!attributeData || Object.keys(attributeData).length === 0) {
+                attributeData = [];
+            }
 
             let variants = @json($formattedVariants);
             if (!variants || Object.keys(variants).length === 0) {
                 variants = {};
             }
-            console.log(variants);
 
-            // Xem dữ liệu đã được chuyển đổi
-            console.log(attributeData);
             $('.variant-row select').select2({
                 width: '100%',
             });
@@ -1235,6 +1235,7 @@
                     name: attributeName, // Lưu tên thuộc tính
                     values: valueSelect.val() // Lấy tất cả các giá trị đã chọn
                 };
+                console.log(attributeData);
 
                 // Tìm xem thuộc tính đã tồn tại trong mảng chưa, nếu có thì cập nhật
                 let existingAttributeIndex = attributeData.findIndex(item => item.id === variantId);
