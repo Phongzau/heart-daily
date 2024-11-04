@@ -448,7 +448,7 @@
                 @foreach ($productRelated as $product)
                     <div class="product-default">
                         <figure>
-                            <a href="product.html">
+                            <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                 <img src="{{ Storage::url($product->image) }}" width="280" height="280"
                                     alt="product">
                                 <img src="
@@ -468,7 +468,7 @@
                                 <a href="category.html" class="product-category">{{ $product->category->title }}</a>
                             </div>
                             <h3 class="product-title">
-                                <a href="product.html">{{ $product->name }}</a>
+                                <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                             </h3>
                             <div class="ratings-container">
                                 <div class="product-ratings">
@@ -495,7 +495,7 @@
                                 <a href="#" data-productid="{{ $product->id }}"
                                     class="btn-icon-wish {{ Auth::check() && Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
                                     title="wishlist"><i class="icon-heart"></i></a>
-                                <a href="product.html" class="btn-icon btn-add-cart"><i
+                                <a href="{{ route('product.detail', ['slug' => $product->slug]) }}" class="btn-icon btn-add-cart"><i
                                         class="fa fa-arrow-right"></i><span>SELECT
                                         OPTIONS</span></a>
                                 <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i

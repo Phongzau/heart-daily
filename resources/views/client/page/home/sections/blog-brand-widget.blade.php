@@ -79,14 +79,14 @@
                             @foreach ($topProducts as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
-                                        <a href="product.html">
+                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                             <img src="{{ asset('storage/' . $product->image) }}" width="84"
                                                 height="84" alt="{{ $product->name }}">
                                         </a>
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -121,14 +121,14 @@
                             @foreach ($topProducts as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
-                                        <a href="product.html">
+                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                             <img src="{{ asset('storage/' . $product->image) }}" width="84"
                                                 height="84" alt="{{ $product->name }}">
                                         </a>
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -163,14 +163,14 @@
                             @foreach ($products->take(3) as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
-                                        <a href="product.html">
+                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                             <img src="{{ asset('storage/' . $product->image) }}" width="84"
                                                 height="84" alt="{{ $product->name }}">
                                         </a>
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -206,14 +206,14 @@
                             @foreach ($topViewedProducts as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
-                                        <a href="product.html">
+                                        <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                             <img src="{{ asset('storage/' . $product->image) }}" width="84"
                                                 height="84" alt="{{ $product->name }}">
                                         </a>
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="product.html">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
