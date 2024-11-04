@@ -47,7 +47,7 @@ class NewletterPopupController extends Controller
     {
         $existingPopup = NewletterPopup::first();
         if ($existingPopup) {
-            toastr('Chỉ có thể thêm một mã giảm giá.', 'error');
+            toastr('Chỉ có thể thêm một quảng cáo.', 'error');
             return redirect()->back()->withInput();
         }
         // Bắt đầu transaction
