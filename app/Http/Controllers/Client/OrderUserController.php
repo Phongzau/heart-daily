@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\Order;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class OrderUserController extends Controller
 {
@@ -16,7 +19,38 @@ class OrderUserController extends Controller
         if (isset($order)) {
             $order->order_status = 'canceled';
             $order->save();
-
+            if (isset($order->transaction)) {
+                $order->transaction->delete();
+            }
+            foreach ($order->orderProducts as $orderProduct) {
+                $product = $orderProduct->product;
+                if (isset($product)) {
+                    if ($orderProduct->product->type_product === 'product_simple') {
+                        $product->qty += $orderProduct->qty;
+                        $product->save();
+                    } else if ($orderProduct->product->type_product === 'product_variant') {
+                        $variants = json_decode($orderProduct->variants, true);
+                        $attributeIdArray = [];
+                        foreach ($variants as $variant) {
+                            $nameVariant = strtolower($variant);
+                            $slugVariant = Str::slug($nameVariant);
+                            $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
+                            if ($attributeId) {
+                                $attributeIdArray[] = $attributeId;
+                            }
+                        }
+                        if (count($attributeIdArray) === count($variants)) {
+                            $productVariant = ProductVariant::where('product_id', $orderProduct->product_id)
+                                ->whereJsonContains('id_variant', $attributeIdArray)
+                                ->first();
+                            if ($productVariant) {
+                                $productVariant->qty += $orderProduct->qty;
+                                $productVariant->save();
+                            }
+                        }
+                    }
+                }
+            }
             // Lấy các tham số lọc
             $status = $request->input('status');
             $fromDate = $request->input('from_date');
