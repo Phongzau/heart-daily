@@ -431,24 +431,24 @@
                               totalWishlist();
                               button.removeClass('added-wishlist');
                           } else if (response.action == 'not_logged_in') {
-                            toastr.error('Bạn cần đăng nhập để thực hiện hành động này.');
+                              toastr.error('Bạn cần đăng nhập để thực hiện hành động này.');
                           }
 
                       },
                       error: function(xhr, status, error) {
                           console.error(error); // Ghi lỗi vào console để xử lý
                           if (xhr.status === 403) {
-                            toastr.error('Bạn cần đăng nhập để thực hiện hành động này.');                          
-                        } else {
-                            toastr.error('Có lỗi xảy ra!');
+                              toastr.error('Bạn cần đăng nhập để thực hiện hành động này.');
+                          } else {
+                              toastr.error('Có lỗi xảy ra!');
                           }
                       }
                   });
               });
           });
       </script>
+      @include('client.component.scripts')
       @stack('scripts')
-
       </body>
 
 

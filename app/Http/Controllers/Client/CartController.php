@@ -10,13 +10,12 @@ use App\Models\ProductVariant;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-
-        
         $formDataString = $request->input('formData');
         parse_str($formDataString, $formDataArray);
         $qty = $formDataArray['qty'] ?? null;
@@ -34,17 +33,17 @@ class CartController extends Controller
         } else {
             $productPrice += $product->price;
         }
-
         if ($product->type_product === 'product_variant') {
             foreach ($variants as $variant) {
-                $slugVariant = strtolower($variant);
+                $nameVariant = strtolower($variant);
+                $slugVariant = Str::slug($nameVariant);
                 $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
                 $attributeIdArray[] = $attributeId;
             }
             $productVariant = ProductVariant::where('product_id', $product_id)
                 ->whereJsonContains('id_variant', $attributeIdArray)
                 ->first();
-            if ($productVariant->qty === 0) {
+        if ($productVariant->qty === 0) {
                 $variantString = '';
                 foreach ($variants as $key => $value) {
                     $variantString = ucfirst($key) . ' ' . $value;
@@ -353,5 +352,37 @@ class CartController extends Controller
         }
         toastr('Xóa sản phẩm thành công', 'success');
         return redirect()->back();
+    }
+
+    public function removeSidebarProduct(Request $request)
+    {
+        $carts = session()->get('cart', []);
+
+        if (array_key_exists($request->cartKey, $carts)) {
+            unset($carts[$request->cartKey]);
+            session()->put('cart', $carts);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Xóa sản phẩm thành công',
+        ]);
+    }
+
+    public function getCartCount()
+    {
+        $carts = session()->get('cart', []);
+        // Nếu cart là một mảng và không rỗng
+        if (is_array($carts) && !empty($carts)) {
+            return count($carts);
+        }
+
+        return 0;
+    }
+
+    public function getCartProducts()
+    {
+        $carts = session()->get('cart', []);
+        return $carts;
     }
 }

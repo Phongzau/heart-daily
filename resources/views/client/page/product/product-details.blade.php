@@ -493,7 +493,7 @@
                             <!-- End .price-box -->
                             <div class="product-action">
                                 <a href="#" data-productid="{{ $product->id }}"
-                                    class="btn-icon-wish {{ Auth::check() && Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
+                                    class="btn-icon-wish {{ Auth::check() &&Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
                                     title="wishlist"><i class="icon-heart"></i></a>
                                 <a href="{{ route('product.detail', ['slug' => $product->slug]) }}" class="btn-icon btn-add-cart"><i
                                         class="fa fa-arrow-right"></i><span>SELECT
@@ -975,57 +975,7 @@
                 console.log("Filters cleared");
             });
 
-            function checkSelectOptions() {
-                let totalFilter = $('.product-single-filter').length - 1;
-                let selectedCount = $('.product-single-filter a.selected').length;
 
-                return totalFilter === selectedCount;
-            }
-
-            $('#add-to-cart').on('submit', function(e) {
-                e.preventDefault();
-
-                if (!checkSelectOptions()) {
-                    toastr.error('Vui lòng chọn biến thể sản phẩm');
-                    return false;
-                }
-
-                // Đối tượng để lưu trữ các tùy chọn đã chọn
-                let selectedOptions = {};
-
-                // Lấy tất cả các tùy chọn đã chọn
-                $('.product-single-filter a.selected').each(function() {
-                    const attribute = $(this).data('attribute'); // Lấy tên thuộc tính (color, size)
-                    const value = $(this).data('value'); // Lấy giá trị của thuộc tính
-
-                    // Cập nhật vào đối tượng selectedOptions
-                    selectedOptions[attribute] = value;
-                });
-
-                let formData = $(this).serialize();
-                $.ajax({
-                    url: "{{ route('add-to-cart') }}",
-                    method: 'POST',
-                    data: {
-                        formData: formData,
-                        variants: selectedOptions,
-                    },
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            toastr.success(data.message);
-                        } else if (data.status === 'error') {
-                            toastr.error(data.message);
-                        }
-                    },
-                    error: function(data) {
-
-                    },
-                })
-
-
-                // In ra kết quả
-                console.log(selectedOptions);
-            })
         });
     </script>
 @endpush

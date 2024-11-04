@@ -405,7 +405,9 @@ Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-
 Route::get('coupon-calculation', [CartController::class, 'couponCalculation'])->name('coupon-calculation');
 Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear.cart');
 Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProduct'])->name('cart.remove-product');
-
+Route::get('get-cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
+Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
+Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
 //popup
 Route::post('/newsletter-subscribe', [NewletterPopupController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::delete('/subscribers/{id}', [NewletterPopupController::class, 'destroySubscribe'])->name('subscribers.destroy');
