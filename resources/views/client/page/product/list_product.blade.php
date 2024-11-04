@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="pl-lg-5 pb-5 pb-md-0 col-md-5 col-xl-4 col-lg-4 offset-1">
                         <h3>Electronic<br>Deals</h3>
-                        <a href="category.html" class="btn btn-dark">Get Yours!</a>
+                        <a href="#" class="btn btn-dark">Get Yours!</a>
                     </div>
                     <div class="pl-lg-3 col-md-4 offset-md-0 offset-1 pt-3">
                         <div class="coupon-sale-content">
@@ -266,6 +266,7 @@
     <!-- margin -->
 
     <script>
+        
         let filters = {
             category: null,
             brand: null,
@@ -328,7 +329,6 @@
                 min_price: filters.min_price,
                 max_price: filters.max_price
             });
-
             fetch(`{{ route('product.ajaxGetProducts') }}?count=${count}&${query.toString()}`)
                 .then(response => {
                     if (!response.ok) {
@@ -371,27 +371,27 @@
                                 </div>
                                 <h3 class="product-title"><a href="${productDetailUrl}">${product.name}</a></h3>
                                 <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span>
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div>
-                                </div>
-                                <div class="price-box">
-                                    ${hasDiscount  ? `
-                                                    <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                                    <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                                                    ` : `
-                                                    <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                                                    `}
-                                </div>
-                                <div class="product-action">
-                                    <a href="#" data-productid="${product.id}" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
-                                    <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
-                                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
-                                </div>
-                            </div>
-                            </div>
-                            </div>
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:100%"></span>
+                        <span class="tooltiptext tooltip-top"></span>
+                    </div>
+                </div>
+                    <div class="price-box">
+                        ${hasDiscount  ? `
+                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                        ` : `
+                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                        `}
+                    </div>
+                    <div class="product-action">
+                        <a href="#" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
+                        <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
+                        <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                </div>
+                </div>
                 `;
                     });
 

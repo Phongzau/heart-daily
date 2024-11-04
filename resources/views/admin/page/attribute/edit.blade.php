@@ -33,7 +33,7 @@
                         <input type="text" name="code" class="form-control" value="{{ old('code', $attribute->code) }}">
                         <div class="input-group-append" id="color-picker-trigger">
                             <div class="input-group-text">
-                                <i class="fas fa-fill-drip" id="color-icon"></i>
+                                <i class="fas fa-fill-drip" id="color-icon" style="color: {{ old('code', $attribute->code) }};"></i>
                             </div>
                         </div>
                     </div>
