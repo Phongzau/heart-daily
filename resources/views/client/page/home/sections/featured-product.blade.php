@@ -5,7 +5,15 @@
         <div class="products-slider custom-products owl-carousel owl-theme nav-outer show-nav-hover nav-image-center"
             data-owl-options="{
                 'dots': false,
-                'nav': true
+                'nav': true,
+                'responsive': {
+							'992': {
+								'items': 4
+							},
+							'1200': {
+								'items': 5
+							}
+						}
             }">
             @foreach ($featuredProduct as $product)
                 <div class="product-default appear-animate" data-animation-name="fadeInRightShorter">
