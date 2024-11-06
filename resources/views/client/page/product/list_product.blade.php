@@ -346,6 +346,8 @@
                         const hasDiscount = product.offer_price > 0 && currentDate >= product
                             .offer_start_date && currentDate <= product.offer_end_date;
                         const productDetailUrl = "{{ url('product') }}/" + product.slug;
+                        const wishlistProductIds = data.wishlistProductIds;
+                        const isInWishlist = wishlistProductIds.includes(product.id) ? 'added-wishlist' : '';
                         html += `
                     <div class="col-6 col-sm-4 col-md-3">
                         <div class="product-default">
@@ -385,7 +387,7 @@
                         `}
                     </div>
                     <div class="product-action">
-                        <a href="#" class="btn-icon-wish" title="wishlist"><i class="icon-heart"></i></a>
+                        <a href="javascript:void(0)" data-productid="${product.id}" class="btn-icon-wish ${isInWishlist}" title="wishlist"><i class="icon-heart"></i></a>
                         <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
                         <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
                     </div>

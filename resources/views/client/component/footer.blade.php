@@ -404,7 +404,7 @@ totalWishlist();
           }
           var user_id = "{{ Auth::id() }}";
           $(document).ready(function() {
-              $('.btn-icon-wish').click(function(e) {
+            $(document).on('click', '.btn-icon-wish', function(e) {
                   e.preventDefault();
                   var heartIcon = $(this).find('i');
                   var button = $(this);
