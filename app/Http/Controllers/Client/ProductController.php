@@ -121,10 +121,11 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate($perPage);
-        
+        $wishlistProductIds = Wishlist::where('user_id', Auth::id())->pluck('product_id')->toArray();
 
         return response()->json([
             'products' => $products,
+            'wishlistProductIds' => $wishlistProductIds,
         ]);
     }
 
