@@ -11,35 +11,31 @@
                         <div class="card-stats-title">Order Statistics -
                             <div class="dropdown d-inline">
                                 <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#"
-                                    id="orders-month">August</a>
+                                    id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->format('F') }}</a>
                                 <ul class="dropdown-menu dropdown-menu-sm">
                                     <li class="dropdown-title">Select Month</li>
-                                    <li><a href="#" class="dropdown-item">January</a></li>
-                                    <li><a href="#" class="dropdown-item">February</a></li>
-                                    <li><a href="#" class="dropdown-item">March</a></li>
-                                    <li><a href="#" class="dropdown-item">April</a></li>
-                                    <li><a href="#" class="dropdown-item">May</a></li>
-                                    <li><a href="#" class="dropdown-item">June</a></li>
-                                    <li><a href="#" class="dropdown-item">July</a></li>
-                                    <li><a href="#" class="dropdown-item active">August</a></li>
-                                    <li><a href="#" class="dropdown-item">September</a></li>
-                                    <li><a href="#" class="dropdown-item">October</a></li>
-                                    <li><a href="#" class="dropdown-item">November</a></li>
-                                    <li><a href="#" class="dropdown-item">December</a></li>
+                                    @foreach (range(1, 12) as $m)
+                                        <li>
+                                            <a href="#" data-month="{{ $m }}"
+                                                class="dropdown-item {{ $m == $month ? 'active' : '' }}">
+                                                {{ \Carbon\Carbon::createFromFormat('m', $m)->format('F') }}
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
                         <div class="card-stats-items">
                             <div class="card-stats-item">
-                                <div class="card-stats-item-count">24</div>
+                                <div class="card-stats-item-count" id="pending-count">{{ @$pendingCount }}</div>
                                 <div class="card-stats-item-label">Pending</div>
                             </div>
                             <div class="card-stats-item">
-                                <div class="card-stats-item-count">12</div>
+                                <div class="card-stats-item-count" id="shipping-count">{{ @$shippingCount }}</div>
                                 <div class="card-stats-item-label">Shipping</div>
                             </div>
                             <div class="card-stats-item">
-                                <div class="card-stats-item-count">23</div>
+                                <div class="card-stats-item-count" id="completed-count">{{ @$completedCount }}</div>
                                 <div class="card-stats-item-label">Completed</div>
                             </div>
                         </div>
@@ -51,8 +47,8 @@
                         <div class="card-header">
                             <h4>Total Orders</h4>
                         </div>
-                        <div class="card-body">
-                            59
+                        <div class="card-body" id="total-orders">
+                            {{ $totalOrdersCount }}
                         </div>
                     </div>
                 </div>
@@ -67,10 +63,10 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Balance</h4>
+                            <h4>Doanh thu</h4>
                         </div>
-                        <div class="card-body">
-                            $187,13
+                        <div class="card-body" id="total-revenue">
+                            {{ number_format($totalRevenue, 0, ',', '.') }}₫
                         </div>
                     </div>
                 </div>
@@ -85,10 +81,10 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Sales</h4>
+                            <h4>Đã bán</h4>
                         </div>
-                        <div class="card-body">
-                            4,732
+                        <div class="card-body" id="total-products-sold">
+                            {{ $totalProductsSold }}
                         </div>
                     </div>
                 </div>
@@ -534,3 +530,201 @@
         </div>
     </section>
 @endsection
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var balance_chart = document.getElementById("balance-chart").getContext('2d');
+        var balance_chart_bg_color = balance_chart.createLinearGradient(0, 0, 0, 70);
+        balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
+        balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
+
+        var balanceChart = new Chart(balance_chart, {
+            type: 'line',
+            data: {
+                labels: [], 
+                datasets: [{
+                    label: 'Doanh thu (₫)',
+                    data: [], 
+                    backgroundColor: balance_chart_bg_color,
+                    borderWidth: 3,
+                    borderColor: 'rgba(63,82,227,1)',
+                    pointBorderWidth: 0,
+                    pointBorderColor: 'transparent',
+                    pointRadius: 3,
+                    pointBackgroundColor: 'transparent',
+                    pointHoverBackgroundColor: 'rgba(63,82,227,1)',
+                }]
+            },
+            options: {
+                layout: {
+                    padding: {
+                        bottom: -1,
+                        left: -1
+                    }
+                },
+                legend: {
+                    display: false,
+
+                },
+                tooltips: {
+                    bodyFontSize: 7, 
+                    titleFontSize: 8, 
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            display: false,
+                            drawBorder: false,
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            display: false
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        ticks: {
+                            display: false
+                        }
+                    }]
+
+                },
+            }
+        });
+
+        var sales_chart = document.getElementById("sales-chart").getContext('2d');
+        var sales_chart_bg_color = sales_chart.createLinearGradient(0, 0, 0, 80);
+        balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
+        balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
+
+        var salesChart = new Chart(sales_chart, {
+            type: 'line',
+            data: {
+                labels: [], 
+                datasets: [{
+                    label: 'Số lượng đã bán',
+                    data: [], 
+                    borderWidth: 2,
+                    backgroundColor: balance_chart_bg_color,
+                    borderWidth: 3,
+                    borderColor: 'rgba(63,82,227,1)',
+                    pointBorderWidth: 0,
+                    pointBorderColor: 'transparent',
+                    pointRadius: 3,
+                    pointBackgroundColor: 'transparent',
+                    pointHoverBackgroundColor: 'rgba(63,82,227,1)',
+                }]
+            },
+            options: {
+                layout: {
+                    padding: {
+                        bottom: -1,
+                        left: -1
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    bodyFontSize: 7, 
+                    titleFontSize: 8, 
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            display: false,
+                            drawBorder: false,
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            display: false
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        ticks: {
+                            display: false
+                        }
+                    }]
+                },
+            }
+        });
+
+        function updateCharts(month) {
+            $.ajax({
+                url: `/admin/order-statistics/${month}`,
+                method: 'GET',
+                success: function(response) {
+                    $('#total-revenue').text(new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(response.totalRevenue));
+                    $('#total-products-sold').text(response.totalProductsSold);
+
+                    const labels = response.chartLabels || []; 
+                    const revenueData = response.revenueData || []; 
+                    const salesData = response.salesData || []; 
+
+                    balanceChart.data.labels = labels;
+                    balanceChart.data.datasets[0].data = revenueData;
+                    balanceChart.update();
+
+                    salesChart.data.labels = labels;
+                    salesChart.data.datasets[0].data = salesData;
+                    salesChart.update();
+                },
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra khi tải dữ liệu biểu đồ.');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            const currentMonth = new Date().getMonth() + 1;
+            updateCharts(currentMonth);
+
+            $('body').on('click', '.dropdown-item', function(e) {
+                e.preventDefault();
+                const month = $(this).data('month');
+                updateCharts(month);
+            });
+        });
+        $(document).ready(function() {
+            $('a[data-month]').on('click', function(e) {
+                e.preventDefault();
+
+                var month = $(this).data('month');
+                var url = '/admin/order-statistics/' + month; 
+
+                console.log("Requesting URL: " + url);
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                        console.log(response);
+                        $('#pending-count').text(response.pendingCount);
+                        $('#shipping-count').text(response.shippingCount);
+                        $('#completed-count').text(response.completedCount);
+                        $('#total-orders').text(response.totalOrdersCount);
+                        $('#total-revenue').text(response.totalRevenue.toLocaleString('vi-VN') +
+                            '₫');
+                        $('#total-products-sold').text(response.totalProductsSold);
+
+                        $('#orders-month').text(response.monthName);
+                        $('a[data-month]').removeClass('active');
+                        $('a[data-month="' + month + '"]').addClass('active');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Có lỗi xảy ra khi tải thống kê.');
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

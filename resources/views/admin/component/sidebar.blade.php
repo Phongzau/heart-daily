@@ -8,7 +8,7 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Trang chủ</li>
             <li class="dropdown active">
-                <a href="dashboard" ><i class="fas fa-fire"></i><span>Trang chủ</span></a>
+                <a href="{{ route('admin.dashboard') }}" ><i class="fas fa-fire"></i><span>Trang chủ</span></a>
                 <!-- <ul class="dropdown-menu">
                     <li><a class="nav-link" href="index-0.html">General Dashboard</a></li>
                     <li class=active><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li>

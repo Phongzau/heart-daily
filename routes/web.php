@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SocialController;
@@ -69,21 +70,21 @@ Route::get('/contact', function () {
     return view('client.page.contact');
 })->name('contact');
 
-Route::get('/blog', function () {
-    return view('client.page.blog');
-})->name('blog');
+// Route::get('/blog', function () {
+//     return view('client.page.blog');
+// })->name('blog');
 
-Route::get('/blog-details', function () {
-    return view('client.page.blog-details');
-})->name('blog-details');
+// Route::get('/blog-details', function () {
+//     return view('client.page.blog-details');
+// })->name('blog-details');
 
 // Route::get('/product-details', function () {
 //     return view('client.page.product-details');
 // })->name('product-details');
 
-Route::get('/cart-details', function () {
-    return view('client.page.cart-details');
-})->name('cart-details');
+// Route::get('/cart-details', function () {
+//     return view('client.page.cart-details');
+// })->name('cart-details');
 
 
 Route::get('user/dashboard', [UserController::class, 'userDashboard'])->name('user.dashboard');
@@ -91,10 +92,8 @@ Route::get('user/dashboard', [UserController::class, 'userDashboard'])->name('us
 //admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(function () {
     //dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.page.dashboard');
-    })->name('dashboard');
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/order-statistics/{month}', [DashboardController::class, 'orderStatistics'])->name('order-statistics');
     // admin profile
     Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');
 
