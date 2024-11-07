@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public function index()
-    {  
+    {
         $brands = Brand::query()->where('status', 1)->get();
         $products = Product::with('brand')
             ->where('status', 1)

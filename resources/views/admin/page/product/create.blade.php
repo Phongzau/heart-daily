@@ -142,8 +142,8 @@
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text"
-                                                                                id="discount-unit">
-                                                                                đ
+                                                                                id="discount-unit">đ
+
                                                                             </div>
                                                                         </div>
                                                                         <input type="number" name="offer_price"
@@ -172,6 +172,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        
+
+
                                                         <div class="form-group">
                                                             <label for="">Short Description</label>
                                                             <textarea name="short_description" class="form-control"></textarea>
@@ -288,6 +292,16 @@
                                     <div class="col-md-4">
                                         <div class="card">
                                             <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="tags">Tags:</label>
+                                                    <select class="form-control tags-select select2" name="tags[]"
+                                                        multiple="multiple">
+                                                        @foreach ($tags as $tag)
+                                                            <option value="{{ $tag->id }}"> {{ $tag->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="inputState">Category</label>
                                                     <select id="inputState" name="category_id"
@@ -450,6 +464,15 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            // product_tag
+
+            $('.tags-select').select2({
+                tags: true, // Cho phép thêm tag mới
+                placeholder: "Chọn hoặc thêm tag mới",
+                allowClear: true,
+                tokenSeparators: [',']
+            });
+
             // Biến lưu trữ thuộc tính và giá trị đã chọn
             let attributeData = [];
 

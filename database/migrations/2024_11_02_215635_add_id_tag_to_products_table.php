@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable(); // timestamp for delete_at (soft delete)
-
+        Schema::table('products', function (Blueprint $table) {
+            $table->text('id_tags')->after('brand_id')->nullable();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('id_tags');
+        });
     }
 };

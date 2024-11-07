@@ -19,14 +19,15 @@
                             <h4>Update Tags</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admin.tags.update', $tags->id) }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('admin.tags.update', $tags->id) }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
                                     <label for="">Name</label>
                                     <input type="text" name="name" value="{{ $tags->name }}" class="form-control">
                                 </div>
-                                
+
                                 <div class="form-group ">
                                     <label for="inputState">Status</label>
                                     <select id="inputState" name="status" class="form-control">

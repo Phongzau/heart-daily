@@ -30,22 +30,22 @@ class TagController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => ['required', 'max:200'],
-        'status' => ['required'],
-        
-    ]);
+    {
+        $request->validate([
+            'name' => ['required', 'max:200'],
+            'status' => ['required'],
 
-    $tags = new Tag();
-    $tags->name = $request->name;
-    $tags->slug = Str::slug($request->name);
-    $tags->status = $request->status;
-    $tags->save();
+        ]);
 
-    toastr('Tạo thành công !', 'success');
-    return redirect()->route('admin.tags.index');
-}
+        $tags = new Tag();
+        $tags->name = $request->name;
+        $tags->slug = Str::slug($request->name);
+        $tags->status = $request->status;
+        $tags->save();
+
+        toastr('Created Successfully!', 'success');
+        return redirect()->route('admin.tags.index');
+    }
 
     /**
      * Display the specified resource.
@@ -105,5 +105,10 @@ class TagController extends Controller
         return response([
             'message' => 'Cập nhật trạng thái thành công !',
         ]);
+    }
+    public function getActiveTags()
+    {
+        $tags = Tag::where('status', 1)->get();
+        return view('client.footer', compact('tags'));
     }
 }
