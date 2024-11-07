@@ -23,7 +23,6 @@ class ProductController extends Controller
     {
 
         $perPage = $request->input('count', 12);
-
         $query = Product::query()->where('status', 1);
 
         if ($request->has('tag_id')) {
