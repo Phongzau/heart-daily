@@ -7,13 +7,7 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Trang chủ</li>
-            <li class="dropdown active">
-                <a href="{{ route('admin.dashboard') }}" ><i class="fas fa-fire"></i><span>Trang chủ</span></a>
-                <!-- <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="index-0.html">General Dashboard</a></li>
-                    <li class=active><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li>
-                </ul> -->
-            </li>
+            <li><a class="nav-link" href="{{ route('admin.dashboard') }}" ><i class="fas fa-fire"></i><span>Trang chủ</span></a></li>
             <li class="menu-header">Start Menu</li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
