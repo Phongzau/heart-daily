@@ -94,6 +94,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
     //dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/order-statistics/{month}', [DashboardController::class, 'orderStatistics'])->name('order-statistics');
+    Route::get('/yearly-statistics', [DashboardController::class, 'yearlyStatistics'])->name('yearly-statistics');
+    Route::get('/top-products/{period}', [DashboardController::class, 'topProducts'])->name('top-products');
+    Route::get('/brand-statistics/{period}', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
     // admin profile
     Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');
 
