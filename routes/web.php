@@ -22,17 +22,18 @@ use App\Http\Controllers\Admin\ListAccountController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SocialController;
-use App\Http\Controllers\Client\CartController;
-use App\Http\Controllers\Client\CheckoutController;
-use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PaypalSettingController;
 use App\Http\Controllers\Admin\VnpaySettingController;
+use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
+use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\OrderUserController;
 use App\Http\Controllers\Client\WishlistController;
 use App\Http\Middleware\CheckRole;
@@ -283,10 +284,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:1'])->group(fu
         Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy');
     });
 
+    //comment blogs
     Route::prefix('blog_comments')->name('blog_comments.')->group(function () {
         Route::get('/', [BlogCommentController::class, 'index'])->name('index');
         Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy');
     });
+    
+    //product_review
+    Route::prefix('product_reviews')->name('product_reviews.')->group(function () {
+        Route::get('/', [ProductReviewController::class, 'index'])->name('index');
+        // Route::post('/reviews', [ProductReviewController::class, 'store'])->name('review.store');
+        Route::post('/reviews', [ProductController::class, 'reviews'])->name('review.store');
+        Route::delete('/{product_review}', [ProductReviewController::class, 'destroy'])->name('destroy');
+        // Route::get('/reviews', [ProductController::class, 'getAllReviews'])->name('list');
+    });
+    
 
     //advertisement
     Route::prefix('advertisement')->name('advertisement.')->group(function () {
@@ -384,6 +396,10 @@ Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::c
 Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
 Route::post('/comments', [App\Http\Controllers\Client\BlogController::class, 'comments'])->name('comments');
 Route::get('/comments', [App\Http\Controllers\Client\BlogController::class, 'getAllComments'])->name('get-comments');
+
+///review
+Route::post('/reviews', [App\Http\Controllers\Client\ProductController::class, 'reviews'])->name('reviews');
+Route::get('/reviews', [App\Http\Controllers\Client\ProductController::class, 'getAllReviews'])->name('get-reviews');
 
 //about
 Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'index'])->name('about');

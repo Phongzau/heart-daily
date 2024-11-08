@@ -26,6 +26,8 @@
                     </li>
                     <li><a class="nav-link" href="{{ route('admin.coupons.index') }}">Mã giảm giá</a>
                     </li>
+                    <li><a class="nav-link" href="{{ route('admin.product_reviews.index') }}">Đánh giá</a>
+                    </li>
                 </ul>
             </li>
             <li class="dropdown">

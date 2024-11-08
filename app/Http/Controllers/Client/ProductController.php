@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Helper\BadwordsHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Wishlist;
+use App\Models\ProductReview;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -136,6 +138,11 @@ class ProductController extends Controller
             ->where(['status' => 1, 'slug' => $slug])
             ->first();
 
+
+        //Đánh giá sản phẩm
+        $reviews = ProductReview::query()->where('product_id', $product->id)->paginate(5);
+        $countReviews = ProductReview::query()->where('product_id', $product->id)->count();
+
         // Tăng lượt xem
         $product->increment('views');
 
@@ -190,7 +197,7 @@ class ProductController extends Controller
         }
         // dd($variantGroups);
 
-        return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated'));
+        return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated', 'reviews', 'countReviews'));
     }
     public function updateWishlist(Request $request)
     {
@@ -223,4 +230,51 @@ class ProductController extends Controller
         $total_wishlist = Wishlist::where(['user_id' => Auth::user()->id])->count();
         echo json_encode($total_wishlist);
     }
+
+
+    //reviews
+    public function reviews(Request $request)
+{
+    $request->validate([
+        'review' => ['required', 'max:250', 'string'],
+        'product_id' => ['required'],
+        'rate' => ['required', 'integer', 'between:1,5'],
+    ], [
+        'review.required' => 'Bạn phải nhập Đánh giá.',
+        'review.max' => 'Đánh giá không được vượt quá 250 ký tự.',
+        'review.string' => 'Đánh giá phải là một chuỗi văn bản hợp lệ.',
+        'product_id.required' => 'Thiếu ID.',
+        'rate.required' => 'Bạn phải chọn mức đánh giá.',
+    ]);
+
+    // Kiểm tra từ nhạy cảm
+    if (BadwordsHelper::isProfane($request->review)) {
+        return response([
+            'status' => 'error',
+            'message' => 'Đánh giá có chứa từ ngữ nhạy cảm',
+        ]);
+    }
+
+    // Lưu đánh giá vào cơ sở dữ liệu
+    $review = new ProductReview();
+    $review->user_id = Auth::user()->id;
+    $review->review = $request->review;
+    $review->product_id = $request->product_id;
+    $review->rate = $request->rate;
+    $review->save();
+
+    // Trả về review mới thêm vào
+    return response([
+        'status' => 'success',
+        'message' => 'Đánh giá thành công',
+        'review' => $review,
+    ]);
+}
+
+public function getAllReviews(Request $request)
+{
+    
+    
+}
+
 }

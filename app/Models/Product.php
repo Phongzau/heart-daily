@@ -39,4 +39,8 @@ class Product extends Model
     {
         return $this->belongsTo(CategoryProduct::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
