@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\CouponDataTable;
+use App\Events\CouponCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use App\Models\Coupon;
+use App\Models\User;
+use App\Notifications\CouponCreatedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CouponController extends Controller
 {
@@ -43,8 +47,17 @@ class CouponController extends Controller
         $coupon->discount = $request->discount;
         $coupon->min_order_value = $request->min_order_value;
         $coupon->total_used = 0;
+        $coupon->is_publish = $request->is_publish;
         $coupon->status = $request->status;
         $coupon->save();
+
+        if ($coupon->is_publish == 1) {
+            $users = User::query()->get();
+            foreach ($users as $user) {
+                event(new CouponCreated($coupon, $user));
+                $user->notify(new CouponCreatedNotification($coupon));
+            }
+        }
 
         toastr('Thêm Coupon thành công', 'success');
         return redirect()->route('admin.coupons.index');
