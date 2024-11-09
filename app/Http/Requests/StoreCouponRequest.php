@@ -31,6 +31,7 @@ class StoreCouponRequest extends FormRequest
             'discount_type' => ['required'],
             'discount' => ['required', 'integer', 'min:1'],
             'min_order_value' => ['required', 'numeric', 'min:0'],
+            'is_publish' => ['required'],
             'status' => ['required'],
         ];
     }
@@ -64,6 +65,7 @@ class StoreCouponRequest extends FormRequest
             'min_order_value.numeric' => 'Giá trị đơn hàng tối thiểu phải là một số.',
             'min_order_value.min' => 'Giá trị đơn hàng tối thiểu không được nhỏ hơn 0.',
             'status.required' => 'Vui lòng chọn trạng thái mã giảm giá.',
+            'is_publish.required' => 'Is_Publish không được bỏ trống',
         ];
     }
 }

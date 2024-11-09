@@ -18,7 +18,7 @@
                                <div class="header-search-wrapper">
                                    <input type="search" class="form-control" name="q" id="q"
                                        placeholder="Search..." required>
-                                   <div class="select-custom">
+                                   {{-- <div class="select-custom">
                                        <select id="cat" name="cat">
                                            <option value="">All Categories</option>
                                            <option value="4">Fashion</option>
@@ -38,7 +38,7 @@
                                            <option value="34">- Boats</option>
                                            <option value="57">- Auto Tools &amp; Supplies</option>
                                        </select>
-                                   </div>
+                                   </div> --}}
                                    <!-- End .select-custom -->
                                    <button class="btn icon-magnifier p-0" title="search" type="submit"></button>
                                </div>
@@ -46,18 +46,25 @@
                            </form>
                        </div>
                        <!-- End .header-search -->
-
                        <i class="fa-solid fa-right-from-bracket"></i>
                        @if (Auth::check())
 
                            <a href="{{ route('chat') }}" class="header-icon" title="chat">
                                <i class="far fa-comment-dots" style="opacity: 0.95;"></i>
                            </a>
-                           <a href="#" class="header-icon has-dropdown" title="login" data-toggle="dropdown">
+                           <a href="#" class="header-icon notification-icon" title="notification"
+                               data-toggle="dropdown">
+                               <i class="fas fa-bell"></i>
+                           </a>
+
+                           @livewire('notification-component')
+
+                           <a href="#" class="header-icon login-icon" title="login" data-toggle="dropdown">
                                <i class="icon-user-2"></i>
                            </a>
-                           <ul class="dropdown-menu"
-                               style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);">
+                           <ul id="login-dropdown" class="dropdown-menu"
+                               style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);top: 70%;
+    left: 871px;">
                                <li style="padding: 8px 10px; display: flex; align-items: center;">
                                    <a href="{{ route('user.dashboard') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
@@ -65,6 +72,14 @@
                                        <span>My Account</span>
                                    </a>
                                </li>
+                               <li style="padding: 8px 10px; display: flex; align-items: center;">
+                                   <a href="{{ route('admin.dashboard') }}"
+                                       style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
+                                       <i class="fas fa-bell" style="margin-right: 8px; color: #333;"></i>
+                                       <span>Notifications</span>
+                                   </a>
+                               </li>
+
                                @if (Auth::user()->role_id == 1)
                                    <!-- Check if the user role is 1 -->
 

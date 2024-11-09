@@ -22510,5 +22510,34 @@ p {
 .active-filter {
     color: #007bff;
     /* Màu xanh hoặc màu chính của giao diện */
+}
 
+.notification-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-text {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    word-wrap: break-word;
+    /* Đảm bảo từ dài không bị tràn */
+    overflow-wrap: break-word;
+    /* Đảm bảo từ dài không bị tràn */
+    white-space: normal;
+    /* Cho phép văn bản xuống dòng khi cần */
+    word-break: break-word;
+    /* Cắt từ khi cần thiết */
+}
+
+.notification-time {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
 }

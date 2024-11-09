@@ -43,7 +43,7 @@ class CartController extends Controller
             $productVariant = ProductVariant::where('product_id', $product_id)
                 ->whereJsonContains('id_variant', $attributeIdArray)
                 ->first();
-        if ($productVariant->qty === 0) {
+            if ($productVariant->qty === 0) {
                 $variantString = '';
                 foreach ($variants as $key => $value) {
                     $variantString = ucfirst($key) . ' ' . $value;

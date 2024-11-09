@@ -204,7 +204,33 @@
 
                 }
             })
-
         })
+
+        // Toggle notification dropdown
+        $('.notification-icon').on('click', function(event) {
+            $('#notification-dropdown').toggle();
+            $('#login-dropdown').hide(); // Ẩn dropdown login nếu đang mở
+            event.stopPropagation();
+        });
+
+        // Toggle login dropdown
+        $('.login-icon').on('click', function(event) {
+            $('#login-dropdown').toggle();
+            $('#notification-dropdown').hide(); // Ẩn dropdown notification nếu đang mở
+            event.stopPropagation();
+        });
+
+        // Đóng tất cả dropdown khi click bên ngoài
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#notification-dropdown').length && !$(event.target).closest(
+                    '.notification-icon').length) {
+                $('#notification-dropdown').hide();
+            }
+            if (!$(event.target).closest('#login-dropdown').length && !$(event.target).closest(
+                    '.login-icon').length) {
+                $('#login-dropdown').hide();
+            }
+        });
+
     });
 </script>

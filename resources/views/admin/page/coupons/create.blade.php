@@ -98,14 +98,32 @@
                                     <div class="tab-pane fade show active" id="not-available" role="tabpanel"
                                         aria-labelledby="not-available-tab">
                                         <label for="">Minium order value <code>(đ)</code></label>
-                                        <input type="number" readonly id="min_order_value" name="min_order_value"
-                                            value="0" class="form-control">
+                                        {{-- <input type="number" readonly id="min_order_value" name="min_order_value"
+                                            value="0" class="form-control"> --}}
+                                        <input type="number" readonly id="min_order_value_display" value="0"
+                                            class="form-control">
+
+                                        <!-- Input ẩn để gửi giá trị thực tế khi form submit -->
+                                        <input type="hidden" id="min_order_value" name="min_order_value" value="0">
                                     </div>
                                     <div class="tab-pane fade" id="min-order-value" role="tabpanel"
                                         aria-labelledby="min-order-value-tab">
                                         <label for="">Minium order value <code>(đ)</code></label>
                                         <input type="number" id="min_order_value_edit" name="min_order_value"
                                             value="{{ old('min_order_value') }}" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label for="inputState">Publish</label> <br>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline1" name="is_publish" checked
+                                            value="1" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline1">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline2" name="is_publish" value="0"
+                                            class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline2">No</label>
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -146,8 +164,11 @@
             updateDiscountUnit();
 
             $('#discount_value').on('input change', function() {
+
                 var selectedType = $('#inputState').val();
                 var discountValue = $(this).val();
+                console.log(selectedType, discountValue);
+
                 if (selectedType === 'percent' && discountValue > 100) {
                     $(this).val('');
                     toastr.error('Giá trị phần trăm không được vượt quá 100%');
