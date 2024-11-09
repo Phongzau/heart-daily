@@ -3,8 +3,10 @@
             @if ($listCoupon && $listCoupon->isNotEmpty())
                 @foreach ($listCoupon as $coupon)
                     @php
-                        $couponSession = session()->get('coupon', []);
-                        $couponUsed = $couponSession['coupon_code'] == $coupon->code;
+                        if (session()->has('coupon')) {
+                            $couponSession = session()->get('coupon', []);
+                            $couponUsed = $couponSession['coupon_code'] == $coupon->code;
+                        }
 
                         if ($coupon->discount_type === 'percent') {
                             $discount = $coupon->discount . '%';
@@ -24,9 +26,9 @@
                                 {{ \Carbon\Carbon::parse($coupon->end_date)->format('d/m/Y') }}
                             </div>
                         </div>
-                        <button class="use-coupons @if ($couponUsed) used-coupon @endif"
-                            data-code="{{ $coupon->code }}" @if ($couponUsed) disabled @endif>
-                            @if ($couponUsed)
+                        <button class="use-coupons @if (@$couponUsed) used-coupon @endif"
+                            data-code="{{ $coupon->code }}" @if (@$couponUsed) disabled @endif>
+                            @if (@$couponUsed)
                                 Đã sử dụng
                             @else
                                 Sử dụng

@@ -930,16 +930,6 @@
                 $('.color-options').removeClass('selected'); // Xóa class selected nếu cần
                 console.log("Filters cleared");
             });
-            // <div class="rating-form">
-            //     <label for="rate">Your rating <span class="required">*</span></label>
-            //     <span class="rating-stars">
-            //         <a class="star-1" data-value="1" href="#">1</a>
-            //         <a class="star-2" data-value="2" href="#">2</a>
-            //         <a class="star-3" data-value="3" href="#">3</a>
-            //         <a class="star-4" data-value="4" href="#">4</a>
-            //         <a class="star-5" data-value="5" href="#">5</a>
-            //     </span>
-            // </div>
 
             //product reviews
             // Hàm xử lý gửi form bình luận
@@ -987,6 +977,15 @@
                     },
                     success: function(data) {
                         $('#reviewSection').html(data.updateHtmlReview);
+                        $('#pagination-links a').each(function() {
+                            var newUrl = $(this).attr('href').replace(
+                                /reviews\?product_id=\d+&page=\d+/,
+                                function(match) {
+                                    return "product/supreme-collegiate-half-zip?page=" +
+                                        match.split('page=')[1];
+                                });
+                            $(this).attr('href', newUrl);
+                        });
                         $('.count-review').text(data.total + ' Review')
                     },
                     error: function() {}
