@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -131,17 +132,19 @@ class ProductController extends Controller
         ]);
     }
 
-    public function productDetail(string $slug)
+    public function productDetail(string $slug, Request $request)
     {
         $product = Product::query()
-            ->with(['ProductImageGalleries', 'ProductVariants'])
+            ->with([
+                'ProductImageGalleries',
+                'ProductVariants',
+            ])
             ->where(['status' => 1, 'slug' => $slug])
             ->first();
 
-
         //Đánh giá sản phẩm
-        $reviews = ProductReview::query()->where('product_id', $product->id)->paginate(5);
-        $countReviews = ProductReview::query()->where('product_id', $product->id)->count();
+        $reviews = ProductReview::query()->where('product_id', $product->id)->orderBy('id', 'DESC')->paginate(7);
+        // $countReviews = ProductReview::query()->where('product_id', $product->id)->count();
 
         // Tăng lượt xem
         $product->increment('views');
@@ -184,7 +187,6 @@ class ProductController extends Controller
                 if (!isset($variantArray[$color])) {
                     $variantArray[$color] = [];
                 }
-
                 $variantArray[$color][$size] = $variant->qty;
             }
         }
@@ -196,8 +198,10 @@ class ProductController extends Controller
             $variantGroups[$category] = array_values(array_unique($attributes));
         }
         // dd($variantGroups);
-
-        return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated', 'reviews', 'countReviews'));
+        if ($request->ajax()) {
+            return view('client.page.product.review-list', compact('reviews'))->render();
+        }
+        return view('client.page.product.product-details', compact('product', 'variantGroups', 'variantDataJson', 'productRelated', 'reviews'));
     }
     public function updateWishlist(Request $request)
     {
@@ -234,47 +238,54 @@ class ProductController extends Controller
 
     //reviews
     public function reviews(Request $request)
-{
-    $request->validate([
-        'review' => ['required', 'max:250', 'string'],
-        'product_id' => ['required'],
-        'rate' => ['required', 'integer', 'between:1,5'],
-    ], [
-        'review.required' => 'Bạn phải nhập Đánh giá.',
-        'review.max' => 'Đánh giá không được vượt quá 250 ký tự.',
-        'review.string' => 'Đánh giá phải là một chuỗi văn bản hợp lệ.',
-        'product_id.required' => 'Thiếu ID.',
-        'rate.required' => 'Bạn phải chọn mức đánh giá.',
-    ]);
+    {
+        $request->validate([
+            'review' => ['required', 'max:250', 'string'],
+            'product_id' => ['required'],
+            'rate' => ['required', 'integer', 'between:1,5'],
+        ], [
+            'review.required' => 'Bạn phải nhập Đánh giá.',
+            'review.max' => 'Đánh giá không được vượt quá 250 ký tự.',
+            'review.string' => 'Đánh giá phải là một chuỗi văn bản hợp lệ.',
+            'product_id.required' => 'Thiếu ID.',
+            'rate.required' => 'Bạn phải chọn mức đánh giá.',
+        ]);
 
-    // Kiểm tra từ nhạy cảm
-    if (BadwordsHelper::isProfane($request->review)) {
+        // Kiểm tra từ nhạy cảm
+        if (BadwordsHelper::isProfane($request->review)) {
+            return response([
+                'status' => 'error',
+                'message' => 'Đánh giá có chứa từ ngữ nhạy cảm',
+            ]);
+        }
+
+        // Lưu đánh giá vào cơ sở dữ liệu
+        $review = new ProductReview();
+        $review->user_id = Auth::user()->id;
+        $review->review = $request->review;
+        $review->product_id = $request->product_id;
+        $review->rate = $request->rate;
+        $review->save();
+
+        // Trả về review mới thêm vào
         return response([
-            'status' => 'error',
-            'message' => 'Đánh giá có chứa từ ngữ nhạy cảm',
+            'status' => 'success',
+            'message' => 'Đánh giá thành công',
+            'review' => $review,
         ]);
     }
 
-    // Lưu đánh giá vào cơ sở dữ liệu
-    $review = new ProductReview();
-    $review->user_id = Auth::user()->id;
-    $review->review = $request->review;
-    $review->product_id = $request->product_id;
-    $review->rate = $request->rate;
-    $review->save();
-
-    // Trả về review mới thêm vào
-    return response([
-        'status' => 'success',
-        'message' => 'Đánh giá thành công',
-        'review' => $review,
-    ]);
-}
-
-public function getAllReviews(Request $request)
-{
-    
-    
-}
-
+    public function getAllReviews(Request $request)
+    {
+        $reviews = ProductReview::query()
+            ->where('product_id', $request->product_id)
+            ->with('user')
+            ->orderBy('id', 'DESC')
+            ->paginate(7);
+        $updateHtmlReview = view('client.page.product.review-list', compact('reviews'))->render();
+        return response()->json([
+            'updateHtmlReview' => $updateHtmlReview,
+            'total' => $reviews->total(),
+        ]);
+    }
 }
