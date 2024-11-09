@@ -16,7 +16,7 @@
                                     <li class="dropdown-title">Select Month</li>
                                     @foreach (range(1, 12) as $m)
                                         <li>
-                                            <a href="#" data-month="{{ $m }}"
+                                            <a href="#" id="month" data-month="{{ $m }}"
                                                 class="dropdown-item {{ $m == $month ? 'active' : '' }}">
                                                 {{ \Carbon\Carbon::createFromFormat('m', $m)->format('F') }}
                                             </a>
@@ -357,7 +357,8 @@
 
             getTopProducts('month');
 
-            $('a.dropdown-item').on('click', function() {
+            $('a.dropdown-item').on('click', function(e) {
+                e.preventDefault();
                 var period = $(this).data('period');
                 $('a.dropdown-item').removeClass('active');
                 $(this).addClass('active');
@@ -579,9 +580,9 @@
                     salesChart.data.datasets[0].data = salesData;
                     salesChart.update();
                 },
-                // error: function(xhr, status, error) {
-                //     alert('Có lỗi xảy ra khi tải dữ liệu biểu đồ.');
-                // }
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra khi tải dữ liệu biểu đồ.');
+                }
             });
         }
 
@@ -589,7 +590,7 @@
             const currentMonth = new Date().getMonth() + 1;
             updateCharts(currentMonth);
 
-            $('body').on('click', '.dropdown-item', function(e) {
+            $('body').on('click', '#month', function(e) {
                 e.preventDefault();
                 const month = $(this).data('month');
                 updateCharts(month);
