@@ -1,5 +1,113 @@
 @extends('layouts.client')
 
+@section('css')
+    <style>
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 20px;
+            border-left: 1px solid #ccc;
+            z-index: 1001;
+        }
+
+        .sidebar-content {
+            padding: 15px;
+        }
+
+        .code-coupon {
+            font-weight: 700;
+        }
+
+        .coupon-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .coupon-card img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .coupon-details {
+            flex: 1;
+        }
+
+        .coupon-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .coupon-code {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .coupon-condition {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .coupon-expiry {
+            font-size: 12px;
+            color: #2299dd;
+        }
+
+        .use-coupons {
+            background-color: #2299dd;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .use-coupons:hover {
+            background-color: #656362;
+        }
+
+        .used-coupon {
+            background-color: #656362;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #openSidebarBtn {
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #openSidebarBtn:hover {
+            color: #ffffff;
+            background-color: #2299dd;
+        }
+    </style>
+@endsection
+
 @section('section')
     <div class="container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
@@ -13,7 +121,6 @@
                 <a href="cart.html">Order Complete</a>
             </li>
         </ul>
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="cart-table-container">
@@ -95,7 +202,7 @@
                                         <div class="cart-discount">
                                             <form id="coupon_form">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control form-control-sm"
+                                                    <input type="text" class="form-control ip-coupon form-control-sm"
                                                         placeholder="Coupon Code"
                                                         value="{{ session()->has('coupon') ? session()->get('coupon')['coupon_code'] : '' }}"
                                                         name="coupon_code">
@@ -107,7 +214,10 @@
                                             </form>
                                         </div>
                                     </div><!-- End .float-left -->
-
+                                    <div class="">
+                                        <button class="btn choose-coupon btn-sm" id="openSidebarBtn" type="submit">Choose
+                                            coupon</button>
+                                    </div>
                                     <div style="width: 350px;" class="float-right">
                                         <div class="cart-summary">
                                             <h3>CART TOTALS</h3>
@@ -197,7 +307,10 @@
             </div><!-- End .col-lg-4 -->
         </div> --}}
     </div><!-- End .container -->
-
+    <div id="couponSidebar" class="sidebar">
+        <span class="close-btn">&times;</span>
+        @livewire('coupon-list')
+    </div>
     <div class="mb-6"></div><!-- margin -->
 @endsection
 
@@ -208,6 +321,16 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+            // Mở modal khi nhấn nút "Choose coupon"
+            // Mở sidebar và hiển thị overlay khi nhấn nút
+            $("#openSidebarBtn").click(function() {
+                $("#couponSidebar").css("width", "400px");
+            });
+
+            // Đóng sidebar và ẩn overlay khi nhấn vào dấu '×' hoặc overlay
+            $(".close-btn, .overlay").click(function() {
+                $("#couponSidebar").css("width", "0");
             });
 
             // Tăng số lượng input-group-append
@@ -271,7 +394,45 @@
                     },
                 })
             })
+            $(document).on('click', '.use-coupons', function() {
+                let couponCode = $(this).siblings('.coupon-details').find('.code-coupon').text();
+                let dataCode = $(this).data('code');
 
+                $.ajax({
+                    url: "{{ route('apply-coupon') }}",
+                    method: 'GET',
+                    data: {
+                        coupon_code: couponCode,
+                    },
+                    success: function(data) {
+                        if (data.status == 'error') {
+                            toastr.error(data.message);
+                        } else if (data.status == 'success') {
+                            toastr.success(data.message);
+                            $('.use-coupons[data-code="' + dataCode + '"]')
+                                .text('Đã sử dụng')
+                                .prop('disabled', true)
+                                .addClass('used-coupon');
+                            updateOtherCoupons(dataCode);
+                            $('.ip-coupon').val(couponCode);
+                            calculateCouponDiscount();
+
+                        }
+                    },
+                    error: function(data) {
+
+                    },
+                })
+            });
+
+            function updateOtherCoupons(selectedCoupon) {
+                $('.use-coupons').each(function() {
+                    let dataCode = $(this).data('code');
+                    if (dataCode !== selectedCoupon) {
+                        $(this).text('Sử dụng').prop('disabled', false).removeClass('used-coupon');
+                    }
+                })
+            }
             $('#coupon_form').on('submit', function(e) {
                 e.preventDefault();
                 let formData = $(this).serialize();

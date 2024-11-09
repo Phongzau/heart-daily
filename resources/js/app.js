@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 toastr.info(`Có 1 mã giảm giá mới cho bạn ${event.coupon.name} với giá trị ${discount}`);
                 // Gọi lại Livewire để refresh component
                 Livewire.dispatch('refreshNotifications');
+                Livewire.dispatch('refreshCouponList');
                 toastr.info(`Bạn có một thông báo mới`);
             })
             .error((error) => {
