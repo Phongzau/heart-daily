@@ -23,23 +23,32 @@ class CouponDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $editBtn = "<a class='btn btn-primary' href='" . route('admin.coupons.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger ml-2 delete-item' href='" . route('admin.coupons.destroy', $query->id) . "' ><i class='far fa-trash-alt'></i></a>";
+                $editBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-coupons')) {
+                    $editBtn = "<a class='btn btn-primary' href='" . route('admin.coupons.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                }
+                if (auth()->user()->can('delete-coupons')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item' href='" . route('admin.coupons.destroy', $query->id) . "' ><i class='far fa-trash-alt'></i></a>";
+                }
                 return $editBtn . $deleteBtn;
             })
             ->addColumn('status', function ($query) {
-                if ($query->status == 1) {
-                    $button = "<label class='custom-switch mt-2'>
+                if (auth()->user()->can('edit-coupons')) {
+                    if ($query->status == 1) {
+                        $button = "<label class='custom-switch mt-2'>
                         <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
                         <span class='custom-switch-indicator'></span>
                       </label>";
-                } else {
-                    $button = "<label class='custom-switch mt-2'>
+                    } else {
+                        $button = "<label class='custom-switch mt-2'>
                         <input type='checkbox' data-id='" . $query->id . "' name='custom-switch-checkbox' class='custom-switch-input change-status'>
                         <span class='custom-switch-indicator'></span>
                       </label>";
+                    }
+                    return $button;
                 }
-                return $button;
+                return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             })
             ->addColumn('discount', function ($query) {
                 if ($query->discount_type === 'percent') {

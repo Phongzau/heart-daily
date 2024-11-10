@@ -32,10 +32,10 @@
                     <input type="text" name="banner_url"
                         value="{{ @$product_page_banner_section->banner_one->banner_url }}" class="form-control">
                 </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
+                @can('edit-advertisements')
+                    <button type="submit" class="btn btn-primary">Save</button>
+                @endcan
             </form>
         </div>
     </div>
 </div>
-

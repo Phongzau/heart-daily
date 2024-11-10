@@ -82,14 +82,15 @@
 
                                @if (Auth::user()->role_id == 1)
                                    <!-- Check if the user role is 1 -->
-
+                                   @can('view-dashboard')
                                    <li style="padding: 8px 10px; display: flex; align-items: center;">
-                                       <a href="{{ route('admin.dashboard') }}"
+                                       <a href="{{ route('admin.dashboard.index') }}"
                                            style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                            <i class="fas fa-user-shield" style="margin-right: 8px; color: #dc3545;"></i>
                                            <span>Admin</span>
                                        </a>
                                    </li>
+                                   @endcan
                                @endif
 
                                <li style="padding: 8px 10px; display: flex; align-items: center;">

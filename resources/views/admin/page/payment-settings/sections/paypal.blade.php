@@ -1,7 +1,8 @@
 <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
     <div class="card">
         <div class="card-body border">
-            <form action="{{ route('admin.payment-settings.paypal-setting.update', $paypal->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.payment-settings.paypal-setting.update', $paypal->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <h5>PAYPAL</h5>
@@ -44,15 +45,15 @@
                 </div>
                 <div class="form-group">
                     <label for="">Paypal Client Id</label>
-                    <input type="text" name="client_id" value="{{ @$paypal->client_id }}"
-                        class="form-control">
+                    <input type="text" name="client_id" value="{{ @$paypal->client_id }}" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="">Paypal Secret Key</label>
-                    <input type="text" name="secret_key" value="{{ @$paypal->secret_key }}"
-                        class="form-control">
+                    <input type="text" name="secret_key" value="{{ @$paypal->secret_key }}" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                @can('edit-payment-settings')
+                    <button type="submit" class="btn btn-primary">Save</button>
+                @endcan
             </form>
         </div>
     </div>

@@ -23,26 +23,35 @@ class SocialDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $editBtn = "<a class='btn btn-primary' href='" . route('admin.socials.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.socials.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $editBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-socials')) {
+                    $editBtn = "<a class='btn btn-primary' href='" . route('admin.socials.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                }
+                if (auth()->user()->can('delete-socials')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.socials.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
                 return $editBtn . $deleteBtn;
             })
             ->addColumn("icon", function ($query) {
                 return '<i style="font-size:40px" class="' . $query->icon . '"></i>';
             })
             ->addColumn('status', function ($query) {
-                if ($query->status == 1) {
-                    $button = "<label class='custom-switch mt-2'>
+                if (auth()->user()->can('edit-socials')) {
+                    if ($query->status == 1) {
+                        $button = "<label class='custom-switch mt-2'>
                         <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
                         <span class='custom-switch-indicator'></span>
                       </label>";
-                } else {
-                    $button = "<label class='custom-switch mt-2'>
+                    } else {
+                        $button = "<label class='custom-switch mt-2'>
                         <input type='checkbox' data-id='" . $query->id . "' name='custom-switch-checkbox' class='custom-switch-input change-status'>
                         <span class='custom-switch-indicator'></span>
                       </label>";
+                    }
+                    return $button;
                 }
-                return $button;
+                return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             })
             ->rawColumns(['action', 'status', 'icon'])
             ->setRowId('id');
@@ -62,20 +71,20 @@ class SocialDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('social-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('social-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**

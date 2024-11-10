@@ -27,9 +27,25 @@
                                     <input type="text" name="name" value="{{ $role->name }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Description</label>
-                                    <input type="text" name="description" value="{{ $role->description }}"
-                                        class="form-control">
+                                    <label for="">Quyền hạn</label>
+                                    <hr>
+                                    <div class="row">
+                                        @foreach ($permissions as $group => $groupPermissions)
+                                            <div class="col-lg-4">
+                                                <h4>{{ $group }}</h4>
+                                                @foreach ($groupPermissions as $permission)
+                                                    <div class="checkbox">
+                                                        <input type="checkbox" name="permissions[]"
+                                                            value="{{ $permission->name }}"
+                                                            {{ $role->permissions && $role->permissions->contains('name', $permission->name) ? 'checked' : '' }}>
+                                                        <label>
+                                                            {{ $permission->name }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </form>

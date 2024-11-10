@@ -30,10 +30,12 @@
                 <div class="form-group">
                     <label for="">Banner Url</label>
                     <input type="text" name="banner_url_three"
-                        value="{{ @$homepage_section_banner_three->banner_image_three->banner_url }}" class="form-control">
+                        value="{{ @$homepage_section_banner_three->banner_image_three->banner_url }}"
+                        class="form-control">
                 </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
+                @can('edit-advertisements')
+                    <button type="submit" class="btn btn-primary">Save</button>
+                @endcan
             </form>
         </div>
     </div>

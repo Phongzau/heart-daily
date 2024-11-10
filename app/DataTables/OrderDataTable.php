@@ -23,10 +23,15 @@ class OrderDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $showBtn = "<a class='btn btn-primary' href='" . route('admin.orders.show', $query->id) . "'><i class='far fa-eye'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.orders.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
-                // $statusBtn = "<a class='btn btn-warning ml-2' href='" . route('admin.products.edit', $query->id) . "'><i class='fas fa-truck'></i></a>";
-
+                $showBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-orders')) {
+                    $showBtn = "<a class='btn btn-primary' href='" . route('admin.orders.show', $query->id) . "'><i class='far fa-eye'></i></a>";
+                }
+                if (auth()->user()->can('delete-orders')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.orders.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                    // $statusBtn = "<a class='btn btn-warning ml-2' href='" . route('admin.products.edit', $query->id) . "'><i class='fas fa-truck'></i></a>";
+                }
                 return $showBtn . $deleteBtn; //. $statusBtn
             })
             ->addColumn('customer', function ($query) {

@@ -6,7 +6,9 @@ use App\DataTables\RoleDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Models\Role;
+// use App\Models\Role;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -26,8 +28,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $permissions = Permission::all()->groupBy('group');
         // Trả về view tạo vai trò mới
-        return view('admin.page.role.create');
+        return view('admin.page.role.create', compact('permissions'));
     }
 
     /**
@@ -40,10 +43,12 @@ class RoleController extends Controller
         $role = new Role();
         // Gán giá trị từ request vào các thuộc tính của Role
         $role->name = $request->name;
-        $role->description = $request->description;
+        // $role->description = $request->description;
         // Lưu vào cơ sở dữ liệu
         $role->save();
-
+        if ($request->has('permissions')) {
+            $role->syncPermissions($request->permissions);
+        }
         // Gửi thông báo thành công và chuyển hướng về trang danh sách vai trò
         toastr('Tạo thành công', 'success');
         return redirect()->route('admin.roles.index');
@@ -66,24 +71,27 @@ class RoleController extends Controller
     {
         // Tìm vai trò theo id, nếu không tìm thấy sẽ trả về lỗi
         $role = Role::query()->findOrFail($id);
+        $permissions = Permission::all()->groupBy('group');
         // Trả về view chỉnh sửa vai trò và truyền dữ liệu role vào view
-        return view('admin.page.role.edit', compact('role'));
+        return view('admin.page.role.edit', compact('role', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      * Cập nhật thông tin vai trò trong cơ sở dữ liệu.
      */
-    public function update(UpdateRoleRequest $request, string $id)
+    public function update(UpdateRoleRequest $request,string $id)
     {
         // Tìm vai trò theo id, nếu không tìm thấy sẽ trả về lỗi
         $role = Role::query()->findOrFail($id);
         // Cập nhật giá trị từ request vào các thuộc tính của Role
         $role->name = $request->name;
-        $role->description = $request->description;
+        // $role->description = $request->description;
         // Lưu thay đổi vào cơ sở dữ liệu
         $role->save();
-
+        if ($request->has('permissions')) {
+            $role->syncPermissions($request->permissions);
+        }
         // Gửi thông báo thành công và chuyển hướng về trang danh sách vai trò
         toastr('Sửa thành công', 'success');
         return redirect()->route('admin.roles.index');
