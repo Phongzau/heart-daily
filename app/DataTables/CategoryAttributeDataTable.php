@@ -23,18 +23,21 @@ class CategoryAttributeDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('status', function ($query) {
-                if ($query->status == 1) {
-                    $button = "<label class='custom-switch mt-2'>
+                if (auth()->user()->can('edit-categories-attributes')) {
+                    if ($query->status == 1) {
+                        $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
                     <span class='custom-switch-indicator'></span>
                   </label>";
-                } else {
-                    $button = "<label class='custom-switch mt-2'>
+                    } else {
+                        $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' name='custom-switch-checkbox' class='custom-switch-input change-status'>
                     <span class='custom-switch-indicator'></span>
                   </label>";
+                    }
+                    return $button;
                 }
-                return $button;
+                return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             })
             ->addColumn('created_by', function ($query) {
                 return $query->creator ? $query->creator->name : 'N/A';
@@ -43,8 +46,14 @@ class CategoryAttributeDataTable extends DataTable
                 return $query->updater ? $query->updater->name : 'N/A';
             })
             ->addColumn('action', function ($query) {
-                $editBtn = "<a class='btn btn-primary' href='" . route('admin.category_attributes.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.category_attributes.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $editBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-categories-attributes')) {
+                    $editBtn = "<a class='btn btn-primary' href='" . route('admin.category_attributes.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                }
+                if (auth()->user()->can('delete-categories-attributes')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.category_attributes.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
                 return $editBtn . $deleteBtn;
             })
             ->rawColumns(['action', 'status'])

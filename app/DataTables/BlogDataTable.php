@@ -23,33 +23,42 @@ class BlogDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-        ->addColumn('action', function ($query) {
-            $editBtn = "<a class='btn btn-primary' href='" . route('admin.blogs.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-            $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.blogs.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
-            return $editBtn . $deleteBtn;
-        })
-        ->addColumn('image', function ($query) {
-            return $img = "<img width='100px' src='" . Storage::url($query->image) . "'>";
-        })
-        ->addColumn('status', function ($query) {
-            if ($query->status == 1) {
-                $button = "<label class='custom-switch mt-2'>
+            ->addColumn('action', function ($query) {
+                $editBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-blogs')) {
+                    $editBtn = "<a class='btn btn-primary' href='" . route('admin.blogs.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                }
+                if (auth()->user()->can('delete-blogs')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.blogs.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
+                return $editBtn . $deleteBtn;
+            })
+            ->addColumn('image', function ($query) {
+                return $img = "<img width='100px' src='" . Storage::url($query->image) . "'>";
+            })
+            ->addColumn('status', function ($query) {
+                if (auth()->user()->can('edit-blogs')) {
+                    if ($query->status == 1) {
+                        $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
                     <span class='custom-switch-indicator'></span>
                   </label>";
-            } else {
-                $button = "<label class='custom-switch mt-2'>
+                    } else {
+                        $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' name='custom-switch-checkbox' class='custom-switch-input change-status'>
                     <span class='custom-switch-indicator'></span>
                   </label>";
-            }
-            return $button;
-        })
-        ->addColumn('blog_category', function($query) {
-            return $query->BlogCategory->name;
-        })
-        ->rawColumns(['action', 'image', 'status'])
-        ->setRowId('id');
+                    }
+                    return $button;
+                }
+                return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
+            })
+            ->addColumn('blog_category', function ($query) {
+                return $query->BlogCategory->name;
+            })
+            ->rawColumns(['action', 'image', 'status'])
+            ->setRowId('id');
     }
 
     /**
@@ -66,20 +75,20 @@ class BlogDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('blog-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('blog-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**
@@ -94,10 +103,10 @@ class BlogDataTable extends DataTable
             Column::make('blog_category')->width(200),
             Column::make('status'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(value: 200)
-                  ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(value: 200)
+                ->addClass('text-center'),
         ];
     }
 

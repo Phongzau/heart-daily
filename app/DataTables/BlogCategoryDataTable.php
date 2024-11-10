@@ -23,23 +23,32 @@ class BlogCategoryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('status', function ($query) {
-                if ($query->status == 1) {
-                    $button = "<label class='custom-switch mt-2'>
+                if (auth()->user()->can('edit-blog-categories')) {
+                    if ($query->status == 1) {
+                        $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
                     <span class='custom-switch-indicator'></span>
                   </label>";
-                } else {
-                    $button = "<label class='custom-switch mt-2'>
+                    } else {
+                        $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' name='custom-switch-checkbox' class='custom-switch-input change-status'>
                     <span class='custom-switch-indicator'></span>
                   </label>";
+                    }
+                    return $button;
                 }
-                return $button;
+                return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             })
 
             ->addColumn('action', function ($query) {
-                $editBtn = "<a class='btn btn-primary' href='" . route('admin.blog_categories.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.blog_categories.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $editBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-blog-categories')) {
+                    $editBtn = "<a class='btn btn-primary' href='" . route('admin.blog_categories.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                }
+                if (auth()->user()->can('delete-blog-categories')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.blog_categories.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
                 return $editBtn . $deleteBtn;
             })
             ->rawColumns(['action', 'status'])

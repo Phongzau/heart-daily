@@ -28,12 +28,12 @@
                 <div class="form-group">
                     <label for="">Banner Url</label>
                     <input type="text" name="banner_url_two"
-                    value="{{ @$homepage_section_banner_two->banner_image_two->banner_url }}" class="form-control">
+                        value="{{ @$homepage_section_banner_two->banner_image_two->banner_url }}" class="form-control">
                 </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
+                @can('edit-advertisements')
+                    <button type="submit" class="btn btn-primary">Save</button>
+                @endcan
             </form>
         </div>
     </div>
 </div>
-

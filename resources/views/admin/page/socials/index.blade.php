@@ -17,10 +17,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>All Socials Table</h4>
-                            <div class="card-header-action">
-                                <a href="{{ route('admin.socials.create') }}" class="btn btn-primary"><i
-                                        class="fas fa-plus"></i> Create New</a>
-                            </div>
+                            @can('create-socials')
+                                <div class="card-header-action">
+                                    <a href="{{ route('admin.socials.create') }}" class="btn btn-primary"><i
+                                            class="fas fa-plus"></i> Create New</a>
+                                </div>
+                            @endcan
                         </div>
                         <div class="card-body">
                             {{ $dataTable->table() }}

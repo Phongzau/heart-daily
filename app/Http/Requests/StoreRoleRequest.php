@@ -25,7 +25,6 @@ class StoreRoleRequest extends FormRequest
             // Quy tắc: bắt buộc, tối đa 100 ký tự, và không được trùng tên khác trong bảng roles
             'name' => ['required', 'max:100', 'unique:roles,name'],
             // Quy tắc cho mô tả: không bắt buộc, tối đa 255 ký tự
-            'description' => ['nullable', 'max:255']
         ];
     }
 
@@ -35,7 +34,6 @@ class StoreRoleRequest extends FormRequest
             'name.required' => 'Tên vai trò là bắt buộc.',  // Thông báo lỗi khi không nhập tên
             'name.max' => 'Tên vai trò không được vượt quá 100 ký tự.',  // Lỗi khi tên dài hơn 100 ký tự
             'name.unique' => 'Tên vai trò đã tồn tại.',  // Lỗi khi tên đã tồn tại trong cơ sở dữ liệu
-            'description.max' => 'Mô tả không được vượt quá 255 ký tự.',  // Lỗi khi mô tả dài hơn 255 ký tự
         ];
     }
 }

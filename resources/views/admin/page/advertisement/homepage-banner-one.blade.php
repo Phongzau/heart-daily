@@ -1,7 +1,8 @@
 <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
     <div class="card">
         <div class="card-body border">
-            <form action="{{ route('admin.advertisement.homepage-banner-section-one') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.advertisement.homepage-banner-section-one') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <h5>Banner One</h5>
@@ -88,10 +89,12 @@
                 <div class="form-group">
                     <label for="">Banner Url</label>
                     <input type="text" name="banner_three_url"
-                        value="{{ @$homepage_section_banner_one->banner_three->banner_three_url }}" class="form-control">
+                        value="{{ @$homepage_section_banner_one->banner_three->banner_three_url }}"
+                        class="form-control">
                 </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
+                @can('edit-advertisements')
+                    <button type="submit" class="btn btn-primary">Save</button>
+                @endcan
             </form>
         </div>
     </div>

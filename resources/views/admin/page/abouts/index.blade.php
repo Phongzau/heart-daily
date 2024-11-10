@@ -26,7 +26,9 @@
                                     <label for="">Content</label>
                                     <textarea name="content" class="summernote">{!! @$about->content !!}</textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                @can('edit-abouts')
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                @endcan
                             </form>
                         </div>
                     </div>
@@ -35,5 +37,4 @@
 
         </div>
     </section>
-
 @endsection

@@ -23,17 +23,20 @@ class ProductReviewDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.product_reviews.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $deleteBtn = '';
+                if (auth()->user()->can('delete-reviews')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.product_reviews.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
                 return $deleteBtn;
             })
             ->addColumn('user_name', function ($query) {
-                return $query->user->name ;
+                return $query->user->name;
             })
             ->addColumn('product_name', function ($query) {
                 // return "<a href='" . route('product.product-details', ['slug' => $query->product->slug]) . "' target='_blank'>" . $query->product->name . "</a>";
                 return $query->product->name;
             })
-            
+
             ->addColumn('user_review', function ($query) {
                 return $query->comment;
             })

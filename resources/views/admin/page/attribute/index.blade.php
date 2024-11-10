@@ -13,9 +13,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>All Attributes</h4>
-                            <div class="card-header-action">
-                                <a href="{{ route('admin.attributes.create') }}" class="btn btn-primary">Create New</a>
-                            </div>
+                            @can('create-attributes')
+                                <div class="card-header-action">
+                                    <a href="{{ route('admin.attributes.create') }}" class="btn btn-primary">Create New</a>
+                                </div>
+                            @endcan
                         </div>
                         <div class="card-body">
                             {{ $dataTable->table() }}

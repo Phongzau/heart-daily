@@ -23,7 +23,10 @@ class BlogCommentDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.blog_comments.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $deleteBtn = '';
+                if (auth()->user()->can('delete-blog-comments')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.blog_comments.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
                 return $deleteBtn;
             })
             ->addColumn('blog_name', function ($query) {

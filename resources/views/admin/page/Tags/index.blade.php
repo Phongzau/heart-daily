@@ -17,10 +17,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>All Tags Table</h4>
-                            <div class="card-header-action">
-                                <a href="{{ route('admin.tags.create') }}" class="btn btn-primary"><i
-                                        class="fas fa-plus"></i> Create New</a>
-                            </div>
+                            @can('create-tags')
+                                <div class="card-header-action">
+                                    <a href="{{ route('admin.tags.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                                        Create New</a>
+                                </div>
+                            @endcan
                         </div>
                         <div class="card-body">
                             {{ $dataTable->table() }}

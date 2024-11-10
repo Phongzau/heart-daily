@@ -15,15 +15,19 @@
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
-                        @if (!$popupExists)
-                            <div class="card-header">
-                                <h4>All Newletter Popups Table</h4>
-                                <div class="card-header-action">
-                                    <a href="{{ route('admin.popups.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Create New</a>
-                                </div>
-                            </div>
-                        @endif
+
+                        <div class="card-header">
+                            <h4>All Newletter Popups Table</h4>
+                            @if (!$popupExists)
+                                @can('create-popups')
+                                    <div class="card-header-action">
+                                        <a href="{{ route('admin.popups.create') }}" class="btn btn-primary"><i
+                                                class="fas fa-plus"></i> Create New</a>
+                                    </div>
+                                @endcan
+                            @endif
+                        </div>
+
                         <div class="card-body">
                             {{ $dataTable->table() }}
                         </div>
@@ -59,8 +63,12 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $subscriber->email }}</td>
                                             <td>{{ $subscriber->created_at }}</td>
-                                            <td>                                           
-                                                <a class='btn btn-danger delete-item ml-2' href={{ route('subscribers.destroy', $subscriber->id) }}><i class='far fa-trash-alt'></i></a>
+                                            <td>
+                                                @can('delete-subscribers')
+                                                    <a class='btn btn-danger delete-item ml-2'
+                                                        href={{ route('subscribers.destroy', $subscriber->id) }}><i
+                                                            class='far fa-trash-alt'></i></a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

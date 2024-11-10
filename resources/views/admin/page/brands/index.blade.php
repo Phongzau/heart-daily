@@ -17,10 +17,13 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>All Brands Table</h4>
-                            <div class="card-header-action">
-                                <a href="{{route('admin.brands.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                                    Create New</a>
-                            </div>
+                            @can('create-brands')
+                                <div class="card-header-action">
+                                    <a href="{{ route('admin.brands.create') }}" class="btn btn-primary"><i
+                                            class="fas fa-plus"></i>
+                                        Create New</a>
+                                </div>
+                            @endcan
                         </div>
                         <div class="card-body">
                             {{ $dataTable->table() }}
@@ -60,4 +63,4 @@
             })
         })
     </script>
-    @endpush
+@endpush

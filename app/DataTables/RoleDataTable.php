@@ -2,7 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Models\Role;
+// use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -68,7 +69,7 @@ class RoleDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
-            Column::make('description'),
+            Column::make('guard_name'),
 
             Column::computed('action')
                 ->exportable(false)

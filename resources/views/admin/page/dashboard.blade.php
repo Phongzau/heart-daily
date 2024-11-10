@@ -186,10 +186,14 @@
                             <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Month</a>
                             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <li class="dropdown-title">Select Period</li>
-                                <li><a href="#" class="dropdown-item" data-period="today">Today</a></li>
-                                <li><a href="#" class="dropdown-item" data-period="week">Week</a></li>
-                                <li><a href="#" class="dropdown-item" data-period="month">Month</a></li>
-                                <li><a href="#" class="dropdown-item" data-period="year">This Year</a></li>
+                                <li><a href="#" class="dropdown-item" id="dropdown-item"
+                                        data-period="today">Today</a></li>
+                                <li><a href="#" class="dropdown-item" id=dropdown-item data-period="week">Week</a>
+                                </li>
+                                <li><a href="#" class="dropdown-item" id="dropdown-item"
+                                        data-period="month">Month</a></li>
+                                <li><a href="#" class="dropdown-item" id="dropdown-item" data-period="year">This
+                                        Year</a></li>
                             </ul>
                         </div>
                     </div>
@@ -207,10 +211,12 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Invoices</h4>
-                        <div class="card-header-action">
-                            <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">View More <i
-                                    class="fas fa-chevron-right"></i></a>
-                        </div>
+                        {{-- @can('view-orders') --}}
+                            <div class="card-header-action">
+                                <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">View More <i
+                                        class="fas fa-chevron-right"></i></a>
+                            </div>
+                        {{-- @endcan --}}
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive table-invoice">
@@ -334,7 +340,7 @@
         $(document).ready(function() {
             function getTopProducts(period) {
                 $.ajax({
-                    url: '/admin/top-products/' + period,
+                    url: '/admin/dashboard/top-products/' + period,
                     method: 'GET',
                     success: function(response) {
                         $('#top-products-list').empty();
@@ -357,10 +363,10 @@
 
             getTopProducts('month');
 
-            $('a.dropdown-item').on('click', function(e) {
+            $('a#dropdown-item').on('click', function(e) {
                 e.preventDefault();
                 var period = $(this).data('period');
-                $('a.dropdown-item').removeClass('active');
+                $('a#dropdown-item').removeClass('active');
                 $(this).addClass('active');
 
                 getTopProducts(period);
@@ -369,7 +375,7 @@
 
         $(document).ready(function() {
             $.ajax({
-                url: '{{ route('admin.yearly-statistics') }}',
+                url: '{{ route('admin.dashboard.yearly-statistics') }}',
                 method: 'GET',
                 success: function(response) {
                     var ctx = document.getElementById("myChart").getContext('2d');
@@ -559,7 +565,7 @@
 
         function updateCharts(month) {
             $.ajax({
-                url: `/admin/order-statistics/${month}`,
+                url: `/admin/dashboard/order-statistics/${month}`,
                 method: 'GET',
                 success: function(response) {
                     $('#total-revenue').text(new Intl.NumberFormat('vi-VN', {
@@ -601,7 +607,7 @@
                 e.preventDefault();
 
                 var month = $(this).data('month');
-                var url = '/admin/order-statistics/' + month;
+                var url = '/admin/dashboard/order-statistics/' + month;
 
                 console.log("Requesting URL: " + url);
                 $.ajax({

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\ListAccountDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+// use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -65,6 +66,8 @@ class ListAccountController extends Controller
         $listAccounts->role_id = $request->role_id;
         $listAccounts->status = $request->status;
         $listAccounts->save();
+        $role = Role::query()->findOrFail($request->role_id);
+        $listAccounts->syncRoles([$role->name]);
 
         toastr('Cập nhật thành công!', 'success');
         return redirect()->route('admin.accounts.index');
@@ -77,7 +80,7 @@ class ListAccountController extends Controller
     public function destroy(string $id)
     {
         $listAccounts = User::query()->findOrFail($id);
-
+        $listAccounts->syncRoles([]);
         $listAccounts->delete();
 
         return response([
@@ -89,7 +92,7 @@ class ListAccountController extends Controller
     public function changeStatus(Request $request)
     {
         $admin = User::query()->findOrFail($request->id);
-        $admin->status = $request->status == 'true' ? 'active' : 'inactive';
+        $admin->status = $request->status == 'true' ? 1 : 0;
         $admin->save();
 
         return response([

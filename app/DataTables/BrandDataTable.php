@@ -24,26 +24,35 @@ class BrandDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $editBtn = "<a class='btn btn-primary' href='" . route('admin.brands.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.brands.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                $editBtn = '';
+                $deleteBtn = '';
+                if (auth()->user()->can('edit-brands')) {
+                    $editBtn = "<a class='btn btn-primary' href='" . route('admin.brands.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
+                }
+                if (auth()->user()->can('delete-brands')) {
+                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.brands.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                }
                 return $editBtn . $deleteBtn;
             })
             ->addColumn('image', function ($query) {
                 return $img = "<img width='100px' src='" . Storage::url($query->image) . "'>";
             })
             ->addColumn('status', function ($query) {
-                if ($query->status == 1) {
-                    $button = "<label class='custom-switch mt-2'>
+                if (auth()->user()->can('edit-brands')) {
+                    if ($query->status == 1) {
+                        $button = "<label class='custom-switch mt-2'>
                         <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
                         <span class='custom-switch-indicator'></span>
                       </label>";
-                } else {
-                    $button = "<label class='custom-switch mt-2'>
+                    } else {
+                        $button = "<label class='custom-switch mt-2'>
                         <input type='checkbox' data-id='" . $query->id . "' name='custom-switch-checkbox' class='custom-switch-input change-status'>
                         <span class='custom-switch-indicator'></span>
                       </label>";
+                    }
+                    return $button;
                 }
-                return $button;
+                return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             })
 
             ->rawColumns(['action', 'image', 'status'])
