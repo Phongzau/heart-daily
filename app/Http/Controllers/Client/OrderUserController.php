@@ -100,6 +100,7 @@ class OrderUserController extends Controller
 
         if (isset($order)) {
             $order->order_status = 'delivered';
+            $order->payment_status = 1;
             $order->save();
 
             // Lấy các tham số lọc

@@ -54,7 +54,7 @@
                            </a>
                            <a href="#" class="header-icon notification-icon" title="notification"
                                data-toggle="dropdown">
-                               <i class="fas fa-bell"></i>
+                               <i class="far fa-bell"></i>
                            </a>
 
                            @livewire('notification-component')
@@ -65,6 +65,14 @@
                            <ul id="login-dropdown" class="dropdown-menu"
                                style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);top: 70%;
     left: 871px;">
+
+                               {{-- min-width: 17%;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
+    top: 70%;
+    left: 72%;
+    display: block; --}}
                                <li style="padding: 8px 10px; display: flex; align-items: center;">
                                    <a href="{{ route('user.dashboard') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
