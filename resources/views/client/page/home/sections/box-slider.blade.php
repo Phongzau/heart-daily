@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="info-boxes-slider owl-carousel owl-theme mb-2"
+    <div style="margin: 15px 0px 0px 0px" class="info-boxes-slider owl-carousel owl-theme mb-2"
         data-owl-options="{
         'dots': false,
         'loop': false,
@@ -50,12 +50,12 @@
     <div class="banners-container mb-2">
         <div class="banners-slider owl-carousel owl-theme" data-owl-options="{'dots': false}">
             <!-- Banner One -->
-            @if(isset($homepage_section_banner_one->banner_one) && $homepage_section_banner_one->banner_one->status)
+            @if (isset($homepage_section_banner_one->banner_one) && $homepage_section_banner_one->banner_one->status)
                 <div class="banner banner1 banner-sm-vw d-flex align-items-center appear-animate"
                     data-animation-name="fadeInLeftShorter" data-animation-delay="500">
                     <figure class="w-100">
                         <img src="{{ Storage::url($homepage_section_banner_one->banner_one->banner_one_image) }}"
-                             alt="Banner One" width="380" height="175" />
+                            alt="Banner One" width="380" height="175" />
                     </figure>
                     <div class="banner-layer">
                         <a href="{{ $homepage_section_banner_one->banner_one->banner_one_url }}" target="_blank">
@@ -65,12 +65,12 @@
             @endif
 
             <!-- Banner Two -->
-            @if(isset($homepage_section_banner_one->banner_two) && $homepage_section_banner_one->banner_two->status)
+            @if (isset($homepage_section_banner_one->banner_two) && $homepage_section_banner_one->banner_two->status)
                 <div class="banner banner2 banner-sm-vw d-flex align-items-center appear-animate"
                     data-animation-name="fadeInUpShorter" data-animation-delay="200">
                     <figure class="w-100">
                         <img src="{{ Storage::url($homepage_section_banner_one->banner_two->banner_two_image) }}"
-                             alt="Banner Two" width="380" height="175" />
+                            alt="Banner Two" width="380" height="175" />
                     </figure>
                     <div class="banner-layer">
                         <a href="{{ $homepage_section_banner_one->banner_two->banner_two_url }}" target="_blank">
@@ -80,12 +80,12 @@
             @endif
 
             <!-- Banner Three -->
-            @if(isset($homepage_section_banner_one->banner_three) && $homepage_section_banner_one->banner_three->status)
+            @if (isset($homepage_section_banner_one->banner_three) && $homepage_section_banner_one->banner_three->status)
                 <div class="banner banner3 banner-sm-vw d-flex align-items-center appear-animate"
                     data-animation-name="fadeInRightShorter" data-animation-delay="500">
                     <figure class="w-100">
                         <img src="{{ Storage::url($homepage_section_banner_one->banner_three->banner_three_image) }}"
-                             alt="Banner Three" width="380" height="175" />
+                            alt="Banner Three" width="380" height="175" />
                     </figure>
                     <div class="banner-layer">
                         <a href="{{ $homepage_section_banner_one->banner_three->banner_three_url }}" target="_blank">

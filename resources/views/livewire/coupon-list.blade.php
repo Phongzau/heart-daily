@@ -29,7 +29,7 @@
                         <button class="use-coupons @if (@$couponUsed) used-coupon @endif"
                             data-code="{{ $coupon->code }}" @if (@$couponUsed) disabled @endif>
                             @if (@$couponUsed)
-                                Đã sử dụng
+                                Đang sử dụng
                             @else
                                 Sử dụng
                             @endif

@@ -410,7 +410,7 @@
                         } else if (data.status == 'success') {
                             toastr.success(data.message);
                             $('.use-coupons[data-code="' + dataCode + '"]')
-                                .text('Đã sử dụng')
+                                .text('Đang sử dụng')
                                 .prop('disabled', true)
                                 .addClass('used-coupon');
                             updateOtherCoupons(dataCode);
