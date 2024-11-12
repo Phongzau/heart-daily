@@ -178,7 +178,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     //role
-    Route::middleware(['role:admin'])->prefix('roles')->name('roles.')->group(function () {
+    Route::middleware(['role:admin|super_admin'])->prefix('roles')->name('roles.')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
         Route::get('/create', [RoleController::class, 'create'])->name('create');
         Route::post('/', [RoleController::class, 'store'])->name('store');

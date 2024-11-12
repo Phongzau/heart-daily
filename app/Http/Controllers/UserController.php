@@ -46,7 +46,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->token = Str::random(60);
         $user->status = 0;
-        $user->role_id = 3;
+        $user->role_id = 4;
         $user->save();
 
         $confirmationLink = route('confirm.email', ['token' => $user->token, 'email' => $user->email]);
@@ -98,10 +98,10 @@ class UserController extends Controller
         }
 
         if (Auth::attempt($credentials)) {
-            if (Auth::user()->role_id == 1) {
-                toastr('Đăng nhập thành công!', 'success');
-                return redirect()->intended('admin/dashboard');
-            }
+            // if (Auth::user()->role_id == 1) {
+            //     toastr('Đăng nhập thành công!', 'success');
+            //     return redirect()->intended('admin/dashboard');
+            // }
             toastr('Đăng nhập thành công!', 'success');
             return redirect()->intended('/');
         } else {
