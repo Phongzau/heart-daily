@@ -82,6 +82,15 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
 });
 
+// routes/api.php
+// Route::get('/tags', [TagController::class, 'getTags']);
+// routes/web.php
+
+
+
+
+
+
 Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('cart', [CartController::class, 'cartDetails'])->name('cart-details');
 Route::post('cart/update-quantity', [CartController::class, 'updateProductQty'])->name('cart.update-quantity');

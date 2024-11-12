@@ -8,6 +8,7 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\CategoryProduct;
 use App\Models\Product;
+use App\Models\Tag;
 use App\Models\Wishlist;
 use App\Models\ProductReview;
 use Carbon\Carbon;
@@ -22,16 +23,30 @@ class ProductController extends Controller
     {
 
         $perPage = $request->input('count', 12);
-        $products = Product::query()->where('status', 1)->paginate($perPage);
+
+        $query = Product::query()->where('status', 1);
+
+        if ($request->has('tag_id')) {
+
+            $tagId = intval($request->input('tag_id'));
+
+            $query->whereJsonContains('id_tags', $tagId);
+        }
+        $products = $query->paginate($perPage);
+
         $categories = CategoryProduct::all();
+
         $brands = Brand::all();
+
         $colors = Attribute::whereHas('categoryAttribute', function ($query) {
             $query->where('title', 'Color');
         })->get();
+
         $sizes = Attribute::whereHas('categoryAttribute', function ($query) {
             $query->where('title', 'Size');
         })->get();
-        return view('client.page.product.list_product', compact('products', 'categories', 'brands', 'colors', 'sizes'));
+        $tags = Tag::all();
+        return view('client.page.product.list_product', compact('products', 'tags', 'categories', 'sizes', 'colors', 'brands', 'perPage'));
     }
 
     public function ajaxIndex(Request $request)

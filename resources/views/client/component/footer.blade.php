@@ -13,6 +13,7 @@
 
 @php
     $socials = \App\Models\Social::query()->where('status', 1)->get();
+    $tags = \App\Models\Tag::query()->where('status', 1)->get();
 
 @endphp
 <footer class="footer bg-dark">
@@ -95,20 +96,14 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget">
                         <h4 class="widget-title">Popular Tags</h4>
-
                         <div class="tagcloud">
-                            <a href="#">Bag</a>
-                            <a href="#">Black</a>
-                            <a href="#">Blue</a>
-                            <a href="#">Clothes</a>
-                            <a href="#">Fashion</a>
-                            <a href="#">Hub</a>
-                            <a href="#">Shirt</a>
-                            <a href="#">Shoes</a>
-                            <a href="#">Skirt</a>
-                            <a href="#">Sports</a>
-                            <a href="#">Sweater</a>
+                            @foreach ($tags as $tag)
+                                <a href="{{ route('product.getProducts', ['tag_id' => $tag->id]) }}" class="tag-link">
+                                    {{ $tag->name }}
+                                </a>
+                            @endforeach
                         </div>
+
                     </div>
                     <!-- End .widget -->
                 </div>

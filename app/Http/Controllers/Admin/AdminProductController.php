@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductImageGallery;
 use App\Models\ProductVariant;
+use App\Models\Tag;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,8 +38,9 @@ class AdminProductController extends Controller
     public function create()
     {
         $brands = Brand::query()->where('status', 1)->get();
+        $tags = Tag::all();
         $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
-        return view('admin.page.product.create', compact('categories', 'brands'));
+        return view('admin.page.product.create', compact('categories', 'brands', 'tags'));
     }
 
     /**
@@ -50,6 +52,7 @@ class AdminProductController extends Controller
         // dd($request->all());
         // Tạo mảng chứa các quy tắc chung
         $rules = [
+            'tags' => 'array',
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku',
             'price' => 'required|numeric|min:0',
@@ -65,14 +68,7 @@ class AdminProductController extends Controller
             'image_main' => 'required',
         ];
 
-        // // Nếu là sản phẩm có biến thể
-        // if ($request->type_product === 'product_variant') {
-        //     $rules['variant.*.qty'] = 'required|numeric|min:0';
-        //     $rules['variant.*.variant_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
-        //     $rules['variant.*.variant_id.*'] = 'required|exists:category_attributes,id'; // yêu cầu từng phần tử phải tồn tại trong bảng variants
-        //     $rules['variant.*.value_id'] = 'required|array|min:1'; // yêu cầu là mảng và có ít nhất 1 phần tử
-        //     $rules['variant.*.value_id.*'] = 'required|exists:attributes,id';
-        // }
+
 
         // Nếu là sản phẩm đơn giản
         if ($request->type_product === 'product_simple') {
@@ -81,6 +77,12 @@ class AdminProductController extends Controller
 
         // Xác định các thông báo lỗi
         $messages = [
+            // tag
+
+
+
+            'tags.array' => 'Tags phải là một mảng hợp lệ.',
+
             // Tên sản phẩm
             'name.required' => 'Tên sản phẩm là bắt buộc.',
             'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
@@ -157,6 +159,13 @@ class AdminProductController extends Controller
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
                 $product->image = $imagePath;
+                if (is_array($request->tags)) {
+                    // Chuyển tất cả các giá trị trong mảng tags thành số nguyên
+                    $product->id_tags = json_encode(array_map('intval', $request->tags));
+                } else {
+                    // Nếu không phải mảng, gán id_tags là null
+                    $product->id_tags = null;
+                }
                 $product->offer_start_date = $request->offer_start_date;
                 $product->offer_end_date = $request->offer_end_date;
                 $product->short_description = $request->short_description;
@@ -166,6 +175,9 @@ class AdminProductController extends Controller
                 $product->brand_id = $request->brand_id;
                 $product->userid_created = Auth::user()->id;
                 $product->save();
+
+
+
 
                 // Chuyển đổi từ JSON string thành mảng
                 $attributeData = json_decode($request->input('attributeData'), true);
@@ -236,6 +248,11 @@ class AdminProductController extends Controller
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
                 $product->image = $imagePath;
+                if (is_array($request->tags)) {
+                    $product->id_tags = json_encode(array_map('intval', $request->tags));
+                } else {
+                    $product->id_tags = json_encode([]); // Hoặc bạn có thể gán null hoặc một giá trị mặc định khác
+                }
                 $product->offer_start_date = $request->offer_start_date;
                 $product->offer_end_date = $request->offer_end_date;
                 $product->short_description = $request->short_description;
@@ -320,6 +337,8 @@ class AdminProductController extends Controller
         $categoryAttributes = CategoryAttribute::query()->get();
         $brands = Brand::query()->where('status', 1)->get();
         $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
+        $tags = Tag::all();
+        $selectedTags = json_decode($product->id_tags, true) ?? [];
         // Chuyển đổi dữ liệu sang định dạng JavaScript
         $convertedData = [];
         $formattedVariants = [];
@@ -348,7 +367,7 @@ class AdminProductController extends Controller
                 ];
             }
         }
-        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants'));
+        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants', 'tags', 'selectedTags'));
     }
 
     /**
@@ -359,6 +378,7 @@ class AdminProductController extends Controller
         // dd($request->all());
         // Tạo mảng chứa các quy tắc chung
         $rules = [
+            'tags' => 'nullable|array',
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku,' . $id,
             'price' => 'required|numeric|min:0',
@@ -452,6 +472,13 @@ class AdminProductController extends Controller
                 $product->brand_id = $request->brand_id;
                 $product->userid_created = Auth::user()->id;
                 $product->qty = null;
+                if (is_array($request->tags)) {
+                    // Chuyển tất cả các giá trị trong mảng tags thành số nguyên
+                    $product->id_tags = json_encode(array_map('intval', $request->tags));
+                } else {
+                    // Nếu không phải mảng, gán id_tags là null
+                    $product->id_tags = null;
+                }
                 $product->save();
 
                 // Chuyển đổi từ JSON string thành mảng
@@ -544,6 +571,7 @@ class AdminProductController extends Controller
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
                 $product->image = $imagePath;
+                $tags = $request->input('tags', []);
                 $product->offer_start_date = $request->offer_start_date;
                 $product->offer_end_date = $request->offer_end_date;
                 $product->short_description = $request->short_description;

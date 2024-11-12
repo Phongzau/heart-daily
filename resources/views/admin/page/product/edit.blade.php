@@ -182,6 +182,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
+
                                                         <div class="form-group">
                                                             <label for="">Short Description</label>
                                                             <textarea name="short_description" class="form-control">{{ $product->short_description }}</textarea>
@@ -437,6 +440,18 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
+                                                    <label for="tags">Tags:</label>
+                                                    <select class="form-control tags-select" name="tags[]"
+                                                        multiple="multiple" required>
+                                                        @foreach ($tags as $tag)
+                                                            <option value="{{ $tag->id }}"
+                                                                {{ in_array($tag->id, $selectedTags) ? 'selected' : '' }}>
+                                                                {{ $tag->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="inputState">Category</label>
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
@@ -602,6 +617,10 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            $('.tags-select').select2({
+                placeholder: 'Chọn tags',
+                allowClear: true,
+            });
             // Chuyển đổi dữ liệu PHP sang JSON
             let attributeData = @json($convertedData);
             if (!attributeData || Object.keys(attributeData).length === 0) {

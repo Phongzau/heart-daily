@@ -25,7 +25,7 @@
                                     <label for="">Name</label>
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                                 </div>
-                                
+
                                 <div class="form-group ">
                                     <label for="inputState">Status</label>
                                     <select id="inputState" name="status" value="{{ old('status') }}" class="form-control">
