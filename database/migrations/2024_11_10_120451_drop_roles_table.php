@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        
+
         Schema::disableForeignKeyConstraints();
-    Schema::dropIfExists('roles');
-    Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('roles');
+        Schema::enableForeignKeyConstraints();
     }
 
     public function down()

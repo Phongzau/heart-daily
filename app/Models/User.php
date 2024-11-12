@@ -76,4 +76,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Commune::class, 'commune_id');
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

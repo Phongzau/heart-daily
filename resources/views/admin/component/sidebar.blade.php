@@ -119,7 +119,7 @@
                         <li><a class="nav-link" href="{{ route('admin.accounts.index') }}">
                                 <span>Danh sách tài khoản</span></a></li>
                     @endcan
-                    @if(auth()->user()->hasRole('admin'))
+                    @if(auth()->user()->hasRole(['admin', 'super_admin']))
                         <li><a class="nav-link" href="{{ route('admin.roles.index') }}">
                                 <span>Phân quyền</span></a></li>
                     @endif

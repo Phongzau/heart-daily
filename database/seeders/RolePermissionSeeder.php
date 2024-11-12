@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -138,22 +140,39 @@ class RolePermissionSeeder extends Seeder
         // Tạo quyền
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(
-                ['name' => $permission['name']], 
+                ['name' => $permission['name']],
                 ['group' => $permission['group']]
             );
         }
 
         // Tạo vai trò
-        $roles = ['admin', 'staff', 'user'];
+        $roles = ['super_admin', 'admin', 'staff', 'user'];
 
         foreach ($roles as $role) {
-            Role::firstOrCreate(['name' => $role]);
+            Role::updateOrCreate(['name' => $role]);
         }
         // Gán quyền cho vai trò
+
+        $superAdmin = Role::findByName('super_admin');
+        $superAdmin->givePermissionTo(array_column($permissions, 'name'));
+
         $adminRole = Role::findByName('admin');
         $adminRole->givePermissionTo(array_column($permissions, 'name'));
 
         $staffRole = Role::findByName('staff');
         $staffRole->givePermissionTo(['view-dashboard']);
+
+        $superAdmin = User::firstOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('12345678'),
+                'status' => 1,
+                'role_id' => 1,
+            ]
+        );
+        if (!$superAdmin->hasRole('super_admin')) {
+            $superAdmin->assignRole('super_admin');
+        }
     }
 }
