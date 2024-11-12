@@ -63,12 +63,12 @@ function renderOrderButtons($order_status, $id)
 
         case 'delivered':
             $buttons .= '<button class="btn btn-primary">Đánh Giá</button>';
-            $buttons .= '<button class="btn btn-primary">Mua Lại</button>';
+            $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $id . '">Mua Lại</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;
 
         case 'canceled':
-            $buttons .= '<button class="btn btn-primary">Mua lại</button>';
+            $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $id . '">Mua lại</button>';
             break;
 
         default:

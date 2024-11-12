@@ -121,6 +121,7 @@ Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function
 //Order User
 Route::post('cancel-order', [OrderUserController::class, 'cancelOrder'])->name('cancel-order');
 Route::post('confirm-order', [OrderUserController::class, 'confirmOrder'])->name('confirm-order');
+Route::post('re-order', [OrderUserController::class, 'reOrder'])->name('re-order');
 //chat
 
 Route::get('/chat/{id?}', function ($id = null) {

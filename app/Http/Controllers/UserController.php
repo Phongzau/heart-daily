@@ -285,7 +285,7 @@ class UserController extends Controller
         }
 
         // Phân trang đơn hàng
-        $orders = $query->orderBy('created_at', 'desc')->paginate(7);
+        $orders = $query->orderBy('created_at', 'desc')->paginate(6);
 
         if ($request->ajax()) {
             return view('client.page.dashboard.sections.order-list', compact('orders'))->render();

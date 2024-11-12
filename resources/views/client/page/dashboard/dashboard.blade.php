@@ -399,6 +399,42 @@
                 });
             });
 
+            $(document).on('click', '.reorder-button', function() {
+                var orderId = $(this).data('order-id');
+
+                Swal.fire({
+                    title: "Are you sure?", // Tiêu đề hộp thoại
+                    text: "You won't be able to revert this!", // Nội dung thông báo
+                    icon: "warning", // Biểu tượng cảnh báo
+                    showCancelButton: true, // Hiển thị nút hủy
+                    confirmButtonColor: "#3085d6", // Màu của nút xác nhận
+                    cancelButtonColor: "#d33", // Màu của nút hủy
+                    confirmButtonText: "Yes, delete it!" // Văn bản của nút xác nhận
+                }).then((result) => {
+                    // Nếu người dùng xác nhận xóa (click nút "Yes, delete it!")
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('re-order') }}",
+                            method: "POST",
+                            data: {
+                                orderId: orderId,
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    window.location.href = data.url;
+                                } else if (data.status === 'error') {
+                                    toastr.warning(data.message);
+                                }
+                            },
+                            error: function(data) {
+                                toastr.error(data.message);
+                            }
+                        })
+                    }
+                });
+            });
+
+
             $(document).on('click', '.confirm-order-button', function() {
                 var orderId = $(this).data('order-id');
                 // Lấy số trang hiện tại từ link phân trang cuối cùng trong danh sách
