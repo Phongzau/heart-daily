@@ -438,7 +438,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="tags">Tags:</label>
+                                                    <label for="tags">Thẻ</label>
                                                     <select class="form-control tags-select" name="tags[]"
                                                         multiple="multiple" required>
                                                         @foreach ($tags as $tag)
@@ -450,7 +450,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputState">Category</label>
+                                                    <label for="inputState">Danh mục</label>
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
                                                         <option value="" hidden>Select</option>
@@ -464,7 +464,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputState">Brand</label>
+                                                    <label for="inputState">Thương hiệu</label>
                                                     <select id="inputState" name="brand_id" class="form-control">
                                                         <option value="" hidden>Select</option>
                                                         @foreach ($brands as $brand)
