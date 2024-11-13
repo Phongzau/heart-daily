@@ -292,7 +292,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="tags">Tags:</label>
+                                                    <label for="tags">Thẻ</label>
                                                     <select class="form-control tags-select select2" name="tags[]"
                                                         multiple="multiple">
                                                         @foreach ($tags as $tag)
@@ -345,8 +345,7 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image_main"
                                                             class="d-none" accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Tải lên
-                                                        hinh ảnh...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
                                                     </div>
                                                 </div>
                                             </div>
