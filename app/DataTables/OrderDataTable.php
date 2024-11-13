@@ -45,15 +45,15 @@ class OrderDataTable extends DataTable
             })
             ->addColumn('payment_status', function ($query) {
                 if ($query->payment_status == 1) {
-                    return "<span class='badge bg-success'>complete</span>";
+                    return "<span class='badge bg-success'>Hoàn thành</span>";
                 } else {
-                    return "<span class='badge bg-warning'>pending</span>";
+                    return "<span class='badge bg-warning'>Chưa xử lý</span>";
                 }
             })
             ->addColumn('order_status', function ($query) {
                 switch ($query->order_status) {
                     case 'pending':
-                        return "<span class='badge bg-warning'>chưa xử lý</span>";
+                        return "<span class='badge bg-warning'>Chưa xử lý</span>";
                         break;
                     case 'processed_and_ready_to_ship':
                         return "<span class='badge bg-info'>Đã xử lý</span>";
