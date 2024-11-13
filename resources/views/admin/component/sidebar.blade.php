@@ -8,13 +8,12 @@
         <ul class="sidebar-menu">
             @can('view-dashboard')
                 <li class="menu-header">Trang chủ</li>
-                <li><a class="nav-link" href="{{ route('admin.dashboard.index') }}"><i class="fas fa-fire"></i><span>Trang
+                <li><a class="nav-link" href="{{ route('admin.dashboard.index') }}"><i class="fa-regular fa-chart-mixed"></i><span>Trang
                             chủ</span></a></li>
             @endcan
             <li class="menu-header">Start Menu</li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fa-brands fa-product-hunt"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-shirt"></i>
                     <span>Sản phẩm</span></a>
                 <ul class="dropdown-menu">
                     @can('view-categories-products')
@@ -49,8 +48,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fa-solid fa-rectangle-ad"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-rectangle-ad"></i>
                     <span>Banners</span></a>
                 <ul class="dropdown-menu">
                     @can('view-advertisements')
@@ -68,8 +66,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fa-solid fa-newspaper"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-light fa-newspaper"></i>
                     <span>Bài viết</span></a>
                 <ul class="dropdown-menu">
                     @can('view-blogs')
@@ -87,7 +84,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th-large"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-light fa-list"></i>
                     <span>Menus</span></a>
                 <ul class="dropdown-menu">
                     @can('view-menus')
@@ -101,8 +98,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                        class="fas fa-shopping-cart"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-cart-shopping-fast"></i>
                     <span>Đơn hàng</span></a>
                 <ul class="dropdown-menu">
                     @can('view-orders')
@@ -112,7 +108,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="far fa-user"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-user-pen"></i>
                     <span>Tài khoản</span></a>
                 <ul class="dropdown-menu">
                     @can('view-accounts')
@@ -126,24 +122,23 @@
                 </ul>
             </li>
             @can('view-socials')
-                <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-solid fa-icons"></i>
+                <li><a class="nav-link" href="{{ route('admin.socials.index') }}"><i class="fa-light fa-icons"></i>
                         <span>Mạng xã hội</span></a></li>
             @endcan
             @can('view-settings')
-                <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-solid fa-gear"></i>
+                <li><a class="nav-link" href="{{ route('admin.settings.index') }}"><i class="fa-regular fa-gear"></i>
                         <span>Cấu hình</span></a></li>
             @endcan
             @can('view-tags')
-                <li><a class="nav-link" href="{{ route('admin.tags.index') }}"><i class="fas fa-tags"></i>
+                <li><a class="nav-link" href="{{ route('admin.tags.index') }}"><i class="fa-regular fa-tag"></i>
                         <span>Tags</span></a></li>
             @endcan
             @can('view-abouts')
-                <li><a class="nav-link" href="{{ route('admin.abouts.index') }}"><i class="fa-solid fa-info"></i>
+                <li><a class="nav-link" href="{{ route('admin.abouts.index') }}"><i class="fa-regular fa-circle-info"></i>
                         <span>Giới thiệu</span></a></li>
             @endcan
             @can('view-payment-settings')
-                <li><a class="nav-link" href="{{ route('admin.payment-settings.vnpay-setting.index') }}"><i
-                            class="fa-solid fa-money-check-dollar"></i>
+                <li><a class="nav-link" href="{{ route('admin.payment-settings.vnpay-setting.index') }}"><i class="fa-regular fa-money-check-dollar-pen"></i>
                         <span>Phương thức thanh toán</span></a></li>
             @endcan
         </ul>

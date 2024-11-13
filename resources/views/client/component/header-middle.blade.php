@@ -46,21 +46,21 @@
                            </form>
                        </div>
                        <!-- End .header-search -->
-                       <i class="fa-solid fa-right-from-bracket"></i>
+                       {{-- <i class="fa-solid fa-right-from-bracket"></i> --}}
                        @if (Auth::check())
 
                            <a href="{{ route('chat') }}" class="header-icon" title="chat">
-                               <i class="far fa-comment-dots" style="opacity: 0.95;"></i>
+                            <i class="fa-light fa-comment-dots"></i>
                            </a>
                            <a href="#" class="header-icon notification-icon" title="notification"
                                data-toggle="dropdown">
-                               <i class="far fa-bell"></i>
+                               <i class="fa-light fa-bell"></i>
                            </a>
 
                            @livewire('notification-component')
 
                            <a href="#" class="header-icon login-icon" title="login" data-toggle="dropdown">
-                               <i class="icon-user-2"></i>
+                            <i class="fa-light fa-user"></i>
                            </a>
                            <ul id="login-dropdown" class="dropdown-menu"
                                style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);top: 70%;
@@ -80,15 +80,15 @@
                                        <span>Tài khoản của tôi</span>
                                    </a>
                                </li>
-                               <li style="padding: 8px 10px; display: flex; align-items: center;">
+                               {{-- <li style="padding: 8px 10px; display: flex; align-items: center;">
                                    <a href="{{ route('admin.dashboard.index') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                        <i class="fas fa-bell" style="margin-right: 8px; color: #333;"></i>
                                        <span>Thông báo</span>
                                    </a>
-                               </li>
+                               </li> --}}
 
-                               @if (Auth::user()->role_id == 1)
+                               @if (Auth::user()->role_id != 4)
                                    <!-- Check if the user role is 1 -->
                                    @can('view-dashboard')
                                        <li style="padding: 8px 10px; display: flex; align-items: center;">
@@ -133,14 +133,13 @@
                        @endif
 
 
-                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
-                               class="icon-wishlist-2"></i><span class=" badge-circle total_wishlist"></span></a>
+                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i class="fa-light fa-heart"></i><span class=" badge-circle total_wishlist"></span></a>
 
                        <div class="dropdown cart-dropdown">
                            <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle"
                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                data-display="static">
-                               <i class="minicart-icon"></i>
+                               <i class="fa-light fa-bag-shopping"></i>
                                <span class="cart-count badge-circle">{{ count($carts) }}</span>
                            </a>
 
