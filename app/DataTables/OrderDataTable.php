@@ -53,25 +53,25 @@ class OrderDataTable extends DataTable
             ->addColumn('order_status', function ($query) {
                 switch ($query->order_status) {
                     case 'pending':
-                        return "<span class='badge bg-warning'>pending</span>";
+                        return "<span class='badge bg-warning'>chưa xử lý</span>";
                         break;
                     case 'processed_and_ready_to_ship':
-                        return "<span class='badge bg-info'>processed</span>";
+                        return "<span class='badge bg-info'>Đã xử lý</span>";
                         break;
                     case 'dropped_off':
-                        return "<span class='badge bg-info'>dropped off</span>";
+                        return "<span class='badge bg-info'>Đã giao đến </span>";
                         break;
                     case 'shipped':
-                        return "<span class='badge bg-primary'>shipped</span>";
+                        return "<span class='badge bg-primary'>Đã vận chuyển</span>";
                         break;
                     case 'out_for_delivery':
-                        return "<span class='badge bg-primary'>out for delivery</span>";
+                        return "<span class='badge bg-primary'>Đang giao</span>";
                         break;
                     case 'delivered':
-                        return "<span class='badge bg-success'>delivered</span>";
+                        return "<span class='badge bg-success'>Đã giao hàng</span>";
                         break;
                     case 'canceled':
-                        return "<span class='badge bg-success'>canceled</span>";
+                        return "<span class='badge bg-success'>Hủy bỏ</span>";
                         break;
                     default:
                         # code...
