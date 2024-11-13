@@ -13,7 +13,7 @@
                                 <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#"
                                     id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->format('F') }}</a>
                                 <ul class="dropdown-menu dropdown-menu-sm">
-                                    <li class="dropdown-title">Select Month</li>
+                                    <li class="dropdown-title">Chọn tháng</li>
                                     @foreach (range(1, 12) as $m)
                                         <li>
                                             <a href="#" id="month" data-month="{{ $m }}"
@@ -127,7 +127,7 @@
                                         </div>
                                         <div class="text-muted text-small">67 Sales</div>
                                         <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Danh sách</a>
+                                            <a href="#" class="btn btn-primary">Chi tiết</a>
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +273,7 @@
                                             <td>{{ $order->created_at->format('F d, Y') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.orders.show', $order->id) }}"
-                                                    class="btn btn-primary">Danh sách </a>
+                                                    class="btn btn-primary">Chi tiết</a>
                                             </td>
                                         </tr>
                                     @endforeach
