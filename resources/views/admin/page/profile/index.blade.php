@@ -3,10 +3,10 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Profile</h1>
+            <h1>Hồ sơ</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item">Profile</div>
+                <div class="breadcrumb-item active"><a href="#">Trang chủ</a></div>
+                <div class="breadcrumb-item">Hồ sơ</div>
             </div>
         </div>
         <div class="section-body">
@@ -18,7 +18,7 @@
                             @csrf
                             {{-- @method('PUT') --}}
                             <div class="card-header">
-                                <h4>Update Profile</h4>
+                                <h4>Cập nhật hồ sơ</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -27,8 +27,8 @@
                                             <!-- Hiển thị ảnh cũ -->
                                             <div
                                                 style="width: 200px; display: flex; flex-direction: column; align-items: center;">
-                                                <label style="width: 100%; text-align: center" for="">Profile
-                                                    Picture</label>
+                                                <label style="width: 100%; text-align: center" for="">Hồ sơ
+                                                    Hình ảnh</label>
                                                 <br>
                                                 <img id="currentImage"
                                                     style="width: 100%; padding: 0 10px;max-height: 300px; border-radius: 50%"
@@ -47,19 +47,19 @@
                                                     <!-- Nút upload ảnh mới -->
                                                     <label for="imageUpload"
                                                         style="padding: 0.5rem 1rem; margin-bottom: unset !important; border-radius: 10px; background-color: black; color: #fff; display: flex; justify-content: center; align-items: center">Upload
-                                                        Image</label>
+                                                        Ảnh</label>
                                                     <input type="file" name="image" id="imageUpload"
                                                         class="form-control" accept="image/*" style="display: none">
 
                                                     <!-- Nút xóa ảnh mới, mặc định sẽ ẩn -->
                                                     <button type="button" id="deleteImageButton" class="btn btn-danger"
-                                                        style="display: none; padding: 0.5rem 1rem; border-radius: 10px; background-color:red; color: #fff;">Remove</button>
+                                                        style="display: none; padding: 0.5rem 1rem; border-radius: 10px; background-color:red; color: #fff;">Xóa</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Name</label>
+                                        <label>Tên</label>
                                         <input type="text" class="form-control" name="name"
                                             value="{{ Auth::user()->name }}">
                                     </div>
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button class="btn btn-primary" type="submit">Save Changes</button>
+                                <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
                             </div>
                         </form>
                     </div>
@@ -86,26 +86,26 @@
                             @csrf
                             @method('PUT')
                             <div class="card-header">
-                                <h4>Update Password</h4>
+                                <h4>Cập nhật mật khẩu</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label>Current Password</label>
+                                        <label>Mật khẩu cũ</label>
                                         <input type="password" class="form-control" name="current_password">
                                     </div>
                                     <div class="form-group col-12">
-                                        <label>New Password</label>
+                                        <label>Mật khẩu mới</label>
                                         <input type="password" class="form-control" name="new_password">
                                     </div>
                                     <div class="form-group col-12">
-                                        <label>Confirm Password</label>
+                                        <label>Xác nhận mật khẩu</label>
                                         <input type="password" class="form-control" name="new_password_confirmation">
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button class="btn btn-primary">Save Changes</button>
+                                <button class="btn btn-primary">Lưu thay đổi</button>
                             </div>
                         </form>
                     </div>

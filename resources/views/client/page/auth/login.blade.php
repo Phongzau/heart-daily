@@ -8,16 +8,16 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="category.html">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="category.html">Cửa hàng</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            My Account
+                            Tài khoản của bạn
                         </li>
                     </ol>
                 </div>
             </nav>
 
-            <h1 class="mt-2">Login</h1>
+            <h1 class="mt-2">Đăng nhập</h1>
         </div>
     </div>
 
@@ -55,8 +55,8 @@
                                 Đăng nhập
                             </button>
                             <div class="text-center mt-2">
-                                you dont't have an account yet ?
-                                <a href="{{ route('register') }}" class="text-dark form-footer-right">Register</a>
+                               Bạn chưa có tài khoản ?
+                                <a href="{{ route('register') }}" class="text-dark form-footer-right">Đăng ký</a>
                             </div>
                         </form>
                     </div>

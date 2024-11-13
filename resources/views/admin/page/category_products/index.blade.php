@@ -7,18 +7,18 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Category Product</h1>
+            <h1>Danh mục</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Category Product</h4>
+                            <h4>Danh sách danh mục</h4>
                             @can('create-categories-products')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.category_products.create') }}" class="btn btn-primary">
-                                        <i class="fas fa-plus"></i> Create New
+                                        <i class="fas fa-plus"></i> Thêm mới
                                     </a>
                                 </div>
                             @endcan

@@ -52,15 +52,15 @@
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="demo4.html"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Products</a></li>
+                <li class="breadcrumb-item"><a href="http://127.0.0.1:8000/"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="http://127.0.0.1:8000/product">Sản phẩm</a></li>
             </ol>
         </nav>
 
         <div class="product-single-container product-single-default">
             <div class="cart-message d-none">
                 <strong class="single-cart-notice">“Men Black Sports Shoes”</strong>
-                <span>has been added to your cart.</span>
+                <span>Đã được thêm vào giỏ hàng của bạn.</span>
             </div>
 
             <div class="row">
@@ -112,40 +112,6 @@
                 <div class="col-lg-7 col-md-6 product-single-details">
                     <h1 class="product-title">{{ $product->name }}</h1>
 
-                    <div class="product-nav">
-                        <div class="product-prev">
-                            <a href="#">
-                                <span class="product-link"></span>
-
-                                <span class="product-popup">
-                                    <span class="box-content">
-                                        <img alt="product" width="150" height="150"
-                                            src="{{ asset('frontend/assets/images/products/product-3.jpg') }}"
-                                            style="padding-top: 0px;">
-
-                                        <span>Circled Ultimate 3D Speaker</span>
-                                    </span>
-                                </span>
-                            </a>
-                        </div>
-
-                        <div class="product-next">
-                            <a href="#">
-                                <span class="product-link"></span>
-
-                                <span class="product-popup">
-                                    <span class="box-content">
-                                        <img alt="product" width="150" height="150"
-                                            src="{{ asset('frontend/assets/images/products/product-4.jpg') }}"
-                                            style="padding-top: 0px;">
-
-                                        <span>Blue Backpack for the Young</span>
-                                    </span>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-
                     <div class="ratings-container">
                         <div class="product-ratings">
                             <span class="ratings" style="width:60%"></span>
@@ -154,7 +120,7 @@
                         </div>
                         <!-- End .product-ratings -->
 
-                        <a href="#" class="rating-link">( 6 Reviews )</a>
+                        <a href="#" class="rating-link">{{ $reviews->total() }} Đánh giá</a>
                     </div>
                     <!-- End .ratings-container -->
 
@@ -183,21 +149,21 @@
                     <ul class="single-info-list">
                         <!---->
                         <li>
-                            SKU:
+                            Mã:
                             <strong>{{ $product->sku }}</strong>
                         </li>
 
                         <li>
-                            CATEGORY:
+                            Danh mục:
                             <strong>
                                 <a href="#" class="product-category">{{ $product->category->title }}</a>
                             </strong>
                         </li>
 
                         {{-- <li>
-                            TAGs:
-                            <strong><a href="#" class="product-category">CLOTHES</a></strong>,
-                            <strong><a href="#" class="product-category">SWEATER</a></strong>
+                            Thẻ:
+                            <strong><a href="#" class="product-category">Quần áo</a></strong>,
+                            <strong><a href="#" class="product-category">ÁO LEN</a></strong>
                         </li> --}}
                     </ul>
                     <div class="product-filters-container">
@@ -227,7 +193,7 @@
 
                         <div class="product-single-filter">
                             <label></label>
-                            <a class="font1 text-uppercase clear-btn" href="#">Clear</a>
+                            <a class="font1 text-uppercase clear-btn" href="#">XÓA</a>
                         </div>
                         <!---->
                     </div>
@@ -241,10 +207,9 @@
                             <!-- End .product-single-qty -->
 
                             <button type="submit" class="btn btn-dark mr-2" title="Add to Cart"><i
-                                    class="fas fa-cart-plus mr-2"></i>Add to
-                                Cart</button>
+                                    class="fas fa-cart-plus mr-2"></i>Thêm vào giỏ</button>
 
-                            <a href="cart.html" class="btn btn-gray view-cart d-none">View cart</a>
+                            <a href="cart.html" class="btn btn-gray view-cart d-none">Xem giỏ</a>
                         </div>
                     </form>
                     <!-- End .product-action -->
@@ -252,25 +217,24 @@
                     <hr class="divider mb-0 mt-0">
 
                     <div class="product-single-share mb-2">
-                        <label class="sr-only">Share:</label>
+                        <label class="sr-only">Chia sẻ:</label>
 
                         <div class="social-icons mr-2">
-                            <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
+                            <a href="https://www.facebook.com/" class="social-icon social-facebook icon-facebook" target="_blank"
                                 title="Facebook"></a>
-                            <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
+                            <a href="https://x.com/" class="social-icon social-twitter icon-twitter" target="_blank"
                                 title="Twitter"></a>
-                            <a href="#" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank"
+                            <a href="https://www.linkedin.com/" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank"
                                 title="Linkedin"></a>
-                            <a href="#" class="social-icon social-gplus fab fa-google-plus-g" target="_blank"
+                            <a href="https://www.google.com" class="social-icon social-gplus fab fa-google-plus-g" target="_blank"
                                 title="Google +"></a>
-                            <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank"
+                            <a href="https://mail.google.com/" class="social-icon social-mail icon-mail-alt" target="_blank"
                                 title="Mail"></a>
                         </div>
                         <!-- End .social-icons -->
 
                         <a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
-                                class="icon-wishlist-2"></i><span>Add to
-                                Wishlist</span></a>
+                                class="icon-wishlist-2"></i><span>Thêm vào yêu thích</span></a>
 
                     </div>
                     <!-- End .product single-share -->
@@ -285,20 +249,18 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="product-tab-desc" data-toggle="tab" href="#product-desc-content"
-                        role="tab" aria-controls="product-desc-content" aria-selected="true">Description</a>
+                        role="tab" aria-controls="product-desc-content" aria-selected="true">Mô tả</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" id="product-tab-tags" data-toggle="tab" href="#product-tags-content"
-                        role="tab" aria-controls="product-tags-content" aria-selected="false">Additional
-                        Information</a>
+                        role="tab" aria-controls="product-tags-content" aria-selected="false">Thông tin sản phẩm</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link count-review" id="product-tab-reviews" data-toggle="tab"
                         href="#product-reviews-content" role="tab" aria-controls="product-reviews-content"
-                        aria-selected="false">{{ $reviews->total() }}
-                        Reviews</a>
+                        aria-selected="false">{{ $reviews->total() }} Đánh giá</a>
                 </li>
             </ul>
 
@@ -361,11 +323,11 @@
                         @endphp
                         @if (isset($isBrought) && $isBrought === true)
                             <div class="add-product-review">
-                                <h3 class="review-title">Add a review</h3>
+                                <h3 class="review-title">Thêm đánh giá</h3>
 
                                 <form id="reviewForm" class="comment-form m-0">
                                     <div class="rating-form">
-                                        <label for="rate">Your rating <span class="required">*</span></label>
+                                        <label for="rate">Đánh giá<span class="required">*</span></label>
                                         <span class="rating-stars">
                                             <a class="star-1" data-value="1" href="#">1</a>
                                             <a class="star-2" data-value="2" href="#">2</a>
@@ -375,7 +337,7 @@
                                         </span>
                                     </div>
                                     <div class="form-group">
-                                        <label>Your review <span class="required">*</span></label>
+                                        <label>Đánh giá của bạn<span class="required">*</span></label>
                                         <textarea name="review" cols="5" rows="6" class="form-control form-control-sm" required></textarea>
                                     </div>
                                     <!-- End .form-group -->
@@ -398,7 +360,7 @@
         <!-- End .product-single-tabs -->
 
         <div class="products-section pt-0">
-            <h2 class="section-title">Related Products</h2>
+            <h2 class="section-title">Sản phẩm liên quan</h2>
 
             <div class="products-slider owl-carousel owl-theme dots-top dots-small">
                 @foreach ($productRelated as $product)
@@ -453,8 +415,8 @@
                                     class="btn-icon-wish {{ Auth::check() &&Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
                                     title="wishlist"><i class="icon-heart"></i></a>
                                 <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
-                                    class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
-                                        OPTIONS</span></a>
+                                    class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN
+                                    LOẠI</span></a>
                                 <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                         class="fas fa-external-link-alt"></i></a>
                             </div>
@@ -470,7 +432,7 @@
 
         <div class="product-widgets-container row pb-2">
             <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
-                <h4 class="section-sub-title">Featured Products</h4>
+                <h4 class="section-sub-title">Sản phẩm nổi bật</h4>
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
@@ -567,7 +529,7 @@
             </div>
 
             <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
-                <h4 class="section-sub-title">Best Selling Products</h4>
+                <h4 class="section-sub-title">Sản phẩm bán chạy nhất</h4>
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">

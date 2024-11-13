@@ -9,48 +9,48 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Coupons</h1>
+            <h1>Chỉnh sửa</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Edit Coupon</h4>
+                            <h4>Chỉnh sửa mã giảm giá</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.coupons.update', $coupon->id) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <label for="">Name</label>
+                                    <label for="">Tên</label>
                                     <input type="text" name="name" value="{{ $coupon->name }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Code</label>
+                                    <label for="">Mã</label>
                                     <input type="text" name="code" value="{{ $coupon->code }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Quantity</label>
+                                    <label for="">Số lượng</label>
                                     <input type="text" name="quantity" value="{{ $coupon->quantity }}"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Max Use Per Person</label>
+                                    <label for="">Lượt dùng</label>
                                     <input type="text" name="max_use" value="{{ $coupon->max_use }}"
                                         class="form-control">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">Start Date</label>
+                                            <label for="">NGày bắt đầu</label>
                                             <input type="text" name="start_date" value="{{ $coupon->start_date }}"
                                                 class="form-control datepicker">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">End Date</label>
+                                            <label for="">Ngày hết hạn</label>
                                             <input type="text" name="end_date" value="{{ $coupon->end_date }}"
                                                 class="form-control datepicker">
                                         </div>
@@ -59,19 +59,19 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group ">
-                                            <label for="inputState">Discount Type</label>
+                                            <label for="inputState">Loại giảm giá</label>
                                             <select id="inputState" name="discount_type" class="form-control">
-                                                <option value="" hidden>Select</option>
+                                                <option value="" hidden>Chọn</option>
                                                 <option {{ $coupon->discount_type == 'percent' ? 'selected' : '' }}
-                                                    value="percent">Percentage (%)</option>
+                                                    value="percent">Tỉ lệ (%)</option>
                                                 <option {{ $coupon->discount_type == 'amount' ? 'selected' : '' }}
-                                                    value="amount">Amount (đ)</option>
+                                                    value="amount">Mức giảm (đ)</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label>Discount Value
+                                            <label>Giá trị chiết khấu
                                                 @if ($coupon->discount_type === 'percent')
                                                     <code id="discount-label">
                                                         (%) (Không được vượt quá 100%)
@@ -109,7 +109,7 @@
                                         @if ($coupon->min_order_value == 0) active @endif
                                         "
                                             id="not-available-tab" data-toggle="tab" href="#not-available" role="tab"
-                                            aria-controls="not-available" aria-selected="true">Not available</a>
+                                            aria-controls="not-available" aria-selected="true">Không có sẵn</a>
                                     </li>
                                     <li class="nav-item">
                                         <!-- Tab "Minimum Order Value" -->
@@ -117,34 +117,33 @@
                                         @if ($coupon->min_order_value > 0) active @endif
                                         "
                                             id="min-order-value-tab" data-toggle="tab" href="#min-order-value"
-                                            role="tab" aria-controls="min-order-value" aria-selected="false">Minimum
-                                            order value</a>
+                                            role="tab" aria-controls="min-order-value" aria-selected="false">Giá trị đơn hàng tói thiểu</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent2">
                                     <div class="tab-pane fade @if ($coupon->min_order_value == 0) show active @endif "
                                         id="not-available" role="tabpanel" aria-labelledby="not-available-tab">
-                                        <label for="">Minium order value <code>(đ)</code></label>
+                                        <label for="">Giá trị đơn hàng tói thiểu<code>(đ)</code></label>
                                         <input type="number" readonly id="min_order_value" name="min_order_value"
                                             value="0" class="form-control">
                                     </div>
                                     <div class="tab-pane fade @if ($coupon->min_order_value > 0) show active @endif"
                                         id="min-order-value" role="tabpanel" aria-labelledby="min-order-value-tab">
-                                        <label for="">Minium order value <code>(đ)</code></label>
+                                        <label for="">Giá trị đơn hàng tói thiểu<code>(đ)</code></label>
                                         <input type="number" id="min_order_value_edit" name="min_order_value"
                                             value="{{ $coupon->min_order_value }}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="inputState">Status</label>
+                                    <label for="inputState">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
-                                        <option {{ $coupon->status == 1 ? 'selected' : '' }} value="1">Active
+                                        <option {{ $coupon->status == 1 ? 'selected' : '' }} value="1">Bật
                                         </option>
-                                        <option {{ $coupon->status == 0 ? 'selected' : '' }} value="0">Inactive
+                                        <option {{ $coupon->status == 0 ? 'selected' : '' }} value="0">Tắt
                                         </option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Cậ nhật</button>
                             </form>
                         </div>
                     </div>

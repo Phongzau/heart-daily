@@ -24,18 +24,18 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <label for="">Title</label>
+                                    <label for="">Tiêu đề</label>
                                     <input type="text" name="title" value="{{ $menuItems->title }}"
                                         class="form-control">
                                 </div>
  
                                 <div class="form-group">
-                                    <label for="">URL</label>
+                                    <label for="">Đường dẫn</label>
                                     <input type="text" name="url"  value="/{{ $menuItems->url }}" class="form-control">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="status">Parent ID</label>
+                                    <label for="status">ID gốc</label>
                                     <select name="parent_id" class="form-control parent">
                                         <option value="0">Danh Mục</option>
                                         @foreach ($menuItemAll as $key => $value)
@@ -68,36 +68,34 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="status">Status</label>
+                                    <label for="status">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
-                                        <option value="" hidden>--Select--</option>
-                                        <option {{ $menuItems->status == 1 ? 'selected' : '' }} value="1">Active
+                                        <option value="" hidden>--Chọn--</option>
+                                        <option {{ $menuItems->status == 1 ? 'selected' : '' }} value="1">Bật
                                         </option>
-                                        <option {{ $menuItems->status == 0 ? 'selected' : '' }} value="0">
-                                            Inactive
+                                        <option {{ $menuItems->status == 0 ? 'selected' : '' }} value="0">Tắt
                                         </option>
                                     </select>
                                 </div>
 
                                 {{-- <div class="form-group">
-                                    <label for="">Userid_created</label>
+                                    <label for="">ID người thêm</label>
                                     <input type="text" name="userid_created" value="{{ old('userid_created') }}"
                                         class="form-control">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="">Userid_updated</label>
+                                    <label for="">ID người cập nhật</label>
                                     <input type="text" name="userid_updated" value="{{ old('userid_updated') }}"
                                         class="form-control">
                                 </div> --}}
 
-                                <button class="btn btn-primary" type="submit">Update</button>
+                                <button class="btn btn-primary" type="submit">Cập nhật</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

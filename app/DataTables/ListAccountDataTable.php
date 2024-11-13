@@ -102,15 +102,15 @@ class ListAccountDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('name'),
+            Column::make('id')->title('ID'),
+            Column::make('name')->title('Tên'),
             Column::make('email'),
-            Column::make('role_id')->title('Role')->data('role.name'),
-            Column::make('status')->width(150),
-            Column::computed('action')
+            Column::make('role_id')->title('Quyền')->data('role.name'),
+            Column::make('status')->title('Trạng thái')->width(100),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(200)
                 ->addClass('text-center'),
         ];
     }

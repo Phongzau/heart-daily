@@ -7,26 +7,26 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Edit Category Product</h1>
+            <h1>Chỉnh sửa</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Edit Category Product</h4>
+                            <h4>Chỉnh sửa danh mục sản phẩm</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.category_products.update', $categoryProduct->id) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <label for="title">Title</label>
+                                    <label for="title">Tiêu đề</label>
                                     <input type="text" name="title" value="{{ $categoryProduct->title }}"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="status">Parent Category</label>
+                                    <label for="status">Danh mục gốc</label>
                                     <select name="parent_id" class="form-control parent">
                                         <option value="0">Danh Mục Cha</option>
                                         @foreach ($categoryProductAll as $key => $value)
@@ -37,7 +37,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="level">Level</label>
+                                    <label for="level">Cấp</label>
                                     <input type="number" readonly name="level" value="{{ $categoryProduct->level }}"
                                         class="form-control level-display">
                                 </div>
@@ -47,17 +47,17 @@
                                         class="form-control order">
                                 </div>
                                 <div class="form-group">
-                                    <label for="status">Status</label>
+                                    <label for="status">Tạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
-                                        <option {{ $categoryProduct->status == 1 ? 'selected' : '' }} value="1">Active
+                                        <option {{ $categoryProduct->status == 1 ? 'selected' : '' }} value="1"Bật
                                         </option>
                                         <option {{ $categoryProduct->status == 0 ? 'selected' : '' }} value="0">
-                                            Inactive
+                                            Tắt
                                         </option>
                                     </select>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Edit</button>
+                                <button class="btn btn-primary" type="submit">Cập nhật</button>
                             </form>
                         </div> <!-- End of card-body -->
                     </div> <!-- End of card -->

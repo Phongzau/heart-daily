@@ -9,14 +9,14 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Popups</h1>
+            <h1>Quảng cáo Popups</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card bg-light">
                         <div class="card-header bg-white">
-                            <h4>Create Popups</h4>
+                            <h4>Thêm Popups</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.popups.store') }}" enctype="multipart/form-data">
@@ -27,24 +27,23 @@
                                             <div class="card-body">
 
                                                 <div class="form-group">
-                                                    <label for="">title</label>
+                                                    <label for="">Tiêu đề</label>
                                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="">Description</label>
+                                                    <label for="">Mô tả</label>
                                                     <input type="text" name="description" value="{{ old('description') }}"
                                                         class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputState">Status</label>
+                                                    <label for="inputState">Trạng thái</label>
                                                     <select id="inputState" name="status" class="form-control">
-                                                        <option value="" hidden>--Select--</option>
-                                                        <option value="1">Active</option>
-                                                        <option value="0">Inactive</option>
+                                                        <option value="" hidden>--chọn--</option>
+                                                        <option value="1">Bật</option>
+                                                        <option value="0">Tắt</option>
                                                     </select>
                                                 </div>
-                                                <button class="btn btn-primary" type="submit">Create</button>
-
+                                                <button class="btn btn-primary" type="submit">Thêm</button>
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +51,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="customField">Image Main</label>
+                                                    <label for="customField">Ảnh chính</label>
                                                     <!-- Hình ảnh đại diện -->
                                                     <div class="image-placeholder"
                                                         style="width: 100%; height: 300px; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
@@ -65,8 +64,7 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image" class="d-none"
                                                             accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Upload
-                                                            file...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
                                                     </div>
                                                 </div>
                                             </div>

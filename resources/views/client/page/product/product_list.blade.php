@@ -65,8 +65,7 @@
                         </form>
                     @elseif ($product->type_product === 'product_variant')
                         <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
-                            class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT
-                                OPTIONS</span></a>
+                            class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>Lựa chọn loại</span></a>
                     @endif
                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                             class="fas fa-external-link-alt"></i></a>

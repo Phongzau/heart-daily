@@ -96,22 +96,21 @@ class AttributeDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('title'),
-            Column::make('slug'),
-            Column::make('category_attribute_id')->title('Category')->data('category_attribute.title'),
-            Column::make('price_start'),
-            Column::make('price_end'),
-            Column::make('status'),
-            Column::make('code'),
-            Column::make('userid_created')->title('Created By'),
-            Column::make('userid_updated')->title('Updated By'),
-            Column::computed('action')
+            Column::make('id')->title('ID'),
+            Column::make('title')->title('Tiêu đề'),
+            Column::make('slug')->title('Đường dẫn'),
+            Column::make('category_attribute_id')->title('Danh mục')->data('category_attribute.title'),
+            Column::make('price_start')->title('Giá bắt đầu'),
+            Column::make('price_end')->title('Giá kết thúc'),
+            Column::make('status')->title('Trạng thái'),
+            Column::make('code')->title('Mã'),
+            Column::make('userid_created')->title('Người tạo'),
+            Column::make('userid_updated')->title('Người cập nhật'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(105)
                 ->addClass('text-center'),
-
         ];
     }
 

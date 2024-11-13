@@ -8,7 +8,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card card-statistic-2">
                     <div class="card-stats">
-                        <div class="card-stats-title">Order Statistics -
+                        <div class="card-stats-title">Thống kê đơn hàng -
                             <div class="dropdown d-inline">
                                 <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#"
                                     id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->format('F') }}</a>
@@ -28,15 +28,15 @@
                         <div class="card-stats-items">
                             <div class="card-stats-item">
                                 <div class="card-stats-item-count" id="pending-count">{{ @$pendingCount }}</div>
-                                <div class="card-stats-item-label">Pending</div>
+                                <div class="card-stats-item-label">Chưa giải xử lý</div>
                             </div>
                             <div class="card-stats-item">
                                 <div class="card-stats-item-count" id="shipping-count">{{ @$shippingCount }}</div>
-                                <div class="card-stats-item-label">Shipping</div>
+                                <div class="card-stats-item-label">Đang vận chuyển</div>
                             </div>
                             <div class="card-stats-item">
                                 <div class="card-stats-item-count" id="completed-count">{{ @$completedCount }}</div>
-                                <div class="card-stats-item-label">Completed</div>
+                                <div class="card-stats-item-label">Hoàn thành</div>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Total Orders</h4>
+                            <h4>Tổng số đơn đặt hàng</h4>
                         </div>
                         <div class="card-body" id="total-orders">
                             {{ $totalOrdersCount }}
@@ -107,7 +107,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Best Products</h4>
+                        <h4>Sản phẩm tốt nhất</h4>
                     </div>
                     <div class="card-body">
                         <div class="owl-carousel owl-theme" id="products-carousel">
@@ -127,7 +127,7 @@
                                         </div>
                                         <div class="text-muted text-small">67 Sales</div>
                                         <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Detail</a>
+                                            <a href="#" class="btn btn-primary">Danh sách</a>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                                         </div>
                                         <div class="text-muted text-small">86 Sales</div>
                                         <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Detail</a>
+                                            <a href="#" class="btn btn-primary">Danh sách</a>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +169,7 @@
                                         </div>
                                         <div class="text-muted text-small">63 Sales</div>
                                         <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Detail</a>
+                                            <a href="#" class="btn btn-primary">Danh sách</a>
                                         </div>
                                     </div>
                                 </div>
@@ -181,19 +181,18 @@
             <div class="col-md-6">
                 <div class="card gradient-bottom">
                     <div class="card-header">
-                        <h4>Top 5 Products</h4>
+                        <h4>Top 5 Sản phẩm</h4>
                         <div class="card-header-action dropdown">
-                            <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Month</a>
+                            <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Tháng</a>
                             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <li class="dropdown-title">Select Period</li>
                                 <li><a href="#" class="dropdown-item" id="dropdown-item"
-                                        data-period="today">Today</a></li>
-                                <li><a href="#" class="dropdown-item" id=dropdown-item data-period="week">Week</a>
+                                        data-period="today">Ngày</a></li>
+                                <li><a href="#" class="dropdown-item" id=dropdown-item data-period="week">Tuần</a>
                                 </li>
                                 <li><a href="#" class="dropdown-item" id="dropdown-item"
-                                        data-period="month">Month</a></li>
-                                <li><a href="#" class="dropdown-item" id="dropdown-item" data-period="year">This
-                                        Year</a></li>
+                                        data-period="month">Tháng</a></li>
+                                <li><a href="#" class="dropdown-item" id="dropdown-item" data-period="year">Năm</a></li>
                             </ul>
                         </div>
                     </div>
@@ -213,7 +212,7 @@
                         <h4>Invoices</h4>
                         {{-- @can('view-orders') --}}
                             <div class="card-header-action">
-                                <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">View More <i
+                                <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">Xem thêm <i
                                         class="fas fa-chevron-right"></i></a>
                             </div>
                         {{-- @endcan --}}
@@ -223,11 +222,11 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Invoice ID</th>
-                                        <th>Customer</th>
-                                        <th>Status</th>
-                                        <th>Due Date</th>
-                                        <th>Action</th>
+                                        <th>ID hóa đơn</th>
+                                        <th>Khách hàng</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -274,7 +273,7 @@
                                             <td>{{ $order->created_at->format('F d, Y') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.orders.show', $order->id) }}"
-                                                    class="btn btn-primary">Detail</a>
+                                                    class="btn btn-primary">Danh sách </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -291,13 +290,13 @@
                             <i class="far fa-question-circle"></i>
                         </div>
                         <h4>14</h4>
-                        <div class="card-description">Customers need help</div>
+                        <div class="card-description">Khách hàng cần trợ giúp</div>
                     </div>
                     <div class="card-body p-0">
                         <div class="tickets-list">
                             <a href="#" class="ticket-item">
                                 <div class="ticket-title">
-                                    <h4>My order hasn't arrived yet</h4>
+                                    <h4>Đơn hàng của tôi vẫn chưa đến</h4>
                                 </div>
                                 <div class="ticket-info">
                                     <div>Laila Tazkiah</div>

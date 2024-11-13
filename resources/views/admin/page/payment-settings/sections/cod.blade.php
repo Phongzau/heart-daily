@@ -12,15 +12,15 @@
                         value="{{ $cod->name }}">
                 </div>
                 <div class="form-group">
-                    <label for="status" class="form-label">COD Status</label>
+                    <label for="status" class="form-label">Trạng thái COD</label>
                     <select name="status" id="status" class="form-control">
-                        <option value="1" {{ $cod->status ? 'selected' : '' }}>Enable</option>
-                        <option value="0" {{ !$cod->status ? 'selected' : '' }}>Disable</option>
+                        <option value="1" {{ $cod->status ? 'selected' : '' }}>Duyệt</option>
+                        <option value="0" {{ !$cod->status ? 'selected' : '' }}>Hủy</option>
                     </select>
                 </div>
 
                 @can('edit-payment-settings')
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 @endcan
             </form>
         </div>

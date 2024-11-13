@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h2>Order Confirmation</h2>
+    <h2>Xác nhận đơn hàng</h2>
     <p>Xin chào,</p>
     <p>Cảm ơn bạn đã đặt hàng. Dưới đây là thông tin chi tiết về đơn hàng của bạn:</p>
     <ul>

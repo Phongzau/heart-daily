@@ -100,12 +100,12 @@ class NewletterPopupDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->width(100),
-            Column::make('title')->width(200),
-            Column::make('image')->width(200),
-            Column::make('description')->width(200),
-            Column::make('status')->width(150),
-            Column::computed('action')
+            Column::make('id')->title('ID')->width(100),
+            Column::make('title')->title('Tiêu đề')->width(200),
+            Column::make('image')->title('Ảnh')->width(200),
+            Column::make('description')->title('Mô tả')->width(200),
+            Column::make('status')->title('Trạng thái')->width(150),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(100)

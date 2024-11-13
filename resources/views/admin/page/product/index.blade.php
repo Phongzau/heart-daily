@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Product
+    Heart Daily |  Sản phẩm
 @endsection
 
 @section('section')
@@ -9,18 +9,18 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Products</h1>
+            <h1>Sản phẩm</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Products</h4>
+                            <h4>Danh sách sản phẩm</h4>
                             @can('create-products')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.products.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Create New</a>
+                                            class="fas fa-plus"></i>Thêm mới</a>
                                 </div>
                             @endcan
                         </div>
@@ -30,7 +30,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

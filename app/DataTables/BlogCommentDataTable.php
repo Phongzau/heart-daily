@@ -79,11 +79,11 @@ class BlogCommentDataTable extends DataTable
     {
         return [
 
-            Column::make('id')->width(100),
-            Column::make('blog_name')->width(200),
-            Column::make('user_name')->width(150),
-            Column::make('user_comment')->width(300),
-            Column::computed('action')
+            Column::make('id')->title('ID')->width(100),
+            Column::make('blog_name')->title('Tên bài viết')->width(200),
+            Column::make('user_name')->title('Tên người dùng')->width(150),
+            Column::make('user_comment')->title('Người bình luận')->width(300),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

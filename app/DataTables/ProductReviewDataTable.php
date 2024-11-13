@@ -81,11 +81,11 @@ class ProductReviewDataTable extends DataTable
     {
         return [
 
-            Column::make('id')->width(100),
-            Column::make('product_name')->width(250),
-            Column::make('user_name')->width(150),
-            Column::make('review')->width(300),
-            Column::computed('action')
+            Column::make('id')->title('ID')->width(100),
+            Column::make('product_name')->title('Tên sản phẩm')->width(250),
+            Column::make('user_name')->title('Tên người dùng')->width(150),
+            Column::make('review')->title('Đánh giá')->width(300),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

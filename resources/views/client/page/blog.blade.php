@@ -5,7 +5,7 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="demo4.html"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Blog</li>
+                <li class="breadcrumb-item active" aria-current="page">Bài viết</li>
             </ol>
         </div><!-- End .container -->
     </nav>
@@ -41,7 +41,7 @@
                                     <p>{{ limitTextDescription($blog->description, 160) }}</p>
                                 </div><!-- End .post-content -->
 
-{{--                                <a href="single.html" class="post-comment">0 Comments</a>--}}
+{{--                                <a href="single.html" class="post-comment">0 Bình luận</a>--}}
                             </div><!-- End .post-body -->
                         </article><!-- End .post -->
                     </div>
@@ -56,7 +56,7 @@
             <aside class="sidebar mobile-sidebar col-lg-3">
                 <div class="sidebar-wrapper" data-sticky-sidebar-options='{"offsetTop": 72}'>
                     <div class="widget widget-categories">
-                        <h4 class="widget-title">Blog Categories</h4>
+                        <h4 class="widget-title">Danh mục bài viết</h4>
 
                         <ul class="list">
                             @foreach ($categories as $category)
@@ -68,7 +68,7 @@
                     </div><!-- End .widget -->
 
                     <div class="widget widget-post">
-                        <h4 class="widget-title">Recent Posts</h4>
+                        <h4 class="widget-title">Bài viết gần đây</h4>
 
                         <ul class="simple-post-list">
                             @foreach ($blogs as $blog)

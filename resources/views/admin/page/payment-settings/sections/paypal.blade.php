@@ -12,10 +12,10 @@
                         value="{{ @$paypal->name }}">
                 </div>
                 <div class="form-group">
-                    <label for="">Paypal Status</label>
+                    <label for="">Trạng thái Paypal</label>
                     <select name="status" class="form-control" id="">
-                        <option {{ @$paypal->status == 1 ? 'selected' : '' }} value="1">Enable</option>
-                        <option {{ @$paypal->status == 0 ? 'selected' : '' }} value="0">Disable</option>
+                        <option {{ @$paypal->status == 1 ? 'selected' : '' }} value="1">Duyệt</option>
+                        <option {{ @$paypal->status == 0 ? 'selected' : '' }} value="0">Hủy</option>
                     </select>
                 </div>
 
@@ -52,7 +52,7 @@
                     <input type="text" name="secret_key" value="{{ @$paypal->secret_key }}" class="form-control">
                 </div>
                 @can('edit-payment-settings')
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 @endcan
             </form>
         </div>

@@ -24,15 +24,15 @@
                     <div class="widget">
                         <img src="{{ Storage::url(@$logoSetting->logo_footer) }}" alt="Logo" class="widget-logo mb-3"
                             style="width: 100px; height: auto;">
-                        <h4 class="widget-title">Contact Info</h4>
+                        <h4 class="widget-title">Thông tin liên hệ</h4>
                         <ul class="contact-info">
                             <li>
-                                <span class="contact-info-label">Address:</span>
+                                <span class="contact-info-label">Địa chỉ:</span>
                                 <i class="fas fa-map-marker-alt fa-sm"></i>
                                 {{ @$generalSettings->contact_address }}
                             </li>
                             <li>
-                                <span class="contact-info-label">Phone:</span>
+                                <span class="contact-info-label">Điện thoại:</span>
                                 <a href="tel:{{ @$generalSettings->contact_phone }}">
                                     <i class="fas fa-phone fa-rotate-90 fa-sm"></i>
                                     {{ @$generalSettings->contact_phone }}
@@ -72,7 +72,7 @@
 
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget">
-                        <h4 class="widget-title">Customer Service</h4>
+                        <h4 class="widget-title">Dịch vụ khách hàng</h4>
                         <ul class="links">
                             @foreach ($menuItems as $key => $value)
                                 <li> <a href="{{ config('app.url') . $value->url }}">{{ $value->title }}</a></li>
@@ -111,14 +111,14 @@
 
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget widget-newsletter">
-                        <h4 class="widget-title">Subscribe newsletter</h4>
-                        <p>Get all the latest information on events, sales and offers. Sign up for newsletter:
+                        <h4 class="widget-title">Đăng ký nhận bản tin</h4>
+                        <p>Nhận tất cả các thông tin mới nhất về các sự kiện, bán hàng và cung cấp. Đăng ký nhận bản tin:
                         </p>
                         <form action="#" class="mb-0">
 
-                            <input type="email" class="form-control m-b-3" placeholder="Email address" required>
+                            <input type="email" class="form-control m-b-3" placeholder="Địa chỉ email của bạn" required>
 
-                            <input type="submit" class="btn btn-primary shadow-none" value="Subscribe">
+                            <input type="submit" class="btn btn-primary shadow-none" value="ĐĂNG KÝ">
                         </form>
                         <br>
 
@@ -179,9 +179,9 @@
         <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
         <nav class="mobile-nav">
             <ul class="mobile-menu">
-                <li><a href="demo4.html">Home</a></li>
+                <li><a href="demo4.html">Trang chủ</a></li>
                 <li>
-                    <a href="category.html">Categories</a>
+                    <a href="category.html">Danh mục</a>
                     <ul>
                         <li><a href="category.html">Full Width Banner</a></li>
                         <li><a href="category-banner-boxed-slider.html">Boxed Slider Banner</a></li>
@@ -238,22 +238,23 @@
                     <a href="#">Pages<span class="tip tip-hot">Hot!</span></a>
                     <ul>
                         <li>
-                            <a href="wishlist.html">Wishlist</a>
+                            <a href="wishlist.html">Yêu thích</a>
                         </li>
                         <li>
-                            <a href="cart.html">Shopping Cart</a>
+                            <a href="cart.html">Giỏ hàng</a>
                         </li>
                         <li>
-                            <a href="checkout.html">Checkout</a>
+                            <a href="checkout.html">Thanh toán</a>
                         </li>
                         <li>
-                            <a href="dashboard.html">Dashboard</a>
+                            <a href="dashboard.html">Trang chủ</a>
                         </li>
                         <li>
-                            <a href="login.html">Login</a>
+                            <a href="login.html">Đăng nhập</a>
                         </li>
                         <li>
-                            <a href="forgot-password.html">Forgot Password</a>
+                            <a href="forgot-password.html">
+                            Quên mật khẩu</a>
                         </li>
                     </ul>
                 </li>

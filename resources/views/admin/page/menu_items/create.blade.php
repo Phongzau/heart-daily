@@ -9,31 +9,31 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Menu Items</h1>
+            <h1>Danh mục menu</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Create Menu Items</h4>
+                            <h4>Thêm mới danh mục Menu</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.menu_items.store') }}" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="">Title</label>
+                                    <label for="">Tiêu đề</label>
                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="">URL</label>
+                                    <label for="">Đường dẫn</label>
                                     <input type="text" name="url" value="/{{ old('URL') }}" class="form-control">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="status">Parent ID</label>
+                                    <label for="status">ID gốc</label>
                                     <select name="parent_id" class="form-control parent">
                                         <option value="0">Danh Mục</option>
                                         @foreach ($menuItems as $key => $value)

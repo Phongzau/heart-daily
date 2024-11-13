@@ -9,7 +9,7 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Newletter Popup</h1>
+            <h1>Quảng cáo Popups</h1>
         </div>
         <div class="section-body">
             <div class="row">
@@ -17,12 +17,12 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h4>All Newletter Popups Table</h4>
+                            <h4>Danh sách</h4>
                             @if (!$popupExists)
                                 @can('create-popups')
                                     <div class="card-header-action">
                                         <a href="{{ route('admin.popups.create') }}" class="btn btn-primary"><i
-                                                class="fas fa-plus"></i> Create New</a>
+                                                class="fas fa-plus"></i> Thêm mới</a>
                                     </div>
                                 @endcan
                             @endif
@@ -40,7 +40,7 @@
     <hr>
     <section class="section">
         <div class="section-header">
-            <h1>Newsletter Subscribers</h1>
+            <h1>Người đăng ký nhận bản tin</h1>
         </div>
         <div class="section-body">
             <div class="row">
@@ -53,8 +53,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Email</th>
-                                        <th>Subscribed At</th>
-                                        <th>Action</th>
+                                        <th>Ngày đăng ký</th>
+                                        <th>Chứ năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>

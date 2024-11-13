@@ -46,7 +46,7 @@ class CheckoutController extends Controller
     {
         $request->validate([
             'first_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:10',
             'email' => 'required|email',
             'address' => 'required|string|max:255',
             'province_id' => 'required|string|max:100',

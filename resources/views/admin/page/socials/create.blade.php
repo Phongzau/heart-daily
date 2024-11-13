@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Socials Create
+    Heart Daily | Thêm mới 
 @endsection
 
 @section('section')
@@ -9,42 +9,41 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Socials</h1>
+            <h1>Mạng xã hội</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card ">
                         <div class="card-header ">
-                            <h4>Create Socials</h4>
+                            <h4>Thêm mới mạng xã hội</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.socials.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="">Icon</label>
+                                    <label for="">Biểu tượng</label>
                                     <div class="">
                                         <button class="btn btn-primary" data-selected-class="btn-danger"
                                             data-unselected-class="btn-primary" name="icon" role="iconpicker"></button>
                                     </div>
-
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Name</label>
+                                    <label for="">Tên</label>
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Url</label>
+                                    <label for="">Đường dẫn</label>
                                     <input type="text" name="url" value="{{ old('url') }}" class="form-control">
                                 </div>
                                 <div class="form-group ">
-                                    <label for="inputState">Status</label>
+                                    <label for="inputState">Trạng thái</label>
                                     <select id="inputState" name="status" value="{{ old('status') }}" class="form-control">
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
+                                        <option value="1">Bật</option>
+                                        <option value="0">Tắt</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </form>
                         </div>
                     </div>

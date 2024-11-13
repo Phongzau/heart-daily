@@ -9,15 +9,15 @@
             <div class="container position-relative">
                 <div class="row">
                     <div class="pl-lg-5 pb-5 pb-md-0 col-md-5 col-xl-4 col-lg-4 offset-1">
-                        <h3>Electronic<br>Deals</h3>
+                        <h3>Electronic<br>SALEOFF</h3>
                         <a href="#" class="btn btn-dark">Get Yours!</a>
                     </div>
                     <div class="pl-lg-3 col-md-4 offset-md-0 offset-1 pt-3">
                         <div class="coupon-sale-content">
                             <h4 class="m-b-1 coupon-sale-text bg-white text-transform-none">Exclusive COUPON
                             </h4>
-                            <h5 class="mb-2 coupon-sale-text d-block ls-10 p-0"><i class="ls-0">UP TO</i><b
-                                    class="text-dark">$100</b> OFF</h5>
+                            <h5 class="mb-2 coupon-sale-text d-block ls-10 p-0"><i class="ls-0">LÊN TỚI</i><b
+                                    class="text-dark">$100</b>Sale</h5>
                         </div>
                     </div>
                 </div>
@@ -29,8 +29,8 @@
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Product</a></li>
-                {{-- <li class="breadcrumb-item active" aria-current="page">Accessories</li> --}}
+                <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+                {{-- <li class="breadcrumb-item active" aria-current="page">Phụ kiện</li> --}}
             </ol>
         </nav>
 
@@ -51,18 +51,18 @@
                         <path d="M16.5,22.92A2.6,2.6,0,0,1,14,25.5a2.6,2.6,0,0,1-2.5-2.58,2.5,2.5,0,0,1,5,0Z"
                             class="cls-2"></path>
                     </svg>
-                    <span>Filter</span>
+                    <span>Lọc</span>
                 </a>
 
                 <div class="toolbox-item filter-toggle d-none d-lg-flex">
-                    <span>Filters:</span>
+                    <span>Lọc:</span>
                     <a href=#>&nbsp;</a>
                 </div>
             </div>
             <!-- End .toolbox-left -->
 
             <div class="toolbox-item toolbox-sort ml-lg-auto">
-                <label>Sort By:</label>
+                <label>Sắp xếp theo:</label>
 
                 <div class="select-custom">
                     <select name="orderby" class="form-control" id="sort-by" onchange="loadProducts();">
@@ -77,7 +77,7 @@
             <!-- End .toolbox-item -->
 
             <div class="toolbox-item toolbox-show">
-                <label>Show:</label>
+                <label>Xem:</label>
                 <div class="select-custom">
                     <select name="count" class="form-control" id="product-count" onchange="loadProducts();">
                         <option value="12" {{ request('count') == 12 ? 'selected' : '' }}>12</option>
@@ -137,7 +137,7 @@
                     <div class="widget">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true"
-                                aria-controls="widget-body-3">Brand</a>
+                                aria-controls="widget-body-3">Thương hiệu</a>
                         </h3>
 
                         <div class="collapse show" id="widget-body-3">
@@ -185,7 +185,7 @@
                                     <div
                                         class="filter-price-action d-flex align-items-center justify-content-between flex-wrap">
                                         {{-- <div class="filter-price-text">
-                                            Price:
+                                            Giá:
                                             <span id="filter-price-range"></span>
                                         </div> --}}
                                         <!-- End .filter-price-text -->
@@ -205,7 +205,7 @@
                     <div class="widget widget-color">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true"
-                                aria-controls="widget-body-4">Color</a>
+                                aria-controls="widget-body-4">MÀU</a>
                         </h3>
 
                         <div class="collapse show" id="widget-body-4">
@@ -230,7 +230,7 @@
                     <div class="widget widget-size">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="true"
-                                aria-controls="widget-body-6">Sizes</a>
+                                aria-controls="widget-body-6">Kích cỡ</a>
                         </h3>
 
                         <div class="collapse show" id="widget-body-6">

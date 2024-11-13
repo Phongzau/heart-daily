@@ -39,7 +39,7 @@
             @else
                 <div class="coupon-card">
                     <div class="coupon-details text-center">
-                        <div class="coupon-title">Không có Coupon nào</div>
+                        <div class="coupon-title">Không có mã giảm giá nào</div>
                     </div>
                 </div>
             @endif

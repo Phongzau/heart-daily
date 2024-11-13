@@ -8,34 +8,34 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Wishlist
+                            Yêu thích
                         </li>
                     </ol>
                 </div>
             </nav>
 
-            <h1>Wishlist</h1>
+            <h1>Yêu thích</h1>
         </div>
     </div>
 
     <div class="container">
         <div class="wishlist-title">
-            <h2 class="p-2">My wishlist </h2>
+            <h2 class="p-2">Uy tích của tôi </h2>
         </div>
         <div class="wishlist-table-container">
             @if ($wishlists->isEmpty())
-                <p>Your wishlist is empty.</p>
+                <p>Danh sách yêu thích của bạn trống.</p>
             @else
             <table class="table table-wishlist mb-0">
                 <thead>
                     <tr>
                         <th class="thumbnail-col"></th>
-                        <th class="product-col">Product</th>
-                        <th class="price-col">Price</th>
-                        <th class="status-col">Stock Status</th>
-                        <th class="action-col">Actions</th>
+                        <th class="product-col">Sản phẩm</th>
+                        <th class="price-col">Giá</th>
+                        <th class="status-col">Tình trạng hàng</th>
+                        <th class="action-col">Trạng thái </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,13 +71,12 @@
                             </td>
                             <td class="price-box">{{ number_format($wishlist->product->price) }} VND</td>
                             <td>
-                                <span class="stock-status">In stock</span>
+                                <span class="stock-status">Còn hàng</span>
                             </td>
                             <td class="action">
                                 
                                 <a href="{{ route('product.detail', ['slug' => $wishlist->product->slug]) }}"
-                                    class="btn btn-dark product-type-simple btn-shop"><span>SELECT
-                                        OPTIONS</span></a>
+                                    class="btn btn-dark product-type-simple btn-shop"><span>LỰA CHỌN LOẠI</span></a>
                             </td>
                         </tr>
                     @endforeach

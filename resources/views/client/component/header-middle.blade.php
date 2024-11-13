@@ -66,25 +66,25 @@
                                style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);top: 70%;
     left: 871px;">
 
-                               {{-- min-width: 17%;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
-    top: 70%;
-    left: 72%;
-    display: block; --}}
+                                {{-- min-width: 17%;
+                                    padding: 10px;
+                                    border-radius: 8px;
+                                    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
+                                    top: 70%;
+                                    left: 72%;
+                                    display: block; --}}
                                <li style="padding: 8px 10px; display: flex; align-items: center;">
                                    <a href="{{ route('user.dashboard') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                        <i class="fas fa-user" style="margin-right: 8px; color: #007bff;"></i>
-                                       <span>My Account</span>
+                                       <span>Tài khoản của tôi</span>
                                    </a>
                                </li>
                                <li style="padding: 8px 10px; display: flex; align-items: center;">
                                    <a href="{{ route('admin.dashboard.index') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                        <i class="fas fa-bell" style="margin-right: 8px; color: #333;"></i>
-                                       <span>Notifications</span>
+                                       <span>Thông báo</span>
                                    </a>
                                </li>
 
@@ -95,7 +95,7 @@
                                            <a href="{{ route('admin.dashboard.index') }}"
                                                style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                                <i class="fas fa-user-shield" style="margin-right: 8px; color: #dc3545;"></i>
-                                               <span>Admin</span>
+                                               <span>Quản trị</span>
                                            </a>
                                        </li>
                                    @endcan
@@ -105,7 +105,7 @@
                                    <a href="{{ route('logout') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                        <i class="fas fa-sign-out-alt" style="margin-right: 8px; color: #28a745;"></i>
-                                       <span>Logout</span>
+                                       <span>Đăng xuất</span>
                                    </a>
                                </li>
                            </ul>
@@ -119,14 +119,14 @@
                                    <a href="{{ route('login') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                        <i class="fas fa-sign-in-alt" style="margin-right: 8px; color: #007bff;"></i>
-                                       <span>Login</span>
+                                       <span>Đăng nhập</span>
                                    </a>
                                </li>
                                <li style="padding: 8px 10px; display: flex; align-items: center;">
                                    <a href="{{ route('register') }}"
                                        style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                        <i class="fas fa-user-plus" style="margin-right: 8px; color: #17a2b8;"></i>
-                                       <span>Register</span>
+                                       <span>Đăng ký</span>
                                    </a>
                                </li>
                            </ul>
@@ -150,7 +150,7 @@
                                <a href="#" title="Close (Esc)" class="btn-close">×</a>
 
                                <div class="dropdownmenu-wrapper custom-scrollbar">
-                                   <div class="dropdown-cart-header">Shopping Cart</div>
+                                   <div class="dropdown-cart-header">Giỏ hàng</div>
                                    <!-- End .dropdown-cart-header -->
 
                                    <div class="dropdown-cart-products">
@@ -190,7 +190,7 @@
                                        @endforeach
                                        @if (count($carts) === 0)
                                            <li class="text-center"
-                                               style="font-size: 25px;padding: 10px;color: darkgrey;">Cart Is Empty!
+                                               style="font-size: 25px;padding: 10px;color: darkgrey;">Giỏ hàng trống!
                                            </li>
                                        @endif
                                    </div>
@@ -198,7 +198,7 @@
                                    <!-- End .cart-product -->
 
                                    <div class="dropdown-cart-total @if (count($carts) === 0) d-none @endif">
-                                       <span>SUBTOTAL:</span>
+                                       <span>TỔNG CỘNG:</span>
 
                                        <span class="cart-total-price float-right">{{ number_format(getCartTotal()) }}
                                            VND</span>
@@ -207,9 +207,8 @@
 
                                    <div class="dropdown-cart-action @if (count($carts) === 0) d-none @endif">
                                        <a href="{{ route('cart-details') }}"
-                                           class="btn btn-gray btn-block view-cart">View
-                                           Cart</a>
-                                       <a href="{{ route('checkout') }}" class="btn btn-dark btn-block">Checkout</a>
+                                           class="btn btn-gray btn-block view-cart">Xem giỏ hàng</a>
+                                       <a href="{{ route('checkout') }}" class="btn btn-dark btn-block">Thanh toán</a>
                                    </div>
                                    <!-- End .dropdown-cart-total -->
                                </div>

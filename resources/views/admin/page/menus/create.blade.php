@@ -16,24 +16,24 @@
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Create Menus</h4>
+                            <h4>Thêm mới Menus</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.menus.store') }}">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="">Title</label>
+                                    <label for="">Tiêu đề</label>
                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Status</label>
+                                    <label for="">Trạng thái</label>
                                     <select name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
-                                        <option {{old('status') === '1' ? 'selected' : ''}} value="1">Active</option>
-                                        <option {{old('status') === '0' ? 'selected' : ''}} value="0">Inactive</option>
+                                        <option {{old('status') === '1' ? 'selected' : ''}} value="1">Bật</option>
+                                        <option {{old('status') === '0' ? 'selected' : ''}} value="0">Tắt</option>
                                     </select>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Create</button>
+                                <button class="btn btn-primary" type="submit">Thêm</button>
                             </form>
                         </div>
                     </div>

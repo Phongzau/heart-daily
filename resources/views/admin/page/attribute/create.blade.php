@@ -5,20 +5,20 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Create Attribute</h1>
+            <h1>Thêm mới</h1>
         </div>
         <div class="section-body">
             <form method="POST" action="{{ route('admin.attributes.store') }}">
                 @csrf
                 <div class="form-group">
-                    <label for="title">Title</label>
+                    <label for="title">Tiêu đề</label>
                     <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="category_attribute_id">Category Attribute</label>
+                    <label for="category_attribute_id">Danh mục thuộc tính</label>
                     <select name="category_attribute_id" class="form-control" id="categorySelect">
-                        <option value="" hidden>Select Category</option>
+                        <option value="" hidden>Chọn danh mục</option>
                         @foreach ($categoryAttributes as $category)
                             <option value="{{ $category->id }}"
                                 {{ old('category_attribute_id', $attribute->category_attribute_id ?? '') == $category->id ? 'selected' : '' }}>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="form-group" id="additionalInput" style="display: none;">
-                    <label for="code">Code</label>
+                    <label for="code">Mã</label>
                     <div class="input-group colorpickerinput">
                         
                         <input type="text" name="code" class="form-control" value="{{ old('code') }}">
@@ -42,18 +42,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="price_start">Price Start</label>
+                    <label for="price_start">Giá gốc</label>
                     <input type="number" name="price_start" class="form-control" value="{{ old('price_start') }}">
                 </div>
                 <div class="form-group">
-                    <label for="price_end">Price End</label>
+                    <label for="price_end">Giá ưu đãi</label>
                     <input type="number" name="price_end" class="form-control" value="{{ old('price_end') }}">
                 </div>
                 <div class="form-group">
-                    <label for="status">Status</label>
+                    <label for="status">Trạng thái</label>
                     <select name="status" class="form-control">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
+                        <option value="1">Bật</option>
+                        <option value="0">Tắt</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
