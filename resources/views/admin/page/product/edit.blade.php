@@ -450,7 +450,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputState">Danh mục</label>
+                                                    <label for="inputState">Danh mục sản phẩm</label>
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
                                                         <option value="" hidden>Select</option>
@@ -483,7 +483,7 @@
                                             <div class="card-body">
                                                 <!-- Custom Field -->
                                                 <div class="form-group">
-                                                    <label for="customField">Image Main</label>
+                                                    <label for="customField">Ảnh chính</label>
                                                     <!-- Hình ảnh đại diện -->
                                                     <div class="image-placeholder"
                                                         style="width: 100%; height: 300px; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
@@ -497,8 +497,7 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image_main"
                                                             class="d-none" accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Upload
-                                                            file...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
                                                     </div>
                                                 </div>
                                             </div>
