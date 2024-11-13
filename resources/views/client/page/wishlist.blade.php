@@ -22,7 +22,7 @@
 
     <div class="container">
         <div class="wishlist-title">
-            <h2 class="p-2">Uy tích của tôi </h2>
+            <h2 class="p-2">Yêu thích của tôi </h2>
         </div>
         <div class="wishlist-table-container">
             @if ($wishlists->isEmpty())
