@@ -49,7 +49,8 @@
                                                                 </div>
                                                                 <div class="pt-1">
                                                                     <p class="fw-bold mb-0">{{ $user->name }}</p>
-                                                                    <p class="small text-muted">Hello, Are you there?</p>
+                                                                    <p class="small text-muted">
+                                                                    Xin chào</p>
                                                                 </div>
                                                             </div>
                                                             <div class="pt-1">

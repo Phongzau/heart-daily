@@ -6,7 +6,7 @@
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label for="">Status</label> <br>
+                    <label for="">Trạng thái</label> <br>
                     <label class='custom-switch mt-2'>
                         <input type='checkbox'
                             {{ @$product_page_banner_section->banner_one->status === 1 ? 'checked' : '' }}
@@ -23,17 +23,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Image</label>
+                    <label for="">Ảnh banner </label>
                     <input type="file" name="banner_image" value="" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Url</label>
+                    <label for="">Đường dẫn</label>
                     <input type="text" name="banner_url"
                         value="{{ @$product_page_banner_section->banner_one->banner_url }}" class="form-control">
                 </div>
                 @can('edit-advertisements')
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 @endcan
             </form>
         </div>

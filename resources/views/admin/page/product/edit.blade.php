@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Product Edit
+    Heart Daily | Chỉnh sửa
 @endsection
 
 @section('css')
@@ -84,14 +84,14 @@
     <!-- Main Content -->
     <section class="section">
         <div class="section-header">
-            <h1>Products</h1>
+            <h1>Sản phẩm</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card bg-light">
                         <div class="card-header bg-white">
-                            <h4>Edit Product</h4>
+                            <h4>Chỉnh sửa</h4>
                         </div>
                         <div class="card-body">
                             <form id="add-form-product" action="{{ route('admin.products.update', $product->id) }}"
@@ -111,28 +111,26 @@
                                                     <li class="nav-item mr-1">
                                                         <a class="nav-link" id="product-variants-tab" data-toggle="tab"
                                                             href="#product-variants" role="tab"
-                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu
-                                                            sản
-                                                            phẩm</a>
+                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu sản phẩm</a>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content" id="productTabContent">
                                                     <div class="tab-pane fade show active" id="product-info" role="tabpanel"
                                                         aria-labelledby="product-info-tab">
                                                         <div class="form-group">
-                                                            <label for="">Name</label>
+                                                            <label for="">Tên</label>
                                                             <input type="text" name="name"
                                                                 value="{{ $product->name }}" class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="">Sku</label>
+                                                            <label for="">Mã</label>
                                                             <input type="text" name="sku" value="{{ $product->sku }}"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Price</label>
+                                                                    <label for="">Giá</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text"
@@ -148,7 +146,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Offer Price</label>
+                                                                    <label for="">Giá ưu đãi</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text"
@@ -167,7 +165,7 @@
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Offer Start Date</label>
+                                                                    <label for="">Ngày bắt đầu ưu đãi</label>
                                                                     <input type="text" name="offer_start_date"
                                                                         value="{{ $product->offer_start_date }}"
                                                                         class="form-control datepicker">
@@ -175,7 +173,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Offer End Date</label>
+                                                                    <label for="">Ngày kết thúc ưu đãi</label>
                                                                     <input type="text" name="offer_end_date"
                                                                         value="{{ $product->offer_end_date }}"
                                                                         class="form-control datepicker">
@@ -186,20 +184,20 @@
 
 
                                                         <div class="form-group">
-                                                            <label for="">Short Description</label>
+                                                            <label for="">Mô tả ngắn</label>
                                                             <textarea name="short_description" class="form-control">{{ $product->short_description }}</textarea>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="">Long Description</label>
+                                                            <label for="">Mô tả dài</label>
                                                             <textarea name="long_description" class="form-control summernote">{{ $product->long_description }}</textarea>
                                                         </div>
                                                         <div class="form-group ">
-                                                            <label for="inputState">Status</label>
+                                                            <label for="inputState">Trạng thái</label>
                                                             <select id="inputState" name="status" class="form-control">
                                                                 <option {{ $product->status == 1 ? 'selected' : '' }}
-                                                                    value="1">Active</option>
+                                                                    value="1">Bật</option>
                                                                 <option {{ $product->status == 0 ? 'selected' : '' }}
-                                                                    value="0">Inactive</option>
+                                                                    value="0">Tắt</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -208,10 +206,10 @@
                                                         <!-- Nội dung về các biến thể của sản phẩm -->
                                                         <div id="check_type">
                                                             <div class="form-group ">
-                                                                <label for="inputState">Type Product</label>
+                                                                <label for="inputState">Loại sản phẩm</label>
                                                                 <select id="select_type" name="type_product"
                                                                     class="form-control">
-                                                                    <option value="" hidden>--Select--</option>
+                                                                    <option value="" hidden>--Chọn--</option>
                                                                     <option
                                                                         {{ $product->type_product === 'product_simple' ? 'selected' : '' }}
                                                                         value="product_simple">Sản phẩm đơn giản
@@ -226,7 +224,7 @@
 
                                                         <div id="div-simple" style="display: none">
                                                             <div id="stock-quantity-group" class="form-group">
-                                                                <label for="">Stock Quantity</label>
+                                                                <label for="">Số lượng hàng</label>
                                                                 <input type="number" min="0" id="stock-quantity"
                                                                     name="qty" value="{{ $product->qty }}"
                                                                     class="form-control">
@@ -430,7 +428,7 @@
                                         <div class="card mt-3">
                                             <div class="card-body">
                                                 <button class="btn btn-primary" style="float: right;"
-                                                    type="submit">Update</button>
+                                                    type="submit">Cập nhật</button>
                                             </div>
                                         </div>
 

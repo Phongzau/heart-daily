@@ -9,45 +9,45 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Coupons</h1>
+            <h1>Thêm mới</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Create Coupon</h4>
+                            <h4>Thêm mã giảm giá</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.coupons.store') }}">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="">Name</label>
+                                    <label for="">Tên</label>
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Code</label>
+                                    <label for="">Mã</label>
                                     <input type="text" name="code" value="{{ old('code') }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Quantity</label>
+                                    <label for="">Số lượng</label>
                                     <input type="text" name="quantity" value="{{ old('quantity') }}"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Max Use Per Person</label>
+                                    <label for="">Lượt dùng</label>
                                     <input type="text" name="max_use" value="{{ old('name') }}" class="form-control">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">Start Date</label>
+                                            <label for="">Ngày bắt đầu</label>
                                             <input type="text" name="start_date" class="form-control datepicker">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">End Date</label>
+                                            <label for="">Ngày hết hạn</label>
                                             <input type="text" name="end_date" class="form-control datepicker">
                                         </div>
                                     </div>
@@ -55,19 +55,20 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group ">
-                                            <label for="inputState">Discount Type</label>
+                                            <label for="inputState">
+                                            Loại giảm giá</label>
                                             <select id="inputState" name="discount_type" class="form-control">
-                                                <option value="" hidden>Select</option>
+                                                <option value="" hidden>Chọn</option>
                                                 <option {{ old('discount_type') == 'percent' ? 'selected' : '' }}
-                                                    value="percent">Percentage (%)</option>
+                                                    value="percent">Tỉ lệ (%)</option>
                                                 <option {{ old('discount_type') == 'amount' ? 'selected' : '' }}
-                                                    value="amount">Amount (đ)</option>
+                                                    value="amount">Mức giảm (đ)</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label>Discount Value <code id="discount-label">(?)</code></label>
+                                            <label>Giá trị chiết khấu<code id="discount-label">(?)</code></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text" id="discount-unit">
@@ -85,19 +86,19 @@
                                         <!-- Tab "Not Available" -->
                                         <a class="nav-link active" id="not-available-tab" data-toggle="tab"
                                             href="#not-available" role="tab" aria-controls="not-available"
-                                            aria-selected="true">Not available</a>
+                                            aria-selected="true">Không có sẵn</a>
                                     </li>
                                     <li class="nav-item">
                                         <!-- Tab "Minimum Order Value" -->
                                         <a class="nav-link ml-1" id="min-order-value-tab" data-toggle="tab"
                                             href="#min-order-value" role="tab" aria-controls="min-order-value"
-                                            aria-selected="false">Minimum order value</a>
+                                            aria-selected="false">Giá trị đơn hàng tối thiểu</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent2">
                                     <div class="tab-pane fade show active" id="not-available" role="tabpanel"
                                         aria-labelledby="not-available-tab">
-                                        <label for="">Minium order value <code>(đ)</code></label>
+                                        <label for="">Giá trị đơn hàng tối thiểu <code>(đ)</code></label>
                                         {{-- <input type="number" readonly id="min_order_value" name="min_order_value"
                                             value="0" class="form-control"> --}}
                                         <input type="number" readonly id="min_order_value_display" value="0"
@@ -108,34 +109,34 @@
                                     </div>
                                     <div class="tab-pane fade" id="min-order-value" role="tabpanel"
                                         aria-labelledby="min-order-value-tab">
-                                        <label for="">Minium order value <code>(đ)</code></label>
+                                        <label for="">Giá trị đơn hàng tối thiểu <code>(đ)</code></label>
                                         <input type="number" id="min_order_value_edit" name="min_order_value"
                                             value="{{ old('min_order_value') }}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group mt-2">
-                                    <label for="inputState">Publish</label> <br>
+                                    <label for="inputState">Công khai</label> <br>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="customRadioInline1" name="is_publish" checked
                                             value="1" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadioInline1">Yes</label>
+                                        <label class="custom-control-label" for="customRadioInline1">Có</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="customRadioInline2" name="is_publish" value="0"
                                             class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadioInline2">No</label>
+                                        <label class="custom-control-label" for="customRadioInline2">Không</label>
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="inputState">Status</label>
+                                    <label for="inputState">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
-                                        <option {{ old('status') == '1' ? 'selected' : '' }} value="1">Active
+                                        <option {{ old('status') == '1' ? 'selected' : '' }} value="1">Bật
                                         </option>
-                                        <option {{ old('status') == '0' ? 'selected' : '' }} value="0">Inactive
+                                        <option {{ old('status') == '0' ? 'selected' : '' }} value="0">Tắt
                                         </option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </form>
                         </div>
                     </div>

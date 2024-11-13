@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Role Edit
+    Heart Daily | Vai trò
 @endsection
 
 @section('section')
@@ -9,21 +9,21 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Role</h1>
+            <h1>Vai trò</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Edit Role</h4>
+                            <h4>Chỉnh sửa vai trò</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <label for="">Name</label>
+                                    <label for="">Tên</label>
                                     <input type="text" name="name" value="{{ $role->name }}" class="form-control">
                                 </div>
                                 <div class="form-group">

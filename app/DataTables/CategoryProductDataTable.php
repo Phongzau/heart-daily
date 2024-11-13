@@ -96,13 +96,13 @@ class CategoryProductDataTable extends DataTable
     {
         return [
 
-            Column::make('id'),
-            Column::make('title'),
-            Column::make('parent_name'),
-            Column::make('level'),
+            Column::make('id')->title('ID'),
+            Column::make('title')->title('Tiêu đề'),
+            Column::make('parent_name')->title('Tên danh mục'),
+            Column::make('level')->title('Cấp'),
             Column::make('order'),
-            Column::make('status'),
-            Column::computed('action')
+            Column::make('status')->title('Trạng thái'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

@@ -97,14 +97,14 @@ class CategoryAttributeDataTable extends DataTable
     {
         return [
 
-            Column::make('id'),
-            Column::make('title'),
-            Column::make('slug'),
+            Column::make('id')->title('ID'),
+            Column::make('title')->title('Tiêu đề'),
+            Column::make('slug')->title('Đường dẫn dẫn'),
             Column::make('order'),
             Column::make('status'),
-            Column::make('created_by')->title('Created By'),
-            Column::make('updated_by')->title('Updated By'),
-            Column::computed('action')
+            Column::make('created_by')->title('Thêm bởi'),
+            Column::make('updated_by')->title('Cập nhật bởi'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

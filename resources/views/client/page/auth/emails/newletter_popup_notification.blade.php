@@ -499,7 +499,7 @@
                                             <tr>
                                                 <td align="center">
                                                     <a style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;font-weight:bold;"
-                                                        href="">UNSUBSCRIBE</a>
+                                                        href="">HỦY ĐĂNG KÝ</a>
                                                 </td>
                                             </tr>
                                         </table>

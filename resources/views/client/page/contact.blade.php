@@ -8,7 +8,7 @@
                     <a href="demo4.html"><i class="icon-home"></i></a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Contact Us
+                    Liên hệ với chúng tôi
                 </li>
             </ol>
         </div>

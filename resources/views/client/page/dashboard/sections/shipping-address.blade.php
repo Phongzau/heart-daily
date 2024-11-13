@@ -1,59 +1,59 @@
 <div class="tab-pane fade" id="shipping" role="tabpanel">
     <div class="address account-content mt-0 pt-2">
-        <h4 class="title mb-3">Shipping Address</h4>
+        <h4 class="title mb-3">Địa chỉ thanh toán</h4>
 
         <form class="mb-2" method="POST" action="{{ route('user.updateAddress') }}">
             @csrf
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>First name <span class="required">*</span></label>
-                        <input type="text" name="first_name" class="form-control" required placeholder="Fist Name"
+                        <label>Tên<span class="required">*</span></label>
+                        <input type="text" name="first_name" class="form-control" required placeholder="Nhập tên của bạn"
                             value="{{ old('first_name', Auth::user()->first_name) }}" />
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Last name <span class="required">*</span></label>
-                        <input type="text" name="last_name" class="form-control" required placeholder="Last Name"
+                        <label>Họ<span class="required">*</span></label>
+                        <input type="text" name="last_name" class="form-control" required placeholder="Nhập họ của bạn"
                             value="{{ old('last_name', Auth::user()->last_name) }}" />
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Phone </label>
-                <input type="text" name="phone" class="form-control" placeholder="Phone"
+                <label>Điện thoại </label>
+                <input type="text" name="phone" class="form-control" placeholder="Nhập SĐT của bạn"
                     value="{{ old('phone', Auth::user()->phone) }}">
             </div>
             <div class="form-group d-flex" style="gap: 10px">
                 <select id="province" name="province_id"
                     style="border: 1px solid #dfdfdf; height: 40px; color: #777; padding: 0.3rem 0.5rem; flex: 1;">
-                    <option value="" hidden>Province</option>
+                    <option value="" hidden>Thành phố/tỉnh</option>
                 </select>
 
                 <select id="district" name="district_id" disabled
                     style="border: 1px solid #dfdfdf; height: 40px; color: #777; padding: 0.3rem 0.5rem; flex: 1;">
-                    <option value="" hidden>District</option>
+                    <option value="" hidden>Quận/huyện</option>
                 </select>
 
                 <select id="commune" name="commune_id" disabled
                     style="border: 1px solid #dfdfdf; height: 40px; color: #777; padding: 0.3rem 0.5rem; flex: 1;">
-                    <option value="" hidden>Commune</option>
+                    <option value="" hidden>Phường/xã</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Address<span class="required">*</span></label>
-                <input type="text" name="address" class="form-control" required placeholder="Address"
+                <label>Địa chỉ<span class="required">*</span></label>
+                <input type="text" name="address" class="form-control" required placeholder="Nhập địa chỉ"
                     value="{{ old('address', Auth::user()->address) }}" />
             </div>
 
             <div class="form-footer mb-0">
                 <div class="form-footer-right">
                     <button type="submit" class="btn btn-dark py-4">
-                        Save Address
+                        Lưu
                     </button>
                 </div>
             </div>

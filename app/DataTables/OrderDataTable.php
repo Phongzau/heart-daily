@@ -118,16 +118,16 @@ class OrderDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('invoice_id'),
-            Column::make('customer'),
-            Column::make('date'),
-            Column::make('product_qty'),
-            Column::make('amount'),
-            Column::make('order_status'),
-            Column::make('payment_status'),
-            Column::make('payment_method'),
-            Column::computed('action')
+            Column::make('id')->title('ID'),
+            Column::make('invoice_id')->title('ID hóa đơn'),
+            Column::make('customer')->title('khách hàng'),
+            Column::make('date')->title('Ngày đặt'),
+            Column::make('product_qty')->title('Số lượng sản phẩm'),
+            Column::make('amount')->title('Số tiền'),
+            Column::make('order_status')->title('Trạng thái đơn hàng'),
+            Column::make('payment_status')->title('Trạng thái thanh toán'),
+            Column::make('payment_method')->title('Phương thức thanh toán'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

@@ -239,58 +239,58 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="demo4.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="category.html">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="demo4.html">TRang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="category.html">Cửa hàng</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            My Account
+                            Tài khoản của bạn
                         </li>
                     </ol>
                 </div>
             </nav>
 
-            <h1>My Account</h1>
+            <h1>Tài khoản của bạn</h1>
         </div>
     </div>
 
     <div class="container account-container custom-account-container">
         <div class="row">
             <div class="sidebar widget widget-dashboard mb-lg-0 mb-3 col-lg-3 order-0">
-                <h2 class="text-uppercase">My Account</h2>
+                <!-- <h2 class="text-uppercase">Tài khoản của bạn</h2> -->
                 <ul class="nav nav-tabs list flex-column mb-0" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="dashboard-tab" data-toggle="tab" href="#dashboard" role="tab"
-                            aria-controls="dashboard" aria-selected="true">Dashboard</a>
+                            aria-controls="dashboard" aria-selected="true">Trang tổng quan</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" id="order-tab" data-toggle="tab" href="#order" role="tab"
-                            aria-controls="order" aria-selected="true">Orders</a>
+                            aria-controls="order" aria-selected="true">Đơn đặt hàng</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab"
-                            aria-controls="download" aria-selected="false">Downloads</a>
+                            aria-controls="download" aria-selected="false">Tải xuống</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
-                            aria-controls="address" aria-selected="false">Addresses</a>
+                            aria-controls="address" aria-selected="false">Địa chỉ</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab"
-                            aria-controls="edit" aria-selected="false">Account
-                            details</a>
+                            aria-controls="edit" aria-selected="false">
+                            Chi tiết</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="shop-address-tab" data-toggle="tab" href="#shipping" role="tab"
-                            aria-controls="edit" aria-selected="false">Shopping Addres</a>
+                            aria-controls="edit" aria-selected="false">Địa chỉ mua sắm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('wishlist.index') }}">Wishlist</a>
+                        <a class="nav-link" href="{{ route('wishlist.index') }}">Yêu thích</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Logout</a>
+                        <a class="nav-link" href="{{ route('logout') }}">Đăng xuất</a>
                     </li>
                 </ul>
             </div>

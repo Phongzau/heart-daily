@@ -67,11 +67,10 @@ class RoleDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('name'),
-            Column::make('guard_name'),
-
-            Column::computed('action')
+            Column::make('id')->title('ID'),
+            Column::make('name')->title('Quyền'),
+            Column::make('guard_name')->title('Tên Bảo Mật'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

@@ -7,14 +7,14 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Blog Comment</h1>
+            <h1>Bình luận bài viết</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Blog Comment</h4>
+                            <h4>Danh sách bình luận</h4>
                         </div>
                         <div class="card-body">
                             {{ $dataTable->table() }}

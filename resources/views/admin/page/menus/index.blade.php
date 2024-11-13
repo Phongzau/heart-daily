@@ -16,11 +16,11 @@
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Menu Table</h4>
+                            <h4>Danh sách menu</h4>
                             @can('create-menus')
                             <div class="card-header-action">
                                 <a href="{{ route('admin.menus.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                                    Create New</a>
+                                    Thêm mới</a>
                             </div>@endcan
                         </div>
                         <div class="card-body">

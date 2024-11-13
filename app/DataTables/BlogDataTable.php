@@ -97,12 +97,12 @@ class BlogDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->width(70),
-            Column::make('image')->width(150),
-            Column::make('title')->width(250),
-            Column::make('blog_category')->width(200),
-            Column::make('status'),
-            Column::computed('action')
+            Column::make('id')->title('ID')->width(70),
+            Column::make('image')->title('Ảnh')->width(150),
+            Column::make('title')->title('Tiêu đề')->width(250),
+            Column::make('blog_category')->title('Danh mục bài viết')->width(200),
+            Column::make('status')->title('Trạng thái'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(value: 200)

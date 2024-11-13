@@ -9,14 +9,14 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Abouts</h1>
+            <h1>Giới thiệu</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>About</h4>
+                            <h4>Giới thiệu</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.abouts.update') }}">

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Role
+    Heart Daily | Vai trò
 @endsection
 
 @section('section')
@@ -9,17 +9,17 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Role</h1>
+            <h1>Vai trò</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Role Table</h4>
+                            <h4>Bảng vai trò</h4>
                             <div class="card-header-action">
                                 <a href="{{ route('admin.roles.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                                    Create New</a>
+                                    Thêm mới</a>
                             </div>
                         </div>
                         <div class="card-body">

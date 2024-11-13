@@ -100,17 +100,17 @@ class CouponDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->width(60),
-            Column::make('name')->width(200),
-            Column::make('code')->width(130),
-            Column::make('discount_type')->width(200),
-            Column::make('discount')->width(200),
-            Column::make('min_order_value')->width(200),
-            Column::make('total_used')->width(150),
-            Column::make('start_date')->width(200),
-            Column::make('end_date')->width(200),
-            Column::make('status')->width(130),
-            Column::computed('action')
+            Column::make('id')->title('ID')->width(60),
+            Column::make('name')->title('Tên')->width(200),
+            Column::make('code')->title('Mã')->width(130),
+            Column::make('discount_type')->title('Loại giảm giá')->width(200),
+            Column::make('discount')->title('giảm giá')->width(200),
+            Column::make('min_order_value')->title('giá trị tối thiểu')->width(200),
+            Column::make('total_used')->title('Lượt dùng')->width(150),
+            Column::make('start_date')->title('Ngày bắt đầu')->width(200),
+            Column::make('end_date')->title('Ngày hết hạn')->width(200),
+            Column::make('status')->title('Trạng thái')->width(130),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

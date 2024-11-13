@@ -1,11 +1,12 @@
 @if ($reviews->isEmpty())
     <div id="text-review" class="text-center">
         <span style="font-size: 28px;
-                            font-weight: 700">Hãy làm
-            người bình luận đầu
+                font-weight: 700">Hãy là
+            người bình luận đầu tiên
             tiên</span> <br>
-        <span style="font-size: 16px;
-                            font-weight: 700;">(Mua hàng mới được đánh giá)</span>
+        <span style="font-size: 16px; font-weight: 700;">
+            (Bạn cần mua hàng để đánh giá sản phẩm!)
+        </span>
     </div>
 @else
     @foreach ($reviews as $item)

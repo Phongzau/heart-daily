@@ -5,17 +5,17 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Attributes</h1>
+            <h1>Thuộc tính</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Attributes</h4>
+                            <h4>Danh sách thuộc tính</h4>
                             @can('create-attributes')
                                 <div class="card-header-action">
-                                    <a href="{{ route('admin.attributes.create') }}" class="btn btn-primary">Create New</a>
+                                    <a href="{{ route('admin.attributes.create') }}" class="btn btn-primary">Thêm mới</a>
                                 </div>
                             @endcan
                         </div>

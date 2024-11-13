@@ -9,14 +9,14 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Newletter Popup</h1>
+            <h1>Quảng cáo Popup</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card bg-light">
                         <div class="card-header bg-white">
-                            <h4>Edit Newletter Popup</h4>
+                            <h4>Chỉnh sửa quảng cáo Popup</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.popups.update', $popups->id) }}"
@@ -29,26 +29,26 @@
                                             <div class="card-body">
                                                 <div class="tab-content" id="productTabContent">
                                                     <div class="form-group">
-                                                        <label for="">Url</label>
+                                                        <label for="">Đường dẫn</label>
                                                         <input type="text" name="title" value="{{ $popups->title }}"
                                                             class="form-control">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="">Description</label>
+                                                        <label for="">Mô tả</label>
                                                         <input type="text" name="description"
                                                             value="{{ $popups->description }}" class="form-control">
                                                     </div>
                                                     <div class="form-group ">
-                                                        <label for="inputState">Status</label>
+                                                        <label for="inputState">Trạng thái</label>
                                                         <select id="inputState" name="status" class="form-control">
-                                                            <option value="" hidden>--Select--</option>
+                                                            <option value="" hidden>--Chọn--</option>
                                                             <option {{ $popups->status == 1 ? 'selected' : '' }}
-                                                                value="1">Active</option>
+                                                                value="1">Bật</option>
                                                             <option {{ $popups->status == 0 ? 'selected' : '' }}
-                                                                value="0">Inactive</option>
+                                                                value="0">Tắt</option>
                                                         </select>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +63,7 @@
                                                     <div
                                                         style="width: 200px; display: flex; flex-direction: column; align-items: center;">
                                                         <label style="width: 100%; text-align: center"
-                                                            for="">Image</label>
+                                                            for="">Ảnh</label>
                                                         <br>
                                                         <img id="currentImage"
                                                             style="width: 100%; padding: 0 10px;max-height: 300px;"
@@ -82,7 +82,7 @@
                                                             <!-- Nút upload ảnh mới -->
                                                             <label for="imageUpload"
                                                                 style="padding: 0.5rem 1rem; margin-bottom: unset !important; border-radius: 10px; background-color: black; color: #fff; display: flex; justify-content: center; align-items: center">Upload
-                                                                Image</label>
+                                                                Ảnh</label>
                                                             <input type="file" name="image" id="imageUpload"
                                                                 class="form-control" accept="image/*" style="display: none">
 

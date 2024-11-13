@@ -5,7 +5,7 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Advertisement</h1>
+            <h1>Phương thức thanh toán</h1>
         </div>
         <div class="section-body">
             <div class="row">

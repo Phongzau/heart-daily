@@ -112,13 +112,13 @@
     <div class="container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
             <li class="active">
-                <a href="{{ route('cart-details') }}">Shopping Cart</a>
+                <a href="{{ route('cart-details') }}">Giỏ hàng</a>
             </li>
             <li>
-                <a href="{{ route('checkout') }}">Checkout</a>
+                <a href="{{ route('checkout') }}">Thanh toán</a>
             </li>
             <li class="disabled">
-                <a href="cart.html">Order Complete</a>
+                <a href="cart.html">Hoàn thành đơn hàng</a>
             </li>
         </ul>
         <div class="row">
@@ -135,10 +135,10 @@
                                         </a>
                                     @endif
                                 </th>
-                                <th class="product-col">Product</th>
-                                <th class="price-col">Price</th>
-                                <th class="qty-col">Quantity</th>
-                                <th class="text-right">Subtotal</th>
+                                <th class="product-col">Sản phẩm</th>
+                                <th class="price-col">Giá</th>
+                                <th class="qty-col">Số lượng</th>
+                                <th class="text-right">Tổng cộng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -207,25 +207,24 @@
                                                         value="{{ session()->has('coupon') ? session()->get('coupon')['coupon_code'] : '' }}"
                                                         name="coupon_code">
 
-                                                    <button class="btn btn-sm" type="submit">Apply
-                                                        Coupon</button>
+                                                    <button class="btn btn-sm" type="submit">Áp dụng mã giảm giá</button>
 
                                                 </div><!-- End .input-group -->
                                             </form>
                                         </div>
                                     </div><!-- End .float-left -->
                                     <div class="">
-                                        <button class="btn choose-coupon btn-sm" id="openSidebarBtn" type="submit">Choose
-                                            coupon</button>
+                                        <button class="btn choose-coupon btn-sm" id="openSidebarBtn" type="submit">Chọn
+                                        mã giảm giá</button>
                                     </div>
                                     <div style="width: 350px;" class="float-right">
                                         <div class="cart-summary">
-                                            <h3>CART TOTALS</h3>
+                                            <h3>TỔNG GIỎ HÀNG</h3>
 
                                             <table class="table table-totals">
                                                 <tbody>
                                                     <tr>
-                                                        <td>Subtotal:</td>
+                                                        <td>Tổng cộng:</td>
                                                         <td id="sub_total" style="color: black; font-weight: 700">
                                                             {{ number_format(getCartTotal()) }} VND
                                                         </td>
@@ -234,12 +233,12 @@
                                                 </tbody>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Ship COD:</td>
+                                                        <td>Phí ship (+):</td>
                                                         <td style="color: black; font-weight: 700">
                                                             {{ number_format(getCartCod()) }} VND</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Coupon(-):</td>
+                                                        <td>Mã giảm(-):</td>
                                                         <td id="discount" style="color: black; font-weight: 700">
                                                             {{ number_format(getCartDiscount()) }} VND</td>
                                                     </tr>
@@ -247,7 +246,7 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <td>Total:</td>
+                                                        <td>Tổng:</td>
                                                         <td id="total" style="font-size: 16px;">
                                                             {{ number_format(getMainCartTotal()) }}
                                                             VND</td>
@@ -274,26 +273,26 @@
             </div>
             <div class="col-lg-4">
                 <div class="cart-summary">
-                    <h3>CART TOTALS</h3>
+                    <h3>TỔNG GIỎ HÀNG</h3>
 
                     <table class="table table-totals">
                         <tbody>
                             <tr>
-                                <td>Subtotal</td>
+                                <td>Tổng cộng</td>
                                 <td><strong style="color: black">{{ number_format(getCartTotal()) }} VND</strong></td>
                             </tr>
 
                         </tbody>
                         <tbody>
                             <tr>
-                                <td>Coupon(-)</td>
+                                <td>Mã giảm(-)</td>
                                 <td><strong style="color: black">0 VND</strong></td>
                             </tr>
 
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td>Total</td>
+                                <td>Tổng</td>
                                 <td>$17.90</td>
                             </tr>
                         </tfoot>

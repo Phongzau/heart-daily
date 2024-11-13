@@ -16,11 +16,11 @@
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Banner Table</h4>
+                            <h4>Danh sách banners</h4>
                             @can('create-banners')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.banners.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Create New</a>
+                                            class="fas fa-plus"></i> Thêm mới</a>
                                 </div>
                             @endcan
                         </div>

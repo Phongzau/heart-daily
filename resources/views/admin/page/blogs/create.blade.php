@@ -9,14 +9,14 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Blogs</h1>
+            <h1>Thêm mới</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card bg-light">
                         <div class="card-header bg-white">
-                            <h4>Create Blogs</h4>
+                            <h4>Thêm mới bài viết</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.blogs.store') }}" enctype="multipart/form-data">
@@ -27,20 +27,20 @@
                                             <div class="card-body">
 
                                                 <div class="form-group">
-                                                    <label for="">Title</label>
+                                                    <label for="">Tiêu đề</label>
                                                     <input type="text" name="title" value="{{ old('title') }}"
                                                         class="form-control">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="">Description</label>
+                                                    <label for="">Mô tả</label>
                                                     <textarea name="description" class="form-control summernote" rows="5" required>{{ old('description') }}</textarea>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="">Blog Category Name</label>
+                                                    <label for="">Tên danh mục bài viết</label>
                                                     <select name="blog_category_id" class="form-control">
-                                                        <option value="" hidden>--Select--</option>
+                                                        <option value="" hidden>--Chọn--</option>
                                                         @foreach ($categories as $cate)
                                                             <option value="{{ $cate->id }}"
                                                                 {{ old('blog_category_id') == $cate->id ? 'selected' : '' }}>
@@ -61,7 +61,7 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <button class="btn btn-primary" type="submit">Create</button>
+                                                <button class="btn btn-primary" type="submit">Thêm</button>
 
                                             </div>
                                         </div>
@@ -70,7 +70,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="customField">Image Main</label>
+                                                    <label for="customField">Ảnh chính</label>
                                                     <!-- Hình ảnh đại diện -->
                                                     <div class="image-placeholder"
                                                         style="width: 100%; height: 300px; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
@@ -83,8 +83,7 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image" class="d-none"
                                                             accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Upload
-                                                            file...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -96,7 +95,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

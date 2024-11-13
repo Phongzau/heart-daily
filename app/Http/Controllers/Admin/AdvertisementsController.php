@@ -19,22 +19,22 @@ class AdvertisementsController extends Controller
         $homepage_section_banner_one = Advertisement::query()->where('key', 'homepage_section_banner_one')->first();
         $homepage_section_banner_one = json_decode($homepage_section_banner_one?->value);
 
-        $homepage_section_banner_two = Advertisement::query()->where('key', 'homepage_section_banner_two')->first();
-        $homepage_section_banner_two = json_decode($homepage_section_banner_two?->value);
+        // $homepage_section_banner_two = Advertisement::query()->where('key', 'homepage_section_banner_two')->first();
+        // $homepage_section_banner_two = json_decode($homepage_section_banner_two?->value);
 
-        $homepage_section_banner_three = Advertisement::query()->where('key', 'homepage_section_banner_three')->first();
-        $homepage_section_banner_three = json_decode($homepage_section_banner_three?->value);
+        // $homepage_section_banner_three = Advertisement::query()->where('key', 'homepage_section_banner_three')->first();
+        // $homepage_section_banner_three = json_decode($homepage_section_banner_three?->value);
 
-        $homepage_section_banner_four = Advertisement::query()->where('key', 'homepage_section_banner_four')->first();
-        $homepage_section_banner_four = json_decode($homepage_section_banner_four?->value);
+        // $homepage_section_banner_four = Advertisement::query()->where('key', 'homepage_section_banner_four')->first();
+        // $homepage_section_banner_four = json_decode($homepage_section_banner_four?->value);
 
-        $product_page_banner_section = Advertisement::query()->where('key', 'product_page_banner_section')->first();
-        $product_page_banner_section = json_decode($product_page_banner_section?->value);
+        // $product_page_banner_section = Advertisement::query()->where('key', 'product_page_banner_section')->first();
+        // $product_page_banner_section = json_decode($product_page_banner_section?->value);
 
-        $cart_page_banner_section = Advertisement::query()->where('key', 'cart_page_banner_section')->first();
-        $cart_page_banner_section = json_decode($cart_page_banner_section?->value);
+        // $cart_page_banner_section = Advertisement::query()->where('key', 'cart_page_banner_section')->first();
+        // $cart_page_banner_section = json_decode($cart_page_banner_section?->value);
 
-        return view('admin.page.advertisement.index', compact(['homepage_section_banner_one', 'homepage_section_banner_two', 'homepage_section_banner_three', 'homepage_section_banner_four', 'product_page_banner_section', 'cart_page_banner_section']));
+        return view('admin.page.advertisement.index', compact(['homepage_section_banner_one',]));
     }
 
     /**
@@ -127,7 +127,7 @@ class AdvertisementsController extends Controller
             ['value' => $value]
         );
 
-        toastr('Updated Successfully!', 'success');
+        toastr('Cập nhật thành công!', 'success');
 
         return redirect()->back();
     }

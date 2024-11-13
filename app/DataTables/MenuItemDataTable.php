@@ -97,16 +97,16 @@ class MenuItemDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->width(100),
-            Column::make('title')->width(200),
-            Column::make('parent_name')->width(200),
-            Column::make('order')->width(150),
-            Column::make('url')->width(150),
-            Column::make('menu_name')->width(150),
-            Column::make('status')->width(150),
-            Column::make('userid_created')->width(150),
-            Column::make('userid_updated')->width(150),
-            Column::computed('action')
+            Column::make('id')->title('ID')->width(100),
+            Column::make('title')->title('Tiêu đề')->width(200),
+            Column::make('parent_name')->title('Tên danh mục')->width(200),
+            Column::make('order')->title('Vị trí')->width(150),
+            Column::make('url')->title('Đường dẫn')->width(150),
+            Column::make('menu_name')->title('Tên menu')->width(150),
+            Column::make('status')->title('Trạng thái')->width(150),
+            Column::make('userid_created')->title('Người thêm')->width(150),
+            Column::make('userid_updated')->title('Người cập nhật')->width(150),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

@@ -1,6 +1,6 @@
             <section class="new-products-section">
                 <div class="container">
-                    <h2 class="section-title heading-border ls-20 border-0">New Arrivals</h2>
+                    <h2 class="section-title heading-border ls-20 border-0">Hàng mới</h2>
 
                     <div class="products-slider custom-products owl-carousel owl-theme nav-outer show-nav-hover nav-image-center mb-2"
                         data-owl-options="{
@@ -75,13 +75,13 @@
                                                     value="{{ $product->id }}">
                                                 <button type="submit"
                                                     class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
-                                                        class="icon-shopping-cart"></i><span>ADD TO CART</span></button>
+                                                        class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ</span></button>
                                             </form>
                                         @elseif ($product->type_product === 'product_variant')
                                             <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
                                                 class="btn-icon btn-add-cart"><i
-                                                    class="fa fa-arrow-right"></i><span>SELECT
-                                                    OPTIONS</span></a>
+                                                    class="fa fa-arrow-right"></i><span>LỰA CHỌN LOẠI
+                                                    </span></a>
                                         @endif
                                         <a href="ajax/product-quick-view.html" class="btn-quickview"
                                             title="Quick View"><i class="fas fa-external-link-alt"></i></a>

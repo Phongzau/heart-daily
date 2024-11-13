@@ -90,11 +90,11 @@ class MenuDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('title'),
-            Column::make('slug'),
-            Column::make('status'),
-            Column::computed('action')
+            Column::make('id')->title('ID'),
+            Column::make('title')->title('Tiêu đề'),
+            Column::make('slug')->title('Đường dẫn'),
+            Column::make('status')->title('Trạng thái'),
+            Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

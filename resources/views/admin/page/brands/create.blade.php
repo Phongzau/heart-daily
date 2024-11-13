@@ -9,14 +9,14 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Brands</h1>
+            <h1>Thêm mới</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card bg-light">
                         <div class="card-header bg-white">
-                            <h4>Create brands</h4>
+                            <h4>Thêm mới thương hiệu</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.brands.store') }}" method="post"
@@ -27,33 +27,33 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label class="fw-bold">Name</label>
+                                                    <label class="fw-bold">Tên</label>
                                                     <input type="text" class="form-control" id="name" name="name"
                                                         value="{{ old('name') }}">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="fw-bold">Description</label>
+                                                    <label class="fw-bold">Mô tả</label>
                                                     <input type="text" class="form-control" name="description"
                                                         value="{{ old('description') }}">
                                                 </div>
 
                                                 <div class="form-group ">
-                                                    <label for="inputState">Status</label>
+                                                    <label for="inputState">Trạng thái</label>
                                                     <select id="inputState" name="status" class="form-control"
                                                         value="{{ old('status') }}">
                                                         <option value="" hidden>--Select--</option>
                                                         <option {{ old('status') === '1' ? 'selected' : '' }}
-                                                            value="1">Active
+                                                            value="1">bật
                                                         </option>
                                                         <option {{ old('status') === '0' ? 'selected' : '' }}
                                                             value="0">
-                                                            Inactive
+                                                            Tắt
                                                         </option>
                                                     </select>
                                                 </div>
 
-                                                <button class="btn btn-primary" type="submit">Create</button>
+                                                <button class="btn btn-primary" type="submit">Thêm</button>
                                             </div>
                                         </div>
 
@@ -63,7 +63,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="customField">Image Main</label>
+                                                    <label for="customField">Ảnh chỉnh</label>
                                                     <!-- Hình ảnh đại diện -->
                                                     <div class="image-placeholder"
                                                         style="width: 100%; height: 300px; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
@@ -76,8 +76,7 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image" class="d-none"
                                                             accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Upload
-                                                            file...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,16 +84,14 @@
                                     </div>
                                 </div>
 
-
-
                                 {{-- <div class="form-group">
-                                    <label class="fw-bold">Name</label>
+                                    <label class="fw-bold">Tên</label>
                                     <input type="text" class="form-control" id="name" name="name"
                                         value="{{ old('name') }}">
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="fw-bold">Image:</label>
+                                    <label class="fw-bold">Ảnh:</label>
                                     <input type="file" class="form-control" id="imageUpload" name="image"
                                         accept="image/*">
                                 </div>
@@ -106,21 +103,20 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="fw-bold">Description</label>
+                                    <label class="fw-bold">Mô tả</label>
                                     <input type="text" class="form-control" name="description"
                                         value="{{ old('description') }}">
                                 </div>
 
                                 <div class="form-group ">
-                                    <label for="inputState">Status</label>
+                                    <label for="inputState">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control" value="{{ old('status') }}">
                                         <option value="" hidden>--Select--</option>
-                                        <option {{ old('status') === '1' ? 'selected' : '' }} value="1">Active</option>
-                                        <option {{ old('status') === '0' ? 'selected' : '' }} value="0">Inactive
+                                        <option {{ old('status') === '1' ? 'selected' : '' }} value="1">Bật</option>
+                                        <option {{ old('status') === '0' ? 'selected' : '' }} value="0">Tắt
                                         </option>
                                     </select>
                                 </div> --}}
-
 
                             </form>
                         </div>

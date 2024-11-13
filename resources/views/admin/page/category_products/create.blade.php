@@ -7,14 +7,14 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Create Category Product</h1>
+            <h1>Thêm mới</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Create Category Product</h4>
+                            <h4>Thêm mới danh mục sản phẩm/h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.category_products.store') }}">
@@ -24,7 +24,7 @@
                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="status">Parent Category</label>
+                                    <label for="status">Danh mục gốc</label>
                                     <select name="parent_id" class="form-control parent">
                                         <option value="0">Danh Mục Cha</option>
                                         @foreach ($categoryProduct as $key => $value)
@@ -40,13 +40,13 @@
                                         class="form-control order">
                                 </div>
                                 <div class="form-group">
-                                    <label for="status">Status</label>
+                                    <label for="status">Trạng thái</label>
                                     <select name="status" class="form-control">
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
+                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Bật</option>
+                                        <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Tắt</option>
                                     </select>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Create</button>
+                                <button class="btn btn-primary" type="submit">Thêm</button>
                             </form>
                         </div> <!-- End of card-body -->
                     </div> <!-- End of card -->

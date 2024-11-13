@@ -9,18 +9,18 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Blogs</h1>
+            <h1>Bài viết</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Blogs Table</h4>
+                            <h4>Danh sách bài viết</h4>
                             @can('create-blogs')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.blogs.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Create New</a>
+                                            class="fas fa-plus"></i> Thêm mới</a>
                                 </div>
                             @endcan
                         </div>

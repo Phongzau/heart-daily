@@ -5,7 +5,7 @@
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <h5>Banner One</h5>
+                <h5>Banner 1</h5>
                 <div class="form-group">
                     <label for="">Status</label> <br>
                     <label class='custom-switch mt-2'>
@@ -24,19 +24,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Image</label>
+                    <label for="">Ảnh Banner</label>
                     <input type="file" name="banner_one_image" value="" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Url</label>
+                    <label for="">Đường dẫn Banner</label>
                     <input type="text" name="banner_one_url"
                         value="{{ @$homepage_section_banner_one->banner_one->banner_one_url }}" class="form-control">
                 </div>
                 <hr>
                 <h5>Banner Two</h5>
                 <div class="form-group">
-                    <label for="">Status</label> <br>
+                    <label for="">Trạng thái</label> <br>
                     <label class='custom-switch mt-2'>
                         <input type='checkbox'
                             {{ @$homepage_section_banner_one->banner_two->status === 1 ? 'checked' : '' }}
@@ -53,19 +53,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Image</label>
+                    <label for="">Ảnh banner</label>
                     <input type="file" name="banner_two_image" value="" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Url</label>
+                    <label for="">Đường dẫn banner</label>
                     <input type="text" name="banner_two_url"
                         value="{{ @$homepage_section_banner_one->banner_two->banner_two_url }}" class="form-control">
                 </div>
                 <hr>
-                <h5>Banner thre</h5>
+                <h5>Banner 2</h5>
                 <div class="form-group">
-                    <label for="">Status</label> <br>
+                    <label for="">Trạng thái</label> <br>
                     <label class='custom-switch mt-2'>
                         <input type='checkbox'
                             {{ @$homepage_section_banner_one->banner_three->status === 1 ? 'checked' : '' }}
@@ -82,18 +82,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Image</label>
+                    <label for="">Ảnh Banner</label>
                     <input type="file" name="banner_three_image" value="" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="">Banner Url</label>
+                    <label for="">Đường dẫn Banner</label>
                     <input type="text" name="banner_three_url"
                         value="{{ @$homepage_section_banner_one->banner_three->banner_three_url }}"
                         class="form-control">
                 </div>
                 @can('edit-advertisements')
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 @endcan
             </form>
         </div>

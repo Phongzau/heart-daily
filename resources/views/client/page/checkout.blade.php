@@ -6,36 +6,35 @@
     <div class="container checkout-container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
             <li>
-                <a href="{{ route('cart-details') }}">Shopping Cart</a>
+                <a href="{{ route('cart-details') }}">Giỏ hàng</a>
             </li>
             <li class="active">
-                <a href="{{ route('checkout') }}">Checkout</a>
+                <a href="{{ route('checkout') }}">Thanh toán</a>
             </li>
             <li class="disabled">
-                <a href="#">Order Complete</a>
+                <a href="#">Hoàn thành đơn hàng</a>
             </li>
         </ul>
 
-
-
         <div class="checkout-discount">
-            <h4>Have a coupon?
+            <h4>Bạn có phiếu giảm giá không?
                 <button data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne"
-                    class="btn btn-link btn-toggle">ENTER YOUR CODE</button>
+                    class="btn btn-link btn-toggle">
+                    NHẬP MÃ CỦA BẠN</button>
             </h4>
 
             <div id="collapseTwo" class="collapse">
                 <div class="feature-box">
                     <div class="feature-box-content">
-                        <p>If you have a coupon code, please apply it below.</p>
+                        <p>Nếu bạn có mã giảm giá vui lòng áp dụng bên dưới.</p>
 
                         <form action="#">
                             <div class="input-group">
-                                <input type="text" class="form-control form-control-sm w-auto" placeholder="Coupon code"
+                                <input type="text" class="form-control form-control-sm w-auto" placeholder="Nhập mã"
                                     required="" />
                                 <div class="input-group-append">
                                     <button class="btn btn-sm mt-0" type="submit">
-                                        Apply Coupon
+                                        Áp dụng mã
                                     </button>
                                 </div>
                             </div>
@@ -49,22 +48,22 @@
             <div class="col-lg-7">
                 <ul class="checkout-steps">
                     <li>
-                        <h2 class="step-title">Billing details</h2>
+                        <h2 class="step-title">Chi tiết thanh toán</h2>
 
                         <form method="POST" action="{{ route('checkout.process') }}" id="checkout-form">
                             @csrf
-                            <label>Contact</label>
+                            <label>Thông tin liên hệ</label>
                             <div class="form-group">
                                 {{-- <input type="text" class="form-control" id="name" name="name" required
                                     placeholder="Fist name" /> --}}
                                 <input type="text" name="first_name" class="form-control" required
-                                    value="{{ old('first_name', Auth::user()->first_name) }}" />
+                                    value="{{ old('first_name', Auth::user()->first_name) }}" placeholder="Nhập tên của bạn" >
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="text" name="phone" class="form-control"
-                                            value="{{ old('phone', Auth::user()->phone) }}">
+                                            value="{{ old('phone', Auth::user()->phone) }}"placeholder="Nhập SĐT của bạn" >
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -75,14 +74,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <label>Address</label>
-
+                            
+                            <label>Địa chỉ</label>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <select id="province" name="province_id"
                                             style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:100%; padding: 0.3rem 0.5rem;">
-                                            <option value="">Province</option>
+                                            <option value="">Thành phố/tỉnh</option>
                                         </select>
                                     </div>
                                 </div>
@@ -90,16 +89,15 @@
                                     <div class="form-group">
                                         <select id="district" name="district_id" disabled
                                             style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:100%; padding: 0.3rem 0.5rem;">
-                                            <option value="">District</option>
+                                            <option value="">Quận/huyện</option>
                                         </select>
-
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <select id="commune" name="commune_id" disabled
                                             style="border: 1px solid #dfdfdf; height: 40px; color: #777; width:100%; padding: 0.3rem 0.5rem;">
-                                            <option value="">Commune</option>
+                                            <option value="">Xã/phường</option>
                                         </select>
                                     </div>
                                 </div>
@@ -115,23 +113,22 @@
                                         <input type="checkbox" class="custom-control-input" id="create-account" />
                                         <label class="custom-control-label" data-toggle="collapse"
                                             data-target="#collapseThree" aria-controls="collapseThree"
-                                            for="create-account">Create an
-                                            account?</label>
+                                            for="create-account">Tạo bảo mật tài khoản?</label>
                                     </div>
                                 </div>
 
                                 <div id="collapseThree" class="collapse">
                                     <div class="form-group">
-                                        <label>Create account password
+                                        <label>
+                                        Tạo mật khẩu tài khoản
                                             <abbr class="required" title="required">*</abbr></label>
                                         <input type="password" placeholder="Password" class="form-control" required />
                                     </div>
                                 </div> --}}
 
                             <div class="form-group">
-                                <label class="order-comments">Order notes (optional)</label>
-                                <textarea class="form-control" id="order_comments" name="order_comments"
-                                    placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                <label class="order-comments">Ghi chú đơn hàng</label>
+                                <textarea class="form-control" id="order_comments" name="order_comments"></textarea>
                             </div>
 
                     </li>
@@ -141,12 +138,12 @@
 
             <div class="col-lg-5">
                 <div class="order-summary">
-                    <h3>YOUR ORDER</h3>
+                    <h3>Đơn hàng của bạn</h3>
 
                     <table class="table table-mini-cart">
                         <thead>
                             <tr>
-                                <th colspan="2">Product</th>
+                                <th colspan="2">Sản phẩm</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -194,12 +191,10 @@
                         </tbody>
                         <tfoot>
 
-
-
                             <tr>
                                 <td class="product-col">
                                     <h3 class="product-title">
-                                        Coupon
+                                        Mã giảm giá
                                     </h3>
                                 </td>
 
@@ -234,10 +229,9 @@
                         </div>
                     </div>
 
-
-                    <button type="submit" class="btn btn-dark btn-place-order" form="checkout-form">
-                        Place order
+                    <button type="submit" class="btn btn-dark btn-place-order"form="checkout-form">Đặt hàng
                     </button>
+
                     </form>
                 </div>
                 <!-- End .cart-summary -->
@@ -282,8 +276,8 @@
                         }
                     });
                 } else {
-                    $('#district').prop('disabled', true).html('<option value="">Select District</option>');
-                    $('#commune').prop('disabled', true).html('<option value="">Select Commune</option>');
+                    $('#district').prop('disabled', true).html('<option value="">Chọn</option>');
+                    $('#commune').prop('disabled', true).html('<option value="">Chọn</option>');
                 }
             });
 
@@ -293,13 +287,13 @@
                 if (district_id) {
                     $('#commune').prop('disabled', false);
                     $.getJSON(`/districts/${district_id}/communes`, function(communes) {
-                        $('#commune').html('<option value="">Select Commune</option>');
+                        $('#commune').html('<option value="">Chọn</option>');
                         $('#commune').append(communes.map(function(commune) {
-                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'selected' : ''}>${commune.title}</option>`;
+                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'Chọn' : ''}>${commune.title}</option>`;
                         }));
                     });
                 } else {
-                    $('#commune').prop('disabled', true).html('<option value="">Select Commune</option>');
+                    $('#commune').prop('disabled', true).html('<option value="">Chọn</option>');
                 }
             });
         });

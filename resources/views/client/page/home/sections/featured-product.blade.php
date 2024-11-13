@@ -1,6 +1,6 @@
 <section class="featured-products-section">
     <div class="container">
-        <h2 class="section-title heading-border ls-20 border-0">Featured Products</h2>
+        <h2 class="section-title heading-border ls-20 border-0">Sản phẩm nổi bật</h2>
 
         <div class="products-slider custom-products owl-carousel owl-theme nav-outer show-nav-hover nav-image-center"
             data-owl-options="{

@@ -1,7 +1,7 @@
             <section class="blog-section pb-0">
                 <div class="container">
-                    <h2 class="section-title heading-border border-0 appear-animate" data-animation-name="fadeInUp">Latest
-                        News</h2>
+                    <h2 class="section-title heading-border border-0 appear-animate" data-animation-name="fadeInUp">
+                        Tin tức mới nhất</h2>
 
                     <div class="owl-carousel owl-theme appear-animate" data-animation-name="fadeIn"
                         data-owl-options="{
@@ -56,7 +56,9 @@
                             <!-- End .post -->
                         @endforeach
                     </div>
-                    <hr class="mt-0 m-b-5">
+                    
+                    <h2 class="section-title heading-border border-0 appear-animate" data-animation-name="fadeInUp">
+                        Thương hiệu</h2>
                     <div class="brands-slider owl-carousel owl-theme images-center appear-animate"
                         data-animation-name="fadeIn" data-animation-duration="500"
                         data-owl-options="{
@@ -75,7 +77,7 @@
                     <div class="product-widgets-container row pb-2">
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="200">
-                            <h4 class="section-sub-title">Featured Products</h4>
+                            <h4 class="section-sub-title">Sản phẩm nổi bật</h4>
                             @foreach ($topProducts as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
@@ -117,7 +119,8 @@
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="500">
-                            <h4 class="section-sub-title">Best Selling Products</h4>
+                            <h4 class="section-sub-title">
+                                Sản phẩm bán chạy nhất</h4>
                             @foreach ($topProducts as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
@@ -159,7 +162,7 @@
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="800">
-                            <h4 class="section-sub-title">Latest Products</h4>
+                            <h4 class="section-sub-title">Sản phẩm mới nhất</h4>
                             @foreach ($products->take(3) as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>
@@ -202,7 +205,7 @@
 
                         <div class="col-lg-3 col-sm-6 pb-5 pb-md-0 appear-animate"
                             data-animation-name="fadeInLeftShorter" data-animation-delay="1100">
-                            <h4 class="section-sub-title">Most Viewed Product</h4>
+                            <h4 class="section-sub-title">Sản phẩm được xem nhiều nhất</h4>
                             @foreach ($topViewedProducts as $product)
                                 <div class="product-default left-details product-widget">
                                     <figure>

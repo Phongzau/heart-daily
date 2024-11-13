@@ -10,7 +10,7 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Orders</h1>
+            <h1>Đơn hàng</h1>
         </div>
         <div class="section-body">
             <div class="invoice">
@@ -18,8 +18,8 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="invoice-title">
-                                <h2>Invoice</h2>
-                                <div class="invoice-number">Order #{{ $order->invoice_id }}</div>
+                                <h2>Hóa đơn</h2>
+                                <div class="invoice-number">ID đơn hàng #{{ $order->invoice_id }}</div>
                             </div>
                             <hr>
                             <div class="row">
@@ -62,15 +62,15 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <address>
-                                        <strong>Payment Information:</strong><br>
-                                        <b>Method: </b>{{ $order->payment_method }}<br>
-                                        <b>Transaction Id: </b> {{ @$order->transaction->transaction_id }} <br>
-                                        <b>Status: </b> {{ $order->payment_status === 1 ? 'Complete' : 'Pending' }}
+                                        <strong>Thông tin thanh toán:</strong><br>
+                                        <b>Phương thức: </b>{{ $order->payment_method }}<br>
+                                        <b>Id giao dịch: </b> {{ @$order->transaction->transaction_id }} <br>
+                                        <b>Trạng thái: </b> {{ $order->payment_status === 1 ? 'Hoàn thành' : 'Chưa hoàn thành' }}
                                     </address>
                                 </div>
                                 <div class="col-md-6 text-md-right">
                                     <address>
-                                        <strong>Order Date:</strong><br>
+                                        <strong>Ngày đặt hàng:</strong><br>
                                         {{ date('d F, Y', strtotime($order->created_at)) }}<br><br>
                                     </address>
                                 </div>
@@ -80,17 +80,17 @@
 
                     <div class="row mt-4">
                         <div class="col-md-12">
-                            <div class="section-title">Order Summary</div>
-                            <p class="section-lead">All items here cannot be deleted.</p>
+                            <div class="section-title">Tóm tắt đơn hàng</div>
+                            <p class="section-lead">Không thể xóa tất cả các mục ở đây.</p>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-md">
                                     <tr>
                                         <th data-width="40">#</th>
-                                        <th>Item</th>
-                                        <th>Variant</th>
-                                        <th class="text-center">Price</th>
-                                        <th class="text-center">Quantity</th>
-                                        <th class="text-right">Totals</th>
+                                        <th>Mục</th>
+                                        <th>Khác nhau</th>
+                                        <th class="text-center">Giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-right">Tổng</th>
                                     </tr>
                                     @foreach ($order->orderProducts as $index => $product)
                                         @php
@@ -132,19 +132,19 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <div class="col-md-4">
-                                            <label for="">Payment Status</label>
+                                            <label for="">Trạng thái thanh toán</label>
                                             <select name="payment_status" id="payment_status" data-id="{{ $order->id }}"
                                                 class="form-control">
                                                 <option {{ $order->payment_status == 0 ? 'selected' : '' }} value="0">
-                                                    Pending</option>
+                                                    Chưa thanh toán</option>
                                                 <option {{ $order->payment_status == 1 ? 'selected' : '' }} value="1">
-                                                    Complete</option>
+                                                    Hoàn thành</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-4">
-                                            <label for="">Order Status</label>
+                                            <label for="">Trạng thái đơn hàng</label>
                                             <select name="order_status" class="form-control" data-id="{{ $order->id }}"
                                                 id="order_status">
                                                 @foreach (config('order_status.order_status_admin') as $key => $orderStatus)
@@ -158,17 +158,17 @@
                                 </div>
                                 <div class="col-lg-4 text-right">
                                     <div class="invoice-detail-item">
-                                        <div class="invoice-detail-name">Subtotal</div>
+                                        <div class="invoice-detail-name">Tổng</div>
                                         <div class="invoice-detail-value">
                                             {{ number_format($order->sub_total) }} VNĐ</div>
                                     </div>
                                     <div class="invoice-detail-item">
-                                        <div class="invoice-detail-name">Shipping(+)</div>
+                                        <div class="invoice-detail-name">Vận chuyển(+)</div>
                                         <div class="invoice-detail-value">
-                                            {{ number_format(getCartCod()) }} VNĐ</div>
+                                            {{ number_format(getCartCod()) }}VNĐ</div>
                                     </div>
                                     <div class="invoice-detail-item">
-                                        <div class="invoice-detail-name">Coupon(-)</div>
+                                        <div class="invoice-detail-name">Mã giảm giá(-)</div>
                                         <div class="invoice-detail-value">
                                             {{ @$coupon->discount ? number_format(getOrderDiscount($coupon->discount_type, $order->sub_total, $coupon->discount)) : 0 }}
                                             VNĐ
@@ -176,7 +176,7 @@
                                     </div>
                                     <hr class="mt-2 mb-2">
                                     <div class="invoice-detail-item">
-                                        <div class="invoice-detail-name">Total</div>
+                                        <div class="invoice-detail-name">Tổng cộng</div>
                                         <div class="invoice-detail-value invoice-detail-value-lg">
                                             {{ number_format($order->amount) }} VNĐ</div>
                                     </div>
@@ -188,7 +188,7 @@
                 <hr>
                 <div class="text-md-right">
                     <button class="btn btn-warning btn-icon icon-left print_invoice"><i class="fas fa-print"></i>
-                        Print</button>
+                        IN</button>
                 </div>
             </div>
         </div>

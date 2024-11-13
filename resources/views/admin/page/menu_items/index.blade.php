@@ -9,18 +9,18 @@
 
     <section class="section">
         <div class="section-header">
-            <h1>Menu Items</h1>
+            <h1>Danh mục menu</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Menu Items Table</h4>
+                            <h4>Danh sách danh mục menu</h4>
                             @can('create-menu-items')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.menu_items.create') }}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Create New</a>
+                                        class="fas fa-plus"></i>Thêm mới</a>
                                 </div>
                             @endcan
                         </div>

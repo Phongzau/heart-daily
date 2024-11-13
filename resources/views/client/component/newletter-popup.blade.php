@@ -23,7 +23,7 @@
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" value="0" id="show-again" />
                     <label for="show-again" class="custom-control-label">
-                        Don't show this popup again
+                        Không hiển thị lại cửa sổ bật lên này
                     </label>
                 </div>
             </div>

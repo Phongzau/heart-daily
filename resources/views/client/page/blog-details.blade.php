@@ -5,7 +5,7 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="demo4.html"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Blog Post</li>
+                <li class="breadcrumb-item active" aria-current="page">Bình luận bài viết</li>
             </ol>
         </div><!-- End .container -->
     </nav>
@@ -39,7 +39,7 @@
                         <div class="post-share">
                             <h3 class="d-flex align-items-center">
                                 <i class="fas fa-share"></i>
-                                Share this post
+                                Chia sẻ bài đăng này
                             </h3>
 
                             <div class="social-icons">
@@ -61,7 +61,7 @@
                             </div><!-- End .social-icons -->
                         </div><!-- End .post-share -->
 
-                        <h3><i class="far fa-user"></i>Comment Blog</h3>
+                        <h3><i class="far fa-user"></i>Bình luận bài viết</h3>
 
                         <div id="commentSection" class="mt-3 mb-2">
                             @foreach ($comments as $item)
@@ -135,17 +135,16 @@
 
 
                         <div class="comment-respond">
-                            <h3>Leave a Reply</h3>
+                            <h3>Để lại một câu trả lời</h3>
 
                             <form id="commentForm">
                                 <div class="form-group">
-                                    <label>Comment</label>
+                                    <label>Bình luận</label>
                                     <textarea cols="30" name="comment" rows="1" class="form-control" required></textarea>
                                 </div><!-- End .form-group -->
                                 <input type="text" hidden name="blog_id" value="{{ $blog->id }}">
                                 <div class="form-footer my-0">
-                                    <button type="submit" class="btn btn-sm btn-primary">Post
-                                        Comment</button>
+                                    <button type="submit" class="btn btn-sm btn-primary">Đăng bình luận</button>
                                 </div><!-- End .form-footer -->
                             </form>
                         </div><!-- End .comment-respond -->
@@ -155,7 +154,7 @@
                 <hr class="mt-2 mb-1">
 
                 <div class="related-posts">
-                    <h4>Related <strong>Posts</strong></h4>
+                    <h4>Liên quan <strong>Đăng</strong></h4>
 
                     <div class="owl-carousel owl-theme related-posts-carousel"
                         data-owl-options="{
@@ -183,7 +182,7 @@
 
                                 <div class="post-content">
                                     <p>{{ limitTextDescription($blog->description, 150) }}</p>
-                                    <a href="{{ route('blog-details', $blog->slug) }}" class="read-more">read more <i
+                                    <a href="{{ route('blog-details', $blog->slug) }}" class="read-more">Xem thêm<i
                                             class="fas fa-angle-right"></i></a>
                                 </div><!-- End .post-content -->
                             </div><!-- End .post-body -->
@@ -200,7 +199,7 @@
             <aside class="sidebar mobile-sidebar col-lg-3">
                 <div class="sidebar-wrapper" data-sticky-sidebar-options='{"offsetTop": 72}'>
                     <div class="widget widget-categories">
-                        <h4 class="widget-title">Blog Categories</h4>
+                        <h4 class="widget-title">Danh mục bài viết</h4>
                         <ul class="list">
                             @foreach ($categories as $category)
                                 <li>
@@ -211,7 +210,7 @@
                     </div><!-- End .widget -->
 
                     <div class="widget widget-post">
-                        <h4 class="widget-title">Recent Posts</h4>
+                        <h4 class="widget-title">Bài viết gần đây</h4>
                         <ul class="simple-post-list">
                             @foreach ($recentPosts as $recent)
                                 <li>

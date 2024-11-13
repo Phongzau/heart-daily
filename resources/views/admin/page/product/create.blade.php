@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Product Create
+    Heart Daily | Thêm mới
 @endsection
 
 @section('css')
@@ -75,14 +75,14 @@
     <!-- Main Content -->
     <section class="section">
         <div class="section-header">
-            <h1>Products</h1>
+            <h1>Thêm mới Sản phẩm</h1>
         </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card bg-light">
                         <div class="card-header bg-white">
-                            <h4>Create Product</h4>
+                            <h4>Thêm mới</h4>
                         </div>
                         <div class="card-body">
                             <form id="add-form-product" action="{{ route('admin.products.store') }}" method="POST"
@@ -101,28 +101,27 @@
                                                     <li class="nav-item mr-1">
                                                         <a class="nav-link" id="product-variants-tab" data-toggle="tab"
                                                             href="#product-variants" role="tab"
-                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu
-                                                            sản
-                                                            phẩm</a>
+                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu sản phẩm
+                                                        </a>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content" id="productTabContent">
                                                     <div class="tab-pane fade show active" id="product-info" role="tabpanel"
                                                         aria-labelledby="product-info-tab">
                                                         <div class="form-group">
-                                                            <label for="">Name</label>
+                                                            <label for="">Tên sản phẩm</label>
                                                             <input type="text" name="name" value="{{ old('name') }}"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="">Sku</label>
+                                                            <label for="">Mã Sản phẩm</label>
                                                             <input type="text" name="sku" value="{{ old('sku') }}"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Price</label>
+                                                                    <label for="">Giá gốc</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text"
@@ -138,7 +137,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Offer Price</label>
+                                                                    <label for="">Giá ưu đãi</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <div class="input-group-text"
@@ -157,7 +156,7 @@
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Offer Start Date</label>
+                                                                    <label for="">Ngày bắt đầu</label>
                                                                     <input type="text" name="offer_start_date"
                                                                         value="{{ old('offer_start_date') }}"
                                                                         class="form-control datepicker">
@@ -165,7 +164,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="">Offer End Date</label>
+                                                                    <label for="">Ngày kết thúc</label>
                                                                     <input type="text" name="offer_end_date"
                                                                         value="{{ old('offer_end_date') }}"
                                                                         class="form-control datepicker">
@@ -177,19 +176,19 @@
 
 
                                                         <div class="form-group">
-                                                            <label for="">Short Description</label>
+                                                            <label for="">Mô tả ngắn</label>
                                                             <textarea name="short_description" class="form-control"></textarea>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="">Long Description</label>
+                                                            <label for="">Mô tả dài</label>
                                                             <textarea name="long_description" class="form-control summernote"></textarea>
                                                         </div>
                                                         <div class="form-group ">
-                                                            <label for="inputState">Status</label>
+                                                            <label for="inputState">Trạng thái</label>
                                                             <select id="inputState" name="status"
                                                                 value="{{ old('status') }}" class="form-control">
-                                                                <option value="1">Active</option>
-                                                                <option value="0">Inactive</option>
+                                                                <option value="1">Bật</option>
+                                                                <option value="0">Tắt</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -200,10 +199,10 @@
                                                             <div class="col-md-12">
                                                                 <div id="check_type">
                                                                     <div class="form-group ">
-                                                                        <label for="inputState">Type Product</label>
+                                                                        <label for="inputState">Loại sản phẩm</label>
                                                                         <select id="select_type" name="type_product"
                                                                             class="form-control">
-                                                                            <option value="" hidden>--Select--
+                                                                            <option value="" hidden>--Chọn--
                                                                             </option>
                                                                             <option value="product_simple">Sản phẩm đơn
                                                                                 giản
@@ -218,7 +217,7 @@
 
                                                                 <div id="div-simple" style="display: none">
                                                                     <div id="stock-quantity-group" class="form-group">
-                                                                        <label for="">Stock Quantity</label>
+                                                                        <label for="">Số lượng hàng</label>
                                                                         <input type="number" min="0"
                                                                             id="stock-quantity" name="qty"
                                                                             value="{{ old('qty') }}"
@@ -274,7 +273,7 @@
 
                                         <div class="card mt-3" id="imageUploadCard">
                                             <div class="card-header">
-                                                <h4>Multiple Upload <code>(Max 10 Picture)</code></h4>
+                                                <h4>Tải lên nhiều ảnh <code>(Tối đa 10 Hình)</code></h4>
                                             </div>
                                             <div class="card-body">
                                                 <div style="border: 2px dashed #6777ef;" class="dropzone"
@@ -284,7 +283,7 @@
                                         <div class="card mt-3">
                                             <div class="card-body">
                                                 <button class="btn btn-primary" style="float: right;"
-                                                    type="submit">Create</button>
+                                                    type="submit">Thêm</button>
                                             </div>
                                         </div>
                                     </div>
@@ -306,7 +305,7 @@
                                                     <label for="inputState">Category</label>
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
-                                                        <option value="" hidden>Select</option>
+                                                        <option value="" hidden>Chọn</option>
                                                         @foreach ($categories as $category)
                                                             <option value="{{ $category->id }}">{{ $category->title }}
                                                             </option>
@@ -315,9 +314,9 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputState">Brand</label>
+                                                    <label for="inputState">Thương hiệu</label>
                                                     <select id="inputState" name="brand_id" class="form-control">
-                                                        <option value="" hidden>Select</option>
+                                                        <option value="" hidden>Chọn</option>
                                                         @foreach ($brands as $brand)
                                                             <option value="{{ $brand->id }}">{{ $brand->name }}
                                                             </option>
@@ -332,7 +331,7 @@
                                             <div class="card-body">
                                                 <!-- Custom Field -->
                                                 <div class="form-group">
-                                                    <label for="customField">Image Main</label>
+                                                    <label for="customField">Ảnh chính</label>
                                                     <!-- Hình ảnh đại diện -->
                                                     <div class="image-placeholder"
                                                         style="width: 100%; height: 300px; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
@@ -346,8 +345,8 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image_main"
                                                             class="d-none" accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Upload
-                                                            file...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải lên
+                                                        hinh ảnh...</button>
                                                     </div>
                                                 </div>
                                             </div>
