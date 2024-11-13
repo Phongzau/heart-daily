@@ -4,28 +4,28 @@ return [
 
     'order_status_admin' => [
         'pending' => [
-            'status' => 'Pending',
+            'status' => 'chưa xử lý',
             'details' => 'Your order is currently pending',
         ],
         'processed_and_ready_to_ship' => [
-            'status' => 'Processed and ready to ship',
+            'status' => 'Đã xử lý và sẵn sàng vận chuyển',
             'details' => 'Your package has been processed and will be with delivery parter soon',
         ],
         'dropped_off' => [
-            'status' => 'Dropped Off',
+            'status' => 'Đã giao đến ',
             'details' => 'Your package has been dropped off by the seller'
         ],
         'shipped' => [
-            'status' => 'Shipped',
+            'status' => 'Đã vận chuyển',
             'details' => 'Your package has arrived at our logistics facility',
         ],
         'delivered' => [
-            'status' => 'Delivered',
-            'details' => 'Delivered',
+            'status' => 'Đã giao hàng',
+            'details' => 'Đã giao hàng',
         ],
         'canceled' => [
-            'status' => 'Canceled',
-            'details' => 'Canceled',
+            'status' => 'Hủy bỏ',
+            'details' => 'Hủy bỏ',
         ]
     ],
 ];
