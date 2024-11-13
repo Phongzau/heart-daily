@@ -49,7 +49,7 @@ class ListAccountController extends Controller
     public function edit(string $id)
     {
         $listAccounts = User::query()->findOrFail($id);
-        $role = Role::query()->get();
+        $role = Role::query()->where('name', '!=', 'super_admin')->get();
 
         return view('admin.page.accounts.edit', compact('listAccounts','role'));
     }

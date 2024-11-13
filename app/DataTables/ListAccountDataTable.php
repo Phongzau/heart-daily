@@ -25,16 +25,16 @@ class ListAccountDataTable extends DataTable
             ->addColumn('action', function ($query) {
                 $editBtn = '';
                 $deleteBtn = '';
-                if (auth()->user()->can('edit-accounts') && (auth()->user()->hasAnyRole(['admin', 'super_admin']) || !$query->hasAnyRole(['admin', 'super_admin']))) {
+                if (auth()->user()->can('edit-accounts') && (auth()->user()->hasRole('super_admin') || (auth()->user()->hasRole('admin') && !$query->hasRole('super_admin')) || (!auth()->user()->hasAnyRole(['admin', 'super_admin']) && !$query->hasAnyRole(['admin', 'super_admin'])))) {
                     $editBtn = "<a class='btn btn-primary' href='" . route('admin.accounts.edit', $query->id) . "'><i class='far fa-edit'></i></a>";
                 }
-                if (auth()->user()->can('delete-accounts') && (auth()->user()->hasAnyRole(['admin', 'super_admin']) || !$query->hasAnyRole(['admin', 'super_admin']))) {
+                if (auth()->user()->can('delete-accounts') && (auth()->user()->hasRole('super_admin') || (auth()->user()->hasRole('admin') && !$query->hasRole('super_admin')) || (!auth()->user()->hasAnyRole(['admin', 'super_admin']) && !$query->hasAnyRole(['admin', 'super_admin'])))) {
                     $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.accounts.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
                 }
                 return $editBtn . $deleteBtn;
             })
             ->addColumn('status', function ($query) {
-                if (auth()->user()->can('edit-accounts') && (auth()->user()->hasAnyRole(['admin', 'super_admin']) || !$query->hasAnyRole(['admin', 'super_admin']))) {
+                if (auth()->user()->can('edit-accounts') && (auth()->user()->hasRole('super_admin') || (auth()->user()->hasRole('admin') && !$query->hasRole('super_admin')) || (!auth()->user()->hasAnyRole(['admin', 'super_admin']) && !$query->hasAnyRole(['admin', 'super_admin'])))) {
                     if ($query->status == 1) {
                         $button = "<label class='custom-switch mt-2'>
                     <input type='checkbox' data-id='" . $query->id . "' checked name='custom-switch-checkbox' class='custom-switch-input change-status'>
