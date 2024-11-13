@@ -59,9 +59,9 @@ class ProductDataTable extends DataTable
             })
             ->addColumn('type_product', function ($query) {
                 if ($query->type_product === 'product_simple') {
-                    return "<span class='badge bg-light'>Simple</span>";
+                    return "<span class='badge bg-light'>Đơn thể</span>";
                 } else {
-                    return "<span class='badge bg-info'>Variant</span>";
+                    return "<span class='badge bg-info'>Biến thể</span>";
                 }
             })
             ->rawColumns(['action', 'status', 'image', 'type_product'])
