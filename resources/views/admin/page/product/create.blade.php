@@ -302,7 +302,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputState">Category</label>
+                                                    <label for="inputState">Danh mục sản phẩm</label>
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
                                                         <option value="" hidden>Chọn</option>
