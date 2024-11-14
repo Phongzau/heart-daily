@@ -54,7 +54,7 @@
                                         <th>#</th>
                                         <th>Email</th>
                                         <th>Ngày đăng ký</th>
-                                        <th>Chứ năng</th>
+                                        <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>

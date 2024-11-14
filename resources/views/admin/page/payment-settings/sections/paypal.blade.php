@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Account Mode</label>
+                    <label for="">Trạng thái tài khoản</label>
                     <select name="mode" class="form-control" id="">
                         <option {{ @$paypal->mode == 0 ? 'selected' : '' }} value="0">Sandbox</option>
                         <option {{ @$paypal->mode == 1 ? 'selected' : '' }} value="1">Live</option>
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Currency name</label>
+                    <label for="">Loại tiền tệ</label>
                     <select name="currency_name" class="form-control" id="">
                         <option value="">Select</option>
                         @foreach (config('settings.currency_list') as $key => $currency)
@@ -39,16 +39,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Currency rate ( Per USD )</label>
+                    <label for="">Tỉ giá tiền tệ( Per USD )</label>
                     <input type="text" name="currency_rate" value="{{ @$paypal->currency_rate }}"
                         class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Paypal Client Id</label>
+                    <label for="">MÃ khách hàng Paypal</label>
                     <input type="text" name="client_id" value="{{ @$paypal->client_id }}" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Paypal Secret Key</label>
+                    <label for=""> Khóa bảo mật Paypal</label>
                     <input type="text" name="secret_key" value="{{ @$paypal->secret_key }}" class="form-control">
                 </div>
                 @can('edit-payment-settings')

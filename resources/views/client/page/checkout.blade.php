@@ -265,7 +265,7 @@
                 if (province_id) {
                     $('#district').prop('disabled', false);
                     $.getJSON(`/provinces/${province_id}/districts`, function(districts) {
-                        $('#district').html('<option value="">Select District</option>');
+                        $('#district').html('<option value="">Quận/huyện</option>');
                         $('#district').append(districts.map(function(district) {
                             return `<option value="${district.id}" ${district.id == userDistrictId ? 'selected' : ''}>${district.title}</option>`;
                         }));
@@ -276,8 +276,8 @@
                         }
                     });
                 } else {
-                    $('#district').prop('disabled', true).html('<option value="">Chọn</option>');
-                    $('#commune').prop('disabled', true).html('<option value="">Chọn</option>');
+                    $('#district').prop('disabled', true).html('<option value="">Quận/huyện</option>');
+                    $('#commune').prop('disabled', true).html('<option value="">Phường/xã</option>');
                 }
             });
 
@@ -287,13 +287,13 @@
                 if (district_id) {
                     $('#commune').prop('disabled', false);
                     $.getJSON(`/districts/${district_id}/communes`, function(communes) {
-                        $('#commune').html('<option value="">Chọn</option>');
+                        $('#commune').html('<option value="">Phường/xã</option>');
                         $('#commune').append(communes.map(function(commune) {
-                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'Chọn' : ''}>${commune.title}</option>`;
+                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'Selected' : ''}>${commune.title}</option>`;
                         }));
                     });
                 } else {
-                    $('#commune').prop('disabled', true).html('<option value="">Chọn</option>');
+                    $('#commune').prop('disabled', true).html('<option value="">Phường/xã</option>');
                 }
             });
         });

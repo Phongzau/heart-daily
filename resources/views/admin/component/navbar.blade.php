@@ -214,21 +214,21 @@
                 @endphp
                 <a href="{{ route('home') }}" class="dropdown-item has-icon" style="font-size: 15px;">
                     <i class="fas fa-home" style="color: #28a745;"></i>
-                    <span style="margin-left: 8px;">Home</span>
+                    <span style="margin-left: 8px;">Trang chủ</span>
                 </a>
                 <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon" style="font-size: 15px;">
                     <i class="far fa-user" style="color: #007bff;"></i>
-                    <span style="margin-left: 8px;">Profile</span>
+                    <span style="margin-left: 8px;">Hồ sơ</span>
                 </a>
                 {{-- Uncomment if you want to add Change Password functionality --}}
                 {{-- <a href="{{ route('admin.change.password') }}" class="dropdown-item has-icon" style="font-size: 15px;">
             <i class="fas fa-bolt" style="color: #dc3545;"></i>
-            <span style="margin-left: 8px;">Change Password</span>
+            <span style="margin-left: 8px;">Đổi mật khẩu</span>
         </a> --}}
                 <div class="dropdown-divider"></div>
                 <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" style="font-size: 15px;">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span style="margin-left: 8px;">Logout</span>
+                    <span style="margin-left: 8px;">Đăng xuất</span>
                 </a>
             </div>
         </li>

@@ -11,14 +11,14 @@
                         <div class="card-stats-title">Thống kê đơn hàng -
                             <div class="dropdown d-inline">
                                 <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#"
-                                    id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->format('F') }}</a>
+                                id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->locale('Vi')->translatedFormat('F') }}</a>
                                 <ul class="dropdown-menu dropdown-menu-sm">
-                                    <li class="dropdown-title">Chọn tháng</li>
+                                    <li class="dropdown-title">Chọn Tháng</li>
                                     @foreach (range(1, 12) as $m)
                                         <li>
                                             <a href="#" id="month" data-month="{{ $m }}"
                                                 class="dropdown-item {{ $m == $month ? 'active' : '' }}">
-                                                {{ \Carbon\Carbon::createFromFormat('m', $m)->format('F') }}
+                                                {{ \Carbon\Carbon::createFromFormat('m', $m)->locale('Vi')->translatedFormat('F') }}
                                             </a>
                                         </li>
                                     @endforeach
@@ -209,7 +209,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Invoices</h4>
+                        <h4>Hóa đơn</h4>
                         {{-- @can('view-orders') --}}
                             <div class="card-header-action">
                                 <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">Xem thêm <i
@@ -239,31 +239,31 @@
                                             <td>
                                                 @switch($order->order_status)
                                                     @case('pending')
-                                                        <span class='badge bg-warning'>Pending</span>
+                                                        <span class='badge bg-warning'>Chưa xử lý</span>
                                                     @break
 
                                                     @case('processed_and_ready_to_ship')
-                                                        <span class='badge bg-info'>Processed</span>
+                                                        <span class='badge bg-info'>Đã xử lý</span>
                                                     @break
 
                                                     @case('dropped_off')
-                                                        <span class='badge bg-info'>Dropped off</span>
+                                                        <span class='badge bg-info'>Đã giao đến</span>
                                                     @break
 
                                                     @case('shipped')
-                                                        <span class='badge bg-primary'>Shipped</span>
+                                                        <span class='badge bg-primary'>Đã vận chuyển</span>
                                                     @break
 
                                                     @case('out_for_delivery')
-                                                        <span class='badge bg-primary'>Out for delivery</span>
+                                                        <span class='badge bg-primary'>Đang giao</span>
                                                     @break
 
                                                     @case('delivered')
-                                                        <span class='badge bg-success'>Delivered</span>
+                                                        <span class='badge bg-success'>Đã giao hàng</span>
                                                     @break
 
                                                     @case('canceled')
-                                                        <span class='badge bg-danger'>Canceled</span>
+                                                        <span class='badge bg-danger'>Hủy bỏ</span>
                                                     @break
 
                                                     @default

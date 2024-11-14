@@ -9,10 +9,10 @@
 
                                 <div class="feature-box-content p-0">
                                     <h3>Hỗ trợ khách hàng</h3>
-                                    <h5>You Won't Be Alone</h5>
+                                    <h5>Bạn sẽ không cô đơn</h5>
 
                                     <p>Chúng tôi thực sự quan tâm đến bạn và trang web của bạn nhiều như bạn. Mua hàng hoặc
-                                        bất kỳ chủ đề nào khác từ chúng tôi, bạn sẽ nhận được hỗ.</p>
+                                        bất kỳ chủ đề nào khác từ chúng tôi, bạn sẽ nhận được hỗ trợ.</p>
                                 </div>
                                 <!-- End .feature-box-content -->
                             </div>

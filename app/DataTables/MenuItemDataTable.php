@@ -104,8 +104,8 @@ class MenuItemDataTable extends DataTable
             Column::make('url')->title('Đường dẫn')->width(150),
             Column::make('menu_name')->title('Tên menu')->width(150),
             Column::make('status')->title('Trạng thái')->width(150),
-            Column::make('userid_created')->title('Người thêm')->width(150),
-            Column::make('userid_updated')->title('Người cập nhật')->width(150),
+            Column::make('userid_created')->title('Người thêm')->width(200),
+            Column::make('userid_updated')->title('Người cập nhật')->width(220),
             Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)

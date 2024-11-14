@@ -106,7 +106,7 @@ class ListAccountDataTable extends DataTable
             Column::make('name')->title('Tên'),
             Column::make('email'),
             Column::make('role_id')->title('Quyền')->data('role.name'),
-            Column::make('status')->title('Trạng thái')->width(100),
+            Column::make('status')->title('Trạng thái')->width(220),
             Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)

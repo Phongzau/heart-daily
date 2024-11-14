@@ -122,11 +122,11 @@ class OrderDataTable extends DataTable
             Column::make('invoice_id')->title('ID hóa đơn'),
             Column::make('customer')->title('khách hàng'),
             Column::make('date')->title('Ngày đặt'),
-            Column::make('product_qty')->title('Số lượng sản phẩm'),
+            Column::make('product_qty')->title('Số lượng sản phẩm')->width(150),
             Column::make('amount')->title('Số tiền'),
             Column::make('order_status')->title('Trạng thái đơn hàng'),
             Column::make('payment_status')->title('Trạng thái thanh toán'),
-            Column::make('payment_method')->title('Phương thức thanh toán'),
+            Column::make('payment_method')->title('Phương thức thanh toán')->width(150),
             Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)

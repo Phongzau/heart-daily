@@ -12,32 +12,32 @@
                         value="{{ $vnpay->name }}">
                 </div>
                 <div class="form-group">
-                    <label for="status" class="form-label">VNPay Status</label>
+                    <label for="status" class="form-label"> Trạng thái VNPay</label>
                     <select name="status" id="status" class="form-control">
-                        <option value="1" {{ $vnpay->status ? 'selected' : '' }}>Enable</option>
-                        <option value="0" {{ !$vnpay->status ? 'selected' : '' }}>Disable</option>
+                        <option value="1" {{ $vnpay->status ? 'selected' : '' }}>Duyệt</option>
+                        <option value="0" {{ !$vnpay->status ? 'selected' : '' }}>Hủy</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="vnp_tmncode" class="form-label">VNPay Terminal Code</label>
+                    <label for="vnp_tmncode" class="form-label"> Mã VNPay</label>
                     <input type="text" name="vnp_tmncode" id="vnp_tmncode" class="form-control"
                         value="{{ $vnpay->vnp_tmncode }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="vnp_hashsecret" class="form-label">VNPay Hash Secret</label>
+                    <label for="vnp_hashsecret" class="form-label"> Khóa bảo mật VNPay</label>
                     <input type="text" name="vnp_hashsecret" id="vnp_hashsecret" class="form-control"
                         value="{{ $vnpay->vnp_hashsecret }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="vnp_url" class="form-label">VNPay URL</label>
+                    <label for="vnp_url" class="form-label"> Đường dẫn VNPay</label>
                     <input type="text" name="vnp_url" id="vnp_url" class="form-control"
                         value="{{ $vnpay->vnp_url }}">
                 </div>
                 @can('edit-payment-settings')
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 @endcan
             </form>
         </div>

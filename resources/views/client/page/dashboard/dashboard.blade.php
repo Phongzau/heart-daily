@@ -280,7 +280,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab"
                             aria-controls="edit" aria-selected="false">
-                            Chi tiết</a>
+                            Thông tin tài khoản</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="shop-address-tab" data-toggle="tab" href="#shipping" role="tab"
