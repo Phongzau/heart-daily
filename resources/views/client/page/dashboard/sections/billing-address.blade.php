@@ -71,9 +71,9 @@
 
             <div class="form-footer mb-0">
                 <div class="form-footer-right">
-                    <button type="submit" class="btn btn-dark py-4">
-                        Lưu
-                    </button>
+                <button type="submit" class="btn btn-dark py-2 px-4" style="min-width: 120px;">
+    Lưu
+</button>
                 </div>
             </div>
         </form>

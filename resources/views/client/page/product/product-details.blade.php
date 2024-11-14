@@ -342,7 +342,7 @@
                                     </div>
                                     <!-- End .form-group -->
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="submit" class="btn btn-primary" value="Submit">
+                                    <input type="submit" class="btn btn-primary" value="Gửi">
                                 </form>
 
                             </div>

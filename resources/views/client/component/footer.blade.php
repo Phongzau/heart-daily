@@ -95,7 +95,7 @@
 
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget">
-                        <h4 class="widget-title">Popular Tags</h4>
+                        <h4 class="widget-title">Thẻ phổ biến</h4>
                         <div class="tagcloud">
                             @foreach ($tags as $tag)
                                 <a href="{{ route('product.getProducts', ['tag_id' => $tag->id]) }}" class="tag-link">

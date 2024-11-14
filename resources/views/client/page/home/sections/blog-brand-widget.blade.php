@@ -58,7 +58,7 @@
                     </div>
                     
                     <h2 class="section-title heading-border border-0 appear-animate" data-animation-name="fadeInUp">
-                        Thương hiệu</h2>
+                       </h2>
                     <div class="brands-slider owl-carousel owl-theme images-center appear-animate"
                         data-animation-name="fadeIn" data-animation-duration="500"
                         data-owl-options="{

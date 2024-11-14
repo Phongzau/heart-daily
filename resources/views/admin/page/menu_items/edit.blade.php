@@ -16,7 +16,7 @@
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Update Menu Items</h4>
+                            <h4>Cập nhật Menu Items</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.menu_items.update', $menuItems->id) }}"
@@ -47,13 +47,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="order">Order</label>
+                                    <label for="order">vị trí</label>
                                     <input type="number" name="order" value="{{ $menuItems->order }}"
                                         class="form-control order">
                                 </div>
 
                                 {{-- <div class="form-group">
-                                    <label for="">Slug</label>
+                                    <label for="">Đường dẫn</label>
                                     <input type="text" name="slug" value="{{ old('slug') }}" class="form-control">
                                 </div> --}}
 

@@ -26,19 +26,19 @@
                                 <div class="col-md-6">
                                     <address>
                                         <strong>Người đặt:</strong><br>
-                                        <b>Name: </b>{{ $order->user->first_name }} {{ $order->user->last_name }}<br>
+                                        <b>Tên: </b>{{ $order->user->first_name }} {{ $order->user->last_name }}<br>
                                         <b>Email: </b>{{ $order->user->email }}<br>
-                                        <b>Phone: </b>{{ $order->user->phone }}<br>
-                                        <b>Address: </b>{{ $order->user->address }}
+                                        <b>Điện thoại: </b>{{ $order->user->phone }}<br>
+                                        <b>Địa chỉ: </b>{{ $order->user->address }}
                                     </address>
                                 </div>
                                 <div class="col-md-6 text-md-right">
                                     <address>
                                         <strong>Người nhận:</strong><br>
-                                        <b>Name: </b>{{ $address->first_name }}<br>
+                                        <b>Tên: </b>{{ $address->first_name }}<br>
                                         <b>Email: </b>{{ $address->email }}<br>
-                                        <b>Phone: </b>{{ $address->phone }}<br>
-                                        <b>Address: </b>{{ $address->address }} <br>
+                                        <b>Điện thoại: </b>{{ $address->phone }}<br>
+                                        <b>Địa chỉ: </b>{{ $address->address }} <br>
                                         @php
                                             $provinceTitle = \App\Models\Province::query()
                                                 ->where('id', $address->province_id)
@@ -64,7 +64,7 @@
                                     <address>
                                         <strong>Thông tin thanh toán:</strong><br>
                                         <b>Phương thức: </b>{{ $order->payment_method }}<br>
-                                        <b>Id giao dịch: </b> {{ @$order->transaction->transaction_id }} <br>
+                                        <b>ID giao dịch: </b> {{ @$order->transaction->transaction_id }} <br>
                                         <b>Trạng thái: </b> {{ $order->payment_status === 1 ? 'Hoàn thành' : 'Chưa hoàn thành' }}
                                     </address>
                                 </div>
@@ -188,7 +188,7 @@
                 <hr>
                 <div class="text-md-right">
                     <button class="btn btn-warning btn-icon icon-left print_invoice"><i class="fas fa-print"></i>
-                        IN</button>
+                        In</button>
                 </div>
             </div>
         </div>

@@ -95,7 +95,7 @@
                                            <a href="{{ route('admin.dashboard.index') }}"
                                                style="text-decoration: none; color: #333; font-size: 15px; display: flex; align-items: center;">
                                                <i class="fas fa-user-shield" style="margin-right: 8px; color: #dc3545;"></i>
-                                               <span>Quản trị</span>
+                                               <span>Quản trị viên</span>
                                            </a>
                                        </li>
                                    @endcan

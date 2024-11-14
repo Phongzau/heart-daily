@@ -6,43 +6,43 @@
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label for="">Site Name</label>
+                    <label for="">Tên trang web</label>
                     <input type="text" name="site_name" value="{{ @$generalSettings->site_name }}"
                         class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Contact Email</label>
+                    <label for="">Email liên hệ</label>
                     <input type="text" name="contact_email" value="{{ @$generalSettings->contact_email }}"
                         class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Contact Phone</label>
+                    <label for="">Số điện thoại liên hệ</label>
                     <input type="text" name="contact_phone" value="{{ @$generalSettings->contact_phone }}"
                         class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Contact Address</label>
+                    <label for="">Địa chỉ liên hệ</label>
                     <input type="text" name="contact_address" value="{{ @$generalSettings->contact_address }}"
                         class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Google Map Url</label>
+                    <label for="">Url bản đồ Google</label>
                     <input type="text" name="map" value="{{ @$generalSettings->map }}" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="">Currency Name</label>
+                    <label for="">Tên tiền tệ</label>
                     <input type="text" name="currency_name" value="{{ @$generalSettings->currency_name }}"
                         class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="">Currency Icon</label>
+                    <label for="">Biểu tượng tiền tệ</label>
                     <input type="text" name="currency_icon" value="{{ @$generalSettings->currency_icon }}"
                         class="form-control">
                 </div>
                 @can('edit-settings')
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 @endcan
             </form>
         </div>

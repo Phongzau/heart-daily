@@ -16,14 +16,14 @@
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Giới thiệu</h4>
+                            <h4>Giới thiệu về chúng tôi</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.abouts.update') }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <label for="">Content</label>
+                                    <label for="">Nội dung</label>
                                     <textarea name="content" class="summernote">{!! @$about->content !!}</textarea>
                                 </div>
                                 @can('edit-abouts')
