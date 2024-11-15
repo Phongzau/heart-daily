@@ -185,7 +185,7 @@
                         <div class="card-header-action dropdown">
                             <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Tháng</a>
                             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <li class="dropdown-title">Select Period</li>
+                                <li class="dropdown-title"></li>
                                 <li><a href="#" class="dropdown-item" id="dropdown-item"
                                         data-period="today">Ngày</a></li>
                                 <li><a href="#" class="dropdown-item" id=dropdown-item data-period="week">Tuần</a>
@@ -270,7 +270,12 @@
                                                         <span class='badge bg-secondary'>Unknown</span>
                                                 @endswitch
                                             </td>
-                                            <td>{{ $order->created_at->format('F d, Y') }}</td>
+                                            @php
+                                                \Carbon\Carbon::setLocale('vi');
+                                            @endphp
+
+                                            <td>{{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('d F, Y') }}</td>
+
                                             <td>
                                                 <a href="{{ route('admin.orders.show', $order->id) }}"
                                                     class="btn btn-primary">Chi tiết</a>
