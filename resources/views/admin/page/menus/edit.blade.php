@@ -33,7 +33,9 @@
                                         <option value="0">Tắt</option>
                                     </select>
                                 </div>
+
                                 <button class="btn btn-primary" type="submit">Cập nhật</button>
+
                             </form>
                         </div>
                     </div>
