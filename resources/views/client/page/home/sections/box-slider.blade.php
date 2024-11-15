@@ -39,7 +39,7 @@
 
             <div class="info-box-content">
                 <h4>Hỗ trợ mua sắm online 24/7</h4>
-                <p class="text-body">Lorem ipsum dolor sit amet.</p>
+                <p class="text-body">Liên hệ ngay với chúng tôi</p>
             </div>
             <!-- End .info-box-content -->
         </div>
