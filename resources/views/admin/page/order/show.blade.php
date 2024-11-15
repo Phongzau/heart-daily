@@ -44,12 +44,14 @@
                                                 ->where('id', $address->province_id)
                                                 ->pluck('title')
                                                 ->first();
+                                            
                                             $districtTitle = \App\Models\District::query()
-                                                ->where('id', $address->province_id)
+                                                ->where('id', $address->district_id)
                                                 ->pluck('title')
                                                 ->first();
+                                            
                                             $communeTitle = \App\Models\Commune::query()
-                                                ->where('id', $address->province_id)
+                                                ->where('id', $address->commune_id) 
                                                 ->pluck('title')
                                                 ->first();
                                         @endphp
@@ -69,10 +71,14 @@
                                     </address>
                                 </div>
                                 <div class="col-md-6 text-md-right">
-                                    <address>
-                                        <strong>Ngày đặt hàng:</strong><br>
-                                        {{ date('d F, Y', strtotime($order->created_at)) }}<br><br>
-                                    </address>
+                                @php
+                                    use Carbon\Carbon;
+                                    Carbon::setLocale('vi');
+                                @endphp
+                                <address>
+                                    <strong>Ngày đặt hàng:</strong><br>
+                                    {{ Carbon::parse($order->created_at)->translatedFormat('d F, Y') }}<br><br>
+                                </address>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +93,7 @@
                                     <tr>
                                         <th data-width="40">#</th>
                                         <th>Mục</th>
-                                        <th>Khác nhau</th>
+                                        <th>Phân loại</th>
                                         <th class="text-center">Giá</th>
                                         <th class="text-center">Số lượng</th>
                                         <th class="text-right">Tổng</th>
