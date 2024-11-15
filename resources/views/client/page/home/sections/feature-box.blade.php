@@ -9,8 +9,7 @@
 
                                 <div class="feature-box-content p-0">
                                     <h3>Hỗ trợ khách hàng</h3>
-                                    <h5>Bạn sẽ không cô đơn</h5>
-
+                                
                                     <p>Chúng tôi thực sự quan tâm đến bạn và trang web của bạn nhiều như bạn. Mua hàng hoặc
                                         bất kỳ chủ đề nào khác từ chúng tôi, bạn sẽ nhận được hỗ trợ.</p>
                                 </div>
@@ -28,7 +27,7 @@
 
                                 <div class="feature-box-content p-0">
                                     <h3>Hoàn toàn có thể tùy chỉnh</h3>
-                                    <h5>Rất nhiều lựa chọn</h5>
+                                    
 
                                     <p>Với Heart-daily, bạn có thể tùy chỉnh bố cục, màu sắc và kiểu dáng chỉ trong một vài
                                         phút. Bắt đầu tạo một trang web tuyệt vời ngay bây giờ!!</p>
@@ -46,7 +45,7 @@
                                 </div>
                                 <div class="feature-box-content p-0">
                                     <h3>Quản trị viên </h3>
-                                    <h5>Được thực hiện để giúp bạn</h5>
+                                    
 
                                     <p> Heart-daily có các tính năng quản trị rất mạnh mẽ để giúp khách hàng xây dựng cửa hàng của riêng mình
                                         trong vài phút mà không cần bất kỳ kỹ năng đặc biệt nào về phát triển web.</p>

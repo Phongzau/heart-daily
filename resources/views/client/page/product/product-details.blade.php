@@ -948,7 +948,7 @@
                                 });
                             $(this).attr('href', newUrl);
                         });
-                        $('.count-review').text(data.total + ' Review')
+                        $('.count-review').text(data.total + ' Đánh giá')
                     },
                     error: function() {}
                 })
