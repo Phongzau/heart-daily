@@ -33,6 +33,7 @@
     <div class="container">
         <nav class="main-nav w-100">
             <ul class="menu">
+
                 @foreach ($menuItems as $menuItem)
                     <li class="{{ $menuItem->children->count() ? 'dropdown' : '' }}">
                         <a href="{{ config('app.url') . $menuItem->url }}">{{ $menuItem->title }}</a>

@@ -1,3 +1,4 @@
+
 @php
     $slug = 'menu-footer'; // Slug của menu mà bạn muốn
 
@@ -8,7 +9,6 @@
         ->where('parent_id', 0) // Chỉ lấy các mục gốc
         ->orderBy('order')
         ->get();
-
 @endphp
 
 @php

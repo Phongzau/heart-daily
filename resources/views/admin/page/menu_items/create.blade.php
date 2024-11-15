@@ -29,6 +29,7 @@
                                 
                                 <div class="form-group">
                                     <label for="">Đường dẫn</label>
+
                                     <input type="text" name="url" value="/{{ old('URL') }}" class="form-control">
                                 </div>
 

@@ -97,6 +97,7 @@ class MenuItemDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+
             Column::make('id')->title('ID')->width(100),
             Column::make('title')->title('Tiêu đề')->width(200),
             Column::make('parent_name')->title('Tên danh mục')->width(200),
@@ -107,6 +108,7 @@ class MenuItemDataTable extends DataTable
             Column::make('userid_created')->title('Người thêm')->width(200),
             Column::make('userid_updated')->title('Người cập nhật')->width(220),
             Column::computed('action')->title('Chức năng')
+
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

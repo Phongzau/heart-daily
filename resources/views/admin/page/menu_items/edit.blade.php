@@ -30,7 +30,9 @@
                                 </div>
  
                                 <div class="form-group">
+
                                     <label for="">Đường dẫn</label>
+
                                     <input type="text" name="url"  value="{{ $menuItems->url }}" class="form-control">
                                 </div>
 
@@ -47,7 +49,9 @@
                                 </div>
 
                                 <div class="form-group">
+
                                     <label for="order">vị trí</label>
+
                                     <input type="number" name="order" value="{{ $menuItems->order }}"
                                         class="form-control order">
                                 </div>
