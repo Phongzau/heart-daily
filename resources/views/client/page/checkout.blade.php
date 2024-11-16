@@ -289,7 +289,7 @@
                     $.getJSON(`/districts/${district_id}/communes`, function(communes) {
                         $('#commune').html('<option value="">Phường/xã</option>');
                         $('#commune').append(communes.map(function(commune) {
-                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'Selected' : ''}>${commune.title}</option>`;
+                            return `<option value="${commune.id}" ${commune.id == userCommuneId ? 'selected' : ''}>${commune.title}</option>`;
                         }));
                     });
                 } else {

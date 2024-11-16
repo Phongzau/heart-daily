@@ -56,7 +56,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
 
     <!-- Main CSS File -->
-    {{-- <link rel="stylesheet" href="{{ asset('frontend/assets/css/demo4.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/demo4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/all.css') }}">
     <link rel="stylesheet" type="text/css"
