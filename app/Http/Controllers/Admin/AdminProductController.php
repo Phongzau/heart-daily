@@ -224,6 +224,7 @@ class AdminProductController extends Controller
                             $productVariant->id_variant = json_encode(array_map('intval', $variant['value_variant']));
                             $productVariant->title_variant = json_encode($variant['title_variant']);
                             $productVariant->price_variant = $variant['price_variant'];
+                            $productVariant->offer_price_variant = $variant['offer_price_variant'];
                             $productVariant->qty = $variant['qty_variant'];
                             $productVariant->save();
                         } else {
@@ -363,6 +364,7 @@ class AdminProductController extends Controller
                     'value_variant' => array_map('strval', json_decode($variant['id_variant'], true)),
                     'title_variant' => json_decode($variant['title_variant'], true),
                     'price_variant' => $variant['price_variant'],
+                    'offer_price_variant' => $variant['offer_price_variant'],
                     'qty_variant' => $variant['qty'],
                 ];
             }
@@ -548,6 +550,7 @@ class AdminProductController extends Controller
                             // Cập nhật hoặc thiết lập các giá trị khác
                             $productVariant->title_variant = json_encode($variant['title_variant']);
                             $productVariant->price_variant = $variant['price_variant'];
+                            $productVariant->offer_price_variant = $variant['offer_price_variant'];
                             $productVariant->qty = $variant['qty_variant'];
                             $productVariant->save();
                         } else {

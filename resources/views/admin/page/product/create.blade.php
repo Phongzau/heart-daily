@@ -172,7 +172,7 @@
                                                             </div>
                                                         </div>
 
-                                                        
+
 
 
                                                         <div class="form-group">
@@ -660,8 +660,12 @@
                     // Thêm một trường nhập giá cho toàn bộ biến thể
                     let moreFieldHtml = `
                             <div class="form-group">
-                                <label>Giá biến thể:</label>
-                                <input type="number" value="0" name="price" class="form-control" placeholder="Nhập giá biến thể" required>
+                                <label>Giá niêm yết:</label>
+                                <input type="number" value="0" name="price" class="form-control" placeholder="Nhập giá niêm yết" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Giá khuyến mãi:</label>
+                                <input type="number" value="0" name="offer_price" class="form-control" placeholder="Nhập giá khuyến mãi" required>
                             </div>
                             <div class="form-group">
                                 <label>Số lượng biến thể:</label>
@@ -690,7 +694,7 @@
                 let variantIdArray = [];
                 // Biến để lưu trữ số tiền của biến thể
                 let variantPrice = 0; // Bạn có thể thay đổi giá trị này theo logic của bạn
-
+                let variantOfferPrice = 0;
                 // Lặp qua variantData để xây dựng tên biến thể
                 variantData.forEach(item => {
                     // Nếu item là giá, lưu vào biến variantPrice
@@ -698,6 +702,8 @@
                         variantPrice = parseFloat(item.value); // Chuyển đổi giá trị sang số
                     } else if (item.name === 'quantity') {
                         variantQty = parseInt(item.value);
+                    } else if (item.name === 'offer_price') {
+                        variantOfferPrice = parseFloat(item.value);
                     } else {
                         const selectedValue = $(
                             `#variantForm select[name="${item.name}"] option:selected`);
@@ -716,17 +722,30 @@
                     toastr.error(`Biến thể ${variantName} đã tồn tại. Vui lòng kiểm tra lại! 😢`);
                     return; // Không làm gì thêm, chỉ thoát hàm
                 } else {
+                    if (variantOfferPrice >= variantPrice) {
+                        toastr.error('Giá khuyến mãi phải nhỏ hơn giá sản phẩm');
+                        return;
+                    }
                     toastr.success(`Biến thể ${variantName} đã được tạo thành công 😊`)
                     // Nếu chưa tồn tại, thêm mới vào variants
                     variants[variantIdKey] = {
                         value_variant: variantIdArray,
                         title_variant: variantNameArray,
                         price_variant: variantPrice,
+                        offer_price_variant: variantOfferPrice,
                         qty_variant: variantQty
                     };
 
                     // Hiển thị dữ liệu vừa lưu để kiểm tra
                     console.log('Danh sách các biến thể:', variants);
+                    let vrPrice = 0;
+                    let checkOffer = false;
+                    if (variantOfferPrice > 0 && variantPrice > variantOfferPrice) {
+                        vrPrice = variantOfferPrice;
+                        checkOffer = true;
+                    } else {
+                        vrPrice = variantPrice;
+                    }
 
                     // Tạo phần tử mới để hiển thị biến thể
                     let newVariantHtml = `
@@ -734,7 +753,7 @@
                             <input type="checkbox" class="checkbox-variant mr-2" data-id="${variantIdKey}">
                             <span class="variant-name" style="margin: 16px 0px 15px 5px;">${variantName}</span>
                             <div style="padding: 0px 20px 0px 20px;">
-                            <span class="variant-price" style="float: right;">${variantPrice.toLocaleString('vi-VN')} VNĐ</span>
+                            <span class="variant-price" style="float: right;">${checkOffer ? '(Khuyến mãi)' : ''} ${vrPrice.toLocaleString('vi-VN')} VNĐ</span>
                             <br>
                             <span class="variant-quantity" style="float: right;">Số lượng: ${variantQty}</span>
                             </div>
@@ -798,8 +817,12 @@
                 // Thêm trường nhập giá và số lượng
                 let moreFieldHtml = `
                         <div class="form-group">
-                            <label>Giá biến thể:</label>
+                            <label>Giá niêm yết:</label>
                             <input type="number" name="price" class="form-control" value="${variant.price_variant}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Giá khuyến mãi:</label>
+                            <input type="number" name="offer_price" class="form-control" value="${variant.offer_price_variant}" required>
                         </div>
                         <div class="form-group">
                             <label>Số lượng biến thể:</label>
@@ -821,11 +844,14 @@
                 let editedVariantNameArray = [];
                 let editedVariantIdArray = [];
                 let editedVariantPrice = 0;
+                let editedVariantOfferPrice = 0;
                 let editedVariantQty = 0;
 
                 editedVariantData.forEach(item => {
                     if (item.name === 'price') {
                         editedVariantPrice = parseFloat(item.value);
+                    } else if (item.name === 'offer_price') {
+                        editedVariantOfferPrice = parseFloat(item.value);
                     } else if (item.name === 'quantity') {
                         editedVariantQty = parseInt(item.value);
                     } else {
@@ -839,22 +865,40 @@
                 let editedVariantName = editedVariantNameArray.join(' / ');
                 let editedVariantIdKey = editedVariantIdArray.join('_');
                 // Cập nhật biến thể
+                if (editedVariantOfferPrice >= editedVariantPrice) {
+                    toastr.error('Giá khuyến mãi phải nhỏ hơn giá sản phẩm');
+                    return;
+                }
                 if (variants[editedVariantIdKey]) {
                     variants[editedVariantIdKey] = {
                         value_variant: editedVariantIdArray,
                         title_variant: editedVariantNameArray,
                         price_variant: editedVariantPrice,
+                        offer_price_variant: editedVariantOfferPrice,
                         qty_variant: editedVariantQty
                     };
-
+                    let vrEditPrice = 0;
+                    let checkOfferEdit = false;
+                    if (editedVariantOfferPrice > 0 && editedVariantPrice > editedVariantOfferPrice) {
+                        vrEditPrice = editedVariantOfferPrice;
+                        checkOfferEdit = true;
+                    } else {
+                        vrEditPrice = editedVariantPrice;
+                    }
                     toastr.success(`Biến thể ${editedVariantName} đã được cập nhật thành công 😊`);
 
                     // Cập nhật hiển thị cho biến thể trong danh sách
                     let $variantItem = $(`.variant-item[data-id="${editedVariantIdKey}"]`);
                     if ($variantItem.length) {
                         $variantItem.find('.variant-name').text(editedVariantName);
-                        $variantItem.find('.variant-price').text(editedVariantPrice.toLocaleString(
-                            'vi-VN') + ' VNĐ');
+                        if (checkOfferEdit) {
+                            $variantItem.find('.variant-price').text('(Khuyến mãi) ' + vrEditPrice
+                                .toLocaleString(
+                                    'vi-VN') + ' VNĐ');
+                        } else {
+                            $variantItem.find('.variant-price').text(vrEditPrice.toLocaleString(
+                                'vi-VN') + ' VNĐ');
+                        }
                         $variantItem.find('.variant-quantity').text('Số lượng: ' + editedVariantQty);
                     }
                     editedVariantNameArray = [];

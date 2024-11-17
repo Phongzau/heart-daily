@@ -11,11 +11,13 @@ use App\Models\Product;
 use App\Models\Tag;
 use App\Models\Wishlist;
 use App\Models\ProductReview;
+use App\Models\ProductVariant;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -300,6 +302,26 @@ class ProductController extends Controller
         return response()->json([
             'updateHtmlReview' => $updateHtmlReview,
             'total' => $reviews->total(),
+        ]);
+    }
+
+    public function getQtyVariant(Request $request)
+    {
+        $attributeIdArray = [];
+        foreach ($request->variants as $variant) {
+            $nameVariant = strtolower($variant);
+            $slugVariant = Str::slug($nameVariant);
+            $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
+            $attributeIdArray[] = $attributeId;
+        }
+        $productVariant = ProductVariant::where('product_id', $request->product_id)
+            ->whereJsonContains('id_variant', $attributeIdArray)
+            ->first();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Lấy thành công',
+            'variant' => $productVariant,
         ]);
     }
 }

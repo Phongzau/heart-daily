@@ -34,7 +34,7 @@ class HomeController extends Controller
 
         $topProducts = Product::whereIn('id', $topProductIds)->take(3)->get();
 
-        // truy vấn ra 6 sản phẩm có lượt bán nhiều nhất 
+        // truy vấn ra 6 sản phẩm có lượt bán nhiều nhất
         $featuredProduct = Product::whereIn('id', $topProductIds)->take(5)->get();
 
         // Truy vấn 3 sản phẩm có lượt xem nhiều nhất
