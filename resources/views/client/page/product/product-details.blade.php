@@ -125,17 +125,45 @@
                     <!-- End .ratings-container -->
 
                     <hr class="short-divider">
-
-                    @if (checkDiscount($product))
-                        <div class="price-box">
-                            <span class="old-price">{{ number_format($product->price) }}</span>
-                            <span class="product-price"><del>{{ number_format($product->offer_price) }}</del> VND</span>
-                        </div>
+                    @if ($product->type_product === 'product_simple')
+                        @if (checkDiscount($product))
+                            <div class="price-box">
+                                <span class="old-price">{{ number_format($product->price) }}</span>
+                                <span class="product-price"><del>{{ number_format($product->offer_price) }}</del>
+                                    VND</span>
+                            </div>
+                        @else
+                            <div class="price-box">
+                                <span class="product-price">{{ number_format($product->price) }} VND</span>
+                            </div>
+                        @endif
                     @else
+                        @php
+                            $priceArray = [];
+                            foreach ($product->ProductVariants as $productVariant) {
+                                if ($productVariant->offer_price_variant > 0) {
+                                    $priceArray[] = $productVariant->offer_price_variant;
+                                } else {
+                                    $priceArray[] = $productVariant->price_variant;
+                                }
+                            }
+                            sort($priceArray);
+                            $priceProduct = '';
+                            if (count(array_unique($priceArray)) === 1) {
+                                $priceProduct = number_format($priceArray[0]) . ' VND';
+                            } else {
+                                $priceProduct =
+                                       number_format($priceArray[0]) .
+                                    ' VND ~ ' .
+                                    number_format(end($priceArray)) .
+                                    ' VND';
+                            }
+                        @endphp
                         <div class="price-box">
-                            <span class="product-price">{{ number_format($product->price) }} VND</span>
+                            <span class="product-price price-render">{{ $priceProduct }} </span>
                         </div>
                     @endif
+
 
                     <!-- End .price-box -->
 
@@ -159,6 +187,17 @@
                                 <a href="#" class="product-category">{{ $product->category->title }}</a>
                             </strong>
                         </li>
+                        <li>
+                            Số lượng:
+                            <strong>
+                                @if ($product->type_product === 'product_simple')
+                                    <a href="#" class="product-category ">{{ $product->qty }}</a>
+                                @else
+                                    <a href="#" class="product-category qty-product">0</a>
+                                @endif
+
+                            </strong>
+                        </li>
 
                         {{-- <li>
                             Thẻ:
@@ -180,7 +219,8 @@
                                         @foreach ($variantGroups[$key] as $index => $item)
                                             <li>
                                                 <a href="javascript:;"
-                                                    class="d-flex align-items-center justify-content-center {{ strtolower($key) }}-options {{ $key === 'Color' && $index === 0 ? 'default-selected' : '' }}"
+                                                    class="d-flex select-variant align-items-center justify-content-center {{ strtolower($key) }}-options {{ $key === 'Color' && $index === 0 ? 'default-selected' : '' }}"
+                                                    data-idproduct="{{ $product->id }}"
                                                     data-{{ strtolower($key) }}="{{ $item }}"
                                                     data-attribute="{{ strtolower($key) }}"
                                                     data-value="{{ $item }}">{{ $item }}</a>
@@ -201,7 +241,15 @@
                         <div class="product-action">
 
                             <div class="product-single-qty">
-                                <input class="horizontal-quantity form-control" name="qty" type="text">
+                                @if ($product->type_product === 'product_simple')
+                                    <input class="horizontal-quantity form-control" min="1"
+                                        max="{{ $product->qty }}" name="qty" type="text">
+                                @else
+                                    <input class="horizontal-quantity form-control" min="1" max=""
+                                        name="qty" type="text">
+                                @endif
+
+
                                 <input type="text" hidden name="product_id" value="{{ $product->id }}">
                             </div>
                             <!-- End .product-single-qty -->
@@ -427,8 +475,6 @@
             </div>
             <!-- End .products-slider -->
         </div>
-        <!-- End .products-section -->
-        {{-- <hr class="mt-0 m-b-5" />
 
         <div class="product-widgets-container row pb-2">
             <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
@@ -837,6 +883,83 @@
                 }
             });
 
+            var countOptions = $('.product-single-filter').length - 1;
+
+            // Lấy giá trị của input số lượng và min, max từ thuộc tính của input
+            var $qtyInput = $('input[name="qty"]');
+            var minQty = parseInt($qtyInput.attr('min'));
+            var maxQty = parseInt($qtyInput.attr('max'));
+
+            $qtyInput.on('change', function() {
+                var currentQty = parseInt($qtyInput.val());
+                if (currentQty < minQty) {
+                    $qtyInput.val(minQty);
+                } else if (currentQty > maxQty) {
+                    $qtyInput.val(maxQty);
+                }
+            });
+
+            // Chọn biến thể
+            $(document).on('click', '.select-variant', function() {
+                let selectedOptions = {};
+                let currentOptions = $('.product-single-filter a.selected').length;
+                if (countOptions === currentOptions) {
+                    $('.product-single-filter a.selected').each(function() {
+                        const attribute = $(this).data('attribute');
+                        const value = $(this).data('value');
+                        // Cập nhật vào đối tượng selectedOptions
+                        selectedOptions[attribute] = value;
+                    });
+                    let idPrd = $('.product-single-filter a.selected').data('idproduct');
+                    $.ajax({
+                        url: "{{ route('product.get-qty-variant') }}",
+                        method: 'POST',
+                        data: {
+                            product_id: idPrd,
+                            variants: selectedOptions,
+                        },
+                        success: function(data) {
+
+                            if (data.status === 'success') {
+
+                                const formatCurrency = (value) => {
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'decimal', // Không dùng currency để loại bỏ ký hiệu ₫
+                                        minimumFractionDigits: 0
+                                    }).format(value) + ' VND'; // Thêm ' VND' vào cuối
+                                };
+                                let priceText = '';
+
+                                if (data.variant.offer_price_variant > 0) {
+                                    // Thêm giá khuyến mãi bên cạnh
+                                    priceText =
+                                        `<span style="margin-right: 10px;">${formatCurrency(data.variant.offer_price_variant)}</span>`;
+                                    // priceText +=
+                                    //     `<span style="text-decoration: line-through red; color: black;">${formatCurrency(data.variant.price_variant)}</span> `;
+                                } else {
+                                    priceText =
+                                        `<span>${formatCurrency(data.variant.price_variant)}</span>`;
+                                }
+                                $('.price-render').html(priceText);
+                                $('.qty-product').text(data.variant.qty);
+                                // Cập nhật thuộc tính max của input số lượng
+                                $qtyInput.attr('max', data.variant.qty);
+                                minQty = parseInt($qtyInput.attr('min'));
+                                maxQty = parseInt($qtyInput.attr('max'));
+
+                                // Nếu số lượng hiện tại lớn hơn số lượng tối đa mới, điều chỉnh lại giá trị
+                                if (parseInt($qtyInput.val()) > data.qty) {
+                                    $qtyInput.val(data.qty);
+                                }
+                            }
+                        },
+                        error: function(error) {
+
+                        },
+                    })
+                }
+            })
+
             // Xử lý sự kiện nhấp vào tùy chọn màu
             $('.color-options').click(function() {
                 // Bỏ chọn tất cả các màu trước đó
@@ -856,11 +979,10 @@
                     if (availableSizes) {
                         $.each(availableSizes, function(size, qty) {
                             var sizeLink = $(
-                                '<li><a href="javascript:;" class="d-flex align-items-center justify-content-center size-options" data-size="' +
+                                '<li><a href="javascript:;" class="d-flex select-variant align-items-center justify-content-center size-options" data-size="' +
                                 size + '" data-attribute="size" data-value="' + size + '">' +
                                 size + '</a></li>'
                             );
-
                             // Kiểm tra số lượng
                             if (qty <= 0) {
                                 sizeLink.find('a').addClass('disabled').css('pointer-events',
@@ -885,7 +1007,6 @@
                 var liElement = $(this).closest('li');
                 liElement.addClass('active');
             });
-
 
             // Xử lý sự kiện nhấp vào nút Clear
             $('.clear-btn').click(function() {

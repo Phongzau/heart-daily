@@ -28,11 +28,6 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         $productPrice = 0;
-        if (checkDiscount($product)) {
-            $productPrice += $product->offer_price;
-        } else {
-            $productPrice += $product->price;
-        }
         if ($product->type_product === 'product_variant') {
             foreach ($variants as $variant) {
                 $nameVariant = strtolower($variant);
@@ -52,15 +47,32 @@ class CartController extends Controller
                     'status' => 'error',
                     'message' => $variantString . ' tạm thời hết hàng',
                 ]);
-            } else if ($productVariant->qty < $qty) {
+            }
+            // else if ($productVariant->qty < $qty) {
+            //     return response()->json([
+            //         'status' => 'error',
+            //         'message' => 'Số lượng vượt quá sản phẩm hiện có',
+            //     ]);
+            // }
+            // Tạo ID duy nhất cho mỗi biến thể sản phẩm
+            $cartKey = $product_id . '_' . implode('_', $attributeIdArray);
+
+            $currentQtyInCart = isset($cart[$cartKey]) ? $cart[$cartKey]['qty'] : 0;
+            $totalQtyToAdd = $currentQtyInCart + $qty;
+
+            if ($totalQtyToAdd > $productVariant->qty) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Số lượng vượt quá sản phẩm hiện có',
+                    'message' => 'Số lượng vượt quá sản phẩm hiện có. Chỉ còn ' . $productVariant->qty . ' sản phẩm trong kho.',
                 ]);
             }
 
-            // Tạo ID duy nhất cho mỗi biến thể sản phẩm
-            $cartKey = $product_id . '_' . implode('_', $attributeIdArray);
+            if ($productVariant->offer_price_variant > 0) {
+                $productPrice += $productVariant->offer_price_variant;
+            } else {
+                $productPrice += $productVariant->price_variant;
+            }
+
 
             // Kiểm tra xem sản phẩm biến thể đã có trong giỏ hàng
             if (isset($cart[$cartKey])) {
@@ -85,15 +97,24 @@ class CartController extends Controller
                     'status' => 'error',
                     'message' => 'Sản phẩm hết hàng',
                 ]);
-            } else if ($product->qty < $qty) {
+            }
+
+            $cartKey = $product_id;
+            $currentQtyInCart = isset($cart[$cartKey]) ? $cart[$cartKey]['qty'] : 0;
+            $totalQtyToAdd = $currentQtyInCart + $qty;
+
+            if ($totalQtyToAdd > $product->qty) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Số lượng vượt quá sản phẩm hiện có',
+                    'message' => 'Số lượng vượt quá sản phẩm hiện có. Chỉ còn ' . $product->qty . ' sản phẩm trong kho.',
                 ]);
             }
 
-            // Tạo ID duy nhất cho sản phẩm đơn giản
-            $cartKey = $product_id;
+            if (checkDiscount($product)) {
+                $productPrice += $product->offer_price;
+            } else {
+                $productPrice += $product->price;
+            }
 
             if (isset($cart[$cartKey])) {
                 $cart[$cartKey]['qty'] += $qty;

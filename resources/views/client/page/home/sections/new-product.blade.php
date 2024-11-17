@@ -42,9 +42,13 @@
                                         <a
                                             href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     </h3>
+                                    @php
+                                        $averageRating = $product->reviews->avg('rating');
+                                        $ratingWidth = ($averageRating / 5) * 100;
+                                    @endphp
                                     <div class="ratings-container">
                                         <div class="product-ratings">
-                                            <span class="ratings" style="width:80%"></span>
+                                            <span class="ratings" style="width: {{ $ratingWidth }}%"></span>
                                             <!-- End .ratings -->
                                             <span class="tooltiptext tooltip-top"></span>
                                         </div>
@@ -52,14 +56,48 @@
                                     </div>
                                     <!-- End .product-container -->
                                     <div class="price-box">
-
-                                        @if (checkDiscount($product))
+                                        @if ($product->type_product === 'product_variant')
+                                            @php
+                                                $priceArray = [];
+                                                foreach ($product->ProductVariants as $productVariant) {
+                                                    if ($productVariant->offer_price_variant > 0) {
+                                                        $priceArray[] = $productVariant->offer_price_variant;
+                                                    } else {
+                                                        $priceArray[] = $productVariant->price_variant;
+                                                    }
+                                                }
+                                                $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                // sort($priceArray);
+                                                // $priceProduct = '';
+                                                // if (count(array_unique($priceArray)) === 1) {
+                                                //     $priceProduct = number_format($priceArray[0]) . ' VND';
+                                                // } else {
+                                                //     $priceProduct =
+                                                //         number_format($priceArray[0]) .
+                                                //         ' VND ~ ' .
+                                                //         number_format(end($priceArray)) .
+                                                //         ' VND';
+                                                // }
+                                            @endphp
+                                            <span class="product-price">{{ $priceProduct }}</span>
+                                        @endif
+                                        @if ($product->type_product === 'product_simple')
+                                            @if (checkDiscount($product))
+                                                <del class="old-price">{{ number_format($product->price) }}</del>
+                                                <span class="product-price">{{ number_format($product->offer_price) }}
+                                                    VND</span>
+                                            @else
+                                                <span class="product-price">{{ number_format($product->price) }}
+                                                    VND</span>
+                                            @endif
+                                        @endif
+                                        {{-- @if (checkDiscount($product))
                                             <del class="old-price">{{ number_format($product->price) }}</del>
                                             <span class="product-price">{{ number_format($product->offer_price) }}
                                                 VND</span>
                                         @else
                                             <span class="product-price">{{ number_format($product->price) }} VND</span>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                     <!-- End .price-box -->
                                     <div class="product-action">
