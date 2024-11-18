@@ -275,9 +275,7 @@
                                             <div class="checkout-methods">
                                                 <a href="{{ route('checkout') }}"
                                                     class="btn btn-block btn-dark @if (count($carts) === 0) disabled-link @endif"
-                                                    @if (count($carts) === 0) tabindex="-1" aria-disabled="true" @endif>Proceed
-                                                    to
-                                                    Checkout
+                                                    @if (count($carts) === 0) tabindex="-1" aria-disabled="true" @endif>Tiến hành thanh toán
                                                     <i class="fa fa-arrow-right"></i></a>
                                             </div>
                                         </div><!-- End .cart-summary -->
