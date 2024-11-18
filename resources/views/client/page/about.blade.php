@@ -5,7 +5,7 @@
         style="background: 50%/cover #D4E1EA url({{ asset('frontend/assets/images/page-header-bg.jpg') }});">
         <div class="container">
             <h1><span>GIỚI THIỆU</span>
-                CỬA HẢNG CHÚNG TÔI</h1>
+                CỬA HÀNG CHÚNG TÔI</h1>
             <a href="contact.html" class="btn btn-dark">Liên hệ</a>
         </div><!-- End .container -->
     </div><!-- End .page-header -->

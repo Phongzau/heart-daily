@@ -258,7 +258,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -369,7 +369,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -424,7 +424,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -479,7 +479,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -534,7 +534,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -641,7 +641,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -692,7 +692,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>
@@ -746,7 +746,7 @@
                                     <a href="wishlist.html" class="btn-icon-wish" title="wishlist"><i
                                             class="icon-heart"></i></a>
                                     <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i>ADD TO CART</a>
+                                            class="icon-shopping-cart"></i>THÊM VÀO GIỎ</a>
                                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                             class="fas fa-external-link-alt"></i></a>
                                 </div>

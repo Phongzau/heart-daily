@@ -101,7 +101,7 @@
                                     <input type="text" hidden name="product_id" value="{{ $product->id }}">
                                     <button type="submit"
                                         class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i><span>ADD TO CART</span></button>
+                                            class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ</span></button>
                                 </form>
                             @elseif ($product->type_product === 'product_variant')
                                 <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
