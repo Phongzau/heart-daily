@@ -320,7 +320,7 @@
                     </table>
 
                     <div class="checkout-methods">
-                        <a href="{{ route('checkout') }}" class="btn btn-block btn-dark">Proceed to Checkout
+                        <a href="{{ route('checkout') }}" class="btn btn-block btn-dark">Tiến hành thanh toán
                             <i class="fa fa-arrow-right"></i></a>
                     </div>
                 </div><!-- End .cart-summary -->
