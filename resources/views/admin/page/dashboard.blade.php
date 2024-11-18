@@ -224,9 +224,9 @@
                                     <tr>
                                         <th>ID hóa đơn</th>
                                         <th>Khách hàng</th>
-                                        <th>Trạng thái</th>
+                                        <th>Trạng thái đơn hàng</th>
                                         <th>Ngày</th>
-                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
