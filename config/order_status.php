@@ -12,7 +12,7 @@ return [
             'details' => 'Your package has been processed and will be with delivery parter soon',
         ],
         'dropped_off' => [
-            'status' => 'Đã giao đến ',
+            'status' => 'Đã giao cho đơn vị vận chuyển',
             'details' => 'Your package has been dropped off by the seller'
         ],
         'shipped' => [
