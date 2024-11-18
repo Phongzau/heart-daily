@@ -470,13 +470,13 @@
                 const button = $(this);
                 if (href) {
                     Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
+                        title: "Bạn có chắc không?",
+                        text: "Bạn sẽ không thể quay trở lại khi thực hiện",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!"
+                        confirmButtonText: "Đồng ý "
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({

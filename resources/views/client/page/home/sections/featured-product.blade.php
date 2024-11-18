@@ -41,7 +41,7 @@
                             <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                         </h3>
                         @php
-                            $averageRating = $product->reviews->avg('rating');
+                            $averageRating = $product->reviews->avg('rate');
                             $ratingWidth = ($averageRating / 5) * 100;
                         @endphp
                         <div class="ratings-container">
@@ -106,7 +106,7 @@
                             @elseif ($product->type_product === 'product_variant')
                                 <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
                                     class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN LOẠI
-                                        </span></a>
+                                    </span></a>
                             @endif
 
                             <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i

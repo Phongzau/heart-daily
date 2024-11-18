@@ -43,7 +43,7 @@
                                             href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     </h3>
                                     @php
-                                        $averageRating = $product->reviews->avg('rating');
+                                        $averageRating = $product->reviews->avg('rate');
                                         $ratingWidth = ($averageRating / 5) * 100;
                                     @endphp
                                     <div class="ratings-container">
@@ -113,13 +113,14 @@
                                                     value="{{ $product->id }}">
                                                 <button type="submit"
                                                     class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
-                                                        class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ</span></button>
+                                                        class="icon-shopping-cart"></i><span>THÊM VÀO
+                                                        GIỎ</span></button>
                                             </form>
                                         @elseif ($product->type_product === 'product_variant')
                                             <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
-                                                class="btn-icon btn-add-cart"><i
-                                                    class="fa fa-arrow-right"></i><span>LỰA CHỌN LOẠI
-                                                    </span></a>
+                                                class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA
+                                                    CHỌN LOẠI
+                                                </span></a>
                                         @endif
                                         <a href="ajax/product-quick-view.html" class="btn-quickview"
                                             title="Quick View"><i class="fas fa-external-link-alt"></i></a>

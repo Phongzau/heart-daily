@@ -16,6 +16,14 @@ class CouponList extends Component
             ->where('status', 1)
             ->whereDate('start_date', '<=', Carbon::now())
             ->whereDate('end_date', '>', Carbon::now())
+            ->whereRaw(
+                '(
+                SELECT COUNT(*)
+                FROM orders
+                WHERE JSON_CONTAINS(orders.coupon_method, JSON_OBJECT("coupon_code", coupons.code))
+                AND orders.order_status != "canceled"
+                ) < max_use'
+            )
             ->get();
     }
 
@@ -27,7 +35,15 @@ class CouponList extends Component
             ->where('status', 1)
             ->whereDate('start_date', '<=', Carbon::now())
             ->whereDate('end_date', '>', Carbon::now())
-            ->get(); // Lấy tất cả thông báo của người dùng hiện tại
+            ->whereRaw(
+                '(
+                SELECT COUNT(*)
+                FROM orders
+                WHERE JSON_CONTAINS(orders.coupon_method, JSON_OBJECT("coupon_code", coupons.code))
+                AND orders.order_status != "canceled"
+                ) < max_use'
+            )
+            ->get();
     }
 
     public function render()

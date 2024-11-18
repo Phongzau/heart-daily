@@ -112,9 +112,14 @@
                 <div class="col-lg-7 col-md-6 product-single-details">
                     <h1 class="product-title">{{ $product->name }}</h1>
 
+                    @php
+                        $averageRating = $product->reviews->avg('rate');
+                        $ratingWidth = ($averageRating / 5) * 100;
+                    @endphp
+
                     <div class="ratings-container">
                         <div class="product-ratings">
-                            <span class="ratings" style="width:60%"></span>
+                            <span class="ratings" style="width:{{ $ratingWidth }}%"></span>
                             <!-- End .ratings -->
                             <span class="tooltiptext tooltip-top"></span>
                         </div>
@@ -153,7 +158,7 @@
                                 $priceProduct = number_format($priceArray[0]) . ' VND';
                             } else {
                                 $priceProduct =
-                                       number_format($priceArray[0]) .
+                                    number_format($priceArray[0]) .
                                     ' VND ~ ' .
                                     number_format(end($priceArray)) .
                                     ' VND';
@@ -268,16 +273,16 @@
                         <label class="sr-only">Chia sẻ:</label>
 
                         <div class="social-icons mr-2">
-                            <a href="https://www.facebook.com/" class="social-icon social-facebook icon-facebook" target="_blank"
-                                title="Facebook"></a>
+                            <a href="https://www.facebook.com/" class="social-icon social-facebook icon-facebook"
+                                target="_blank" title="Facebook"></a>
                             <a href="https://x.com/" class="social-icon social-twitter icon-twitter" target="_blank"
                                 title="Twitter"></a>
-                            <a href="https://www.linkedin.com/" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank"
-                                title="Linkedin"></a>
-                            <a href="https://www.google.com" class="social-icon social-gplus fab fa-google-plus-g" target="_blank"
-                                title="Google +"></a>
-                            <a href="https://mail.google.com/" class="social-icon social-mail icon-mail-alt" target="_blank"
-                                title="Mail"></a>
+                            <a href="https://www.linkedin.com/" class="social-icon social-linkedin fab fa-linkedin-in"
+                                target="_blank" title="Linkedin"></a>
+                            <a href="https://www.google.com" class="social-icon social-gplus fab fa-google-plus-g"
+                                target="_blank" title="Google +"></a>
+                            <a href="https://mail.google.com/" class="social-icon social-mail icon-mail-alt"
+                                target="_blank" title="Mail"></a>
                         </div>
                         <!-- End .social-icons -->
 
@@ -437,9 +442,13 @@
                                 <a
                                     href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                             </h3>
+                            @php
+                                $averageRating = $product->reviews->avg('rate');
+                                $ratingWidth = ($averageRating / 5) * 100;
+                            @endphp
                             <div class="ratings-container">
                                 <div class="product-ratings">
-                                    <span class="ratings" style="width:80%"></span>
+                                    <span class="ratings" style="width:{{ $ratingWidth }}%"></span>
                                     <!-- End .ratings -->
                                     <span class="tooltiptext tooltip-top"></span>
                                 </div>
@@ -464,7 +473,7 @@
                                     title="wishlist"><i class="icon-heart"></i></a>
                                 <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
                                     class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN
-                                    LOẠI</span></a>
+                                        LOẠI</span></a>
                                 <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                                         class="fas fa-external-link-alt"></i></a>
                             </div>
@@ -476,16 +485,14 @@
             <!-- End .products-slider -->
         </div>
 
-        <div class="product-widgets-container row pb-2">
+        {{-- <div class="product-widgets-container row pb-2">
             <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
                 <h4 class="section-sub-title">Sản phẩm nổi bật</h4>
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -514,10 +521,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -545,10 +550,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -579,10 +582,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -611,10 +612,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -642,10 +641,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -676,10 +673,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -708,10 +703,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -740,10 +733,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -774,10 +765,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -805,10 +794,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 
@@ -836,10 +823,8 @@
                 <div class="product-default left-details product-widget">
                     <figure>
                         <a href="product.html">
-                            <img src="" width="74" height="74"
-                                alt="product">
-                            <img src="" width="74" height="74"
-                                alt="product">
+                            <img src="" width="74" height="74" alt="product">
+                            <img src="" width="74" height="74" alt="product">
                         </a>
                     </figure>
 

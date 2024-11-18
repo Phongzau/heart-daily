@@ -111,7 +111,8 @@
                                                     <li class="nav-item mr-1">
                                                         <a class="nav-link" id="product-variants-tab" data-toggle="tab"
                                                             href="#product-variants" role="tab"
-                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu sản phẩm</a>
+                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu
+                                                            sản phẩm</a>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content" id="productTabContent">
@@ -437,8 +438,8 @@
                                         </div>
                                         <div class="card mt-3">
                                             <div class="card-body">
-                                                <button class="btn btn-primary" style="float: right;"
-                                                    type="submit">Cập nhật</button>
+                                                <button class="btn btn-primary" style="float: right;" type="submit">Cập
+                                                    nhật</button>
                                             </div>
                                         </div>
 
@@ -507,7 +508,8 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image_main"
                                                             class="d-none" accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh
+                                                            lên...</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -795,13 +797,14 @@
 
                 if (href) {
                     Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
+                        title: "Bạn có chắc không?",
+                        text: "Bạn sẽ không thể quay trở lại khi thực hiện",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!"
+                        confirmButtonText: "Đồng ý "
+
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
@@ -1013,13 +1016,14 @@
 
                 if (href) {
                     Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
+                        title: "Bạn có chắc không?",
+                        text: "Bạn sẽ không thể quay trở lại khi thực hiện",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!"
+                        confirmButtonText: "Đồng ý "
+
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
