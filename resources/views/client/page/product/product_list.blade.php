@@ -29,9 +29,13 @@
                 <h3 class="product-title"> <a
                         href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a> </h3>
 
+                @php
+                    $averageRating = $product->reviews->avg('rate');
+                    $ratingWidth = ($averageRating / 5) * 100;
+                @endphp
                 <div class="ratings-container">
                     <div class="product-ratings">
-                        <span class="ratings" style="width:100%"></span>
+                        <span class="ratings" style="width: {{ $ratingWidth }}%"></span>
                         <!-- End .ratings -->
                         <span class="tooltiptext tooltip-top"></span>
                     </div>
@@ -40,12 +44,29 @@
                 <!-- End .product-container -->
 
                 <div class="price-box">
-                    @if (checkDiscount($product))
-                        <span class="old-price">{{ number_format($product->price) }}</span>
-                        <span class="product-price">{{ number_format($product->offer_price) }}
-                            VND</span>
-                    @else
-                        <span class="product-price">{{ number_format($product->price) }} VND</span>
+                    @if ($product->type_product === 'product_variant')
+                        @php
+                            $priceArray = [];
+                            foreach ($product->ProductVariants as $productVariant) {
+                                if ($productVariant->offer_price_variant > 0) {
+                                    $priceArray[] = $productVariant->offer_price_variant;
+                                } else {
+                                    $priceArray[] = $productVariant->price_variant;
+                                }
+                            }
+                            $priceProduct = number_format(min($priceArray)) . ' VND';
+                        @endphp
+                        <span class="product-price">{{ $priceProduct }}</span>
+                    @endif
+                    @if ($product->type_product === 'product_simple')
+                        @if (checkDiscount($product))
+                            <del class="old-price">{{ number_format($product->price) }}</del>
+                            <span class="product-price">{{ number_format($product->offer_price) }}
+                                VND</span>
+                        @else
+                            <span class="product-price">{{ number_format($product->price) }}
+                                VND</span>
+                        @endif
                     @endif
 
                 </div>
@@ -65,7 +86,8 @@
                         </form>
                     @elseif ($product->type_product === 'product_variant')
                         <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
-                            class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>Lựa chọn loại</span></a>
+                            class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>Lựa chọn
+                                loại</span></a>
                     @endif
                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
                             class="fas fa-external-link-alt"></i></a>

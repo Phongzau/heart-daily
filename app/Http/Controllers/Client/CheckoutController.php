@@ -13,6 +13,7 @@ use App\Models\ProductVariant;
 use App\Models\Transaction;
 use App\Models\VnpaySetting;
 use App\Models\Attribute;
+use App\Models\Coupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -113,6 +114,16 @@ class CheckoutController extends Controller
             $order->coupon_method = json_encode(session()->get('coupon'));
             $order->order_status = 'pending';
             $order->save();
+
+            $sessionCoupon = session()->get('coupon', []);
+            if (!empty($sessionCoupon)) {
+                $coupon = Coupon::query()->where('code', $sessionCoupon['coupon_code'])->first();
+
+                if ($coupon) {
+                    $coupon->total_used += 1;
+                    $coupon->save();
+                }
+            }
 
             // Lưu sản phẩm trong đơn hàng
             foreach ($carts as $item) {

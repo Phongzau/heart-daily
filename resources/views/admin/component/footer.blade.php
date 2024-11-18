@@ -86,15 +86,16 @@
 
             // Hiển thị hộp thoại xác nhận sử dụng SweetAlert2
             Swal.fire({
-                title: "Are you sure?", // Tiêu đề hộp thoại
-                text: "You won't be able to revert this!", // Nội dung thông báo
+                title: "Bạn có chắc không?", // Tiêu đề hộp thoại
+                text: "Bạn sẽ không thể quay trở lại khi thực hiện", // Nội dung thông báo
                 icon: "warning", // Biểu tượng cảnh báo
                 showCancelButton: true, // Hiển thị nút hủy
                 confirmButtonColor: "#3085d6", // Màu của nút xác nhận
                 cancelButtonColor: "#d33", // Màu của nút hủy
-                confirmButtonText: "Yes, delete it!" // Văn bản của nút xác nhận
+                confirmButtonText: "Đồng ý" // Văn bản của nút xác nhận
+
             }).then((result) => {
-                // Nếu người dùng xác nhận xóa (click nút "Yes, delete it!")
+                // Nếu người dùng xác nhận xóa (click nút "Đồng ý ")
                 if (result.isConfirmed) {
 
                     // Thực hiện yêu cầu AJAX với phương thức DELETE đến URL đã lấy ở trên

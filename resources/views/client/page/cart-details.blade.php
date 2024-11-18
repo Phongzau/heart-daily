@@ -16,6 +16,12 @@
             z-index: 1001;
         }
 
+        .disabled-link {
+            pointer-events: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .sidebar-content {
             padding: 15px;
         }
@@ -94,6 +100,17 @@
             cursor: pointer;
         }
 
+        .checkout-progress-bar .disabled a {
+            pointer-events: none;
+            /* Không cho phép nhấn */
+            color: #ccc;
+            /* Màu chữ mờ đi */
+            text-decoration: none;
+            /* Xóa gạch chân */
+            cursor: not-allowed;
+            /* Thay đổi con trỏ thành không được phép */
+        }
+
         #openSidebarBtn {
             color: black;
             border: none;
@@ -114,8 +131,9 @@
             <li class="active">
                 <a href="{{ route('cart-details') }}">Giỏ hàng</a>
             </li>
-            <li>
-                <a href="{{ route('checkout') }}">Thanh toán</a>
+            <li @if (count($carts) === 0) class="disabled" @endif>
+                <a href="{{ count($carts) > 0 ? route('checkout') : '#' }}"
+                    @if (count($carts) === 0) tabindex="-1" aria-disabled="true" @endif class="">Thanh toán</a>
             </li>
             <li class="disabled">
                 <a href="cart.html">Hoàn thành đơn hàng</a>
@@ -215,7 +233,7 @@
                                     </div><!-- End .float-left -->
                                     <div class="">
                                         <button class="btn choose-coupon btn-sm" id="openSidebarBtn" type="submit">Chọn
-                                        mã giảm giá</button>
+                                            mã giảm giá</button>
                                     </div>
                                     <div style="width: 350px;" class="float-right">
                                         <div class="cart-summary">
@@ -255,7 +273,10 @@
                                             </table>
 
                                             <div class="checkout-methods">
-                                                <a href="{{ route('checkout') }}" class="btn btn-block btn-dark">Proceed to
+                                                <a href="{{ route('checkout') }}"
+                                                    class="btn btn-block btn-dark @if (count($carts) === 0) disabled-link @endif"
+                                                    @if (count($carts) === 0) tabindex="-1" aria-disabled="true" @endif>Proceed
+                                                    to
                                                     Checkout
                                                     <i class="fa fa-arrow-right"></i></a>
                                             </div>
@@ -458,14 +479,15 @@
                 e.preventDefault();
 
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "This action will clear your cart!",
+                    title: "Bạn có chắc không?",
+                    text: "Hành động này sẽ xóa sạch giỏ hàng của bạn!",
                     icon: "warning",
                     width: '400px',
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, clear it!"
+                    confirmButtonText: "Đồng ý"
+
                 }).then((result) => {
                     if (result.isConfirmed) {
 
