@@ -27,7 +27,7 @@
                                     <textarea name="content" class="summernote">{!! @$about->content !!}</textarea>
                                 </div>
                                 @can('edit-abouts')
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 @endcan
                             </form>
                         </div>

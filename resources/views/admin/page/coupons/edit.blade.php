@@ -143,7 +143,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Cậ nhật</button>
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
                             </form>
                         </div>
                     </div>
