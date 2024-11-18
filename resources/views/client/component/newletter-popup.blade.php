@@ -14,8 +14,8 @@
                 @csrf
                 <div class="input-group">
                     <input type="email" class="form-control" id="newsletter-email" name="email"
-                           placeholder="Your email address" required />
-                    <input type="submit" class="btn btn-primary" value="Submit" />
+                           placeholder="Nhập địa chỉ email của bạn" required />
+                    <input type="submit" class="btn btn-primary" value="Gửi" />
                 </div>
             </form>
             
@@ -23,7 +23,7 @@
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" value="0" id="show-again" />
                     <label for="show-again" class="custom-control-label">
-                        Không hiển thị lại cửa sổ bật lên này
+                        Không hiển thị lại cửa sổ này
                     </label>
                 </div>
             </div>
