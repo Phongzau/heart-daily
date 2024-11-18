@@ -3,7 +3,7 @@
         <p>
             Xin chào <strong class="text-dark">{{ Auth::user()->name }}!</strong> (không
             <strong class="text-dark">{{ Auth::user()->name }}!</strong>?
-            <a href="{{ route('register') }}" class="btn btn-link ">Log out</a>)
+            <a href="{{ route('register') }}" class="btn btn-link ">Đăng xuất</a>)
         </p>
 
         <p>
