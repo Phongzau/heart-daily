@@ -20,7 +20,19 @@ class DashboardController extends Controller
             ->whereMonth('created_at', $month)
             ->count();
 
+        $readyCount = Order::where('order_status', 'processed_and_ready_to_ship')
+            ->whereMonth('created_at', $month)
+            ->count();
+
+        $droppedOffCount = Order::where('order_status', 'dropped_off')
+            ->whereMonth('created_at', $month)
+            ->count();
+
         $shippingCount = Order::where('order_status', 'shipped')
+            ->whereMonth('created_at', $month)
+            ->count();
+
+        $areDeliveringCount = Order::where('order_status', 'out_for_delivery')
             ->whereMonth('created_at', $month)
             ->count();
 
@@ -28,7 +40,7 @@ class DashboardController extends Controller
             ->whereMonth('created_at', $month)
             ->count();
 
-        $totalOrdersCount = $pendingCount + $shippingCount + $completedCount;
+        $totalOrdersCount = $pendingCount + $readyCount + $droppedOffCount + $shippingCount + $areDeliveringCount + $completedCount;
 
         $totalRevenue = Order::where('order_status', 'delivered')
             ->whereMonth('created_at', $month)
@@ -37,8 +49,7 @@ class DashboardController extends Controller
         $totalProductsSold = OrderProduct::whereHas('order', function ($query) use ($month) {
             $query->where('order_status', 'delivered')
                 ->whereMonth('created_at', $month);
-        })
-            ->sum('qty');
+        })->sum('qty');
 
         // Lấy tên tháng
         $monthName = Carbon::createFromFormat('m', $month)->format('F');
@@ -64,7 +75,19 @@ class DashboardController extends Controller
             ->whereMonth('created_at', $month)
             ->count();
 
+        $readyCount = Order::where('order_status', 'processed_and_ready_to_ship')
+            ->whereMonth('created_at', $month)
+            ->count();
+
+        $droppedOffCount = Order::where('order_status', 'dropped_off')
+            ->whereMonth('created_at', $month)
+            ->count();
+
         $shippingCount = Order::where('order_status', 'shipped')
+            ->whereMonth('created_at', $month)
+            ->count();
+
+        $areDeliveringCount = Order::where('order_status', 'out_for_delivery')
             ->whereMonth('created_at', $month)
             ->count();
 
@@ -72,7 +95,7 @@ class DashboardController extends Controller
             ->whereMonth('created_at', $month)
             ->count();
 
-        $totalOrdersCount = $pendingCount + $shippingCount + $completedCount;
+        $totalOrdersCount = $pendingCount + $readyCount + $droppedOffCount + $shippingCount + $areDeliveringCount + $completedCount;
 
         $totalRevenue = Order::where('order_status', 'delivered')
             ->whereMonth('created_at', $month)

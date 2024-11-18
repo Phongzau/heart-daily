@@ -59,7 +59,7 @@ class OrderDataTable extends DataTable
                         return "<span class='badge bg-info'>Đã xử lý</span>";
                         break;
                     case 'dropped_off':
-                        return "<span class='badge bg-info'>Đã giao đến </span>";
+                        return "<span class='badge bg-info'>Đã giao cho đơn vị vận chuyển</span>";
                         break;
                     case 'shipped':
                         return "<span class='badge bg-warning'>Đã vận chuyển</span>";

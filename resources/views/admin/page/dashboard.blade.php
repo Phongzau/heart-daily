@@ -11,7 +11,7 @@
                         <div class="card-stats-title">Thống kê đơn hàng -
                             <div class="dropdown d-inline">
                                 <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#"
-                                id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->locale('Vi')->translatedFormat('F') }}</a>
+                                    id="orders-month">{{ \Carbon\Carbon::createFromFormat('m', $month)->locale('Vi')->translatedFormat('F') }}</a>
                                 <ul class="dropdown-menu dropdown-menu-sm">
                                     <li class="dropdown-title">Chọn Tháng</li>
                                     @foreach (range(1, 12) as $m)
@@ -28,7 +28,7 @@
                         <div class="card-stats-items">
                             <div class="card-stats-item">
                                 <div class="card-stats-item-count" id="pending-count">{{ @$pendingCount }}</div>
-                                <div class="card-stats-item-label">Chưa giải xử lý</div>
+                                <div class="card-stats-item-label">Chưa xử lý</div>
                             </div>
                             <div class="card-stats-item">
                                 <div class="card-stats-item-count" id="shipping-count">{{ @$shippingCount }}</div>
@@ -102,9 +102,10 @@
                 </div>
             </div>
 
+
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         <h4>Sản phẩm tốt nhất</h4>
@@ -178,6 +179,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Danh mục & Thương hiệu</h4>
+                    </div>
+                    <div class="card-body">
+                     <h4>NULL</h4>  
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Top 5 Doanh thu</h4>
+                    </div>
+                    <div class="card-body">
+                       <h4>NULL</h4>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="card gradient-bottom">
                     <div class="card-header">
@@ -192,7 +216,8 @@
                                 </li>
                                 <li><a href="#" class="dropdown-item" id="dropdown-item"
                                         data-period="month">Tháng</a></li>
-                                <li><a href="#" class="dropdown-item" id="dropdown-item" data-period="year">Năm</a></li>
+                                <li><a href="#" class="dropdown-item" id="dropdown-item"
+                                        data-period="year">Năm</a></li>
                             </ul>
                         </div>
                     </div>
@@ -211,10 +236,10 @@
                     <div class="card-header">
                         <h4>Hóa đơn</h4>
                         {{-- @can('view-orders') --}}
-                            <div class="card-header-action">
-                                <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">Xem thêm <i
-                                        class="fas fa-chevron-right"></i></a>
-                            </div>
+                        <div class="card-header-action">
+                            <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">Xem thêm <i
+                                    class="fas fa-chevron-right"></i></a>
+                        </div>
                         {{-- @endcan --}}
                     </div>
                     <div class="card-body p-0">
@@ -274,7 +299,8 @@
                                                 \Carbon\Carbon::setLocale('vi');
                                             @endphp
 
-                                            <td>{{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('d F, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('d F, Y') }}
+                                            </td>
 
                                             <td>
                                                 <a href="{{ route('admin.orders.show', $order->id) }}"
