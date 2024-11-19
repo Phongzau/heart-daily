@@ -26,7 +26,7 @@
                                 </div>
                              
                                 <div class="form-group">
-                                    <label for="order">Order</label>
+                                    <label for="order">Vị trí</label>
                                     <input type="number" name="order" value="{{ old('order', $categoryAttribute->order) }}" class="form-control">
                                 </div>
                                 <div class="form-group">
