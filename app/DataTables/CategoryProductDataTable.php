@@ -99,8 +99,8 @@ class CategoryProductDataTable extends DataTable
             Column::make('id')->title('ID'),
             Column::make('title')->title('Tiêu đề'),
             Column::make('parent_name')->title('Tên danh mục'),
-            Column::make('level')->title('Cấp'),
-            Column::make('order'),
+            // Column::make('level')->title('Cấp'),
+            Column::make('order')->title('Vị trí'),
             Column::make('status')->title('Trạng thái'),
             Column::computed('action')->title('Chức năng')
                 ->exportable(false)

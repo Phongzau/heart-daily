@@ -249,8 +249,8 @@
                                     <tr>
                                         <th>ID hóa đơn</th>
                                         <th>Khách hàng</th>
-                                        <th>Trạng thái đơn hàng</th>
-                                        <th>Ngày</th>
+                                        <th>Trạng thái đơn</th>
+                                        <th>Ngày đặt đơn</th>
                                         <th>Thao tác</th>
                                     </tr>
                                 </thead>

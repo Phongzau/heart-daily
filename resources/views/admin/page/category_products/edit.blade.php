@@ -28,7 +28,7 @@
                                 <div class="form-group">
                                     <label for="status">Danh mục gốc</label>
                                     <select name="parent_id" class="form-control parent">
-                                        <option value="0">Danh Mục Cha</option>
+                                        <option value="0">Danh mục cha</option>
                                         @foreach ($categoryProductAll as $key => $value)
                                             <option {{ $categoryProduct->parent_id == $value->id ? 'selected' : '' }}
                                                 value="{{ $value->id }}">
@@ -42,17 +42,17 @@
                                         class="form-control level-display">
                                 </div>
                                 <div class="form-group">
-                                    <label for="order">Order</label>
+                                    <label for="order">Vị trí</label>
                                     <input type="number" name="order" value="{{ $categoryProduct->order }}"
                                         class="form-control order">
                                 </div>
                                 <div class="form-group">
-                                    <label for="status">Tạng thái</label>
+                                    <label for="status">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
                                         <option {{ $categoryProduct->status == 1 ? 'selected' : '' }} value="1"Bật
                                         </option>
-                                        <option {{ $categoryProduct->status == 0 ? 'selected' : '' }} value="0">
+                                        <option {{ $categoryProduct->status == 0 ? 'selected' : '' }} value="0"Tắt>
                                             Tắt
                                         </option>
                                     </select>

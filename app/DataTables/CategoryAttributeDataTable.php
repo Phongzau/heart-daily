@@ -100,8 +100,8 @@ class CategoryAttributeDataTable extends DataTable
             Column::make('id')->title('ID'),
             Column::make('title')->title('Tiêu đề'),
             Column::make('slug')->title('Đường dẫn dẫn'),
-            Column::make('order'),
-            Column::make('status'),
+            Column::make('order')->title('Vị trí'),
+            Column::make('status')->title('Trạng thái'),
             Column::make('created_by')->title('Thêm bởi'),
             Column::make('updated_by')->title('Cập nhật bởi'),
             Column::computed('action')->title('Chức năng')
