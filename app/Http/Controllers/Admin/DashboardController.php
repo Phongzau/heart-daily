@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderProduct;
+use App\Models\ProductReview;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -219,6 +220,77 @@ class DashboardController extends Controller
                 'name' => $product->product->name,
                 'sales' => $product->total_sales,
                 'image' => $product->product->image,
+            ];
+        });
+
+        return response()->json($products);
+    }
+
+    public function getTopRevenue($period)
+    {
+
+        $startDate = null;
+        $endDate = null;
+
+        switch ($period) {
+            case 'today':
+                $startDate = Carbon::today()->startOfDay();
+                $endDate = Carbon::today()->endOfDay();
+                break;
+            case 'week':
+                $startDate = Carbon::now()->startOfWeek();
+                $endDate = Carbon::now()->endOfWeek();
+                break;
+            case 'month':
+                $startDate = Carbon::now()->startOfMonth();
+                $endDate = Carbon::now()->endOfMonth();
+                break;
+            case 'year':
+                $startDate = Carbon::now()->startOfYear();
+                $endDate = Carbon::now()->endOfYear();
+                break;
+            default:
+                $startDate = Carbon::now()->startOfMonth();
+                $endDate = Carbon::now()->endOfMonth();
+                break;
+        }
+
+        // Lấy top 5 sản phẩm có doanh thu cao nhất trong khoảng thời gian
+        $topRevenueProducts = OrderProduct::select('product_id', DB::raw('SUM(qty * unit_price) as total_revenue'))
+            ->whereHas('order', function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate])
+                    ->where('order_status', 'delivered');
+            })
+            ->groupBy('product_id')
+            ->orderByDesc('total_revenue')
+            ->limit(5)
+            ->get();
+        $products = $topRevenueProducts->map(function ($product) {
+            return [
+                'name' => $product->product->name,
+                'revenue' => $product->total_revenue,
+                'image' => $product->product->image,
+            ];
+        });
+
+        return response()->json($products);
+    }
+    public function bestRatedProducts()
+    {
+        $bestRatedProducts = ProductReview::select('product_id', DB::raw('AVG(rate) as avg_rating'), DB::raw('COUNT(*) as review_count'))
+            ->with('product')
+            ->groupBy('product_id')
+            ->orderByDesc('avg_rating') 
+            ->limit(5) 
+            ->get();
+
+        $products = $bestRatedProducts->map(function ($item) {
+            return [
+                'name' => $item->product->name,
+                'image' => $item->product->image,
+                'slug' => $item->product->slug,
+                'avg_rating' => number_format($item->avg_rating, 1),
+                'review_count' => $item->review_count,
             ];
         });
 

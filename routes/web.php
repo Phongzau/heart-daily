@@ -156,6 +156,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/order-statistics/{month}', [DashboardController::class, 'orderStatistics'])->name('order-statistics');
         Route::get('/yearly-statistics', [DashboardController::class, 'yearlyStatistics'])->name('yearly-statistics');
         Route::get('/top-products/{period}', [DashboardController::class, 'topProducts'])->name('top-products');
+        Route::get('/top-revenue/{period}', [DashboardController::class, 'getTopRevenue']);
+        Route::get('/best-rated-products', [DashboardController::class, 'bestRatedProducts']);
         // Route::get('/brand-statistics/{period}', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
     });
     // admin profile
