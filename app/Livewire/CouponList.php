@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Coupon;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class CouponList extends Component
@@ -13,7 +15,7 @@ class CouponList extends Component
     public function mount()
     {
         $this->listCoupon = Coupon::query()
-            ->where('status', 1)
+            ->where(['status' => 1, 'is_publish' => 1])
             ->whereDate('start_date', '<=', Carbon::now())
             ->whereDate('end_date', '>', Carbon::now())
             ->whereRaw(
@@ -24,6 +26,12 @@ class CouponList extends Component
                 AND orders.order_status != "canceled"
                 ) < max_use'
             )
+            ->orWhereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('user_coupons')
+                    ->whereColumn('user_coupons.coupon_id', 'coupons.id')
+                    ->where('user_coupons.user_id', Auth::user()->id);
+            })
             ->get();
     }
 
@@ -43,6 +51,12 @@ class CouponList extends Component
                 AND orders.order_status != "canceled"
                 ) < max_use'
             )
+            ->orWhereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('user_coupons')
+                    ->whereColumn('user_coupons.coupon_id', 'coupons.id')
+                    ->where('user_coupons.user_id', Auth::user()->id);
+            })
             ->get();
     }
 

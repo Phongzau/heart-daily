@@ -330,6 +330,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('change-status');
         Route::get('/', [CouponController::class, 'index'])->name('index');
         Route::get('/create', [CouponController::class, 'create'])->name('create')->middleware('permission:create-coupons');
+        Route::get('/add-coupon', [CouponController::class, 'add'])->name('add');
+        Route::post('/add-coupon', [CouponController::class, 'addCoupon'])->name('add-coupon');
         Route::post('/', [CouponController::class, 'store'])->name('store');
         Route::get('/{coupons}', [CouponController::class, 'show'])->name('show');
         Route::get('/{coupons}/edit', [CouponController::class, 'edit'])->name('edit')->middleware('permission:edit-coupons');

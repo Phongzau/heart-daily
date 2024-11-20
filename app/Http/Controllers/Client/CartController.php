@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\UserCoupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -292,13 +295,16 @@ class CartController extends Controller
             }
         }
 
-        $coupon = Coupon::where(['code' => $request->coupon_code, 'status' => 1])->first();
+        $coupon = Coupon::query()
+            ->where('code', $request->coupon_code)
+            ->where('status', 1)
+            ->first();
         // Kiểm tra ngày bắt đầu và ngày hết hạn với Carbon
         $currentDate = Carbon::now()->format('Y-m-d');
         if ($coupon === null) {
             return response([
                 'status' => 'error',
-                'message' => 'Mã giảm giá không tồn tại!',
+                'message' => 'Mã giảm giá không tồn tại',
             ]);
         } else if ($coupon->start_date > $currentDate) {
             return response([
@@ -315,6 +321,31 @@ class CartController extends Controller
                 'status' => 'error',
                 'message' => 'Bạn không thể áp dụng mã giảm giá này!',
             ]);
+        }
+
+        if ($coupon->is_publish == 0) {
+            $userHasCoupon = UserCoupon::query()
+                ->where('user_id', Auth::user()->id)
+                ->where('coupon_id', $coupon->id)
+                ->exists();
+
+            if (!$userHasCoupon) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Bạn không có mã giảm giá này',
+                ]);
+            }
+        } else {
+            $usageCount = Order::query()
+                ->whereJsonContains('coupon_method', ['coupon_code' => $coupon->code])
+                ->where('order_status', '!=', 'canceled')
+                ->count();
+            if ($usageCount >= $coupon->max_use) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Mã giảm giá này đã được sử dụng quá số lần cho phép',
+                ]);
+            }
         }
 
         if ($coupon->min_order_value > 0) {
