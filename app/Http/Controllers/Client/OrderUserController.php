@@ -20,17 +20,17 @@ class OrderUserController extends Controller
 
         if (isset($order)) {
             $order->order_status = 'canceled';
+            $order->cause_cancel_order = $request->cancelReason;
             $order->save();
-            if ($order->coupon_method != null) {
+            if ($order->coupon_method != 'null') {
                 $couponMethod = json_decode($order->coupon_method, true);
                 $coupon = Coupon::query()->where('code', $couponMethod['coupon_code'])->first();
-
                 if ($coupon && $coupon->is_publish == 0 && now()->between($coupon->start_date, $coupon->end_date)) {
                     $userCoupon = UserCoupon::query()
                         ->where('user_id', Auth::user()->id)
                         ->where('coupon_id', $coupon->id)
                         ->first();
-                        
+
                     if ($userCoupon && !empty($userCoupon)) {
                         $userCoupon->increment('qty');
                         $userCoupon->save();

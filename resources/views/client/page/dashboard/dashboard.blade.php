@@ -230,6 +230,54 @@
         .btn-contact {
             background-color: #ee4d2d;
         }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 25%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -312,6 +360,32 @@
         </div><!-- End .row -->
     </div><!-- End .container -->
 
+    <div id="myModalCancelOrder" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <h4>Chọn lý do hủy đơn hàng</h4>
+
+            <select id="cancelReason" class="form-control">
+                <option value="">Chọn lý do...</option>
+                <option value="khong_muon_mua_nua">Không muốn mua nữa</option>
+                <option value="gia_re_hon_o_noi_khac">Giá rẻ hơn ở nơi khác</option>
+                <option value="thay_doi_dia_chi_giao_hang">Thay đổi địa chỉ giao hàng</option>
+                <option value="thay_doi_phuong_thuc_thanh_toan">Thay đổi phương thức thanh toán</option>
+                <option value="thay_doi_ma_giam_gia">Thay đổi mã giảm giá</option>
+                <option value="ly_do_khac">Lý do khác</option>
+            </select>
+
+            <!-- Ô nhập lý do khác -->
+            <div id="otherReasonDiv" style="display: none;">
+                <textarea id="otherReason" class="form-control" placeholder="Nhập lý do của bạn..."></textarea>
+            </div>
+
+            <br>
+            <!-- Nút hủy đơn hàng -->
+            <button id="cancelOrderButton" class="btn btn-danger">Hủy đơn hàng</button>
+        </div>
+    </div>
     <div class="mb-5"></div><!-- margin -->
 @endsection
 
@@ -324,25 +398,44 @@
                 }
             });
 
-            // Gán sự kiện click cho nút "Hiển thị thêm sản phẩm" ngay cả khi nó được tạo mới
-            $(document).on('click', '.show-more', function() {
-                var hiddenProducts = $(this).closest('.order-content').find('.hidden-products');
+            $(document).on('click', '#myBtnCancelOrder', function() {
+                $('#myModalCancelOrder').fadeIn();
+                let orderId = $(this).data('order-id');
+                $('#cancelOrderButton').data('id-order', orderId);
+            })
 
-                hiddenProducts.toggleClass('hidden'); // Hiện/Ẩn sản phẩm
+            $(".close").click(function() {
+                $("#myModalCancelOrder").fadeOut();
+            });
 
-                // Cập nhật nội dung của nút
-                if (hiddenProducts.hasClass('hidden')) {
-                    $(this).html(
-                        'Hiển thị thêm sản phẩm<i style="margin-left: 5px;" class="fas fa-chevron-down"></i>'
-                    );
-                } else {
-                    $(this).html(
-                        'Ẩn bớt sản phẩm<i style="margin-left: 5px;" class="fas fa-chevron-up"></i>');
+            $(window).click(function(event) {
+                if ($(event.target).is("#myModalCancelOrder")) {
+                    $("#myModalCancelOrder").fadeOut();
                 }
             });
 
-            $(document).on('click', '.cancel-order-button', function() {
-                var orderId = $(this).data('order-id');
+            // Khi người dùng chọn lý do "Lý do khác"
+            $('#cancelReason').change(function() {
+                if ($(this).val() === 'ly_do_khac') {
+                    $('#otherReasonDiv').show();
+                } else {
+                    $('#otherReasonDiv').hide();
+                }
+            });
+
+            $(document).on('click', '#cancelOrderButton', function() {
+                var orderId = $(this).data('id-order');
+                console.log(orderId);
+
+                var cancelReason = $('#cancelReason').val();
+                var otherReason = $('#otherReason').val();
+
+                // Kiểm tra lý do hủy và tiến hành hủy đơn hàng
+                if (cancelReason === 'ly_do_khac' && otherReason.trim() === '') {
+                    toastr.error("Vui lòng nhập lý do của bạn.");
+                    return;
+                }
+
                 // Lấy số trang hiện tại từ link phân trang cuối cùng trong danh sách
                 var currentPage = $('#pagination-links .page-item.active .page-link').text() || 1;
                 var status = $('#status').val(); // Lấy trạng thái đã chọn
@@ -369,7 +462,9 @@
                                 page: currentPage,
                                 status: status,
                                 from_date: fromDate,
-                                to_date: toDate
+                                to_date: toDate,
+                                cancelReason: cancelReason === 'ly_do_khac' ? otherReason :
+                                    cancelReason,
                             },
                             success: function(data) {
                                 if (data.status === 'success') {
@@ -388,6 +483,7 @@
                                                 '/user/dashboard');
                                         $(this).attr('href', newUrl);
                                     });
+                                    $("#myModalCancelOrder").fadeOut();
                                 } else if (data.status === 'error') {
                                     toastr.error(data.message);
                                 }
@@ -398,6 +494,24 @@
                         })
                     }
                 });
+            });
+
+            // Gán sự kiện click cho nút "Hiển thị thêm sản phẩm" ngay cả khi nó được tạo mới
+            $(document).on('click', '.show-more', function() {
+                var hiddenProducts = $(this).closest('.order-content').find('.hidden-products');
+
+                hiddenProducts.toggleClass('hidden'); // Hiện/Ẩn sản phẩm
+
+                // Cập nhật nội dung của nút
+                if (hiddenProducts.hasClass('hidden')) {
+                    $(this).html(
+                        'Hiển thị thêm sản phẩm<i style="margin-left: 5px;" class="fas fa-chevron-down"></i>'
+                    );
+                } else {
+                    $(this).html(
+                        'Ẩn bớt sản phẩm<i style="margin-left: 5px;" class="fas fa-chevron-up"></i>'
+                    );
+                }
             });
 
             $(document).on('click', '.reorder-button', function() {
