@@ -112,7 +112,7 @@
                     </div>
                     <div class="card-body">
                         <div class="owl-carousel owl-theme" id="products-carousel">
-                            <div>
+                            {{-- <div>
                                 <div class="product-item pb-3">
                                     <div class="product-image">
                                         <img alt="image" src="assets/img/products/product-4-50.png" class="img-fluid">
@@ -132,49 +132,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <img alt="image" src="assets/img/products/product-3-50.png" class="img-fluid">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-name">oPhone S9 Limited</div>
-                                        <div class="product-review">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half"></i>
-                                        </div>
-                                        <div class="text-muted text-small">86 Sales</div>
-                                        <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Danh sách</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <img alt="image" src="assets/img/products/product-1-50.png" class="img-fluid">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-name">Headphone Blitz</div>
-                                        <div class="product-review">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <div class="text-muted text-small">63 Sales</div>
-                                        <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Danh sách</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </div> --}}
+
                         </div>
                     </div>
                 </div>
@@ -185,7 +144,7 @@
                         <h4>Danh mục & Thương hiệu</h4>
                     </div>
                     <div class="card-body">
-                     <h4>NULL</h4>  
+                        <h4>NULL</h4>
                     </div>
                 </div>
             </div>
@@ -196,9 +155,22 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Top 5 Doanh thu</h4>
+                        <div class="card-header-action dropdown">
+                            <a href="#" id="revenue-dropdown-toggle-btn" data-toggle="dropdown"
+                                class="btn btn-danger dropdown-toggle">Tháng</a>
+                            <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <li class="dropdown-title"></li>
+                                <li><a href="#" class="dropdown-item" data-revenue-period="today">Ngày</a></li>
+                                <li><a href="#" class="dropdown-item" data-revenue-period="week">Tuần</a></li>
+                                <li><a href="#" class="dropdown-item" data-revenue-period="month">Tháng</a></li>
+                                <li><a href="#" class="dropdown-item" data-revenue-period="year">Năm</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="card-body">
-                       <h4>NULL</h4>
+                        <ul id="top-revenue-list" class="list-unstyled list-unstyled-border">
+
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -207,21 +179,26 @@
                     <div class="card-header">
                         <h4>Top 5 Sản phẩm</h4>
                         <div class="card-header-action dropdown">
-                            <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Tháng</a>
+                            <a href="#" id="dropdown-toggle-btn" data-toggle="dropdown"
+                                class="btn btn-danger dropdown-toggle">Tháng</a>
                             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <li class="dropdown-title"></li>
-                                <li><a href="#" class="dropdown-item" id="dropdown-item"
-                                        data-period="today">Ngày</a></li>
-                                <li><a href="#" class="dropdown-item" id=dropdown-item data-period="week">Tuần</a>
+                                <li>
+                                    <a href="#" class="dropdown-item" data-period="today">Ngày</a>
                                 </li>
-                                <li><a href="#" class="dropdown-item" id="dropdown-item"
-                                        data-period="month">Tháng</a></li>
-                                <li><a href="#" class="dropdown-item" id="dropdown-item"
-                                        data-period="year">Năm</a></li>
+                                <li>
+                                    <a href="#" class="dropdown-item" data-period="week">Tuần</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item" data-period="month">Tháng</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item" data-period="year">Năm</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="card-body" id="top-5-scroll">
+                    <div class="card-body">
                         <ul class="list-unstyled list-unstyled-border" id="top-products-list">
 
                         </ul>
@@ -367,7 +344,115 @@
 @endsection
 @push('scripts')
     <script>
+        // review
+        function loadBestRatedProducts() {
+            $.ajax({
+                url: '/admin/dashboard/best-rated-products',
+                method: 'GET',
+                success: function(response) {
+
+                    $('#products-carousel').empty();
+
+
+                    response.forEach(function(product) {
+                        let productName = product.name;
+                        if (productName.length > 20) { 
+                            productName = productName.substring(0, 20) +
+                            '...'; 
+                        }
+                        $('#products-carousel').append(`
+                        <div>
+                            <div class="product-item pb-3">
+                                <div class="product-image">
+                                    <img alt="${product.name}" src="{{ asset('storage') }}/${product.image}" class="img-fluid">
+                                </div>
+                                <div class="product-details">
+                                    <div class="product-name">${productName}</div>
+                                    <div class="product-review">
+                                        ${renderStars(product.avg_rating)}
+                                    </div>
+                                    <div class="text-muted text-small">${product.review_count} Reviews</div>
+                                    <div class="product-cta">
+                                        <a href="{{ url('product') }}/${product.slug}" class="btn btn-primary">Chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    });
+
+                    // Reinitialize carousel (nếu cần thiết)
+                    $('#products-carousel').trigger('destroy.owl.carousel').owlCarousel({
+                        loop: true,
+                        margin: 10,
+                        nav: false,
+                        dots: false,
+                        autoplay: true,
+                        autoplayTimeout: 2000,
+                        autoplayHoverPause: true,
+                        responsive: {
+                            0: {
+                                items: 1
+                            },
+                            600: {
+                                items: 2
+                            },
+                            1000: {
+                                items: 3
+                            }
+                        }
+                    });
+                },
+                error: function() {
+                    alert('Không thể tải danh sách sản phẩm đánh giá cao nhất.');
+                },
+            });
+        }
+
+        // Hàm hiển thị sao
+        function renderStars(avgRating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= avgRating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        // Gọi hàm để tải dữ liệu khi trang sẵn sàng
+        loadBestRatedProducts();
+        //Doanh thu
         $(document).ready(function() {
+            function getTopRevenue(period) {
+                $.ajax({
+                    url: '/admin/dashboard/top-revenue/' + period,
+                    method: 'GET',
+                    success: function(response) {
+                        $('#top-revenue-list').empty();
+                        response.forEach(function(item) {
+                            $('#top-revenue-list').append(`
+                        <li class="media">
+                            <img class="mr-3 rounded" width="55" src="{{ asset('storage') }}/${item.image}" alt="product">
+                            <div class="media-body">
+                                <div class="media-title">${item.name}</div>
+                                <div class="mt-1">
+                                    <div class="font-weight-600 text-muted text-small">${new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(item.revenue)}</div>
+                                </div>
+                            </div>
+                        </li>
+                    `);
+                        });
+                    },
+                });
+            }
+
+            //so luong
             function getTopProducts(period) {
                 $.ajax({
                     url: '/admin/dashboard/top-products/' + period,
@@ -390,17 +475,33 @@
                     }
                 });
             }
-
+            getTopRevenue('month');
             getTopProducts('month');
 
-            $('a#dropdown-item').on('click', function(e) {
+            $('.dropdown-item[data-revenue-period]').on('click', function(e) {
+                e.preventDefault();
+
+                var period = $(this).data('revenue-period');
+                var selectedText = $(this).text();
+                $('#revenue-dropdown-toggle-btn').text(selectedText);
+
+                $('.dropdown-item[data-revenue-period]').removeClass('active');
+                $(this).addClass('active');
+
+                getTopRevenue(period);
+            });
+
+            $('.dropdown-item[data-period]').on('click', function(e) {
                 e.preventDefault();
                 var period = $(this).data('period');
-                $('a#dropdown-item').removeClass('active');
+                var selectedText = $(this).text();
+                $('#dropdown-toggle-btn').text(selectedText);
+                $('.dropdown-item[data-period]').removeClass('active');
                 $(this).addClass('active');
 
                 getTopProducts(period);
             });
+
         });
 
         $(document).ready(function() {
