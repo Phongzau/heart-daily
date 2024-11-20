@@ -42,7 +42,7 @@ function renderOrderButtons($order_status, $id)
 
     switch ($order_status) {
         case 'pending':
-            $buttons .= '<button class="btn btn-danger cancel-order-button" data-order-id="' . $id . '">Hủy Đơn Hàng</button>';
+            $buttons .= '<button class="btn btn-danger cancel-order-button" id="myBtnCancelOrder" data-order-id="' . $id . '">Hủy Đơn Hàng</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;
 
