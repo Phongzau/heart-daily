@@ -14,6 +14,7 @@ use App\Models\Transaction;
 use App\Models\VnpaySetting;
 use App\Models\Attribute;
 use App\Models\Coupon;
+use App\Models\UserCoupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,12 +117,24 @@ class CheckoutController extends Controller
             $order->save();
 
             $sessionCoupon = session()->get('coupon', []);
-            if (!empty($sessionCoupon)) {
+            if (!empty($sessionCoupon) && isset($sessionCoupon['coupon_code'])) {
                 $coupon = Coupon::query()->where('code', $sessionCoupon['coupon_code'])->first();
 
                 if ($coupon) {
                     $coupon->total_used += 1;
                     $coupon->save();
+
+                    $userCoupon = UserCoupon::query()
+                        ->where('coupon_id', $coupon->id)
+                        ->where('user_id', Auth::user()->id)
+                        ->first();
+                    if ($userCoupon) {
+                        if ($userCoupon->qty != 1) {
+                            $userCoupon->decrement('qty');
+                        } else {
+                            $userCoupon->delete();
+                        }
+                    }
                 }
             }
 

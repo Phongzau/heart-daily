@@ -101,7 +101,8 @@
                                                     <li class="nav-item mr-1">
                                                         <a class="nav-link" id="product-variants-tab" data-toggle="tab"
                                                             href="#product-variants" role="tab"
-                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu sản phẩm
+                                                            aria-controls="product-variants" aria-selected="false">Dữ liệu
+                                                            sản phẩm
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -345,7 +346,8 @@
                                                     <div class="d-flex justify-content-around mt-3">
                                                         <input type="file" id="imageUpload" name="image_main"
                                                             class="d-none" accept="image/*">
-                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh lên...</button>
+                                                        <button class="btn btn-dark" id="uploadBtn">Tải ảnh
+                                                            lên...</button>
                                                     </div>
                                                 </div>
                                             </div>

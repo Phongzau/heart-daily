@@ -117,7 +117,8 @@
                                         @if ($coupon->min_order_value > 0) active @endif
                                         "
                                             id="min-order-value-tab" data-toggle="tab" href="#min-order-value"
-                                            role="tab" aria-controls="min-order-value" aria-selected="false">Giá trị đơn hàng tói thiểu</a>
+                                            role="tab" aria-controls="min-order-value" aria-selected="false">Giá trị đơn
+                                            hàng tói thiểu</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent2">
@@ -132,6 +133,19 @@
                                         <label for="">Giá trị đơn hàng tói thiểu<code>(đ)</code></label>
                                         <input type="number" id="min_order_value_edit" name="min_order_value"
                                             value="{{ $coupon->min_order_value }}" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label for="inputState">Công khai</label> <br>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline1" name="is_publish" checked
+                                            value="1" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline1">Có</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline2" name="is_publish" value="0"
+                                            class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline2">Không</label>
                                     </div>
                                 </div>
                                 <div class="form-group ">

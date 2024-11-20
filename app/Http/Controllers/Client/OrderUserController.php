@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\ProductVariant;
+use App\Models\UserCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -19,6 +21,28 @@ class OrderUserController extends Controller
         if (isset($order)) {
             $order->order_status = 'canceled';
             $order->save();
+            if ($order->coupon_method != null) {
+                $couponMethod = json_decode($order->coupon_method, true);
+                $coupon = Coupon::query()->where('code', $couponMethod['coupon_code'])->first();
+
+                if ($coupon && $coupon->is_publish == 0 && now()->between($coupon->start_date, $coupon->end_date)) {
+                    $userCoupon = UserCoupon::query()
+                        ->where('user_id', Auth::user()->id)
+                        ->where('coupon_id', $coupon->id)
+                        ->first();
+                        
+                    if ($userCoupon && !empty($userCoupon)) {
+                        $userCoupon->increment('qty');
+                        $userCoupon->save();
+                    } else {
+                        UserCoupon::create([
+                            'user_id' => Auth::user()->id,
+                            'coupon_id' => $coupon->id,
+                            'qty' => 1,
+                        ]);
+                    }
+                }
+            }
             if (isset($order->transaction)) {
                 $order->transaction->delete();
             }
