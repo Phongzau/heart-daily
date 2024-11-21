@@ -130,7 +130,9 @@ Route::middleware('auth')->prefix('wishlist')->name('wishlist.')->group(function
 
 //Order User
 Route::post('cancel-order', [OrderUserController::class, 'cancelOrder'])->name('cancel-order');
+Route::post('return-order', [OrderUserController::class, 'returnOrder'])->name('return-order');
 Route::post('confirm-order', [OrderUserController::class, 'confirmOrder'])->name('confirm-order');
+Route::post('cancel-order-return', [OrderUserController::class, 'cancelOrderReturn'])->name('cancel-order-return');
 Route::post('re-order', [OrderUserController::class, 'reOrder'])->name('re-order');
 //chat
 
@@ -440,7 +442,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('permission:view-orders')->prefix('orders')->name('orders.')->group(function () {
         Route::get('payment-status', [OrderController::class, 'changePaymentStatus'])->name('payment.status');
         Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
+        Route::put('change-approve-status', [OrderController::class, 'changeApproveStatus'])->name('return.change-approve-status');
         Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/return-order', [OrderController::class, 'orderReturn'])->name('return-order');
         Route::get('/{orders}', [OrderController::class, 'show'])->name('show')->middleware('permission:edit-orders');
         Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy')->middleware('permission:delete-orders');
     });

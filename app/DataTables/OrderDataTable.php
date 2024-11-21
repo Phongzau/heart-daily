@@ -70,6 +70,9 @@ class OrderDataTable extends DataTable
                     case 'delivered':
                         return "<span class='badge bg-success'>Đã giao hàng</span>";
                         break;
+                    case 'return':
+                        return "<span class='badge bg-secondary '>Trả hàng</span>";
+                        break;
                     case 'canceled':
                         return "<span class='badge bg-success'>Hủy bỏ</span>";
                         break;

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,5 +22,10 @@ class Order extends Model
     public function orderProducts()
     {
         return $this->hasMany(OrderProduct::class);
+    }
+
+    public function orderReturn()
+    {
+        return $this->hasOne(OrderReturn::class);
     }
 }

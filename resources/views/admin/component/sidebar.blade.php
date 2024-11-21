@@ -8,12 +8,14 @@
         <ul class="sidebar-menu">
             @can('view-dashboard')
                 <li class="menu-header">Trang chủ</li>
-                <li><a class="nav-link" href="{{ route('admin.dashboard.index') }}"><i class="fa-regular fa-chart-mixed"></i><span>Trang
+                <li><a class="nav-link" href="{{ route('admin.dashboard.index') }}"><i
+                            class="fa-regular fa-chart-mixed"></i><span>Trang
                             chủ</span></a></li>
             @endcan
             <li class="menu-header">Start Menu</li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-shirt"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-regular fa-shirt"></i>
                     <span>Sản phẩm</span></a>
                 <ul class="dropdown-menu">
                     @can('view-categories-products')
@@ -48,7 +50,8 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-rectangle-ad"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-regular fa-rectangle-ad"></i>
                     <span>Banners</span></a>
                 <ul class="dropdown-menu">
                     @can('view-advertisements')
@@ -66,7 +69,8 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-light fa-newspaper"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-light fa-newspaper"></i>
                     <span>Bài viết</span></a>
                 <ul class="dropdown-menu">
                     @can('view-blogs')
@@ -98,24 +102,28 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-cart-shopping-fast"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-regular fa-cart-shopping-fast"></i>
                     <span>Đơn hàng</span></a>
                 <ul class="dropdown-menu">
                     @can('view-orders')
                         <li><a class="nav-link" href="{{ route('admin.orders.index') }}">
                                 <span>Danh sách đơn hàng</span></a></li>
+                        <li><a class="nav-link" href="{{ route('admin.orders.return-order') }}">
+                                <span>Danh sách trả hàng</span></a></li>
                     @endcan
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa-regular fa-user-pen"></i>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                        class="fa-regular fa-user-pen"></i>
                     <span>Tài khoản</span></a>
                 <ul class="dropdown-menu">
                     @can('view-accounts')
                         <li><a class="nav-link" href="{{ route('admin.accounts.index') }}">
                                 <span>Danh sách tài khoản</span></a></li>
                     @endcan
-                    @if(auth()->user()->hasRole(['admin', 'super_admin']))
+                    @if (auth()->user()->hasRole(['admin', 'super_admin']))
                         <li><a class="nav-link" href="{{ route('admin.roles.index') }}">
                                 <span>Phân quyền</span></a></li>
                     @endif
@@ -138,7 +146,8 @@
                         <span>Giới thiệu</span></a></li>
             @endcan
             @can('view-payment-settings')
-                <li><a class="nav-link" href="{{ route('admin.payment-settings.vnpay-setting.index') }}"><i class="fa-regular fa-money-check-dollar-pen"></i>
+                <li><a class="nav-link" href="{{ route('admin.payment-settings.vnpay-setting.index') }}"><i
+                            class="fa-regular fa-money-check-dollar-pen"></i>
                         <span>Phương thức thanh toán</span></a></li>
             @endcan
         </ul>

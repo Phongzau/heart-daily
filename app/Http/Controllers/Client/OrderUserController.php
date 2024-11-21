@@ -6,21 +6,105 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\OrderReturn;
 use App\Models\ProductVariant;
 use App\Models\UserCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class OrderUserController extends Controller
 {
+    public function returnOrder(Request $request)
+    {
+        // dd($request->all());
+
+        $order = Order::query()->findOrFail($request->orderId);
+        if ($order) {
+            $order->order_status = 'return';
+            $order->cause_cancel_order = NULL;
+            $order->save();
+            $returnOrder = new OrderReturn();
+            if ($request->returnReason != 'san_pham_loi' && $request->returnReason != 'giao_sai_san_pham' && $request->returnReason != 'san_pham_khong_giong_quang_cao' && $request->returnReason != 'giao_hang_tre_hon_du_kien' && $request->returnReason != 'khong_con_nhu_cau') {
+                $reasonOrder = $request->returnReason;
+            } else {
+                $reasonOrder = checkReason($request->returnReason);
+            }
+
+            $returnOrder->order_id = $order->id;
+            $returnOrder->return_reason = $reasonOrder;
+            $returnOrder->return_status = 'pending';
+            $returnOrder->refund_amount = $order->amount;
+            // Xử lý lưu video nếu có
+            if ($request->hasFile('videoPath') && $request->file('videoPath')->isValid()) {
+                // Đặt tên video duy nhất
+                $videoName = uniqid() . '.' . $request->file('videoPath')->getClientOriginalExtension();
+
+                // Lưu video vào thư mục storage/app/public/videos
+                $videoPath = $request->file('videoPath')->storeAs('uploads/videos', $videoName, 'public');
+
+                // Lưu đường dẫn video vào DB
+                $returnOrder->video_path = $videoPath;
+            }
+
+            $returnOrder->save();
+
+            // Lấy các tham số lọc
+            $status = $request->input('status');
+            $fromDate = $request->input('from_date');
+            $toDate = $request->input('to_date');
+            $page = $request->input('page', 1); // Lấy trang hiện tại
+
+            // Tạo truy vấn với các tham số lọc
+            $ordersQuery = Order::query()
+                ->with(['orderProducts'])
+                ->where('user_id', Auth::user()->id)
+                ->when($status, function ($query) use ($status) {
+                    return $query->where('order_status', $status);
+                })
+                ->when($fromDate, function ($query) use ($fromDate) {
+                    return $query->whereDate('created_at', '>=', $fromDate);
+                })
+                ->when($toDate, function ($query) use ($toDate) {
+                    return $query->whereDate('created_at', '<=', $toDate);
+                })
+                ->orderByDesc('created_at');
+
+            $orders = $ordersQuery->paginate(6, ['*'], 'page', $page)->appends([
+                'status' => $status,
+                'from_date' => $fromDate,
+                'to_date' => $toDate,
+            ]);
+
+            $updatedOrderHtml = view('client.page.dashboard.sections.order-list', compact('orders'))->render();
+
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đã gửi yêu cầu trả hàng thành công',
+                'updatedOrderHtml' => $updatedOrderHtml,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Đơn hàng không tồn tại',
+        ]);
+    }
+
     public function cancelOrder(Request $request)
     {
         $order = Order::query()->findOrFail($request->orderId);
 
         if (isset($order)) {
             $order->order_status = 'canceled';
-            $order->cause_cancel_order = $request->cancelReason;
+            if ($request->cancelReason != 'khong_muon_mua_nua' && $request->cancelReason != 'gia_re_hon_o_noi_khac' && $request->cancelReason != 'thay_doi_dia_chi_giao_hang' && $request->cancelReason != 'thay_doi_phuong_thuc_thanh_toan' && $request->cancelReason != 'thay_doi_ma_giam_gia') {
+                $reasonCancelOrder = $request->cancelReason;
+            } else {
+                $reasonCancelOrder = checkReasonCancel($request->cancelReason);
+            }
+            $order->cause_cancel_order = $reasonCancelOrder;
             $order->save();
             if ($order->coupon_method != 'null') {
                 $couponMethod = json_decode($order->coupon_method, true);
@@ -117,6 +201,62 @@ class OrderUserController extends Controller
             'message' => 'Đơn hàng không tồn tại',
         ]);
     }
+
+    public function cancelOrderReturn(Request $request)
+    {
+        $order = Order::query()->findOrFail($request->orderId);
+
+        if (isset($order)) {
+            $order->order_status = 'delivered';
+            if (Storage::disk('public')->exists($order->orderReturn->video_path)) {
+                Storage::disk('public')->delete($order->orderReturn->video_path);
+            }
+            $order->orderReturn->delete();
+            $order->cause_cancel_order = NULL;
+            $order->save();
+
+            // Lấy các tham số lọc
+            $status = $request->input('status');
+            $fromDate = $request->input('from_date');
+            $toDate = $request->input('to_date');
+            $page = $request->input('page', 1); // Lấy trang hiện tại
+
+            // Tạo truy vấn với các tham số lọc
+            $ordersQuery = Order::query()
+                ->with(['orderProducts'])
+                ->where('user_id', Auth::user()->id)
+                ->when($status, function ($query) use ($status) {
+                    return $query->where('order_status', $status);
+                })
+                ->when($fromDate, function ($query) use ($fromDate) {
+                    return $query->whereDate('created_at', '>=', $fromDate);
+                })
+                ->when($toDate, function ($query) use ($toDate) {
+                    return $query->whereDate('created_at', '<=', $toDate);
+                })
+                ->orderByDesc('created_at');
+
+            $orders = $ordersQuery->paginate(6, ['*'], 'page', $page)->appends([
+                'status' => $status,
+                'from_date' => $fromDate,
+                'to_date' => $toDate,
+            ]);
+
+            $updatedOrderHtml = view('client.page.dashboard.sections.order-list', compact('orders'))->render();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Hủy hoàn hàng thành công',
+                'updatedOrderHtml' => $updatedOrderHtml,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Đơn hàng không tồn tại',
+        ]);
+    }
+
 
     public function confirmOrder(Request $request)
     {

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\OrderDataTable;
+use App\DataTables\ReturnOrderDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\Order;
+use App\Models\OrderReturn;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -13,6 +18,13 @@ class OrderController extends Controller
     {
         return $dataTable->render('admin.page.order.index');
     }
+
+    public function orderReturn(ReturnOrderDataTable $dataTable)
+    {
+        return $dataTable->render('admin.page.order.return-order');
+    }
+
+
 
     public function show(string $id)
     {
@@ -57,6 +69,49 @@ class OrderController extends Controller
         return response([
             'status' => 'success',
             'message' => 'Cập nhật trạng thái thành công'
+        ]);
+    }
+
+    public function changeApproveStatus(Request $request)
+    {
+        $returnOrder = OrderReturn::query()->findOrFail($request->id);
+        $returnOrder->return_status = $request->value;
+        if ($returnOrder->return_status == 'completed') {
+            foreach ($returnOrder->order->orderProducts as $orderProduct) {
+                $product = $orderProduct->product;
+                if (isset($product)) {
+                    if ($orderProduct->product->type_product === 'product_simple') {
+                        $product->qty += $orderProduct->qty;
+                        $product->save();
+                    } else if ($orderProduct->product->type_product === 'product_variant') {
+                        $variants = json_decode($orderProduct->variants, true);
+                        $attributeIdArray = [];
+                        foreach ($variants as $variant) {
+                            $nameVariant = strtolower($variant);
+                            $slugVariant = Str::slug($nameVariant);
+                            $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
+                            if ($attributeId) {
+                                $attributeIdArray[] = $attributeId;
+                            }
+                        }
+                        if (count($attributeIdArray) === count($variants)) {
+                            $productVariant = ProductVariant::where('product_id', $orderProduct->product_id)
+                                ->whereJsonContains('id_variant', $attributeIdArray)
+                                ->first();
+                            if ($productVariant) {
+                                $productVariant->qty += $orderProduct->qty;
+                                $productVariant->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $returnOrder->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật trạng thái thành công',
         ]);
     }
 }
