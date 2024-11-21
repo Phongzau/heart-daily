@@ -30,6 +30,78 @@ function orderType($type)
         case 'canceled':
             return "ĐÃ HỦY ĐƠN HÀNG";
             break;
+        case 'return':
+            return "Trả hàng";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
+
+function checkReason($type)
+{
+    switch ($type) {
+        case 'san_pham_loi':
+            return "Sản phẩm bị lỗi";
+            break;
+        case 'giao_sai_san_pham':
+            return "Giao sai sản phẩm";
+            break;
+        case 'san_pham_khong_giong_quang_cao':
+            return "Sản phẩm không giống quảng cáo";
+            break;
+        case 'giao_hang_tre_hon_du_kien':
+            return "Giao hàng trễ hơn dự kiến";
+            break;
+        case 'khong_con_nhu_cau':
+            return "Không còn nhu cầu";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
+
+function checkReasonCancel($type)
+{
+    switch ($type) {
+        case 'khong_muon_mua_nua':
+            return "Không muốn mua nữa";
+            break;
+        case 'gia_re_hon_o_noi_khac':
+            return "Giá rẻ hơn ở nơi khác";
+            break;
+        case 'thay_doi_dia_chi_giao_hang':
+            return "Thay đổi địa chỉ giao hàng";
+            break;
+        case 'thay_doi_phuong_thuc_thanh_toan':
+            return "Thay đổi phương thức thanh toán";
+            break;
+        case 'thay_doi_ma_giam_gia':
+            return "Thay đổi mã giảm giá";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
+/** Check the product type */
+function orderTypeReturn($type)
+{
+    switch ($type) {
+        case 'pending':
+            return "CHỜ XÁC NHẬN";
+            break;
+        case 'approved':
+            return "ĐÃ DUYỆT";
+            break;
+        case 'rejected':
+            return "TỪ CHỐI";
+            break;
+        case 'completed':
+            return "Hoàn TẤT";
+            break;
         default:
             return "";
             break;
@@ -62,13 +134,18 @@ function renderOrderButtons($order_status, $id)
             break;
 
         case 'delivered':
-            $buttons .= '<button class="btn btn-primary">Đánh Giá</button>';
+            // $buttons .= '<button class="btn btn-primary">Đánh Giá</button>';
+            $buttons .= '<button class="btn btn-success return-button" id="myBtnReturnOrder" data-order-id="' . $id . '">Hoàn Hàng</button>';
             $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $id . '">Mua Lại</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;
 
         case 'canceled':
             $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $id . '">Mua lại</button>';
+            break;
+
+        case 'return':
+            $buttons .= '<button class="btn btn-danger cancel-order-return" data-order-id="' . $id . '">Hủy hoàn hàng</button>';
             break;
 
         default:

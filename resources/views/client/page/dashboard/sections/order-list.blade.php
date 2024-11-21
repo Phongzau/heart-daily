@@ -8,7 +8,11 @@
             <div class="order-item">
                 <div class="order-header">
                     <span class="order-shop">HeartDaily Store - {{ $order->created_at->format('d/m/Y') }}</span>
-                    <span class="order-status">{{ orderType($order->order_status) }}</span>
+                    <span class="order-status">{{ orderType($order->order_status) }}
+                        @if ($order->order_status == 'return')
+                            ({{ orderTypeReturn($order->orderReturn->return_status) }})
+                        @endif
+                    </span>
                 </div>
                 @php
                     $product = $order->orderProducts->first();
@@ -40,7 +44,8 @@
                         <div class="product-price">
                             <span style="float: right;
                         width: 150px;"
-                                class="original-price">({{ $product->qty }}) x {{ number_format($product->unit_price) }}
+                                class="original-price">({{ $product->qty }}) x
+                                {{ number_format($product->unit_price) }}
                                 VND</span>
                             <span style="float: right;
                         width: 150px;"
@@ -100,6 +105,9 @@
                     @endif
                 </div>
                 <div class="order-footer">
+                    @if ($order->order_status == 'return')
+                        <span style="color: #ee4d2d;">Lý do: ({{ $order->orderReturn->return_reason }})</span>
+                    @endif
                     <div class="">
                         <span class="mr-2
                     ">({{ count($order->orderProducts) }} sản

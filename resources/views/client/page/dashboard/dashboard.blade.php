@@ -386,6 +386,47 @@
             <button id="cancelOrderButton" class="btn btn-danger">Hủy đơn hàng</button>
         </div>
     </div>
+
+    <div id="myModalReturnOrder" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <h4>Chọn lý do trả hàng</h4>
+
+            <select id="returnReason" class="form-control">
+                <option value="">Chọn lý do...</option>
+                <option value="san_pham_loi">Sản phẩm bị lỗi</option>
+                <option value="giao_sai_san_pham">Giao sai sản phẩm</option>
+                <option value="san_pham_khong_giong_quang_cao">Sản phẩm không giống quảng cáo</option>
+                <option value="giao_hang_tre_hon_du_kien">Giao hàng trễ hơn dự kiến</option>
+                <option value="khong_con_nhu_cau">Không còn nhu cầu</option>
+                <option value="ly_do_khac">Lý do khác</option>
+            </select>
+
+            <!-- Ô nhập lý do khác -->
+            <div id="otherReasonOrderDiv" style="display: none;">
+                <textarea id="otherOrderReason" class="form-control" placeholder="Nhập lý do của bạn..."></textarea>
+            </div>
+
+            <br>
+
+            <!-- Input tải video -->
+            <label for="returnVideo">Tải lên video sản phẩm: <code>(Tối đa: 50MB)</code></label>
+            <input type="file" id="returnVideo" class="form-control" accept="video/*">
+
+            <!-- Hiển thị video xem trước -->
+            <video id="videoPreview" controls
+                style="display: none; width: 100%; max-height: 300px; margin-top: 10px;"></video>
+
+            <br>
+            <!-- Cảnh báo dung lượng quá lớn -->
+            <div id="fileSizeWarning" style="display: none; color: red; margin-top: 0px; margin-bottom: 10px;">
+                Video quá lớn! Vui lòng chọn
+                video có dung lượng dưới 50MB.</div>
+            <!-- Nút gửi yêu cầu trả hàng -->
+            <button id="returnOrderButton" class="btn btn-primary">Gửi yêu cầu trả hàng</button>
+        </div>
+    </div>
     <div class="mb-5"></div><!-- margin -->
 @endsection
 
@@ -414,6 +455,190 @@
                 }
             });
 
+            $(document).on('click', '#myBtnReturnOrder', function() {
+                $('#myModalReturnOrder').fadeIn();
+                let orderId = $(this).data('order-id');
+                $('#returnOrderButton').data('id-order', orderId);
+            })
+
+            $(".close").click(function() {
+                $("#myModalReturnOrder").fadeOut();
+            });
+
+            $(window).click(function(event) {
+                if ($(event.target).is("#myModalReturnOrder")) {
+                    $("#myModalReturnOrder").fadeOut();
+                }
+            });
+
+            $("#returnVideo").on("change", function() {
+                const file = this.files[0];
+                const videoPreview = $("#videoPreview");
+                const fileSizeWarning = $("#fileSizeWarning");
+
+                if (file) {
+                    // Kiểm tra dung lượng video không quá 50MB (50MB = 50 * 1024 * 1024 byte)
+                    if (file.size > 50 * 1024 * 1024) {
+                        // Nếu video vượt quá 50MB, ẩn video preview và hiển thị cảnh báo
+                        videoPreview.hide();
+                        fileSizeWarning.show();
+                        $("#returnVideo").val(""); // Reset input
+                    } else {
+                        // Nếu video dưới 50MB, hiển thị video xem trước
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            videoPreview.attr("src", e.target.result).show();
+                            fileSizeWarning.hide(); // Ẩn cảnh báo
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                } else {
+                    videoPreview.hide();
+                    fileSizeWarning.hide();
+                    $("#returnVideo").val(""); // Reset input
+                }
+            });
+
+            $(document).on('click', '#returnOrderButton', function() {
+                var orderId = $(this).data('id-order');
+
+                var returnReason = $('#returnReason').val();
+                var otherOrderReason = $('#otherOrderReason').val();
+                var videoFile = $('#returnVideo')[0].files[0]; // Lấy file video từ input
+                console.log(videoFile);
+
+                // Kiểm tra nếu chưa chọn lý do hủy
+                if (returnReason === '') {
+                    toastr.error("Vui lòng chọn lý do hủy.");
+                    return;
+                }
+
+                // Kiểm tra lý do hủy và tiến hành hủy đơn hàng
+                if (returnReason === 'ly_do_khac' && otherOrderReason.trim() === '') {
+                    toastr.error("Vui lòng nhập lý do của bạn.");
+                    return;
+                }
+
+                // Kiểm tra nếu không có video được chọn hoặc video không phải là file hợp lệ
+                if (videoFile) {
+                    // Kiểm tra loại file có phải là video không
+                    if (!videoFile.type.startsWith('video/')) {
+                        toastr.error("Vui lòng chọn một file video hợp lệ.");
+                        return;
+                    }
+                } else {
+                    toastr.error("Vui lòng tải lên video.");
+                    return;
+                }
+
+                // Lấy số trang hiện tại từ link phân trang cuối cùng trong danh sách
+                var currentPage = $('#pagination-links .page-item.active .page-link').text() || 1;
+                var status = $('#status').val(); // Lấy trạng thái đã chọn
+                var fromDate = $('#from_date').val(); // Lấy ngày bắt đầu
+                var toDate = $('#to_date').val(); // Lấy ngày kết thúc
+
+                Swal.fire({
+                    title: "Bạn có chắc không?", // Tiêu đề hộp thoại
+                    text: "Bạn sẽ không thể quay trở lại khi thực hiện", // Nội dung thông báo
+                    icon: "warning", // Biểu tượng cảnh báo
+                    showCancelButton: true, // Hiển thị nút hủy
+                    confirmButtonColor: "#3085d6", // Màu của nút xác nhận
+                    cancelButtonColor: "#d33", // Màu của nút hủy
+                    confirmButtonText: "Đồng ý ", // Văn bản của nút xác nhận
+                    cancelButtonText: "Hủy", // Văn bản của nút hủy
+                }).then((result) => {
+                    // Nếu người dùng xác nhận xóa (click nút "Đồng ý ")
+                    if (result.isConfirmed) {
+                        var formData = new FormData();
+                        formData.append('orderId', orderId);
+                        formData.append('page', currentPage);
+                        formData.append('status', status);
+                        formData.append('from_date', fromDate);
+                        formData.append('to_date', toDate);
+                        formData.append('returnReason', returnReason === 'ly_do_khac' ?
+                            otherOrderReason : returnReason);
+                        formData.append('videoPath', videoFile);
+
+                        $.ajax({
+                            url: "{{ route('return-order') }}",
+                            method: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    Swal.fire({
+                                        title: "Đã gửi đơn hoàn hàng!",
+                                        text: data
+                                            .message,
+                                        icon: "success"
+                                    });
+                                    $('#order-list').html(data
+                                        .updatedOrderHtml);
+                                    $('#pagination-links a').each(function() {
+                                        var newUrl = $(this).attr('href')
+                                            .replace(
+                                                '/return-order',
+                                                '/user/dashboard');
+                                        $(this).attr('href', newUrl);
+                                    });
+                                    $("#myModalReturnOrder").fadeOut();
+                                    // Reset tất cả input và video preview
+                                    $('#returnReason').val('');
+                                    $('#otherOrderReason').val('');
+                                    $('#returnVideo').val('');
+                                    $('#videoPreview').hide().attr('src', '');
+                                    $('#fileSizeWarning').hide();
+                                    $('#otherReasonOrderDiv').hide();
+                                } else if (data.status === 'error') {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function(data) {
+                                toastr.error(data.message);
+                            }
+                        })
+                    }
+                });
+            });
+
+            // $("#returnVideo").on("change", function() {
+            //     const file = this.files[0];
+            //     const videoPreview = $("#videoPreview");
+
+            //     if (file && file.type.startsWith("video/")) {
+            //         const reader = new FileReader();
+            //         reader.onload = function(e) {
+            //             videoPreview.attr("src", e.target.result).show();
+            //             // Kiểm tra độ dài video
+            //             const videoElement = document.createElement('video');
+            //             videoElement.src = e.target.result;
+
+            //             videoElement.onloadedmetadata = function() {
+            //                 const duration = videoElement
+            //                     .duration; // Thời gian video tính bằng giây
+            //                 if (duration > 60) { // Kiểm tra video có dài hơn 1 phút không
+            //                     alert("Video phải có độ dài dưới 1 phút.");
+            //                     $("#returnVideo").val(""); // Reset input
+            //                     videoPreview.hide(); // Ẩn video preview
+            //                 }
+            //             };
+            //         };
+            //         reader.readAsDataURL(file);
+            //     } else {
+            //         videoPreview.hide().attr("src", "");
+            //     }
+            // });
+
+            // Khi người dùng chọn lý do "Lý do khác"
+            $('#returnReason').change(function() {
+                if ($(this).val() === 'ly_do_khac') {
+                    $('#otherReasonOrderDiv').show();
+                } else {
+                    $('#otherReasonOrderDiv').hide();
+                }
+            });
+
             // Khi người dùng chọn lý do "Lý do khác"
             $('#cancelReason').change(function() {
                 if ($(this).val() === 'ly_do_khac') {
@@ -429,6 +654,12 @@
 
                 var cancelReason = $('#cancelReason').val();
                 var otherReason = $('#otherReason').val();
+
+                // Kiểm tra nếu chưa chọn lý do hủy
+                if (cancelReason === '') {
+                    toastr.error("Vui lòng chọn lý do hủy.");
+                    return;
+                }
 
                 // Kiểm tra lý do hủy và tiến hành hủy đơn hàng
                 if (cancelReason === 'ly_do_khac' && otherReason.trim() === '') {
@@ -512,6 +743,56 @@
                         'Ẩn bớt sản phẩm<i style="margin-left: 5px;" class="fas fa-chevron-up"></i>'
                     );
                 }
+            });
+
+            $(document).on('click', '.cancel-order-return', function() {
+                var orderId = $(this).data('order-id');
+
+                Swal.fire({
+                    title: "Bạn có chắc không?", // Tiêu đề hộp thoại
+                    text: "Bạn sẽ không thể quay trở lại khi thực hiện", // Nội dung thông báo
+                    icon: "warning", // Biểu tượng cảnh báo
+                    showCancelButton: true, // Hiển thị nút hủy
+                    confirmButtonColor: "#3085d6", // Màu của nút xác nhận
+                    cancelButtonColor: "#d33", // Màu của nút hủy
+                    confirmButtonText: "Đồng ý ", // Văn bản của nút xác nhận
+                    cancelButtonText: "Hủy", // Văn bản của nút hủy
+                }).then((result) => {
+                    // Nếu người dùng xác nhận xóa (click nút "Đồng ý ")
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('cancel-order-return') }}",
+                            method: "POST",
+                            data: {
+                                orderId: orderId,
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    Swal.fire({
+                                        title: "Đã hủy!",
+                                        text: data
+                                            .message,
+                                        icon: "success"
+                                    });
+                                    $('#order-list').html(data
+                                        .updatedOrderHtml);
+                                    $('#pagination-links a').each(function() {
+                                        var newUrl = $(this).attr('href')
+                                            .replace(
+                                                '/cancel-order-return',
+                                                '/user/dashboard');
+                                        $(this).attr('href', newUrl);
+                                    });
+                                } else if (data.status === 'error') {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function(data) {
+                                toastr.error(data.message);
+                            }
+                        })
+                    }
+                });
             });
 
             $(document).on('click', '.reorder-button', function() {

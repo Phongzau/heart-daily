@@ -23,6 +23,10 @@ return [
             'status' => 'Đã giao hàng',
             'details' => 'Đã giao hàng',
         ],
+        'return' => [
+            'status' => 'Hoàn hàng',
+            'details' => 'Hoàn hàng',
+        ],
         'canceled' => [
             'status' => 'Hủy bỏ',
             'details' => 'Hủy bỏ',
