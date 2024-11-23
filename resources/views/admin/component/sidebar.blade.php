@@ -115,6 +115,10 @@
                 </ul>
             </li>
             <li class="dropdown">
+                <a href="{{ route('admin.inventory.index') }}" class="nav-link"><i class="fas fa-warehouse"></i>
+                    <span>Kho hàng</span></a>
+            </li>
+            <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fa-regular fa-user-pen"></i>
                     <span>Tài khoản</span></a>

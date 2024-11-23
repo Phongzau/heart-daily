@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventoryProductController;
 use App\Http\Controllers\Admin\NewletterPopupController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SocialController;
@@ -447,6 +448,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/return-order', [OrderController::class, 'orderReturn'])->name('return-order');
         Route::get('/{orders}', [OrderController::class, 'show'])->name('show')->middleware('permission:edit-orders');
         Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy')->middleware('permission:delete-orders');
+    });
+
+    Route::prefix('inventory')->name('inventory.')->group(function () {
+        Route::get('/', [InventoryProductController::class, 'index'])->name('index');
+        Route::get('/{productId}', [InventoryProductController::class, 'productDetail'])->name('get-product-detail');
     });
 });
 
