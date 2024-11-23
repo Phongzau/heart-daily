@@ -159,7 +159,7 @@ class CheckoutController extends Controller
                         $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
                         $attributeIdArray[] = $attributeId;
                     }
-
+                    $orderProduct->id_variants = json_encode($attributeIdArray);
                     $productVariant = ProductVariant::where('product_id', $item['product_id'])
                         ->whereJsonContains('id_variant', $attributeIdArray)
                         ->first();
