@@ -273,7 +273,8 @@
             color: null,
             size: null,
             min_price: 0,
-            max_price: 1000000000
+            max_price: 1000000000,
+            search: ''
         };
 
         function setFilter(type, value) {
@@ -318,6 +319,7 @@
         function loadProducts(page = 1) {
             const count = document.getElementById('product-count').value;
             const orderby = document.querySelector('select[name="orderby"]').value;
+            const searchParam = new URLSearchParams(window.location.search).get('search') || filters.search;
             const query = new URLSearchParams({
                 count: count,
                 orderby: orderby,
@@ -327,9 +329,12 @@
                 color: filters.color || '',
                 size: filters.size || '',
                 min_price: filters.min_price,
-                max_price: filters.max_price
+                max_price: filters.max_price,
+                search: searchParam
             });
-            fetch(`{{ route('product.ajaxGetProducts') }}?count=${count}&${query.toString()}`)
+            
+            
+            fetch(`{{ route('product.ajaxGetProducts') }}?${query.toString()}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

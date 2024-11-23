@@ -82,6 +82,7 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('ajaxGetProducts');
     Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
     Route::post('/get-qty-variant', [ProductController::class, 'getQtyVariant'])->name('get-qty-variant');
+    Route::get('/search', [ProductController::class, 'search'])->name('search');
 });
 
 // routes/api.php

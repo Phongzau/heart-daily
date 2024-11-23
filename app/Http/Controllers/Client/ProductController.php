@@ -25,7 +25,22 @@ class ProductController extends Controller
     {
 
         $perPage = $request->input('count', 12);
+        $searchQuery = $request->input('search');
         $query = Product::query()->where('status', 1);
+        
+        if ($searchQuery) {
+            // Tìm kiếm theo tên, slug, danh mục, hoặc thương hiệu
+            $query->where(function($q) use ($searchQuery) {
+                $q->where('name', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('slug', 'like', '%' . $searchQuery . '%')
+                  ->orWhereHas('category', function($q) use ($searchQuery) {
+                      $q->where('title', 'like', '%' . $searchQuery . '%'); // Tìm theo danh mục
+                  })
+                  ->orWhereHas('brand', function($q) use ($searchQuery) {
+                      $q->where('name', 'like', '%' . $searchQuery . '%'); // Tìm theo thương hiệu
+                  });
+            });
+        }
 
         if ($request->has('tag_id')) {
 
@@ -34,6 +49,7 @@ class ProductController extends Controller
             $query->whereJsonContains('id_tags', $tagId);
         }
         $products = $query->paginate($perPage);
+
 
         $categories = CategoryProduct::all();
 
@@ -50,6 +66,7 @@ class ProductController extends Controller
         return view('client.page.product.list_product', compact('products', 'tags', 'categories', 'sizes', 'colors', 'brands', 'perPage'));
     }
 
+
     public function ajaxIndex(Request $request)
     {
         $perPage = $request->input('count', 12);
@@ -57,6 +74,18 @@ class ProductController extends Controller
         $currentDate = Carbon::now()->toDateString();
 
         $query = Product::with('brand')->where('status', 1);
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhereHas('category', function($q) use ($search) {
+                      $q->where('name', 'like', '%' . $search . '%');
+                  })
+                  ->orWhereHas('brand', function($q) use ($search) {
+                      $q->where('name', 'like', '%' . $search . '%');
+                  });
+            });
+        }
         if ($request->has('category') && $request->category) {
             $query->where('category_id', $request->category);
         }
@@ -147,6 +176,7 @@ class ProductController extends Controller
             'wishlistProductIds' => $wishlistProductIds,
         ]);
     }
+
 
     public function productDetail(string $slug, Request $request)
     {

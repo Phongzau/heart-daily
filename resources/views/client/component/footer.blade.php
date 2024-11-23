@@ -1,4 +1,3 @@
-
 @php
     $slug = 'menu-footer'; // Slug của menu mà bạn muốn
 
@@ -9,9 +8,6 @@
         ->where('parent_id', 0) // Chỉ lấy các mục gốc
         ->orderBy('order')
         ->get();
-@endphp
-
-@php
     $socials = \App\Models\Social::query()->where('status', 1)->get();
     $tags = \App\Models\Tag::query()->where('status', 1)->get();
 
@@ -112,11 +108,13 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget widget-newsletter">
                         <h4 class="widget-title">Đăng ký nhận bản tin</h4>
-                        <p>Nhận tất cả các thông tin mới nhất về các sự kiện, bán hàng và cung cấp. Đăng ký nhận bản tin:
+                        <p>Nhận tất cả các thông tin mới nhất về các sự kiện, bán hàng và cung cấp. Đăng ký nhận bản
+                            tin:
                         </p>
                         <form action="#" class="mb-0">
 
-                            <input type="email" class="form-control m-b-3" placeholder="Địa chỉ email của bạn" required>
+                            <input type="email" class="form-control m-b-3" placeholder="Địa chỉ email của bạn"
+                                required>
 
                             <input type="submit" class="btn btn-primary shadow-none" value="ĐĂNG KÝ">
                         </form>
@@ -254,7 +252,7 @@
                         </li>
                         <li>
                             <a href="forgot-password.html">
-                            Quên mật khẩu</a>
+                                Quên mật khẩu</a>
                         </li>
                     </ul>
                 </li>
