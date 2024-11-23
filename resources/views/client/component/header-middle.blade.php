@@ -14,32 +14,11 @@
                        <div
                            class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
                            <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
-                           <form action="#" method="get">
+                           <form action="{{ route('product.getProducts') }}" method="get">
                                <div class="header-search-wrapper">
-                                   <input type="search" class="form-control" name="q" id="q"
-                                       placeholder="Search..." required>
-                                   {{-- <div class="select-custom">
-                                       <select id="cat" name="cat">
-                                           <option value="">All Categories</option>
-                                           <option value="4">Fashion</option>
-                                           <option value="12">- Women</option>
-                                           <option value="13">- Men</option>
-                                           <option value="66">- Jewellery</option>
-                                           <option value="67">- Kids Fashion</option>
-                                           <option value="5">Electronics</option>
-                                           <option value="21">- Smart TVs</option>
-                                           <option value="22">- Cameras</option>
-                                           <option value="63">- Games</option>
-                                           <option value="7">Home &amp; Garden</option>
-                                           <option value="11">Motors</option>
-                                           <option value="31">- Cars and Trucks</option>
-                                           <option value="32">- Motorcycles &amp; Powersports</option>
-                                           <option value="33">- Parts &amp; Accessories</option>
-                                           <option value="34">- Boats</option>
-                                           <option value="57">- Auto Tools &amp; Supplies</option>
-                                       </select>
-                                   </div> --}}
-                                   <!-- End .select-custom -->
+                                   <input type="search" class="form-control" name="search" id="search"
+                                       placeholder="Tìm kiếm..." value="{{ request('search') }}" required>
+
                                    <button class="btn icon-magnifier p-0" title="search" type="submit"></button>
                                </div>
                                <!-- End .header-search-wrapper -->
@@ -50,7 +29,7 @@
                        @if (Auth::check())
 
                            <a href="{{ route('chat') }}" class="header-icon" title="chat">
-                            <i class="fa-light fa-comment-dots"></i>
+                               <i class="fa-light fa-comment-dots"></i>
                            </a>
                            <a href="#" class="header-icon notification-icon" title="notification"
                                data-toggle="dropdown">
@@ -60,13 +39,13 @@
                            @livewire('notification-component')
 
                            <a href="#" class="header-icon login-icon" title="login" data-toggle="dropdown">
-                            <i class="fa-light fa-user"></i>
+                               <i class="fa-light fa-user"></i>
                            </a>
                            <ul id="login-dropdown" class="dropdown-menu"
                                style="min-width: 200px; padding: 10px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);top: 70%;
     left: 871px;">
 
-                                {{-- min-width: 17%;
+                               {{-- min-width: 17%;
                                     padding: 10px;
                                     border-radius: 8px;
                                     box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
@@ -133,7 +112,8 @@
                        @endif
 
 
-                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i class="fa-light fa-heart"></i><span class=" badge-circle total_wishlist"></span></a>
+                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
+                               class="fa-light fa-heart"></i><span class=" badge-circle total_wishlist"></span></a>
 
                        <div class="dropdown cart-dropdown">
                            <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle"
@@ -207,7 +187,8 @@
                                    <div class="dropdown-cart-action @if (count($carts) === 0) d-none @endif">
                                        <a href="{{ route('cart-details') }}"
                                            class="btn btn-gray btn-block view-cart">Xem giỏ hàng</a>
-                                       <a href="{{ route('checkout') }}" class="btn btn-dark btn-block">Thanh toán</a>
+                                       <a href="{{ route('checkout') }}" class="btn btn-dark btn-block">Thanh
+                                           toán</a>
                                    </div>
                                    <!-- End .dropdown-cart-total -->
                                </div>
