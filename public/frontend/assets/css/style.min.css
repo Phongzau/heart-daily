@@ -22541,3 +22541,65 @@ p {
     color: #888;
     margin-top: 5px;
 }
+
+/* CSS cơ bản */
+.header-search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#searchResults {
+    position: absolute;
+    top: 100%;
+    left: 1.7%;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+#searchResults .result-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.result-item {
+    display: flex;
+    /* Để nội dung hiển thị ngang hàng */
+    align-items: center;
+    /* Căn giữa hình ảnh và text */
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    text-decoration: none;
+    /* Loại bỏ gạch chân */
+    color: #333;
+}
+
+.result-item img {
+    display: inline-block;
+    /* Đảm bảo ảnh hiển thị đúng */
+    width: 60px;
+    height: auto;
+    margin-right: 10px;
+    border-radius: 4px;
+    /* Góc bo tròn */
+}
+
+.result-item:hover {
+    background-color: #f9f9f9;
+    /* Hiệu ứng hover */
+}
+
+.result-item:last-child {
+    border-bottom: none;
+    /* Xóa đường kẻ cuối */
+}
+
+.hidden {
+    display: none;
+}

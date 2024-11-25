@@ -21,6 +21,18 @@
 
                                    <button class="btn icon-magnifier p-0" title="search" type="submit"></button>
                                </div>
+                               <!-- Hiển thị kết quả tìm kiếm -->
+                               <div id="searchResults" class="search-results hidden">
+                                   {{-- <div class="result-item">
+                                       <a href="">
+                                           <img src="/storage/uploads/products/media_673ad2c4735c4.avif" alt=""
+                                               style="width: 50px; margin-right: 10px;">
+                                           LV-Multi-Patches-Mixed-Leather-Varsity-Blouson-Milky-White
+                                       </a>
+                                   </div> --}}
+
+                                   <!-- Kết quả sẽ được hiển thị ở đây -->
+                               </div>
                                <!-- End .header-search-wrapper -->
                            </form>
                        </div>

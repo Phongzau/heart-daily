@@ -27,18 +27,18 @@ class ProductController extends Controller
         $perPage = $request->input('count', 12);
         $searchQuery = $request->input('search');
         $query = Product::query()->where('status', 1);
-        
+
         if ($searchQuery) {
             // Tìm kiếm theo tên, slug, danh mục, hoặc thương hiệu
-            $query->where(function($q) use ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
                 $q->where('name', 'like', '%' . $searchQuery . '%')
-                  ->orWhere('slug', 'like', '%' . $searchQuery . '%')
-                  ->orWhereHas('category', function($q) use ($searchQuery) {
-                      $q->where('title', 'like', '%' . $searchQuery . '%'); // Tìm theo danh mục
-                  })
-                  ->orWhereHas('brand', function($q) use ($searchQuery) {
-                      $q->where('name', 'like', '%' . $searchQuery . '%'); // Tìm theo thương hiệu
-                  });
+                    ->orWhere('slug', 'like', '%' . $searchQuery . '%')
+                    ->orWhereHas('category', function ($q) use ($searchQuery) {
+                        $q->where('title', 'like', '%' . $searchQuery . '%'); // Tìm theo danh mục
+                    })
+                    ->orWhereHas('brand', function ($q) use ($searchQuery) {
+                        $q->where('name', 'like', '%' . $searchQuery . '%'); // Tìm theo thương hiệu
+                    });
             });
         }
 
@@ -76,14 +76,14 @@ class ProductController extends Controller
         $query = Product::with('brand')->where('status', 1);
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhereHas('category', function($q) use ($search) {
-                      $q->where('name', 'like', '%' . $search . '%');
-                  })
-                  ->orWhereHas('brand', function($q) use ($search) {
-                      $q->where('name', 'like', '%' . $search . '%');
-                  });
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('brand', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
             });
         }
         if ($request->has('category') && $request->category) {
@@ -352,6 +352,43 @@ class ProductController extends Controller
             'status' => 'success',
             'message' => 'Lấy thành công',
             'variant' => $productVariant,
+        ]);
+    }
+
+    public function getProductBySearch(Request $request)
+    {
+        // Lấy từ khóa tìm kiếm và tách nó thành các từ riêng biệt
+        $searchQuery = trim($request->searchKey);
+        $keywords = explode(' ', $searchQuery);  // Tách từ khóa thành mảng các từ
+
+        // Khởi tạo một collection để lưu kết quả
+        $finalResults = collect();
+
+        // Lặp qua từng từ khóa và tìm kiếm sản phẩm cho từng từ khóa
+        foreach ($keywords as $keyword) {
+            $products = Product::query()
+                ->where('status', 1)
+                ->where(function ($q) use ($keyword) {
+                    $q->where('name', 'like', '%' . $keyword . '%')
+                        ->orWhere('slug', 'like', '%' . $keyword . '%')
+                        ->orWhereHas('category', function ($query) use ($keyword) {
+                            $query->where('title', 'like', '%' . $keyword . '%');
+                        })
+                        ->orWhereHas('brand', function ($query) use ($keyword) {
+                            $query->where('name', 'like', '%' . $keyword . '%');
+                        });
+                })
+                ->get();
+
+            // Gộp các sản phẩm vào collection finalResults
+            $finalResults = $finalResults->merge($products);
+        }
+
+        // Xóa các sản phẩm trùng lặp
+        $finalResults = $finalResults->unique('id');
+
+        return response()->json([
+            'products' => $finalResults,
         ]);
     }
 }

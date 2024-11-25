@@ -108,13 +108,13 @@ function orderTypeReturn($type)
     }
 }
 
-function renderOrderButtons($order_status, $id)
+function renderOrderButtons($order_status, $order)
 {
     $buttons = '';
 
     switch ($order_status) {
         case 'pending':
-            $buttons .= '<button class="btn btn-danger cancel-order-button" id="myBtnCancelOrder" data-order-id="' . $id . '">Hủy Đơn Hàng</button>';
+            $buttons .= '<button class="btn btn-danger cancel-order-button" id="myBtnCancelOrder" data-order-id="' . $order->id . '">Hủy Đơn Hàng</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;
 
@@ -129,23 +129,25 @@ function renderOrderButtons($order_status, $id)
             break;
 
         case 'shipped':
-            $buttons .= '<button class="btn btn-success confirm-order-button" data-order-id="' . $id . '">Đã Nhận Hàng</button>';
+            $buttons .= '<button class="btn btn-success confirm-order-button" data-order-id="' . $order->id . '">Đã Nhận Hàng</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;
 
         case 'delivered':
             // $buttons .= '<button class="btn btn-primary">Đánh Giá</button>';
-            $buttons .= '<button class="btn btn-success return-button" id="myBtnReturnOrder" data-order-id="' . $id . '">Hoàn Hàng</button>';
-            $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $id . '">Mua Lại</button>';
+            $buttons .= '<button class="btn btn-success return-button" id="myBtnReturnOrder" data-order-id="' . $order->id . '">Hoàn Hàng</button>';
+            $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $order->id . '">Mua Lại</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;
 
         case 'canceled':
-            $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $id . '">Mua lại</button>';
+            $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $order->id . '">Mua lại</button>';
             break;
 
         case 'return':
-            $buttons .= '<button class="btn btn-danger cancel-order-return" data-order-id="' . $id . '">Hủy hoàn hàng</button>';
+            if ($order->orderReturn->return_status == 'pending' || $order->orderReturn->return_status == 'approved') {
+                $buttons .= '<button class="btn btn-danger cancel-order-return" data-order-id="' . $order->id . '">Hủy hoàn hàng</button>';
+            }
             break;
 
         default:
