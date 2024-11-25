@@ -116,7 +116,7 @@
                                 class="total-price">{{ number_format($order->amount) }} VND</strong></span>
                     </div>
                     <div style="padding: 10px 0px 10px 10px;" class="order-buttons">
-                        {!! renderOrderButtons($order->order_status, $order->id) !!}
+                        {!! renderOrderButtons($order->order_status, $order) !!}
                     </div>
                 </div>
             </div>

@@ -83,6 +83,7 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
     Route::post('/get-qty-variant', [ProductController::class, 'getQtyVariant'])->name('get-qty-variant');
     Route::get('/search', [ProductController::class, 'search'])->name('search');
+    Route::post('/get-product-by-search', [ProductController::class, 'getProductBySearch'])->name('get-product-by-search');
 });
 
 // routes/api.php

@@ -29,10 +29,10 @@ class ReturnOrderDataTable extends DataTable
             })
             ->addColumn('return_status', function ($query) {
                 return "<select class='form-control is_approve' data-id='$query->id'>
-                <option value='pending'>Chưa giải quyết</option>
-                <option value='approved'>Đã duyệt</option>
-                <option value='rejected'>Từ chối</option>
-                <option value='completed'>Thành công</option>
+                <option " . ($query->return_status == 'pending' ? 'selected' : '') . " value='pending'>Chưa giải quyết</option>
+                <option " . ($query->return_status == 'approved' ? 'selected' : '') . " value='approved'>Đã duyệt</option>
+                <option " . ($query->return_status == 'rejected' ? 'selected' : '') . " value='rejected'>Từ chối</option>
+                <option " . ($query->return_status == 'completed' ? 'selected' : '') . " value='completed'>Thành công</option>
                 </select>";
             })
             ->addColumn('video_path', function ($query) {

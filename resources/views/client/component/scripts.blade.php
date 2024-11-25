@@ -5,6 +5,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        let debounceTimer;
         $('.add-to-cart-simple').on('click', function(e) {
             e.preventDefault();
             let form = $(this).closest('.shopping-cart-form');
@@ -232,5 +233,71 @@
             }
         });
 
+        $(document).on('keyup', '#search', function() {
+            let searchKey = $(this).val();
+            if (searchKey == '') {
+                $('#searchResults').html(
+                    "<div class='text-center' style='padding: 20px; font-size:18px;font-weight:700' >Bạn hãy nhập để tìm kiếm sản phẩm</div>"
+                );
+                return;
+            }
+            // Hủy bỏ timer cũ nếu người dùng đang gõ tiếp
+            clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(function() {
+                $.ajax({
+                    url: "{{ route('product.get-product-by-search') }}",
+                    method: "POST",
+                    data: {
+                        searchKey: searchKey,
+                    },
+                    success: function(data) {
+                        $('#searchResults').html("");
+                        $('#searchResults').removeClass("hidden");
+
+                        if (data.products.length > 0) {
+                            data.products.forEach(product => {
+                                const productItem = $('<div>');
+                                productItem.addClass('result-item');
+                                productItem.html(
+                                    `
+                                    <a href="/product/${product.slug}">
+                                        <img src="{{ Storage::url('') }}${product.image}" alt="${product.name}"
+                                            style="width: 65px; margin-right: 10px;">
+                                        <span>${product.name}</span>
+                                    </a>
+                                `
+                                )
+                                $('#searchResults').append(productItem);
+                            });
+                        } else {
+                            $('#searchResults').html(
+                                "<div class='text-center' style='padding: 20px; font-size:18px;font-weight:700' >Không tìm thấy sản phẩm</div>"
+                            );
+                        }
+                    },
+                    error: function(error) {
+                        console.log("ERROR:", error);
+
+                        $('#searchResults').html(
+                            "<div class='result-item'>Lỗi tìm kiếm</div>");
+                    },
+                })
+            }, 1000);
+        })
+
+
+        // Ẩn kết quả tìm kiếm khi click ra ngoài
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#search, #searchResults').length) {
+                $('#searchResults').addClass('hidden');
+            }
+        });
+
+        $('#search').on('click', function() {
+            if ($('#searchResults').children().length > 0) {
+                $('#searchResults').removeClass('hidden');
+            }
+        });
     });
 </script>
