@@ -1,5 +1,9 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || {{ $product->name }}
+@endsection
+
 @section('css')
     <style>
         .size-options.disabled {

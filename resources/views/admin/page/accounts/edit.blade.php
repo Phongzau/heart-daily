@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Account Edit
+    {{ $generalSettings->site_name }} || Chỉnh sửa tài khoản
 @endsection
 
 @section('section')
@@ -44,7 +44,7 @@
                                     <label for="inputState">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
-                                        <option {{ $listAccounts->status == 1 ? 'selected' : '' }} value="1">Bật 
+                                        <option {{ $listAccounts->status == 1 ? 'selected' : '' }} value="1">Bật
                                         </option>
                                         <option {{ $listAccounts->status == 0 ? 'selected' : '' }} value="0">Tắt
                                         </option>

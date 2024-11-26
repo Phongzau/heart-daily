@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Heart Daily | Create Attribute')
-
+@section('title')
+    {{ $generalSettings->site_name }} || Thêm mới thuộc tính
+@endsection
 @section('section')
     <section class="section">
         <div class="section-header">
@@ -31,7 +32,7 @@
                 <div class="form-group" id="additionalInput" style="display: none;">
                     <label for="code">Mã</label>
                     <div class="input-group colorpickerinput">
-                        
+
                         <input type="text" name="code" class="form-control" value="{{ old('code') }}">
                         <div class="input-group-append" id="color-picker-trigger">
                             <div class="input-group-text">

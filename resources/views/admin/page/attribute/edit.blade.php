@@ -1,7 +1,7 @@
 @extends('layouts.admin')
-
-@section('title', 'Heart Daily | Edit Attribute')
-
+@section('title')
+    {{ $generalSettings->site_name }} || Chỉnh sửa thuộc tính
+@endsection
 @section('section')
     <section class="section">
         <div class="section-header">
@@ -15,7 +15,7 @@
                     <label for="title">Tiêu đề</label>
                     <input type="text" name="title" class="form-control" value="{{ old('title', $attribute->title) }}">
                 </div>
-        
+
                 <div class="form-group">
                     <label for="">Danh mục thuộc tính</label>
                     <select name="category_attribute_id" class="form-control" id="categorySelect">
@@ -27,13 +27,16 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group" id="additionalInput" style="display: {{ $attribute->category_attribute_id == 2 ? 'block' : 'none' }};">
+                <div class="form-group" id="additionalInput"
+                    style="display: {{ $attribute->category_attribute_id == 2 ? 'block' : 'none' }};">
                     <label for="code">Mã</label>
                     <div class="input-group colorpickerinput">
-                        <input type="text" name="code" class="form-control" value="{{ old('code', $attribute->code) }}">
+                        <input type="text" name="code" class="form-control"
+                            value="{{ old('code', $attribute->code) }}">
                         <div class="input-group-append" id="color-picker-trigger">
                             <div class="input-group-text">
-                                <i class="fas fa-fill-drip" id="color-icon" style="color: {{ old('code', $attribute->code) }};"></i>
+                                <i class="fas fa-fill-drip" id="color-icon"
+                                    style="color: {{ old('code', $attribute->code) }};"></i>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,9 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Trang chủ
+@endsection
+
 @section('section')
     {{-- Home slider  --}}
     @include('client.page.home.sections.banner-slider')

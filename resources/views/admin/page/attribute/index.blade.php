@@ -1,7 +1,7 @@
 @extends('layouts.admin')
-
-@section('title', 'Heart Daily | Attributes')
-
+@section('title')
+    {{ $generalSettings->site_name }} || Thuộc tính
+@endsection
 @section('section')
     <section class="section">
         <div class="section-header">

@@ -1,8 +1,10 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Category Attributes
+    {{ $generalSettings->site_name }} || Danh mục thuộc tính
 @endsection
+
+
 
 @section('section')
     <section class="section">

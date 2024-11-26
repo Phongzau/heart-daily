@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Create Category Product
+    {{ $generalSettings->site_name }} || Thêm mới danh mục sản phẩm
 @endsection
+
 
 @section('section')
     <section class="section">

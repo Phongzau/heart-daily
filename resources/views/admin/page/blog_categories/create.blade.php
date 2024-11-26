@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Create Blog Category
+    {{ $generalSettings->site_name }} || Tạo mới danh mục bài viết
 @endsection
 
 @section('section')

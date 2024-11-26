@@ -1,7 +1,6 @@
 @extends('layouts.admin')
-
 @section('title')
-    Heart Daily | Banners Edit
+    {{ $generalSettings->site_name }} || Chỉnh sửa banner
 @endsection
 
 @section('section')
@@ -81,8 +80,9 @@
                                                             id="deleteImageButtonContainer">
                                                             <!-- Nút upload ảnh mới -->
                                                             <label for="imageUpload"
-                                                                style="padding: 0.5rem 1rem; margin-bottom: unset !important; border-radius: 10px; background-color: black; color: #fff; display: flex; justify-content: center; align-items: center">Tải ảnh lên...
-                                                                </label>
+                                                                style="padding: 0.5rem 1rem; margin-bottom: unset !important; border-radius: 10px; background-color: black; color: #fff; display: flex; justify-content: center; align-items: center">Tải
+                                                                ảnh lên...
+                                                            </label>
                                                             <input type="file" name="image" id="imageUpload"
                                                                 class="form-control" accept="image/*" style="display: none">
 

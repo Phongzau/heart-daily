@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Coupons Edit
+    {{ $generalSettings->site_name }} || Chỉnh sửa mã giảm giá
 @endsection
 
 @section('section')

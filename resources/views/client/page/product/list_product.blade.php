@@ -1,6 +1,6 @@
 @extends('layouts.client')
 @section('title')
-    Danh mục sản phẩm
+    {{ $generalSettings->site_name }} || Danh mục sản phẩm
 @endsection
 @section('section')
     <div class="category-banner-container bg-gray">
@@ -266,7 +266,6 @@
     <!-- margin -->
 
     <script>
-        
         let filters = {
             category: null,
             brand: null,
@@ -332,8 +331,8 @@
                 max_price: filters.max_price,
                 search: searchParam
             });
-            
-            
+
+
             fetch(`{{ route('product.ajaxGetProducts') }}?${query.toString()}`)
                 .then(response => {
                     if (!response.ok) {
@@ -364,10 +363,10 @@
                                     <div class="product-label label-hot">HOT</div>
 
                                     ${hasDiscount  ? `
-                                                    <div class="product-label label-sale">
-                                                        -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                    </div>
-                                                    ` : ''}
+                                                        <div class="product-label label-sale">
+                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                        </div>
+                                                        ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -385,11 +384,11 @@
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                        ` : `
-                        <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                        `}
+                            <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                            <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                            ` : `
+                            <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                            `}
                     </div>
                     <div class="product-action">
                         <a href="javascript:void(0)" data-productid="${product.id}" class="btn-icon-wish ${isInWishlist}" title="wishlist"><i class="icon-heart"></i></a>

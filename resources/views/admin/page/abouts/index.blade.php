@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    HeartDaily | About
+    {{ $generalSettings->site_name }} || Về chúng tôi
 @endsection
 
 @section('section')

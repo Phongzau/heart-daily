@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Brands
+    {{ $generalSettings->site_name }} || Thương hiệu
 @endsection
+
 
 @section('section')
     <!-- Main Content -->

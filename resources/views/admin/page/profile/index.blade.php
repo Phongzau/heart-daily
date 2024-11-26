@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Hồ sơ
+@endsection
+
 @section('section')
     <section class="section">
         <div class="section-header">

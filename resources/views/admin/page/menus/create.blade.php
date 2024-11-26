@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Menus Create
+    {{ $generalSettings->site_name }} || Thêm mới menu
 @endsection
 
 @section('section')
@@ -29,8 +29,8 @@
                                     <label for="">Trạng thái</label>
                                     <select name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
-                                        <option {{old('status') === '1' ? 'selected' : ''}} value="1">Bật</option>
-                                        <option {{old('status') === '0' ? 'selected' : ''}} value="0">Tắt</option>
+                                        <option {{ old('status') === '1' ? 'selected' : '' }} value="1">Bật</option>
+                                        <option {{ old('status') === '0' ? 'selected' : '' }} value="0">Tắt</option>
                                     </select>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Thêm</button>

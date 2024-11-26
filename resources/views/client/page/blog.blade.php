@@ -1,5 +1,9 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Bài viết
+@endsection
+
 @section('section')
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
@@ -15,36 +19,36 @@
             <div class="col-lg-9">
                 <div class="blog-section row">
                     @foreach ($blogs as $blog)
-                    <div class="col-md-6 col-lg-4">
-                        <article class="post">
-                            <div class="post-media">
-                                <a href="{{ route('blog-details', $blog->slug) }}">
-                                    <img src="{{ Storage::url($blog->image) }}">
-
-                                </a>
-
-                                <div class="post-date">
-
-                                    <span class="day">{{ $blog->created_at->format('d') }}</span>
-                                    <span class="month">{{ $blog->created_at->format('M') }}</span>
-                                </div>
-                            </div><!-- End .post-media -->
-
-                            <div class="post-body">
-                                <h2 class="post-title">
+                        <div class="col-md-6 col-lg-4">
+                            <article class="post">
+                                <div class="post-media">
                                     <a href="{{ route('blog-details', $blog->slug) }}">
-                                        <h4>{{ ($blog->title)  }}</h4>
+                                        <img src="{{ Storage::url($blog->image) }}">
+
                                     </a>
-                                </h2><!-- End .post-title -->
 
-                                <div class="post-content">
-                                    <p>{{ limitTextDescription($blog->description, 160) }}</p>
-                                </div><!-- End .post-content -->
+                                    <div class="post-date">
 
-{{--                                <a href="single.html" class="post-comment">0 Bình luận</a>--}}
-                            </div><!-- End .post-body -->
-                        </article><!-- End .post -->
-                    </div>
+                                        <span class="day">{{ $blog->created_at->format('d') }}</span>
+                                        <span class="month">{{ $blog->created_at->format('M') }}</span>
+                                    </div>
+                                </div><!-- End .post-media -->
+
+                                <div class="post-body">
+                                    <h2 class="post-title">
+                                        <a href="{{ route('blog-details', $blog->slug) }}">
+                                            <h4>{{ $blog->title }}</h4>
+                                        </a>
+                                    </h2><!-- End .post-title -->
+
+                                    <div class="post-content">
+                                        <p>{{ limitTextDescription($blog->description, 160) }}</p>
+                                    </div><!-- End .post-content -->
+
+                                    {{--                                <a href="single.html" class="post-comment">0 Bình luận</a> --}}
+                                </div><!-- End .post-body -->
+                            </article><!-- End .post -->
+                        </div>
                     @endforeach
                 </div>
             </div><!-- End .col-lg-9 -->
@@ -61,7 +65,7 @@
                         <ul class="list">
                             @foreach ($categories as $category)
                                 <li>
-                                    <a href="{{route('blogs', $category->slug)}}">{{ $category->name }}</a>
+                                    <a href="{{ route('blogs', $category->slug) }}">{{ $category->name }}</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -75,7 +79,7 @@
                                 <li>
                                     <div class="post-media">
                                         <a href="{{ route('blog-details', $blog->slug) }}">
-                                        <img src="{{ Storage::url($blog->image) }}">
+                                            <img src="{{ Storage::url($blog->image) }}">
                                         </a>
                                     </div><!-- End .post-media -->
 
@@ -89,14 +93,14 @@
                         </ul>
                     </div><!-- End .widget -->
 
-{{--                    <div class="widget">--}}
-{{--                        <h4 class="widget-title">Tags</h4>--}}
+                    {{--                    <div class="widget"> --}}
+                    {{--                        <h4 class="widget-title">Tags</h4> --}}
 
-{{--                        <div class="tagcloud">--}}
-{{--                            <a href="#">ARTICLES</a>--}}
-{{--                            <a href="#">CHAT</a>--}}
-{{--                        </div><!-- End .tagcloud -->--}}
-{{--                    </div><!-- End .widget -->--}}
+                    {{--                        <div class="tagcloud"> --}}
+                    {{--                            <a href="#">ARTICLES</a> --}}
+                    {{--                            <a href="#">CHAT</a> --}}
+                    {{--                        </div><!-- End .tagcloud --> --}}
+                    {{--                    </div><!-- End .widget --> --}}
                 </div><!-- End .sidebar-wrapper -->
             </aside><!-- End .col-lg-3 -->
         </div><!-- End .row -->

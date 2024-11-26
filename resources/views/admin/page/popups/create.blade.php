@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Popups Create
+    {{ $generalSettings->site_name }} || Thêm mới Popup
 @endsection
+
 
 @section('section')
     <!-- Main Content -->

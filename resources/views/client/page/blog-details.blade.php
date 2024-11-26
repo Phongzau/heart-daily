@@ -1,5 +1,9 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || {{ $blog->title }}
+@endsection
+
 @section('section')
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
@@ -68,7 +72,8 @@
                                 <div class="post-author">
                                     <figure>
                                         <a href="#">
-                                            <img src="{{ Storage::url($item->user->image) }}" alt="author">
+                                            <img src="{{ $item->user->image ? Storage::url($item->user->image) : asset('frontend/assets/images/blog/author.jpg') }}"
+                                                alt="author">
                                         </a>
                                     </figure>
 

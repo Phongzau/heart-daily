@@ -1,5 +1,8 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Trò chuyện
+@endsection
 @section('css-chat')
     <style>
         /* Form */

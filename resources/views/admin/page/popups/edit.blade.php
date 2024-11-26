@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Newletter Popup Edit
+    {{ $generalSettings->site_name }} || Chỉnh sửa Popup
 @endsection
 
 @section('section')

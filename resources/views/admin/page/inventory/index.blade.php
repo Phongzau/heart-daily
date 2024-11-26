@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Hàng tồn kho
+    {{ $generalSettings->site_name }} || Hàng tồn kho
 @endsection
 
 @section('css')

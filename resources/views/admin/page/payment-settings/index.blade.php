@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 @section('title')
-    Heart Daily | Payment Setting
+    {{ $generalSettings->site_name }} || Phương thức thanh toán
 @endsection
+
 @section('section')
     <section class="section">
         <div class="section-header">

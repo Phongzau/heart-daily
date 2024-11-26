@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Mạng xã hội
+    {{ $generalSettings->site_name }} || Mạng xã hội
 @endsection
+
 
 @section('section')
     <!-- Main Content -->

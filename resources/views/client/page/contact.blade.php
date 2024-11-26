@@ -1,5 +1,9 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Liên hệ
+@endsection
+
 @section('section')
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">

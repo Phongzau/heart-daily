@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Acounts
+    {{ $generalSettings->site_name }} || Tài khoản
 @endsection
 
 @section('section')
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
 @endsection

@@ -1,7 +1,10 @@
 @extends('layouts.client')
+
+
 @section('title')
-    Thanh toán đơn hàng
+    {{ $generalSettings->site_name }} || Thanh toán đơn hàng
 @endsection
+
 @section('section')
     <div class="container checkout-container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
@@ -57,13 +60,14 @@
                                 {{-- <input type="text" class="form-control" id="name" name="name" required
                                     placeholder="Fist name" /> --}}
                                 <input type="text" name="first_name" class="form-control" required
-                                    value="{{ old('first_name', Auth::user()->first_name) }}" placeholder="Nhập tên của bạn" >
+                                    value="{{ old('first_name', Auth::user()->first_name) }}"
+                                    placeholder="Nhập tên của bạn">
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="text" name="phone" class="form-control"
-                                            value="{{ old('phone', Auth::user()->phone) }}"placeholder="Nhập SĐT của bạn" >
+                                            value="{{ old('phone', Auth::user()->phone) }}"placeholder="Nhập SĐT của bạn">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -74,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <label>Địa chỉ</label>
                             <div class="row">
                                 <div class="col-md-4">

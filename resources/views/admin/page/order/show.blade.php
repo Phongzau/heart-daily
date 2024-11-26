@@ -5,6 +5,10 @@
 @endphp
 @extends('layouts.admin')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Chi tiết đơn hàng
+@endsection
+
 @section('section')
     <!-- Main Content -->
 
@@ -44,14 +48,14 @@
                                                 ->where('id', $address->province_id)
                                                 ->pluck('title')
                                                 ->first();
-                                            
+
                                             $districtTitle = \App\Models\District::query()
                                                 ->where('id', $address->district_id)
                                                 ->pluck('title')
                                                 ->first();
-                                            
+
                                             $communeTitle = \App\Models\Commune::query()
-                                                ->where('id', $address->commune_id) 
+                                                ->where('id', $address->commune_id)
                                                 ->pluck('title')
                                                 ->first();
                                         @endphp
@@ -67,18 +71,19 @@
                                         <strong>Thông tin thanh toán:</strong><br>
                                         <b>Phương thức: </b>{{ $order->payment_method }}<br>
                                         <b>ID giao dịch: </b> {{ @$order->transaction->transaction_id }} <br>
-                                        <b>Trạng thái: </b> {{ $order->payment_status === 1 ? 'Hoàn thành' : 'Chưa hoàn thành' }}
+                                        <b>Trạng thái: </b>
+                                        {{ $order->payment_status === 1 ? 'Hoàn thành' : 'Chưa hoàn thành' }}
                                     </address>
                                 </div>
                                 <div class="col-md-6 text-md-right">
-                                @php
-                                    use Carbon\Carbon;
-                                    Carbon::setLocale('vi');
-                                @endphp
-                                <address>
-                                    <strong>Ngày đặt hàng:</strong><br>
-                                    {{ Carbon::parse($order->created_at)->translatedFormat('d F, Y') }}<br><br>
-                                </address>
+                                    @php
+                                        use Carbon\Carbon;
+                                        Carbon::setLocale('vi');
+                                    @endphp
+                                    <address>
+                                        <strong>Ngày đặt hàng:</strong><br>
+                                        {{ Carbon::parse($order->created_at)->translatedFormat('d F, Y') }}<br><br>
+                                    </address>
                                 </div>
                             </div>
                         </div>

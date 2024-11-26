@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Menu
+    {{ $generalSettings->site_name }} || Menu
 @endsection
 
 @section('section')

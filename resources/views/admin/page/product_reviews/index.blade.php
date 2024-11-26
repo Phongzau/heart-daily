@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Đánh giá sản phẩm
+    {{ $generalSettings->site_name }} || Danh sách đánh giá sản phẩm
 @endsection
 
 @section('section')
