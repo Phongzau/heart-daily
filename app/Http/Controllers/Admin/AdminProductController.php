@@ -56,6 +56,7 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku',
             'price' => 'required|numeric|min:0',
+            'price_import' => 'required|numeric|min:0',
             'offer_price' => 'nullable|numeric|min:0|lt:price',
             'offer_start_date' => 'nullable|date|before_or_equal:offer_end_date',
             'offer_end_date' => 'nullable|date|after_or_equal:offer_start_date',
@@ -96,6 +97,9 @@ class AdminProductController extends Controller
             'price.required' => 'Giá sản phẩm là bắt buộc.',
             'price.numeric' => 'Giá sản phẩm phải là một số.',
             'price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
+            'price_import.required' => 'Giá sản phẩm là bắt buộc.',
+            'price_import.numeric' => 'Giá sản phẩm phải là một số.',
+            'price_import.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
             'offer_price.numeric' => 'Giá khuyến mãi phải là một số.',
             'offer_price.min' => 'Giá khuyến mãi phải lớn hơn hoặc bằng 0.',
             'offer_price.lt' => 'Giá khuyến mãi phải nhỏ hơn giá gốc.',
@@ -157,6 +161,7 @@ class AdminProductController extends Controller
                 $product->slug = Str::slug($request->name);
                 $product->sku = $request->sku;
                 $product->price = $request->price;
+                $product->price_import = $request->price_import;
                 $product->offer_price = $request->offer_price;
                 $product->image = $imagePath;
                 if (is_array($request->tags)) {
@@ -247,6 +252,7 @@ class AdminProductController extends Controller
                 $product->slug = Str::slug($request->name);
                 $product->sku = $request->sku;
                 $product->price = $request->price;
+                $product->price_import = $request->price_import;
                 $product->offer_price = $request->offer_price;
                 $product->image = $imagePath;
                 if (is_array($request->tags)) {
@@ -384,6 +390,7 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku,' . $id,
             'price' => 'required|numeric|min:0',
+            'price_import' => 'required|numeric|min:0',
             'offer_price' => 'nullable|numeric|min:0|lt:price',
             'offer_start_date' => 'nullable|date|before_or_equal:offer_end_date',
             'offer_end_date' => 'nullable|date|after_or_equal:offer_start_date',
@@ -416,6 +423,9 @@ class AdminProductController extends Controller
             'price.required' => 'Giá sản phẩm là bắt buộc.',
             'price.numeric' => 'Giá sản phẩm phải là một số.',
             'price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
+            'price_import.required' => 'Giá sản phẩm là bắt buộc.',
+            'price_import.numeric' => 'Giá sản phẩm phải là một số.',
+            'price_import.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
             'offer_price.numeric' => 'Giá khuyến mãi phải là một số.',
             'offer_price.min' => 'Giá khuyến mãi phải lớn hơn hoặc bằng 0.',
             'offer_price.lt' => 'Giá khuyến mãi phải nhỏ hơn giá gốc.',
@@ -464,6 +474,7 @@ class AdminProductController extends Controller
                 $product->sku = $request->sku;
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
+                $product->price_import = $request->price_import;
                 $product->image = $imagePath;
                 $product->offer_start_date = $request->offer_start_date;
                 $product->offer_end_date = $request->offer_end_date;
@@ -573,6 +584,7 @@ class AdminProductController extends Controller
                 $product->sku = $request->sku;
                 $product->price = $request->price;
                 $product->offer_price = $request->offer_price;
+                $product->price_import = $request->price_import;
                 $product->image = $imagePath;
                 $tags = $request->input('tags', []);
                 $product->offer_start_date = $request->offer_start_date;

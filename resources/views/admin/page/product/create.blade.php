@@ -120,7 +120,7 @@
                                                                 class="form-control">
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="">Giá gốc</label>
                                                                     <div class="input-group">
@@ -136,7 +136,23 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="">Giá nhập</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <div class="input-group-text"
+                                                                                id="discount-unit">
+                                                                                đ
+                                                                            </div>
+                                                                        </div>
+                                                                        <input type="number" name="price_import"
+                                                                            value="{{ old('price_import') }}"
+                                                                            class="form-control currency">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="">Giá ưu đãi</label>
                                                                     <div class="input-group">
