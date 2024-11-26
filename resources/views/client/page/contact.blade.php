@@ -19,10 +19,8 @@
     </nav>
 
     <div id="map" class="text-center">
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.4985744576525!2d105.84417911107178!3d20.97264248962257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac48ac90cb4b%3A0xececf4460103c358!2zODEgTmcuIDQyIFRo4buLbmggTGnhu4d0LCBUaOG7i25oIExp4buHdCwgSG_DoG5nIE1haSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1726550178753!5m2!1svi!2s"
-            width="2000" height="500" style="border:0; padding:0; margin:0" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="{{ $generalSettings->map }}" width="2000" height="500" style="border:0; padding:0; margin:0"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 
     <div class="container contact-us-container">
@@ -30,17 +28,12 @@
             <div class="row">
                 <div class="col-12">
                     <h2 class="ls-n-25 m-b-1">
-                        Contact Info
+                        Công ty 5 thành viên xin chào
                     </h2>
 
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Sed imperdiet libero id nisi euismod, sed
-                        porta est consectetur. Vestibulum auctor felis eget
-                        orci semper vestibulum. Pellentesque ultricies nibh
-                        gravida, accumsan libero luctus, molestie nunc.L
-                        orem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
+                        Nếu có vấn đề gì có thể gọi điện hoặc gửi mail trực tiếp cho chúng tôi xin hân hạnh phục vụ quý
+                        khách
                     </p>
                 </div>
 
@@ -48,8 +41,8 @@
                     <div class="feature-box text-center">
                         <i class="sicon-location-pin"></i>
                         <div class="feature-box-content">
-                            <h3>Address</h3>
-                            <h5>123 Wall Street, New York / NY</h5>
+                            <h3>Địa chỉ</h3>
+                            <h5>{{ $generalSettings->contact_address }}</h5>
                         </div>
                     </div>
                 </div>
@@ -57,8 +50,8 @@
                     <div class="feature-box text-center">
                         <i class="fa fa-mobile-alt"></i>
                         <div class="feature-box-content">
-                            <h3>Phone Number</h3>
-                            <h5>(800) 123-4567</h5>
+                            <h3>Số điện thoại</h3>
+                            <h5>{{ $generalSettings->contact_phone }}</h5>
                         </div>
                     </div>
                 </div>
@@ -66,9 +59,8 @@
                     <div class="feature-box text-center">
                         <i class="far fa-envelope"></i>
                         <div class="feature-box-content">
-                            <h3>E-mail Address</h3>
-                            <h5><a href="https://portotheme.com/cdn-cgi/l/email-protection" class="__cf_email__"
-                                    data-cfemail="20504f52544f60504f52544f5448454d450e434f4d">[email&#160;protected]</a>
+                            <h3>Địa chỉ Email</h3>
+                            <h5>{{ $generalSettings->contact_email }}
                             </h5>
                         </div>
                     </div>
@@ -77,8 +69,8 @@
                     <div class="feature-box text-center">
                         <i class="far fa-calendar-alt"></i>
                         <div class="feature-box-content">
-                            <h3>Working Days/Hours</h3>
-                            <h5>Mon - Sun / 9:00AM - 8:00PM</h5>
+                            <h3>Thời gian mở cửa</h3>
+                            <h5>Thứ 2 - Chủ nhật / 9h sáng - 20h tối </h5>
                         </div>
                     </div>
                 </div>
@@ -86,7 +78,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-6">
+            {{-- <div class="col-lg-6">
                 <h2 class="mt-6 mb-2">Send Us a Message</h2>
 
                 <form class="mb-0" action="#">
@@ -114,144 +106,68 @@
                         </button>
                     </div>
                 </form>
-            </div>
+            </div> --}}
 
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <h2 class="mt-6 mb-1">Frequently Asked Questions</h2>
                 <div id="accordion">
+                    <!-- Câu hỏi 1 -->
                     <div class="card card-accordion">
                         <a class="card-header" href="#" data-toggle="collapse" data-target="#collapseOne"
                             aria-expanded="true" aria-controls="collapseOne">
-                            Curabitur eget leo at velit imperdiet viaculis
-                            vitaes?
+                            Tôi có thể hủy hoặc thay đổi đơn hàng của mình không?
                         </a>
-
                         <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                            <p>Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Curabitur eget leo at velit
-                                imperdiet varius. In eu ipsum vitae velit
-                                congue iaculis vitae at risus. Nullam tortor
-                                nunc, bibendum vitae semper a, volutpat eget
-                                massa.</p>
+                            <p>Bạn có thể hủy hoặc thay đổi đơn hàng trước khi đơn hàng được xác nhận. Vui lòng liên hệ với
+                                bộ phận chăm sóc khách hàng để được hỗ trợ.</p>
                         </div>
                     </div>
 
+                    <!-- Câu hỏi 2 -->
                     <div class="card card-accordion">
                         <a class="card-header collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                            aria-expanded="true" aria-controls="collapseOne">
-                            Curabitur eget leo at velit imperdiet vague
-                            iaculis vitaes?
+                            aria-expanded="false" aria-controls="collapseTwo">
+                            Tôi có thể kiểm tra tình trạng đơn hàng của mình ở đâu?
                         </a>
-
                         <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                            <p>Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Curabitur eget leo at velit
-                                imperdiet varius. In eu ipsum vitae velit
-                                congue iaculis vitae at risus. Nullam tortor
-                                nunc, bibendum vitae semper a, volutpat eget
-                                massa. Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit. Integer
-                                fringilla, orci sit amet posuere auctor,
-                                orci eros pellentesque odio, nec
-                                pellentesque erat ligula nec massa. Aenean
-                                consequat lorem ut felis ullamcorper posuere
-                                gravida tellus faucibus. Maecenas dolor
-                                elit, pulvinar eu vehicula eu, consequat et
-                                lacus. Duis et purus ipsum. In auctor mattis
-                                ipsum id molestie. Donec risus nulla,
-                                fringilla a rhoncus vitae, semper a massa.
-                                Vivamus ullamcorper, enim sit amet consequat
-                                laoreet, tortor tortor dictum urna, ut
-                                egestas urna ipsum nec libero. Nulla justo
-                                leo, molestie vel tempor nec, egestas at
-                                massa. Aenean pulvinar, felis porttitor
-                                iaculis pulvinar, odio orci sodales odio, ac
-                                pulvinar felis quam sit.</p>
+                            <p>Bạn có thể theo dõi trạng thái đơn hàng bằng cách đăng nhập vào tài khoản của mình và chọn
+                                mục “Theo dõi đơn hàng” hoặc kiểm tra email xác nhận.</p>
                         </div>
                     </div>
 
+                    <!-- Câu hỏi 3 -->
                     <div class="card card-accordion">
-                        <a class="card-header collapsed" href="#" data-toggle="collapse"
-                            data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                            Curabitur eget leo at velit imperdiet viaculis
-                            vitaes?
+                        <a class="card-header collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                            aria-expanded="false" aria-controls="collapseThree">
+                            Tôi có thể đổi hoặc trả hàng không? Điều kiện như thế nào?
                         </a>
-
                         <div id="collapseThree" class="collapse" data-parent="#accordion">
-                            <p>Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Curabitur eget leo at velit
-                                imperdiet varius. In eu ipsum vitae velit
-                                congue iaculis vitae at risus. Nullam tortor
-                                nunc, bibendum vitae semper a, volutpat eget
-                                massa.</p>
+                            <p>Chúng tôi chấp nhận đổi trả hàng trong vòng 7 ngày kể từ khi nhận được hàng, với điều kiện
+                                sản phẩm chưa qua sử dụng và còn nguyên tem mác.</p>
                         </div>
                     </div>
 
+                    <!-- Câu hỏi 4 -->
                     <div class="card card-accordion">
-                        <a class="card-header collapsed" href="#" data-toggle="collapse"
-                            data-target="#collapseFour" aria-expanded="true" aria-controls="collapseThree">
-                            Curabitur eget leo at velit imperdiet vague
-                            iaculis vitaes?
+                        <a class="card-header collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+                            aria-expanded="false" aria-controls="collapseFour">
+                            Phương thức thanh toán nào được hỗ trợ?
                         </a>
-
                         <div id="collapseFour" class="collapse" data-parent="#accordion">
-                            <p>Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Curabitur eget leo at velit
-                                imperdiet varius. In eu ipsum vitae velit
-                                congue iaculis vitae at risus. Nullam tortor
-                                nunc, bibendum vitae semper a, volutpat eget
-                                massa. Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit. Integer
-                                fringilla, orci sit amet posuere auctor,
-                                orci eros pellentesque odio, nec
-                                pellentesque erat ligula nec massa. Aenean
-                                consequat lorem ut felis ullamcorper posuere
-                                gravida tellus faucibus. Maecenas dolor
-                                elit, pulvinar eu vehicula eu, consequat et
-                                lacus. Duis et purus ipsum. In auctor mattis
-                                ipsum id molestie. Donec risus nulla,
-                                fringilla a rhoncus vitae, semper a massa.
-                                Vivamus ullamcorper, enim sit amet consequat
-                                laoreet, tortor tortor dictum urna, ut
-                                egestas urna ipsum nec libero. Nulla justo
-                                leo, molestie vel tempor nec, egestas at
-                                massa. Aenean pulvinar, felis porttitor
-                                iaculis pulvinar, odio orci sodales odio, ac
-                                pulvinar felis quam sit.</p>
+                            <p>Chúng tôi hỗ trợ thanh toán qua COD (thanh toán khi nhận hàng), thẻ tín dụng/thẻ ghi nợ, và
+                                các ví điện tử như Momo, ZaloPay.</p>
                         </div>
                     </div>
 
+                    <!-- Câu hỏi 5 -->
                     <div class="card card-accordion">
-                        <a class="card-header collapsed" href="#" data-toggle="collapse"
-                            data-target="#collapseFive" aria-expanded="true" aria-controls="collapseThree">
-                            Curabitur eget leo at velit imperdiet varius
-                            iaculis vitaes?
+                        <a class="card-header collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
+                            aria-expanded="false" aria-controls="collapseFive">
+                            Tôi có thể nhận hàng trong bao lâu sau khi đặt?
                         </a>
-
                         <div id="collapseFive" class="collapse" data-parent="#accordion">
-                            <p>Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Curabitur eget leo at velit
-                                imperdiet varius. In eu ipsum vitae velit
-                                congue iaculis vitae at risus. Nullam tortor
-                                nunc, bibendum vitae semper a, volutpat eget
-                                massa. Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit. Integer
-                                fringilla, orci sit amet posuere auctor,
-                                orci eros pellentesque odio, nec
-                                pellentesque erat ligula nec massa. Aenean
-                                consequat lorem ut felis ullamcorper posuere
-                                gravida tellus faucibus. Maecenas dolor
-                                elit, pulvinar eu vehicula eu, consequat et
-                                lacus. Duis et purus ipsum. In auctor mattis
-                                ipsum id molestie. Donec risus nulla,
-                                fringilla a rhoncus vitae, semper a massa.
-                                Vivamus ullamcorper, enim sit amet consequat
-                                laoreet, tortor tortor dictum urna, ut
-                                egestas urna ipsum nec libero. Nulla justo
-                                leo, molestie vel tempor nec, egestas at
-                                massa. Aenean pulvinar, felis porttitor
-                                iaculis pulvinar, odio orci sodales odio, ac
-                                pulvinar felis quam sit.</p>
+                            <p>Thời gian giao hàng phụ thuộc vào địa chỉ nhận hàng. Thông thường, chúng tôi giao hàng trong
+                                2-5 ngày làm việc đối với nội địa.</p>
                         </div>
                     </div>
                 </div>
