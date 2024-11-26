@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Edit Category Product
+    {{ $generalSettings->site_name }} || Chỉnh sửa danh mục sản phẩm
 @endsection
 
 @section('section')

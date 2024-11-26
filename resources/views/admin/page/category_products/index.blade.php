@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Category Prodcut
+    {{ $generalSettings->site_name }} || Danh mục sản phẩm
 @endsection
 
 @section('section')
@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Danh sách danh mục</h4>
+                            <h4>Danh sách danh mục sản phẩm</h4>
                             @can('create-categories-products')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.category_products.create') }}" class="btn btn-primary">
@@ -64,10 +64,10 @@
                                 // Nếu trạng thái là không checked, bỏ chọn checkbox
                                 if (!isChecked) {
                                     $checkbox.prop('checked',
-                                    false); // Xóa trạng thái checked
+                                        false); // Xóa trạng thái checked
                                 } else {
                                     $checkbox.prop('checked',
-                                    true); // Đặt trạng thái checked nếu cần
+                                        true); // Đặt trạng thái checked nếu cần
                                 }
                             });
                         }

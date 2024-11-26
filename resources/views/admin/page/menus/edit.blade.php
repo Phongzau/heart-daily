@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Menus Create
+    {{ $generalSettings->site_name }} || Chỉnh sửa menu
 @endsection
 
 @section('section')

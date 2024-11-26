@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Danh mục đơn hàng
+@endsection
+
 @section('section')
     <!-- Main Content -->
 

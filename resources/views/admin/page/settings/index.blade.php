@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    HeartDaily | Settings
+    {{ $generalSettings->site_name }} || Cấu hình
 @endsection
+
 
 @section('section')
     <!-- Main Content -->

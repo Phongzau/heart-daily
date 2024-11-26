@@ -1,5 +1,9 @@
 @extends('layouts.client')
 
+@section('title')
+    {{ $generalSettings->site_name }} || Về chúng tôi
+@endsection
+
 @section('section')
     <div class="page-header page-header-bg text-left"
         style="background: 50%/cover #D4E1EA url({{ asset('frontend/assets/images/page-header-bg.jpg') }});">
@@ -23,8 +27,8 @@
         <div class="container">
             <h2 class="subtitle">Của hàng chúng tôi</h2>
 
-            @if(isset($about) && $about->content)
-                <p class="lead">{!! @$about->content !!}  </p>
+            @if (isset($about) && $about->content)
+                <p class="lead">{!! @$about->content !!} </p>
             @else
                 <p class="lead">No content available.</p>
             @endif

@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Blogs
+    {{ $generalSettings->site_name }} || Bài viết
 @endsection
+
 
 @section('section')
     <!-- Main Content -->

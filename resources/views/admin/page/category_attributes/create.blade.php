@@ -1,8 +1,10 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Create Category Attribute
+    {{ $generalSettings->site_name }} || Thêm mới danh mục thuộc tính
 @endsection
+
+
 
 @section('section')
     <section class="section">
@@ -14,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Thêm mới thuộc tính</h4>
+                            <h4>Thêm mới danh mục thuộc tính</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.category_attributes.store') }}">
@@ -23,7 +25,7 @@
                                     <label for="title">Tiêu đề</label>
                                     <input type="text" name="title" value="{{ old('title') }}" class="form-control">
                                 </div>
-                          
+
                                 <div class="form-group">
                                     <label for="order">Order</label>
                                     <input type="number" name="order" value="{{ old('order') }}" class="form-control">

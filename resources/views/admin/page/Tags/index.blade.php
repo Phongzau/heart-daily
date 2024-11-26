@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Thẻ
+    {{ $generalSettings->site_name }} || Thẻ
 @endsection
+
 
 @section('section')
     <!-- Main Content -->

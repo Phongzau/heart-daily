@@ -1,7 +1,9 @@
 @extends('layouts.client')
+
 @section('title')
-    Đặt hàng thành công
+    {{ $generalSettings->site_name }} || Đặt hàng thành công
 @endsection
+
 @section('section')
     <div class="container text-center" style="margin-top: 50px;">
         <h1>Đặt hàng thành công!</h1>

@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 @section('title')
-    Dashboard
+    {{ $generalSettings->site_name }} || Bảng điều khiển
 @endsection
+
 @section('section')
     <section class="section">
         <div class="row">
@@ -356,9 +357,9 @@
 
                     response.forEach(function(product) {
                         let productName = product.name;
-                        if (productName.length > 20) { 
+                        if (productName.length > 20) {
                             productName = productName.substring(0, 20) +
-                            '...'; 
+                                '...';
                         }
                         $('#products-carousel').append(`
                         <div>

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Menu Items Update
+    {{ $generalSettings->site_name }} || Chỉnh sửa danh mục menu
 @endsection
 
 @section('section')
@@ -28,7 +28,7 @@
                                     <input type="text" name="title" value="{{ $menuItems->title }}"
                                         class="form-control">
                                 </div>
- 
+
                                 <div class="form-group">
 
                                     <label for="">Đường dẫn</label>

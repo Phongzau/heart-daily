@@ -1,5 +1,10 @@
 @extends('layouts.client')
 
+
+@section('title')
+    {{ $generalSettings->site_name }} || Giỏ hàng
+@endsection
+
 @section('css')
     <style>
         .sidebar {

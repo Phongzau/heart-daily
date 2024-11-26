@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Banners
+    {{ $generalSettings->site_name }} || Banner
 @endsection
 
 @section('section')

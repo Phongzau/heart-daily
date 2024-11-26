@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 
+
 @section('title')
-    Heart Daily | Edit Blog Category
+    {{ $generalSettings->site_name }} || Chỉnh sửa danh mục bài viết
 @endsection
 
 @section('section')

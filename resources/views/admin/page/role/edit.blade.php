@@ -1,7 +1,6 @@
 @extends('layouts.admin')
-
 @section('title')
-    Heart Daily | Vai trò
+    {{ $generalSettings->site_name }} || Chỉnh sửa vai trò
 @endsection
 
 @section('section')

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Advertisement
+    {{ $generalSettings->site_name }} || Quảng cáo 
 @endsection
 
 @section('section')

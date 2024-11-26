@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 
 @section('title')
-    Heart Daily | Edit Category Attribute
+    {{ $generalSettings->site_name }} || Chỉnh sửa danh mục thuộc tính
 @endsection
+
 
 @section('section')
     <section class="section">
@@ -14,7 +15,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Chỉnh sửa thuộc tính</h4>
+                            <h4>Chỉnh sửa danh mục thuộc tính</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.category_attributes.update', $categoryAttribute->id) }}">
@@ -24,7 +25,7 @@
                                     <label for="title">Tiêu đề</label>
                                     <input type="text" name="title" value="{{ old('title', $categoryAttribute->title) }}" class="form-control">
                                 </div>
-                             
+
                                 <div class="form-group">
                                     <label for="order">Vị trí</label>
                                     <input type="number" name="order" value="{{ old('order', $categoryAttribute->order) }}" class="form-control">
