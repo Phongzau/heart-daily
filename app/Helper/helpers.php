@@ -3,6 +3,22 @@
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
+function checkActive(array $route)
+{
+    if (is_array($route)) {
+        foreach ($route as $r) {
+            if (request()->routeIs($r)) {
+                return 'active';
+            }
+        }
+    }
+}
+
+function checkActiveClient($menuItemUrl)
+{
+    return request()->url() === config('app.url') . $menuItemUrl ? 'active' : 'hehe';
+}
+
 function limitText($text, $limit = 20)
 {
     return Str::limit($text, $limit);

@@ -35,7 +35,9 @@
             <ul class="menu">
 
                 @foreach ($menuItems as $menuItem)
-                    <li class="{{ $menuItem->children->count() ? 'dropdown' : '' }}">
+                    {{-- @dump($menuItem->url); --}}
+                    <li
+                        class="{{ $menuItem->children->count() ? 'dropdown' : '' }} {{ checkActiveClient($menuItem->url) }}">
                         <a href="{{ config('app.url') . $menuItem->url }}">{{ $menuItem->title }}</a>
 
                         @if ($menuItem->children->count())
