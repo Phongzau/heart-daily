@@ -267,7 +267,10 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Danh sách sản phẩm</h4>
-                        </div>
+                        
+                        <div class="card-header-action">
+                            <a href="{{ route('admin.inventory.export') }}" class="btn btn-outline-success"><i class="fa-light fa-file-excel fa-lg"></i> Excel</a>
+                        </div></div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped">
@@ -303,34 +306,44 @@
                                                             {{ checkDiscount($product) ? number_format($product->offer_price) . ' VND' : number_format($product->price) . ' VND' }}
                                                         @else
                                                             @php
-                                                                $priceArray = [];
+                                                                $totalPrice = 0;
                                                                 foreach ($product->ProductVariants as $productVariant) {
                                                                     if ($productVariant->offer_price_variant > 0) {
-                                                                        $priceArray[] =
+                                                                        $totalPrice +=
                                                                             $productVariant->offer_price_variant;
                                                                     } else {
-                                                                        $priceArray[] = $productVariant->price_variant;
+                                                                        $totalPrice += $productVariant->price_variant;
                                                                     }
                                                                 }
-                                                                $priceProduct =
-                                                                    number_format(min($priceArray)) . ' VND ~';
                                                             @endphp
-                                                            {{ $priceProduct }}
+                                                            {{ number_format($totalPrice) . ' VND' }}
                                                         @endif
                                                     </td>
-                                                    <td>
+
+                                                    <td
+                                                        class="
+                                                    @if ($product->type_product === 'product_simple') @if ($product->qty <= 10)
+                                                            text-danger
+                                                        @elseif ($product->qty <= 20)
+                                                            text-warning @endif
+@else
+@php
+$totalQty = 0;
+                                                            foreach ($product->ProductVariants as $productVariant) {
+                                                                $totalQty += $productVariant->qty;
+                                                            } @endphp
+                                                        @if ($totalQty <= 10) text-danger
+                                                        @elseif ($totalQty <= 20)
+                                                            text-warning @endif
+                                                    @endif
+                                                ">
                                                         @if ($product->type_product === 'product_simple')
                                                             {{ $product->qty }}
                                                         @else
-                                                            @php
-                                                                $totalQty = 0;
-                                                                foreach ($product->ProductVariants as $productVariant) {
-                                                                    $totalQty += $productVariant->qty;
-                                                                }
-                                                            @endphp
                                                             {{ $totalQty }}
                                                         @endif
                                                     </td>
+
                                                     <td>
                                                         @if ($product->type_product === 'product_simple')
                                                             Đơn giản
@@ -338,8 +351,9 @@
                                                             Biến thể
                                                         @endif
                                                     </td>
-                                                    <td> <button class="btn btn-primary view-detail-btn"
-                                                            data-id="{{ $product->id }}">Chi tiết</button>
+                                                    <td> <button class="btn btn-outline-primary view-detail-btn"
+                                                            data-id="{{ $product->id }}" title="Chi tiết"><i
+                                                                class="fa-solid fa-info"></i></button>
                                                     </td>
 
                                                 </tr>
@@ -422,7 +436,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')

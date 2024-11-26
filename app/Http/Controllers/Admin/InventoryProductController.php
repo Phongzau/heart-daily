@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Http\Controllers\Controller;
 use App\Models\OrderProduct;
 use App\Models\Product;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +19,11 @@ class InventoryProductController extends Controller
             ->with(['ProductVariants', 'reviews', 'category', 'brand'])
             ->paginate(13);
         return view('admin.page.inventory.index', compact('products'));
+    }
+
+    public function exportToExcel()
+    {
+        return Excel::download(new ProductsExport, 'san_pham.xlsx');
     }
 
     public function productDetail(string $productId)
