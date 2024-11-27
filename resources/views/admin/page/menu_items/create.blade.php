@@ -45,20 +45,20 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="">Order</label>
+                                    <label for="">Vị trí</label>
                                     <input type="text" name="order" value="{{ $maxOrder }}" readonly
                                         class="form-control order">
                                 </div>
 
                                 {{-- <div class="form-group">
-                                    <label for="">Slug</label>
+                                    <label for="">Đường dẫn cuối</label>
                                     <input type="text" name="slug" value="{{ old('slug') }}" class="form-control">
                                 </div> --}}
 
                                 <div class="form-group">
-                                    <label for=""> Menu Id</label>
+                                    <label for="">Menu Id</label>
                                     <select id="inputState" name="menu_id" class="form-control main-category">
-                                        <option value="" hidden>Select</option>
+                                        <option value="" hidden>Chọn</option>
                                         @foreach ($menu as $menu)
                                             <option value="{{ $menu->id }}">{{ $menu->title }}</option>
                                         @endforeach
@@ -66,10 +66,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="status">Status</label>
+                                    <label for="status">Trạng thái</label>
                                     <select name="status" class="form-control">
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
+                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Bật</option>
+                                        <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Tắt</option>
                                     </select>
                                 </div>
 
@@ -85,7 +85,7 @@
                                         class="form-control">
                                 </div> --}}
 
-                                <button class="btn btn-primary" type="submit">Create</button>
+                                <button class="btn btn-primary" type="submit">Thêm</button>
                             </form>
                         </div>
                     </div>

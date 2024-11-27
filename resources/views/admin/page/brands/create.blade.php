@@ -43,7 +43,7 @@
                                                     <label for="inputState">Trạng thái</label>
                                                     <select id="inputState" name="status" class="form-control"
                                                         value="{{ old('status') }}">
-                                                        <option value="" hidden>--Select--</option>
+                                                        <!-- <option value="" hidden>--Select--</option> -->
                                                         <option {{ old('status') === '1' ? 'selected' : '' }}
                                                             value="1">bật
                                                         </option>

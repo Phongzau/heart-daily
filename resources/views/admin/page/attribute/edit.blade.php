@@ -5,7 +5,7 @@
 @section('section')
     <section class="section">
         <div class="section-header">
-            <h1>Chỉnh sửa</h1>
+            <h1>Chỉnh sửa thuộc tính</h1>
         </div>
         <div class="section-body">
             <form method="POST" action="{{ route('admin.attributes.update', $attribute->id) }}">

@@ -271,27 +271,30 @@
                     </form>
                     <!-- End .product-action -->
 
+                    @php
+                        $socials = \App\Models\Social::query()->where('status', 1)->get();
+                        
+                    @endphp
+
                     <hr class="divider mb-0 mt-0">
 
                     <div class="product-single-share mb-2">
-                        <label class="sr-only">Chia sẻ:</label>
-
                         <div class="social-icons mr-2">
-                            <a href="https://www.facebook.com/" class="social-icon social-facebook icon-facebook"
-                                target="_blank" title="Facebook"></a>
-                            <a href="https://x.com/" class="social-icon social-twitter icon-twitter" target="_blank"
-                                title="Twitter"></a>
-                            <a href="https://www.linkedin.com/" class="social-icon social-linkedin fab fa-linkedin-in"
-                                target="_blank" title="Linkedin"></a>
-                            <a href="https://www.google.com" class="social-icon social-gplus fab fa-google-plus-g"
-                                target="_blank" title="Google +"></a>
-                            <a href="https://mail.google.com/" class="social-icon social-mail icon-mail-alt"
-                                target="_blank" title="Mail"></a>
+                            <div class="social-icons">
+                                @foreach ($socials as $social)
+                                    <a href="{{ $social->url }}" class="social-icon" target="_blank">
+                                        <i class="{{ $social->icon }}"></i>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
                         <!-- End .social-icons -->
 
-                        <a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
-                                class="icon-wishlist-2"></i><span>Thêm vào yêu thích</span></a>
+                        <a href="#" data-productid="{{ $product->id }}" 
+                            class="btn-icon-wish add-wishlist"
+                                class="btn-icon-wish {{ Auth::check() &&Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}" 
+                                title="Add to Wishlist"><i
+                                class="icon-wishlist-2"></i><span>Thêm vào danh sách yêu thích</span></a>
 
                     </div>
                     <!-- End .product single-share -->

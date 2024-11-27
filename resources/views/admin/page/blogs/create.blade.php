@@ -42,7 +42,7 @@
                                                 <div class="form-group">
                                                     <label for="">Tên danh mục bài viết</label>
                                                     <select name="blog_category_id" class="form-control">
-                                                        <option value="" hidden>--Chọn--</option>
+                                                        <!-- <option value="" hidden>--Chọn--</option> -->
                                                         @foreach ($categories as $cate)
                                                             <option value="{{ $cate->id }}"
                                                                 {{ old('blog_category_id') == $cate->id ? 'selected' : '' }}>
@@ -55,11 +55,11 @@
                                                 <div class="form-group ">
                                                     <label for="inputState">Status</label>
                                                     <select id="inputState" name="status" class="form-control">
-                                                        <option value="" hidden>--Select--</option>
+                                                        <!-- <option value="" hidden>--Select--</option> -->
                                                         <option {{ old('status') == '1' ? 'selected' : '' }} value="1">
-                                                            Active</option>
+                                                            Bật</option>
                                                         <option {{ old('status') == '0' ? 'selected' : '' }} value="0">
-                                                            Inactive
+                                                            Tắt
                                                         </option>
                                                     </select>
                                                 </div>

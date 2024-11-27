@@ -50,9 +50,10 @@
                                     <label for="status">Trạng thái</label>
                                     <select id="inputState" name="status" class="form-control">
                                         <option value="" hidden>--Select--</option>
-                                        <option {{ $categoryProduct->status == 1 ? 'selected' : '' }} value="1"Bật
+                                        <option {{ $categoryProduct->status == 1 ? 'selected' : '' }} value="1">
+                                            Bật
                                         </option>
-                                        <option {{ $categoryProduct->status == 0 ? 'selected' : '' }} value="0"Tắt>
+                                        <option {{ $categoryProduct->status == 0 ? 'selected' : '' }} value="0">
                                             Tắt
                                         </option>
                                     </select>
