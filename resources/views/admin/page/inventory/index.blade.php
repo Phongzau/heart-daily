@@ -279,7 +279,7 @@
                                             <th>#</th>
                                             <th>Hình ảnh</th>
                                             <th>Tên sản phẩm</th>
-                                            <th>Giá</th>
+                                            <th>Giá nhập</th>
                                             <th>Tồn kho(số lượng)</th>
                                             <th>Loại SP</th>
                                             <th>Thao tác</th>
@@ -302,7 +302,7 @@
                                                             - {{ $product->brand->name }} </span>
                                                     </td>
                                                     <td>
-                                                        @if ($product->type_product === 'product_simple')
+                                                        {{-- @if ($product->type_product === 'product_simple')
                                                             {{ checkDiscount($product) ? number_format($product->offer_price) . ' VND' : number_format($product->price) . ' VND' }}
                                                         @else
                                                             @php
@@ -317,7 +317,8 @@
                                                                 }
                                                             @endphp
                                                             {{ number_format($totalPrice) . ' VND' }}
-                                                        @endif
+                                                        @endif --}}
+                                                        {{ number_format($product->price_import) . ' VND' }}
                                                     </td>
 
                                                     <td
