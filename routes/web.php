@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryProductController;
 use App\Http\Controllers\Admin\NewletterPopupController;
@@ -456,9 +457,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [InventoryProductController::class, 'index'])->name('index');
         Route::get('/export', [InventoryProductController::class, 'exportToExcel'])->name('export');
         Route::get('/{productId}', [InventoryProductController::class, 'productDetail'])->name('get-product-detail');
-        
+    });
+    //Supplier
+    Route::prefix('suppliers')->name('suppliers.')->group(function () {
+        Route::put('change-status', [AdminSupplierController::class, 'changeStatus'])
+            ->name('change-status');
+        Route::get('/', [AdminSupplierController::class, 'index'])->name('index');
+        Route::get('/create', [AdminSupplierController::class, 'create'])->name('create');
+        Route::post('/', [AdminSupplierController::class, 'store'])->name('store');
+        Route::get('/{supplier}/edit', [AdminSupplierController::class, 'edit'])->name('edit');
+        Route::put('/{supplier}', [AdminSupplierController::class, 'update'])->name('update');
+        Route::delete('/{supplier}', [AdminSupplierController::class, 'destroy'])->name('destroy');
     });
 });
-
-
-/** Client Routes */
