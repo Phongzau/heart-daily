@@ -37,7 +37,6 @@
                                                 <div class="form-group">
                                                     <label for="inputState">Trạng thái</label>
                                                     <select id="inputState" name="status" class="form-control">
-                                                        <option value="" hidden>--Chọn--</option>
                                                         <option value="1">Bật</option>
                                                         <option value="0">Tắt</option>
                                                     </select>

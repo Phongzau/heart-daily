@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Thêm mới danh mục sản phẩm/h4>
+                            <h4>Thêm mới danh mục sản phẩm</h4>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.category_products.store') }}">
@@ -36,7 +36,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="order">Order</label>
+                                    <label for="order">Vị trí</label>
                                     <input type="number" name="order" value="{{ $maxOrder }}" readonly
                                         class="form-control order">
                                 </div>

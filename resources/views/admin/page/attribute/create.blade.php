@@ -57,7 +57,7 @@
                         <option value="0">Tắt</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Thêm</button>
             </form>
         </div>
     </section>

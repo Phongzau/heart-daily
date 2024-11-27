@@ -102,14 +102,14 @@ class CouponDataTable extends DataTable
         return [
             Column::make('id')->title('ID')->width(60),
             Column::make('name')->title('Tên')->width(200),
-            Column::make('code')->title('Mã')->width(130),
+            Column::make('code')->title('Mã phiếu')->width(130),
             Column::make('discount_type')->title('Loại giảm giá')->width(200),
-            Column::make('discount')->title('giảm giá')->width(200),
-            Column::make('min_order_value')->title('giá trị tối thiểu')->width(200),
+            Column::make('discount')->title('Giảm giá')->width(200),
+            Column::make('min_order_value')->title('Giá trị tối thiểu')->width(200),
             Column::make('total_used')->title('Lượt dùng')->width(150),
             Column::make('start_date')->title('Ngày bắt đầu')->width(200),
             Column::make('end_date')->title('Ngày hết hạn')->width(200),
-            Column::make('status')->title('Trạng thái')->width(130),
+            Column::make('status')->title('Trạng thái')->width(140),
             Column::computed('action')->title('Chức năng')
                 ->exportable(false)
                 ->printable(false)

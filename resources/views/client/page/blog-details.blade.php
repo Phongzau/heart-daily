@@ -159,7 +159,7 @@
                 <hr class="mt-2 mb-1">
 
                 <div class="related-posts">
-                    <h4>Liên quan <strong>Đăng</strong></h4>
+                    <h4>bài viết liên quan <strong></strong></h4>
 
                     <div class="owl-carousel owl-theme related-posts-carousel"
                         data-owl-options="{

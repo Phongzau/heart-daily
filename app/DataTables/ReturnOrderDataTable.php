@@ -81,12 +81,12 @@ class ReturnOrderDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('order_id'),
-            Column::make('return_reason'),
-            Column::make('refund_amount'),
-            Column::make('video_path'),
-            Column::make('return_status'),
+            Column::make('id')->title('ID'),
+            Column::make('order_id')->title('ID đơn hàng'),
+            Column::make('return_reason')->title('Lý do hoàn trả'),
+            Column::make('refund_amount')->title('Số tiền hoàn trả'),
+            Column::make('video_path')->title('Video'),
+            Column::make('return_status')->title('Trạng thái'),
         ];
     }
 
