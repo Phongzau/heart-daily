@@ -267,10 +267,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Danh sách sản phẩm</h4>
-                        
-                        <div class="card-header-action">
-                            <a href="{{ route('admin.inventory.export') }}" class="btn btn-outline-success"><i class="fa-light fa-file-excel fa-lg"></i> Excel</a>
-                        </div></div>
+
+                            <div class="card-header-action">
+                                <a href="{{ route('admin.inventory.export') }}" class="btn btn-outline-success"><i
+                                        class="fa-light fa-file-excel fa-lg"></i> Excel</a>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped">
@@ -279,9 +281,11 @@
                                             <th>#</th>
                                             <th>Hình ảnh</th>
                                             <th>Tên sản phẩm</th>
+                                            <th>Nhà cung cấp</th>
                                             <th>Giá nhập</th>
                                             <th>Tồn kho(số lượng)</th>
                                             <th>Loại SP</th>
+                                            <th>Ngày nhập hàng</th>
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
@@ -301,23 +305,9 @@
                                                             {{ $product->category->title }}
                                                             - {{ $product->brand->name }} </span>
                                                     </td>
+                                                    <td>{{ @$product->supplier->name }}</td>
                                                     <td>
-                                                        {{-- @if ($product->type_product === 'product_simple')
-                                                            {{ checkDiscount($product) ? number_format($product->offer_price) . ' VND' : number_format($product->price) . ' VND' }}
-                                                        @else
-                                                            @php
-                                                                $totalPrice = 0;
-                                                                foreach ($product->ProductVariants as $productVariant) {
-                                                                    if ($productVariant->offer_price_variant > 0) {
-                                                                        $totalPrice +=
-                                                                            $productVariant->offer_price_variant;
-                                                                    } else {
-                                                                        $totalPrice += $productVariant->price_variant;
-                                                                    }
-                                                                }
-                                                            @endphp
-                                                            {{ number_format($totalPrice) . ' VND' }}
-                                                        @endif --}}
+
                                                         {{ number_format($product->price_import) . ' VND' }}
                                                     </td>
 
@@ -327,9 +317,9 @@
                                                             text-danger
                                                         @elseif ($product->qty <= 20)
                                                             text-warning @endif
-@else
-@php
-$totalQty = 0;
+                                                    @else
+                                                    @php
+                                                    $totalQty = 0;
                                                             foreach ($product->ProductVariants as $productVariant) {
                                                                 $totalQty += $productVariant->qty;
                                                             } @endphp
@@ -352,9 +342,21 @@ $totalQty = 0;
                                                             Biến thể
                                                         @endif
                                                     </td>
-                                                    <td> <button class="btn btn-outline-primary view-detail-btn"
+                                                    <td>
+                                                        {{ $product->created_at }}
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-outline-primary view-detail-btn"
                                                             data-id="{{ $product->id }}" title="Chi tiết"><i
-                                                                class="fa-solid fa-info"></i></button>
+                                                                class="fa-solid fa-info fa-lg"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-info show-qr-btn"
+                                                            data-id="{{ $product->id }}"
+                                                            data-name="{{ $product->name }}"
+                                                            data-url="{{ route('product.detail', ['slug' => $product->slug]) }}"
+                                                            title="Hiển thị QR Code">
+                                                            <i class="fa-light fa-qrcode"></i>
+                                                        </button>
                                                     </td>
 
                                                 </tr>
@@ -382,6 +384,24 @@ $totalQty = 0;
 
         </div>
     </section>
+    <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrCodeModalLabel">Mã QR cho <span id="product-name"></span></h5>
+                    
+                </div>
+                <div class="modal-body text-center">
+                    <div id="qr-code-container" class="d-flex justify-content-center">
+
+                    </div>
+                    <p id="product-url" class="mt-2 text-break"></p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -440,7 +460,36 @@ $totalQty = 0;
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.querySelectorAll('.show-qr-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+                    const productName = this.getAttribute('data-name');
+                    const productUrl = this.getAttribute('data-url');
+
+                    document.getElementById('product-name').textContent = productName;
+
+                    document.getElementById('product-url').textContent = productUrl;
+
+                    const qrCodeContainer = document.getElementById('qr-code-container');
+                    qrCodeContainer.innerHTML = '';
+                    const qr = new QRCode(qrCodeContainer, {
+                        text: productUrl,
+                        width: 300,
+                        height: 300
+                    });
+
+
+                    const qrCodeModal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
+                    qrCodeModal.show();
+                });
+            });
+        });
+
         $(document).ready(function() {
 
             $('.view-detail-btn').click(function() {

@@ -341,6 +341,16 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="inputState">Nhà cung cấp</label>
+                                                    <select id="inputState" name="supplier_id" class="form-control">
+                                                        <option value="" hidden>Chọn</option>
+                                                        @foreach ($suppliers as $supplier)
+                                                            <option value="{{ $supplier->id }}">{{ $supplier->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
 

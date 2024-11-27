@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductImageGallery;
 use App\Models\ProductVariant;
+use App\Models\Supplier;
 use App\Models\Tag;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
@@ -39,8 +40,9 @@ class AdminProductController extends Controller
     {
         $brands = Brand::query()->where('status', 1)->get();
         $tags = Tag::all();
+        $suppliers = Supplier::query()->where('status', 1)->get();
         $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
-        return view('admin.page.product.create', compact('categories', 'brands', 'tags'));
+        return view('admin.page.product.create', compact('categories', 'brands', 'tags', 'suppliers'));
     }
 
     /**
@@ -66,6 +68,7 @@ class AdminProductController extends Controller
             'type_product' => 'required',
             'category_id' => 'required|integer|exists:category_products,id',
             'brand_id' => 'required|integer|exists:brands,id',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
             'image_main' => 'required',
         ];
 
@@ -130,6 +133,9 @@ class AdminProductController extends Controller
             'brand_id.required' => 'Thương hiệu sản phẩm là bắt buộc.',
             'brand_id.integer' => 'Thương hiệu sản phẩm không hợp lệ.',
             'brand_id.exists' => 'Thương hiệu sản phẩm không tồn tại.',
+            'supplier_id.required' => 'Nhà cung cấp là bắt buộc.',
+            'supplier_id.integer' => 'Nhà cung cấp không hợp lệ.',
+            'supplier_id.exists' => 'Nhà cung cấp không tồn tại.',
 
             // Hình ảnh chính
             'image_main.required' => 'Ảnh chính là bắt buộc.',
@@ -178,6 +184,7 @@ class AdminProductController extends Controller
                 $product->status = $request->status;
                 $product->category_id = $request->category_id;
                 $product->brand_id = $request->brand_id;
+                $product->supplier_id = $request->supplier_id;
                 $product->userid_created = Auth::user()->id;
                 $product->save();
 
@@ -267,6 +274,7 @@ class AdminProductController extends Controller
                 $product->status = $request->status;
                 $product->category_id = $request->category_id;
                 $product->brand_id = $request->brand_id;
+                $product->supplier_id = $request->supplier_id;
                 $product->qty = $request->qty;
                 $product->userid_created = Auth::user()->id;
                 $product->save();
@@ -344,6 +352,7 @@ class AdminProductController extends Controller
         $categoryAttributes = CategoryAttribute::query()->get();
         $brands = Brand::query()->where('status', 1)->get();
         $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
+        $suppliers = Supplier::query()->where('status', 1)->get();
         $tags = Tag::all();
         $selectedTags = json_decode($product->id_tags, true) ?? [];
         // Chuyển đổi dữ liệu sang định dạng JavaScript
@@ -375,7 +384,7 @@ class AdminProductController extends Controller
                 ];
             }
         }
-        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants', 'tags', 'selectedTags'));
+        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants', 'tags', 'selectedTags', 'suppliers'));
     }
 
     /**
@@ -400,6 +409,7 @@ class AdminProductController extends Controller
             'type_product' => 'required',
             'category_id' => 'required|integer|exists:category_products,id',
             'brand_id' => 'required|integer|exists:brands,id',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
             'image_main' => 'nullable', //image
         ];
 
@@ -456,6 +466,9 @@ class AdminProductController extends Controller
             'brand_id.required' => 'Thương hiệu sản phẩm là bắt buộc.',
             'brand_id.integer' => 'Thương hiệu sản phẩm không hợp lệ.',
             'brand_id.exists' => 'Thương hiệu sản phẩm không tồn tại.',
+            'supplier_id.required' => 'Nhà cung cấp là bắt buộc.',
+            'supplier_id.integer' => 'Nhà cung cấp không hợp lệ.',
+            'supplier_id.exists' => 'Nhà cung cấp không tồn tại.',
 
             // Hình ảnh chính
             'image_main.image' => 'File phải là ảnh.',
@@ -483,6 +496,7 @@ class AdminProductController extends Controller
                 $product->status = $request->status;
                 $product->category_id = $request->category_id;
                 $product->brand_id = $request->brand_id;
+                $product->supplier_id = $request->supplier_id;
                 $product->userid_created = Auth::user()->id;
                 $product->qty = null;
                 if (is_array($request->tags)) {
@@ -594,6 +608,7 @@ class AdminProductController extends Controller
                 $product->status = $request->status;
                 $product->category_id = $request->category_id;
                 $product->brand_id = $request->brand_id;
+                $product->supplier_id = $request->supplier_id;
                 $product->qty = $request->qty;
                 $product->userid_created = Auth::user()->id;
                 $product->save();
