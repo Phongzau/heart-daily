@@ -21,12 +21,14 @@ class ProductsSummarySheet implements FromCollection, WithHeadings, WithMapping
         return [
             'ID',
             'Tên sản phẩm',
+            'Nhà cung cấp',
             'Giá',
             'Tồn kho',
             'Loại sản phẩm',
             'Danh mục',
             'Thương hiệu',
-            'Hình ảnh'
+            'Hình ảnh',
+            'Ngày nhập hàng'
         ];
     }
 
@@ -59,12 +61,14 @@ class ProductsSummarySheet implements FromCollection, WithHeadings, WithMapping
         return [
             $product->id,
             $product->name,
+            $product->supplier->name ?? 'N/A',
             number_format($product->price_import) . ' VND',
             $qty,
             $product->type_product === 'product_simple' ? 'Đơn giản' : 'Biến thể',
             $product->category->title ?? 'N/A', 
             $product->brand->name ?? 'N/A', 
             Storage::url($product->image), 
+            $product->created_at,
         ];
     }
 

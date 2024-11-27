@@ -504,6 +504,18 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="inputState">Nhà cung cấp</label>
+                                                    <select id="inputState" name="supplier_id" class="form-control">
+                                                        <option value="" hidden>Select</option>
+                                                        @foreach ($suppliers as $supplier)
+                                                            <option
+                                                                {{ $product->supplier_id === $supplier->id ? 'selected' : '' }}
+                                                                value="{{ $supplier->id }}">{{ $supplier->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
 

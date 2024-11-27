@@ -456,6 +456,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('inventory')->name('inventory.')->group(function () {
         Route::get('/', [InventoryProductController::class, 'index'])->name('index');
         Route::get('/export', [InventoryProductController::class, 'exportToExcel'])->name('export');
+        Route::get('/{id}/qr-code', [InventoryProductController::class, 'generateQRCode'])->name('qr-code');
         Route::get('/{productId}', [InventoryProductController::class, 'productDetail'])->name('get-product-detail');
     });
     //Supplier
