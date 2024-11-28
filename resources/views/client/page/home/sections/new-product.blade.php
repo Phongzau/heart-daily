@@ -66,7 +66,14 @@
                                                         $priceArray[] = $productVariant->price_variant;
                                                     }
                                                 }
-                                                $priceProduct = number_format(min($priceArray)) . ' VND';
+
+                                                if (empty($priceArray) && !is_array($priceArray)) {
+                                                    $priceProduct = 'Không có';
+                                                } else {
+                                                    $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                }
+
+                                                // dump($priceProduct);
                                                 // sort($priceArray);
                                                 // $priceProduct = '';
                                                 // if (count(array_unique($priceArray)) === 1) {
