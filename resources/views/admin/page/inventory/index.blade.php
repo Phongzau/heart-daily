@@ -168,98 +168,97 @@
                             <h4>Bộ lọc</h4>
                         </div>
                         <div class="card-body">
-                            <!-- Tìm theo tên -->
-                            <div class="form-group">
-                                <label for="filter-name">Tìm theo tên</label>
-                                <input type="text" class="form-control" id="filter-name" placeholder="Nhập tên sản phẩm">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Thương hiệu</label>
-                                <button class="btn btn-link p-0  float-right text-primary" id="toggle-brand">-</button>
-                                <ul class="list-group" id="filter-brand">
-                                    <li class="list-group-item">
-                                        <input type="checkbox" value="brand1" id="brand1">
-                                        <label for="brand1">Thương hiệu 1</label>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input type="checkbox" value="brand2" id="brand2">
-                                        <label for="brand2">Thương hiệu 2</label>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input type="checkbox" value="brand3" id="brand3">
-                                        <label for="brand3">Thương hiệu 3</label>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- Tìm theo giá -->
-                            <div class="form-group">
-                                <label>Giá tiền</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="filter-price-min"
-                                        placeholder="Tối thiểu">
-                                    <input type="number" class="form-control" id="filter-price-max" placeholder="Tối đa">
+                            <form method="GET" action="{{ route('admin.inventory.index') }}">
+                                <!-- Tìm theo tên -->
+                                <div class="form-group">
+                                    <label for="name">Tìm theo tên</label>
+                                    <input type="text" name="name" class="form-control" id="name"
+                                        value="{{ request('name') }}" placeholder="Nhập tên sản phẩm">
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label>Danh mục sản phẩm</label>
-                                <button class="btn btn-link p-0  float-right text-primary" id="toggle-category">-</button>
-                                <ul class="list-group" id="filter-category">
-                                    <li class="list-group-item">
-                                        <input type="checkbox" value="cat1" id="cat1">
-                                        <label for="cat1">Danh mục 1</label>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input type="checkbox" value="cat2" id="cat2">
-                                        <label for="cat2">Danh mục 2</label>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input type="checkbox" value="cat3" id="cat3">
-                                        <label for="cat3">Danh mục 3</label>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="form-group">
-                                <label>MÀU</label>
-                                <button class="btn btn-link p-0 float-right text-primary" id="toggle-color">-</button>
-                                <div class="color-box-container" id="filter-color">
-                                    <div class="color-box" style="background-color: black;" data-value="black"></div>
-                                    <div class="color-box" style="background-color: brown;" data-value="brown"></div>
-                                    <div class="color-box" style="background-color: red;" data-value="red"></div>
-                                    <div class="color-box" style="background-color: green;" data-value="green"></div>
-                                    <div class="color-box" style="background-color: yellow;" data-value="yellow"></div>
-                                    <div class="color-box" style="background-color: blue;" data-value="blue"></div>
-                                    <div class="color-box" style="background-color: gray;" data-value="gray"></div>
-                                    <div class="color-box" style="background-color: pink;" data-value="pink"></div>
-                                    <!-- Thêm màu khác tương tự -->
+                                <!-- Tìm theo giá -->
+                                <div class="form-group">
+                                    <label>Giá tiền</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="price_min" id="price_min"
+                                            value="{{ request('price_min') }}" placeholder="Tối thiểu">
+                                        <input type="number" class="form-control" name="price_max" id="price_max"
+                                            value="{{ request('price_max') }}" placeholder="Tối đa">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Kích thước -->
-                            <div class="form-group">
-                                <label>KÍCH CỠ</label>
-                                <button class="btn btn-link p-0 float-right text-primary" id="toggle-size">-</button>
-                                <div class="size-box-container" id="filter-size">
-                                    <div class="size-box" data-value="S">S</div>
-                                    <div class="size-box" data-value="M">M</div>
-                                    <div class="size-box" data-value="L">L</div>
-                                    <div class="size-box" data-value="XL">XL</div>
-                                    <div class="size-box" data-value="40">40</div>
-                                    <div class="size-box" data-value="41">41</div>
-                                    <div class="size-box" data-value="42">42</div>
-                                    <div class="size-box" data-value="43">43</div>
-                                    <!-- Thêm kích thước khác tương tự -->
+                                <div class="form-group">
+                                    <label for="category_id">Thương hiệu</label>
+                                    <select name="category_id" id="category_id" class="form-control">
+                                        <option value="">Chọn danh mục</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </div>
 
-                            <!-- Nút Tìm kiếm và Clear All -->
-                            <div class="form-group text-center">
-                                <button class="btn btn-primary btn-block" id="filter-apply">Tìm kiếm</button>
-                                <button class="btn btn-secondary btn-block" id="filter-clear">Clear All</button>
-                            </div>
+                                <div class="form-group">
+                                    <label for="brand_id">Thương hiệu</label>
+                                    <select name="brand_id" id="brand_id" class="form-control">
+                                        <option value="">Chọn thương hiệu</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}"
+                                                {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                                {{ $brand->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="type_product">Loại sản phẩm</label>
+                                    <select name="type_product" id="type_product" class="form-control">
+                                        <option value="">Chọn loại sản phẩm</option>
+                                        <option value="product_simple" {{ request('type_product') == 'product_simple' ? 'selected' : '' }}>Đơn giản</option>
+                                        <option value="product_variant" {{ request('type_product') == 'product_variant' ? 'selected' : '' }}>Biến thể</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>MÀU</label>
+                                    <button class="btn btn-link p-0 float-right text-primary" id="toggle-color">-</button>
+                                    <div class="color-box-container" id="filter-color">
+                                        <div class="color-box" style="background-color: black;" data-value="black"></div>
+                                        <div class="color-box" style="background-color: brown;" data-value="brown"></div>
+                                        <div class="color-box" style="background-color: red;" data-value="red"></div>
+                                        <div class="color-box" style="background-color: green;" data-value="green"></div>
+                                        <div class="color-box" style="background-color: yellow;" data-value="yellow"></div>
+                                        <div class="color-box" style="background-color: blue;" data-value="blue"></div>
+                                        <div class="color-box" style="background-color: gray;" data-value="gray"></div>
+                                        <div class="color-box" style="background-color: pink;" data-value="pink"></div>
+                                        <!-- Thêm màu khác tương tự -->
+                                    </div>
+                                </div>
+
+                                <!-- Kích thước -->
+                                <div class="form-group">
+                                    <label>KÍCH CỠ</label>
+                                    <button class="btn btn-link p-0 float-right text-primary" id="toggle-size">-</button>
+                                    <div class="size-box-container" id="filter-size">
+                                        <div class="size-box" data-value="S">S</div>
+                                        <div class="size-box" data-value="M">M</div>
+                                        <div class="size-box" data-value="L">L</div>
+                                        <div class="size-box" data-value="XL">XL</div>
+                                        <div class="size-box" data-value="40">40</div>
+                                        <div class="size-box" data-value="41">41</div>
+                                        <div class="size-box" data-value="42">42</div>
+                                        <div class="size-box" data-value="43">43</div>
+                                        <!-- Thêm kích thước khác tương tự -->
+                                    </div>
+                                </div>
+
+                                <!-- Nút Tìm kiếm và Clear All -->
+                                <div class="form-group text-center">
+                                    <button class="btn btn-primary btn-block" type="submit">Tìm kiếm</button>
+                                    <a href="{{ route('admin.inventory.index') }}" class="btn btn-secondary btn-block">Xóa bộ lọc</a>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -317,9 +316,9 @@
                                                             text-danger
                                                         @elseif ($product->qty <= 20)
                                                             text-warning @endif
-                                                    @else
-                                                    @php
-                                                    $totalQty = 0;
+@else
+@php
+$totalQty = 0;
                                                             foreach ($product->ProductVariants as $productVariant) {
                                                                 $totalQty += $productVariant->qty;
                                                             } @endphp
@@ -389,7 +388,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="qrCodeModalLabel">Mã QR cho <span id="product-name"></span></h5>
-                    
+
                 </div>
                 <div class="modal-body text-center">
                     <div id="qr-code-container" class="d-flex justify-content-center">
@@ -397,7 +396,7 @@
                     </div>
                     <p id="product-url" class="mt-2 text-break"></p>
                 </div>
-                
+
             </div>
         </div>
     </div>

@@ -22,18 +22,16 @@ class InventoryProductController extends Controller
         $brands = Brand::all();
         $query = Product::query()
             ->with(['ProductVariants', 'reviews', 'category', 'brand', 'supplier']);
+
         if ($request->has('name') && $request->name) {
             $query->where('name', 'like', '%' . $request->name . '%');
         }
-        // if ($request->has('sku') && $request->sku) {
-        //     $query->where('sku', 'like', '%' . $request->sku . '%');
-        // }
         if ($request->has('price_min') && $request->price_min) {
-            $query->where('price', '>=', $request->price_min);
+            $query->where('price_import', '>=', $request->price_min);
         }
 
         if ($request->has('price_max') && $request->price_max) {
-            $query->where('price', '<=', $request->price_max);
+            $query->where('price_import', '<=', $request->price_max);
         }
         if ($request->has('category_id') && $request->category_id) {
             $query->where('category_id', $request->category_id);
@@ -41,32 +39,15 @@ class InventoryProductController extends Controller
         if ($request->has('brand_id') && $request->brand_id) {
             $query->where('brand_id', $request->brand_id);
         }
-        // if ($request->has('status') && $request->status) {
-        //     $query->where('status', $request->status);
-        // }
+
         if ($request->has('type_product') && $request->type_product) {
             $query->where('type_product', $request->type_product);
         }
-        if ($request->has('qty_min') && $request->qty_min) {
-            $query->where('qty', '>=', $request->qty_min);
-        }
-        if ($request->has('qty_max') && $request->qty_max) {
-            $query->where('qty', '<=', $request->qty_max);
-        }
-        // if ($request->has('offer') && $request->offer) {
-        //     $query->whereNotNull('offer_price')->where('offer_price', '>', 0);
-        // }
+
         $products = $query->paginate(13);
         return view('admin.page.inventory.index', compact('products', 'categories', 'brands'));
     }
-    // public function generateQRCode($id)
-    // {
-    //     $product = Product::findOrFail($id);
-    //     $url = route('product.detail', ['slug' => $product->slug]);
-    //     $qrCode = QrCode::format('png')->size(300)->generate($url);
-    //     Storage::disk('public')->put('qr-codes/' . $product->slug . '.png', $qrCode);
-    //     return response()->json(['url' => asset('storage/qr-codes/' . $product->slug . '.png')]);
-    // }
+
     public function exportToExcel()
     {
         return Excel::download(new ProductsExport, 'san_pham.xlsx');
