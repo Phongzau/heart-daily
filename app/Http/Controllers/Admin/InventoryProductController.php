@@ -8,9 +8,11 @@ use App\Models\OrderProduct;
 use App\Models\Product;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsExport;
+use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\CategoryProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -20,6 +22,13 @@ class InventoryProductController extends Controller
     {
         $categories = CategoryProduct::all();
         $brands = Brand::all();
+        $colors = Attribute::whereHas('categoryAttribute', function ($query) {
+            $query->where('title', 'Color');
+        })->get();
+
+        $sizes = Attribute::whereHas('categoryAttribute', function ($query) {
+            $query->where('title', 'Size');
+        })->get();
         $query = Product::query()
             ->with(['ProductVariants', 'reviews', 'category', 'brand', 'supplier']);
 
@@ -43,9 +52,36 @@ class InventoryProductController extends Controller
         if ($request->has('type_product') && $request->type_product) {
             $query->where('type_product', $request->type_product);
         }
+        if ($request->has('color') && $request->color || $request->has('size') && $request->size) {
 
+            $query->whereHas('ProductVariants', function ($q) use ($request) {
+                // Lọc theo màu sắc
+                if ($request->has('color') && $request->color) {
+                    $q->whereExists(function ($subQuery) use ($request) {
+                        $subQuery->select(DB::raw(1))
+                            ->from('attributes')
+                            ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
+                            ->where('category_attributes.title', 'Color')
+                            ->where('attributes.id', $request->color)
+                            ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
+                    });
+                }
+
+                // Lọc theo kích cỡ
+                if ($request->has('size') && $request->size) {
+                    $q->whereExists(function ($subQuery) use ($request) {
+                        $subQuery->select(DB::raw(1))
+                            ->from('attributes')
+                            ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
+                            ->where('category_attributes.title', 'Size')
+                            ->where('attributes.id', $request->size)
+                            ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
+                    });
+                }
+            });
+        }
         $products = $query->paginate(13);
-        return view('admin.page.inventory.index', compact('products', 'categories', 'brands'));
+        return view('admin.page.inventory.index', compact('products', 'categories', 'brands', 'sizes', 'colors'));
     }
 
     public function exportToExcel()
