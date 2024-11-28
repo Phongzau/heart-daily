@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -150,8 +151,12 @@ function renderOrderButtons($order_status, $order)
             break;
 
         case 'delivered':
-            // $buttons .= '<button class="btn btn-primary">Đánh Giá</button>';
-            $buttons .= '<button class="btn btn-success return-button" id="myBtnReturnOrder" data-order-id="' . $order->id . '">Hoàn Hàng</button>';
+            $deliveredAt = Carbon::parse($order->created_at);
+            $canReturn = $deliveredAt->diffInDays(Carbon::now()) <= 7;
+            if ($canReturn) {
+                $buttons .= '<button class="btn btn-success return-button" id="myBtnReturnOrder" data-order-id="' . $order->id . '">Hoàn Hàng</button>';
+            }
+
             $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $order->id . '">Mua Lại</button>';
             $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
             break;

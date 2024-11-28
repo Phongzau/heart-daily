@@ -383,8 +383,14 @@
                             toastr.error(data.message);
                         }
                     },
-                    error: function(error) {
-
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            // Chuyển hướng người dùng đến trang đăng nhập
+                            toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
+                            setTimeout(() => {
+                                window.location.href = '/login';
+                            }, 1500);
+                        }
                     },
                 })
             })
@@ -414,8 +420,14 @@
                             toastr.error(data.message);
                         }
                     },
-                    error: function(error) {
-
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            // Chuyển hướng người dùng đến trang đăng nhập
+                            toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
+                            setTimeout(() => {
+                                window.location.href = '/login';
+                            }, 1500);
+                        }
                     },
                 })
             })

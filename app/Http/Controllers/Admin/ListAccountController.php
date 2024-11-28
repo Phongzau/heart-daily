@@ -31,7 +31,7 @@ class ListAccountController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-   {
+    {
         //
     }
 
@@ -51,7 +51,7 @@ class ListAccountController extends Controller
         $listAccounts = User::query()->findOrFail($id);
         $role = Role::query()->where('name', '!=', 'super_admin')->get();
 
-        return view('admin.page.accounts.edit', compact('listAccounts','role'));
+        return view('admin.page.accounts.edit', compact('listAccounts', 'role'));
     }
 
     /**
@@ -60,7 +60,7 @@ class ListAccountController extends Controller
     public function update(Request $request, string $id)
     {
         $listAccounts = User::query()->findOrFail($id);
-        
+
         $listAccounts->name = $request->name;
         $listAccounts->email = $request->email;
         $listAccounts->role_id = $request->role_id;
@@ -71,7 +71,6 @@ class ListAccountController extends Controller
 
         toastr('Cập nhật thành công!', 'success');
         return redirect()->route('admin.accounts.index');
-
     }
 
     /**
@@ -93,6 +92,11 @@ class ListAccountController extends Controller
     {
         $admin = User::query()->findOrFail($request->id);
         $admin->status = $request->status == 'true' ? 1 : 0;
+        if ($admin->status == 0) {
+            $admin->is_block = 0;
+        } else {
+            $admin->is_block = 1;
+        }
         $admin->save();
 
         return response([

@@ -138,21 +138,43 @@
                             </ul>
                         </nav>
 
+                        @if (auth()->check())
+                            @php
+                                $isBrought = false;
+                                $countComments = $blog
+                                    ->BlogComments()
+                                    ->where('user_id', Auth::user()->id)
+                                    ->first();
+                                if (!$countComments) {
+                                    $isBrought = true;
+                                } else {
+                                    $isBrought = false;
+                                }
+                            @endphp
+                            @if (isset($isBrought) && $isBrought === true)
+                                <div class="comment-respond">
+                                    <h3>Để lại một câu trả lời</h3>
 
-                        <div class="comment-respond">
-                            <h3>Để lại một câu trả lời</h3>
+                                    <form id="commentForm">
+                                        <div class="form-group">
+                                            <label>Bình luận</label>
+                                            <textarea cols="30" name="comment" rows="1" class="form-control" required></textarea>
+                                        </div><!-- End .form-group -->
+                                        <input type="text" hidden name="blog_id" value="{{ $blog->id }}">
+                                        <div class="form-footer my-0">
+                                            <button type="submit" class="btn btn-sm btn-primary">Đăng bình luận</button>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                </div><!-- End .comment-respond -->
+                            @endif
+                        @else
+                            <div class="text-center">
+                                <span>Bạn cần đăng nhập để thực hiện bình luận <a style="color:#2299dd"
+                                        href="{{ route('login') }}">đăng
+                                        nhập</a></span>
+                            </div>
+                        @endif
 
-                            <form id="commentForm">
-                                <div class="form-group">
-                                    <label>Bình luận</label>
-                                    <textarea cols="30" name="comment" rows="1" class="form-control" required></textarea>
-                                </div><!-- End .form-group -->
-                                <input type="text" hidden name="blog_id" value="{{ $blog->id }}">
-                                <div class="form-footer my-0">
-                                    <button type="submit" class="btn btn-sm btn-primary">Đăng bình luận</button>
-                                </div><!-- End .form-footer -->
-                            </form>
-                        </div><!-- End .comment-respond -->
                     </div><!-- End .post-body -->
                 </article><!-- End .post -->
 
@@ -269,6 +291,7 @@
                     success: function(data) {
                         console.log(data);
                         if (data.status == 'success') {
+                            $('.comment-respond').remove();
                             getComments(data.comment.blog_id);
                             toastr.success(data.message);
                         } else if (data.status == 'error') {

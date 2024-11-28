@@ -46,6 +46,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->token = Str::random(60);
         $user->status = 0;
+        $user->is_block = 1;
         $user->role_id = 4;
         $user->save();
 
@@ -92,8 +93,11 @@ class UserController extends Controller
         }
 
         $user = User::where('email', $request->login)->orWhere('name', $request->login)->first();
-        if ($user && $user->status === 0) {
+        if ($user && $user->status === 0 && $user->is_block === 1) {
             toastr('Bạn cần xác nhận email trước khi đăng nhập.', 'error');
+            return redirect()->back();
+        } else if ($user && $user->status === 0  && $user->is_block === 0) {
+            toastr('Tài khoản của bạn tạm thời đã bị khóa liên hệ để mở.', 'error');
             return redirect()->back();
         }
 

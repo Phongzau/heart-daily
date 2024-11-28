@@ -202,7 +202,13 @@
                                 @if ($product->type_product === 'product_simple')
                                     <a href="#" class="product-category ">{{ $product->qty }}</a>
                                 @else
-                                    <a href="#" class="product-category qty-product">0</a>
+                                    @php
+                                        $total = 0;
+                                        foreach ($product->ProductVariants as $variant) {
+                                            $total += $variant->qty;
+                                        }
+                                    @endphp
+                                    <a href="#" class="product-category qty-product">{{ $total }}</a>
                                 @endif
 
                             </strong>
@@ -378,6 +384,16 @@
                                         $isBrought = true;
                                         break;
                                     }
+                                }
+
+                                $countComments = $product
+                                    ->reviews()
+                                    ->where('user_id', Auth::user()->id)
+                                    ->first();
+                                if (!$countComments) {
+                                    $isBrought = true;
+                                } else {
+                                    $isBrought = false;
                                 }
                             }
                         @endphp
@@ -1028,6 +1044,7 @@
                             toastr.success(data.message);
                             $('#reviewForm')[0].reset(); // Đặt lại giá trị của các input
                             $('.rating-stars a').removeClass('active');
+                            $('.add-product-review').remove();
                         } else if (data.status == 'error') {
                             toastr.error(data.message);
                         }

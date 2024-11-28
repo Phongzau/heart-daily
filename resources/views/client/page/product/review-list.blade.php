@@ -5,7 +5,7 @@
             người bình luận đầu tiên
             tiên</span> <br>
         <span style="font-size: 16px; font-weight: 700;">
-            (Bạn cần mua hàng để đánh giá sản phẩm!)
+            (Lưu ý: Cần mua hàng để đánh giá sản phẩm!)
         </span>
     </div>
 @else
