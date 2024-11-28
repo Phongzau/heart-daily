@@ -25,7 +25,7 @@ class ReturnOrderDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('order_id', function ($query) {
-                return "<a class='' href='" . route('admin.orders.show', $query->order_id) . "'>Order</a>";
+                return "<a class='' href='" . route('admin.orders.show', $query->order_id) . "'>Order #" . $query->order->id . "</a>";
             })
             ->addColumn('return_status', function ($query) {
                 return "<select class='form-control is_approve' data-id='$query->id'>

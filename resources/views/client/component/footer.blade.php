@@ -388,9 +388,9 @@
             // Hiển thị lỗi qua toastr
             toastr.error('{{ $error }}');
         @endforeach
-        @if (Auth::check())
-            window.userId = "{{ Auth::user()->id }}";
-        @endif
+    @endif
+    @if (Auth::check())
+        window.userId = "{{ Auth::user()->id }}";
     @endif
 </script>
 <script>

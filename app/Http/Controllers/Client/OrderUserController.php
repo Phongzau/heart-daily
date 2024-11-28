@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Events\ChangeStatusOrder;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderReturn;
 use App\Models\ProductVariant;
+use App\Models\User;
 use App\Models\UserCoupon;
+use App\Notifications\ChangeStatusOrder as NotificationsChangeStatusOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -49,6 +52,17 @@ class OrderUserController extends Controller
             }
 
             $returnOrder->save();
+
+            $admins = User::query()
+                ->where('role_id', '!=', 4)
+                ->where('status', 1)
+                ->get();
+            if ($admins && !empty($admins)) {
+                foreach ($admins as $user) {
+                    event(new ChangeStatusOrder($user, $order));
+                    $user->notify(new NotificationsChangeStatusOrder($order));
+                }
+            }
 
             // Lấy các tham số lọc
             $status = $request->input('status');

@@ -65,6 +65,11 @@ class ListAccountController extends Controller
         $listAccounts->email = $request->email;
         $listAccounts->role_id = $request->role_id;
         $listAccounts->status = $request->status;
+        if ($request->status == 0) {
+            $listAccounts->is_block = 0;
+        } else {
+            $listAccounts->is_block = 1;
+        }
         $listAccounts->save();
         $role = Role::query()->findOrFail($request->role_id);
         $listAccounts->syncRoles([$role->name]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Events\CheckoutOrderComplete;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderConfirmation;
 use App\Models\GeneralSetting;
@@ -14,7 +15,9 @@ use App\Models\Transaction;
 use App\Models\VnpaySetting;
 use App\Models\Attribute;
 use App\Models\Coupon;
+use App\Models\User;
 use App\Models\UserCoupon;
+use App\Notifications\BuyOrderComplete;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -184,6 +187,17 @@ class CheckoutController extends Controller
 
             // Commit transaction
             DB::commit();
+
+            $admins = User::query()
+                ->where('role_id', '!=', 4)
+                ->where('status', 1)
+                ->get();
+            if ($admins && !empty($admins)) {
+                foreach ($admins as $user) {
+                    event(new CheckoutOrderComplete($user, $order));
+                    $user->notify(new BuyOrderComplete($order));
+                }
+            }
         } catch (\Exception $e) {
             // Rollback transaction nếu có lỗi
             DB::rollBack();
