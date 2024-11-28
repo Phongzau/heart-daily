@@ -287,7 +287,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="demo4.html">TRang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="demo4.html">Trang chủ</a></li>
                         <li class="breadcrumb-item"><a href="category.html">Cửa hàng</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Tài khoản của bạn
