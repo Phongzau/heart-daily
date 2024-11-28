@@ -120,7 +120,7 @@
         }
 
         .size-box:hover {
-            background-color: #007bff;
+            background-color: #007bff81;
             color: white;
         }
 
@@ -149,6 +149,18 @@
             height: 60px;
             object-fit: cover;
             border-radius: 5px;
+        }
+
+        .color-box.active {
+
+            opacity: 0.5;
+            
+        }
+
+        .size-box.active {
+            background-color: #ddd;
+            font-weight: bold;
+
         }
     </style>
 @endsection
@@ -188,7 +200,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="category_id">Thương hiệu</label>
+                                    <label for="category_id">Danh mục</label>
                                     <select name="category_id" id="category_id" class="form-control">
                                         <option value="">Chọn danh mục</option>
                                         @foreach ($categories as $category)
@@ -220,20 +232,20 @@
                                         <option value="product_variant" {{ request('type_product') == 'product_variant' ? 'selected' : '' }}>Biến thể</option>
                                     </select>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label>MÀU</label>
                                     <button class="btn btn-link p-0 float-right text-primary" id="toggle-color">-</button>
                                     <div class="color-box-container" id="filter-color">
-                                        <div class="color-box" style="background-color: black;" data-value="black"></div>
-                                        <div class="color-box" style="background-color: brown;" data-value="brown"></div>
-                                        <div class="color-box" style="background-color: red;" data-value="red"></div>
-                                        <div class="color-box" style="background-color: green;" data-value="green"></div>
-                                        <div class="color-box" style="background-color: yellow;" data-value="yellow"></div>
-                                        <div class="color-box" style="background-color: blue;" data-value="blue"></div>
-                                        <div class="color-box" style="background-color: gray;" data-value="gray"></div>
-                                        <div class="color-box" style="background-color: pink;" data-value="pink"></div>
-                                        <!-- Thêm màu khác tương tự -->
+                                        @foreach ($colors as $color)
+                                            <div class="color-box"
+                                                style="background-color: {{ $color->code }};list-style-type:none; cursor: pointer;"
+                                                title="{{ $color->title }}" data-color-id="{{ $color->id }}">
+                                                {{-- <a href="#"></a> --}}
+                                            </div>
+                                        @endforeach
                                     </div>
+                                    <input type="hidden" name="color" id="color-input" value="{{ request('color') }}">
                                 </div>
 
                                 <!-- Kích thước -->
@@ -241,22 +253,22 @@
                                     <label>KÍCH CỠ</label>
                                     <button class="btn btn-link p-0 float-right text-primary" id="toggle-size">-</button>
                                     <div class="size-box-container" id="filter-size">
-                                        <div class="size-box" data-value="S">S</div>
-                                        <div class="size-box" data-value="M">M</div>
-                                        <div class="size-box" data-value="L">L</div>
-                                        <div class="size-box" data-value="XL">XL</div>
-                                        <div class="size-box" data-value="40">40</div>
-                                        <div class="size-box" data-value="41">41</div>
-                                        <div class="size-box" data-value="42">42</div>
-                                        <div class="size-box" data-value="43">43</div>
+                                        @foreach ($sizes as $size)
+                                            <div class="size-box" style="list-style-type:none" title="{{ $size->title }}"
+                                                data-size-id="{{ $size->id }}">
+                                                {{ $size->title }}
+                                            </div>
+                                        @endforeach
                                         <!-- Thêm kích thước khác tương tự -->
                                     </div>
+                                    <input type="hidden" name="size" id="size-input" value="{{ request('size') }}">
                                 </div>
 
                                 <!-- Nút Tìm kiếm và Clear All -->
                                 <div class="form-group text-center">
                                     <button class="btn btn-primary btn-block" type="submit">Tìm kiếm</button>
-                                    <a href="{{ route('admin.inventory.index') }}" class="btn btn-secondary btn-block">Xóa bộ lọc</a>
+                                    <a href="{{ route('admin.inventory.index') }}" class="btn btn-secondary btn-block">Xóa
+                                        bộ lọc</a>
                                 </div>
                             </form>
                         </div>
@@ -293,8 +305,7 @@
                                             @foreach ($products as $index => $product)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td><img src="{{ Storage::url($product->image) }}"
-                                                            alt="Hình sản phẩm">
+                                                    <td><img src="{{ Storage::url($product->image) }}" alt="Hình sản phẩm">
                                                     </td>
                                                     <td>
                                                         <span
@@ -462,6 +473,27 @@ $totalQty = 0;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script>
+        document.querySelectorAll('.color-box').forEach(function(box) {
+            box.addEventListener('click', function() {
+                document.querySelectorAll('.color-box').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+                const colorId = this.getAttribute('data-color-id');
+                document.getElementById('color-input').value = colorId;
+            });
+        });
+        document.querySelectorAll('.size-box').forEach(function(box) {
+            box.addEventListener('click', function() {
+                document.querySelectorAll('.size-box').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+                const sizeId = this.getAttribute('data-size-id');
+                document.getElementById('size-input').value = sizeId;
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
 
             document.querySelectorAll('.show-qr-btn').forEach(function(button) {

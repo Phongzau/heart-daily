@@ -92,32 +92,34 @@ class ProductController extends Controller
         if ($request->has('brand') && $request->brand) {
             $query->where('brand_id', $request->brand);
         }
+        if ($request->has('color') && $request->color || $request->has('size') && $request->size) {
 
-        $query->whereHas('ProductVariants', function ($q) use ($request) {
-            // Lọc theo màu sắc
-            if ($request->has('color') && $request->color) {
-                $q->whereExists(function ($subQuery) use ($request) {
-                    $subQuery->select(DB::raw(1))
-                        ->from('attributes')
-                        ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
-                        ->where('category_attributes.title', 'Color')
-                        ->where('attributes.id', $request->color)
-                        ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
-                });
-            }
+            $query->whereHas('ProductVariants', function ($q) use ($request) {
+                // Lọc theo màu sắc
+                if ($request->has('color') && $request->color) {
+                    $q->whereExists(function ($subQuery) use ($request) {
+                        $subQuery->select(DB::raw(1))
+                            ->from('attributes')
+                            ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
+                            ->where('category_attributes.title', 'Color')
+                            ->where('attributes.id', $request->color)
+                            ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
+                    });
+                }
 
-            // Lọc theo kích cỡ
-            if ($request->has('size') && $request->size) {
-                $q->whereExists(function ($subQuery) use ($request) {
-                    $subQuery->select(DB::raw(1))
-                        ->from('attributes')
-                        ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
-                        ->where('category_attributes.title', 'Size')
-                        ->where('attributes.id', $request->size)
-                        ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
-                });
-            }
-        });
+                // Lọc theo kích cỡ
+                if ($request->has('size') && $request->size) {
+                    $q->whereExists(function ($subQuery) use ($request) {
+                        $subQuery->select(DB::raw(1))
+                            ->from('attributes')
+                            ->join('category_attributes', 'attributes.category_attribute_id', '=', 'category_attributes.id')
+                            ->where('category_attributes.title', 'Size')
+                            ->where('attributes.id', $request->size)
+                            ->whereRaw("JSON_CONTAINS(product_variants.id_variant, CAST(attributes.id AS JSON), '$')");
+                    });
+                }
+            });
+        }
         $minPrice = $request->input('min_price', 0);
         $maxPrice = $request->input('max_price', 1000000000);
         if ($request->has('min_price') || $request->has('max_price')) {
