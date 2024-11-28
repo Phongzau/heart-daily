@@ -10,6 +10,7 @@
 </div>
 
 <!-- General JS Scripts -->
+@livewireScripts
 <script src="{{ asset('admin/assets/modules/jquery.min.js') }}"></script>
 <script src="{{ asset('admin/assets/modules/popper.js') }}"></script>
 <script src="{{ asset('admin/assets/modules/tooltip.js') }}"></script>
@@ -54,6 +55,7 @@
 <script src="{{ asset('admin/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
 <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+@vite('resources/js/app.js')
 <script>
     // Nếu $errors tồn tại
     @if ($errors->any())
@@ -62,6 +64,9 @@
             // Hiển thị lỗi qua toastr
             toastr.error('{{ $error }}');
         @endforeach
+    @endif
+    @if (Auth::check())
+        window.userId = "{{ Auth::user()->id }}";
     @endif
 </script>
 <script>

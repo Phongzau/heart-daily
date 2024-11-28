@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\OrderDataTable;
 use App\DataTables\ReturnOrderDataTable;
+use App\Events\ChangeStatusOrder;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Order;
 use App\Models\OrderReturn;
 use App\Models\ProductVariant;
+use App\Notifications\ChangeStatusOrder as NotificationsChangeStatusOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -53,7 +55,9 @@ class OrderController extends Controller
         $order = Order::query()->findOrFail($request->id);
         $order->order_status = $request->status;
         $order->save();
-
+        $user = $order->user;
+        event(new ChangeStatusOrder($order->user, $order));
+        $user->notify(new NotificationsChangeStatusOrder($order));
         return response([
             'status' => 'success',
             'message' => 'Cập nhật trạng thái thành công'
