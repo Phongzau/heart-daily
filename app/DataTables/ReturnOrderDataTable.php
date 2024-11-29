@@ -32,9 +32,11 @@ class ReturnOrderDataTable extends DataTable
                 <option " . ($query->return_status == 'pending' ? 'selected' : '') . " value='pending'>Chưa giải quyết</option>
                 <option " . ($query->return_status == 'approved' ? 'selected' : '') . " value='approved'>Đã duyệt</option>
                 <option " . ($query->return_status == 'rejected' ? 'selected' : '') . " value='rejected'>Từ chối</option>
-                <option " . ($query->return_status == 'completed' ? 'selected' : '') . " value='completed'>Thành công</option>
+                <option " . ($query->return_status == 'contact_refund' ? 'selected' : '') . " value='contact_refund'>Liên hệ hoàn tiền</option>
+                <option " . ($query->return_status == 'completed' ? 'selected' : '') . " value='completed'>Hoàn tiền thành công</option>
                 </select>";
             })
+
             ->addColumn('video_path', function ($query) {
                 return "<button class='btn btn-primary view-video' data-video-path='" . asset(Storage::url($query->video_path)) . "'>Xem Video</button>";
             })
