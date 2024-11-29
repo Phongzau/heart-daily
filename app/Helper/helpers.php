@@ -116,8 +116,11 @@ function orderTypeReturn($type)
         case 'rejected':
             return "TỪ CHỐI";
             break;
+        case 'contact_refund':
+            return "LIÊN HỆ HOÀN TIỀN";
+            break;
         case 'completed':
-            return "Hoàn TẤT";
+            return "HOÀN TẤT";
             break;
         default:
             return "";
