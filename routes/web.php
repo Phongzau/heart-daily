@@ -77,20 +77,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/provinces', [UserController::class, 'getProvinces']);
     Route::get('/provinces/{province_id}/districts', [UserController::class, 'getDistrictsByProvince']);
     Route::get('/districts/{district_id}/communes', [UserController::class, 'getCommunesByDistrict']);
-
-    // Cart Routes
-    Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
-    Route::get('cart', [CartController::class, 'cartDetails'])->name('cart-details');
-    Route::post('cart/update-quantity', [CartController::class, 'updateProductQty'])->name('cart.update-quantity');
-    Route::get('cart/product-total', [CartController::class, 'cartTotal'])->name('cart.product-total');
-    Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
-    Route::get('coupon-calculation', [CartController::class, 'couponCalculation'])->name('coupon-calculation');
-    Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear.cart');
-    Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProduct'])->name('cart.remove-product');
-    Route::get('get-cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
-    Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
-    Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
-
     //checkout
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
@@ -103,6 +89,19 @@ Route::middleware('auth')->group(function () {
     Route::get('paypal/success', [CheckoutController::class, 'paypalSuccess'])->name('paypal.success');
     Route::get('paypal/cancel', [CheckoutController::class, 'paypalCancel'])->name('paypal.cancel');
 });
+
+// Cart Routes
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('cart', [CartController::class, 'cartDetails'])->name('cart-details');
+Route::post('cart/update-quantity', [CartController::class, 'updateProductQty'])->name('cart.update-quantity');
+Route::get('cart/product-total', [CartController::class, 'cartTotal'])->name('cart.product-total');
+Route::get('apply-coupon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+Route::get('coupon-calculation', [CartController::class, 'couponCalculation'])->name('coupon-calculation');
+Route::get('clear-cart', [CartController::class, 'clearCart'])->name('clear.cart');
+Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProduct'])->name('cart.remove-product');
+Route::get('get-cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
+Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
+Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
 
 //blog
 Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');

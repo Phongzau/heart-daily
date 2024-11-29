@@ -696,6 +696,20 @@
                                 <label>Giá khuyến mãi:</label>
                                 <input type="number" value="0" name="offer_price" class="form-control" placeholder="Nhập giá khuyến mãi" required>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Ngày giảm giá bắt đầu:</label>
+                                        <input type="date" name="variant_offer_start_date" class="form-control" placeholder="Nhập số lượng biến thể">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Ngày giảm giá kết thúc:</label>
+                                        <input type="date" name="variant_offer_end_date" class="form-control" placeholder="Nhập số lượng biến thể">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label>Số lượng biến thể:</label>
                                 <input type="number" value="0" name="quantity" class="form-control" placeholder="Nhập số lượng biến thể" required>
@@ -724,6 +738,8 @@
                 // Biến để lưu trữ số tiền của biến thể
                 let variantPrice = 0; // Bạn có thể thay đổi giá trị này theo logic của bạn
                 let variantOfferPrice = 0;
+                let variantOfferStartDate;
+                let variantOfferEndDate;
                 // Lặp qua variantData để xây dựng tên biến thể
                 variantData.forEach(item => {
                     // Nếu item là giá, lưu vào biến variantPrice
@@ -733,6 +749,13 @@
                         variantQty = parseInt(item.value);
                     } else if (item.name === 'offer_price') {
                         variantOfferPrice = parseFloat(item.value);
+                    } else if (item.name === 'variant_offer_start_date' || item.name ===
+                        'variant_offer_end_date') {
+                        if (item.name === 'variant_offer_start_date') {
+                            variantOfferStartDate = item.value;
+                        } else if (item.name === 'variant_offer_end_date') {
+                            variantOfferEndDate = item.value;
+                        }
                     } else {
                         const selectedValue = $(
                             `#variantForm select[name="${item.name}"] option:selected`);
@@ -755,6 +778,34 @@
                         toastr.error('Giá khuyến mãi phải nhỏ hơn giá sản phẩm');
                         return;
                     }
+
+                    let vrPrice = 0;
+                    let checkOffer = false;
+                    if (variantOfferStartDate && variantOfferEndDate) {
+                        let currentDate = new Date();
+                        let startDate = new Date(variantOfferStartDate);
+                        let endDate = new Date(variantOfferEndDate);
+                        console.log(startDate, endDate);
+
+
+                        if (startDate.getTime() === endDate.getTime()) {
+                            toastr.error("Ngày kết thúc ngày bắt đầu không được giống nhau");
+                            return;
+                        }
+
+                        if (startDate > endDate) {
+                            toastr.error("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+                            return;
+                        }
+                        if (startDate <= currentDate && currentDate <= endDate && variantOfferPrice > 0) {
+                            vrPrice = variantOfferPrice;
+                            checkOffer = true;
+                        } else {
+                            vrPrice = variantPrice;
+                        }
+                    } else {
+                        vrPrice = variantPrice;
+                    }
                     toastr.success(`Biến thể ${variantName} đã được tạo thành công 😊`)
                     // Nếu chưa tồn tại, thêm mới vào variants
                     variants[variantIdKey] = {
@@ -762,19 +813,13 @@
                         title_variant: variantNameArray,
                         price_variant: variantPrice,
                         offer_price_variant: variantOfferPrice,
+                        variant_offer_start_date: variantOfferStartDate,
+                        variant_offer_end_date: variantOfferEndDate,
                         qty_variant: variantQty
                     };
 
                     // Hiển thị dữ liệu vừa lưu để kiểm tra
                     console.log('Danh sách các biến thể:', variants);
-                    let vrPrice = 0;
-                    let checkOffer = false;
-                    if (variantOfferPrice > 0 && variantPrice > variantOfferPrice) {
-                        vrPrice = variantOfferPrice;
-                        checkOffer = true;
-                    } else {
-                        vrPrice = variantPrice;
-                    }
 
                     // Tạo phần tử mới để hiển thị biến thể
                     let newVariantHtml = `
@@ -853,6 +898,20 @@
                             <label>Giá khuyến mãi:</label>
                             <input type="number" name="offer_price" class="form-control" value="${variant.offer_price_variant}" required>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Ngày giảm giá bắt đầu:</label>
+                                    <input type="date" value="${variant.variant_offer_start_date}" name="variant_offer_start_date" class="form-control" placeholder="Nhập số lượng biến thể">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Ngày giảm giá kết thúc:</label>
+                                    <input type="date" value="${variant.variant_offer_end_date}" name="variant_offer_end_date" class="form-control" placeholder="Nhập số lượng biến thể">
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label>Số lượng biến thể:</label>
                             <input type="number" name="quantity" class="form-control" value="${variant.qty_variant}" required>
@@ -875,7 +934,8 @@
                 let editedVariantPrice = 0;
                 let editedVariantOfferPrice = 0;
                 let editedVariantQty = 0;
-
+                let editedVariantOfferStartDate;
+                let editedVariantOfferEndDate;
                 editedVariantData.forEach(item => {
                     if (item.name === 'price') {
                         editedVariantPrice = parseFloat(item.value);
@@ -883,6 +943,13 @@
                         editedVariantOfferPrice = parseFloat(item.value);
                     } else if (item.name === 'quantity') {
                         editedVariantQty = parseInt(item.value);
+                    } else if (item.name === 'variant_offer_start_date' || item.name ===
+                        'variant_offer_end_date') {
+                        if (item.name === 'variant_offer_start_date') {
+                            editedVariantOfferStartDate = item.value;
+                        } else if (item.name === 'variant_offer_end_date') {
+                            editedVariantOfferEndDate = item.value;
+                        }
                     } else {
                         const selectedValue = $(
                             `#editVariantForm select[name="${item.name}"] option:selected`);
@@ -898,22 +965,44 @@
                     toastr.error('Giá khuyến mãi phải nhỏ hơn giá sản phẩm');
                     return;
                 }
+
+                let vrEditPrice = 0;
+                let checkOfferEdit = false;
+                if (editedVariantOfferStartDate && editedVariantOfferEndDate) {
+                    let currentDate = new Date();
+                    let startDate = new Date(editedVariantOfferStartDate);
+                    let endDate = new Date(editedVariantOfferEndDate);
+
+                    if (startDate.getTime() === endDate.getTime()) {
+                        toastr.error("Ngày kết thúc ngày bắt đầu không được giống nhau");
+                        return;
+                    }
+
+                    if (startDate > endDate) {
+                        toastr.error("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+                        return;
+                    }
+                    if (startDate <= currentDate && currentDate <= endDate && editedVariantOfferPrice > 0) {
+                        vrEditPrice = editedVariantOfferPrice;
+                        checkOfferEdit = true;
+                    } else {
+                        vrEditPrice = editedVariantPrice;
+                    }
+                } else {
+                    vrEditPrice = editedVariantPrice;
+                }
+
                 if (variants[editedVariantIdKey]) {
                     variants[editedVariantIdKey] = {
                         value_variant: editedVariantIdArray,
                         title_variant: editedVariantNameArray,
                         price_variant: editedVariantPrice,
                         offer_price_variant: editedVariantOfferPrice,
+                        variant_offer_start_date: editedVariantOfferStartDate,
+                        variant_offer_end_date: editedVariantOfferEndDate,
                         qty_variant: editedVariantQty
                     };
-                    let vrEditPrice = 0;
-                    let checkOfferEdit = false;
-                    if (editedVariantOfferPrice > 0 && editedVariantPrice > editedVariantOfferPrice) {
-                        vrEditPrice = editedVariantOfferPrice;
-                        checkOfferEdit = true;
-                    } else {
-                        vrEditPrice = editedVariantPrice;
-                    }
+
                     toastr.success(`Biến thể ${editedVariantName} đã được cập nhật thành công 😊`);
 
                     // Cập nhật hiển thị cho biến thể trong danh sách

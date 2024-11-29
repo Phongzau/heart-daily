@@ -70,12 +70,11 @@ class CartController extends Controller
                 ]);
             }
 
-            if ($productVariant->offer_price_variant > 0) {
+            if (checkDiscountVariant($productVariant)) {
                 $productPrice += $productVariant->offer_price_variant;
             } else {
                 $productPrice += $productVariant->price_variant;
             }
-
 
             // Kiểm tra xem sản phẩm biến thể đã có trong giỏ hàng
             if (isset($cart[$cartKey])) {

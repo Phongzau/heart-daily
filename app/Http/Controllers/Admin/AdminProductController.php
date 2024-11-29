@@ -237,6 +237,8 @@ class AdminProductController extends Controller
                             $productVariant->title_variant = json_encode($variant['title_variant']);
                             $productVariant->price_variant = $variant['price_variant'];
                             $productVariant->offer_price_variant = $variant['offer_price_variant'];
+                            $productVariant->variant_offer_start_date = !empty(trim($variant['variant_offer_start_date'])) ? $variant['variant_offer_start_date'] : null;
+                            $productVariant->variant_offer_end_date = !empty(trim($variant['variant_offer_end_date'])) ? $variant['variant_offer_end_date'] : null;
                             $productVariant->qty = $variant['qty_variant'];
                             $productVariant->save();
                         } else {
@@ -380,6 +382,8 @@ class AdminProductController extends Controller
                     'title_variant' => json_decode($variant['title_variant'], true),
                     'price_variant' => $variant['price_variant'],
                     'offer_price_variant' => $variant['offer_price_variant'],
+                    'variant_offer_start_date' => $variant['variant_offer_start_date'],
+                    'variant_offer_end_date' => $variant['variant_offer_end_date'],
                     'qty_variant' => $variant['qty'],
                 ];
             }
@@ -576,6 +580,8 @@ class AdminProductController extends Controller
                             $productVariant->title_variant = json_encode($variant['title_variant']);
                             $productVariant->price_variant = $variant['price_variant'];
                             $productVariant->offer_price_variant = $variant['offer_price_variant'];
+                            $productVariant->variant_offer_start_date = !empty(trim($variant['variant_offer_start_date'])) ? $variant['variant_offer_start_date'] : null;
+                            $productVariant->variant_offer_end_date = !empty(trim($variant['variant_offer_end_date'])) ? $variant['variant_offer_end_date'] : null;
                             $productVariant->qty = $variant['qty_variant'];
                             $productVariant->save();
                         } else {

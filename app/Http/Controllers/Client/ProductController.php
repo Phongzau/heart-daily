@@ -349,7 +349,6 @@ class ProductController extends Controller
         $productVariant = ProductVariant::where('product_id', $request->product_id)
             ->whereJsonContains('id_variant', $attributeIdArray)
             ->first();
-
         return response()->json([
             'status' => 'success',
             'message' => 'Lấy thành công',

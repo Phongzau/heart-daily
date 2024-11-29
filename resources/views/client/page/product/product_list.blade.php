@@ -48,7 +48,7 @@
                         @php
                             $priceArray = [];
                             foreach ($product->ProductVariants as $productVariant) {
-                                if ($productVariant->offer_price_variant > 0) {
+                                if (checkDiscountVariant($productVariant)) {
                                     $priceArray[] = $productVariant->offer_price_variant;
                                 } else {
                                     $priceArray[] = $productVariant->price_variant;
@@ -56,17 +56,16 @@
                             }
                             $priceProduct = number_format(min($priceArray)) . ' VND';
                         @endphp
-                        <span class="product-price">{{ $priceProduct }}</span>
                     @endif
                     @if ($product->type_product === 'product_simple')
                         @if (checkDiscount($product))
                             <del class="old-price">{{ number_format($product->price) }}</del>
-                            <span class="product-price">{{ number_format($product->offer_price) }}
-                                VND</span>
+                            <span class="product-price">{{ number_format($product->offer_price) }} VND</span>
                         @else
-                            <span class="product-price">{{ number_format($product->price) }}
-                                VND</span>
+                            <span class="product-price">{{ number_format($product->price) }} VND</span>
                         @endif
+                    @elseif ($product->type_product === 'product_variant')
+                        <span class="product-price">{{ $priceProduct }}</span>
                     @endif
 
                 </div>

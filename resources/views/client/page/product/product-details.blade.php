@@ -150,7 +150,7 @@
                         @php
                             $priceArray = [];
                             foreach ($product->ProductVariants as $productVariant) {
-                                if ($productVariant->offer_price_variant > 0) {
+                                if (checkDiscountVariant($productVariant)) {
                                     $priceArray[] = $productVariant->offer_price_variant;
                                 } else {
                                     $priceArray[] = $productVariant->price_variant;
@@ -167,6 +167,7 @@
                                     number_format(end($priceArray)) .
                                     ' VND';
                             }
+
                         @endphp
                         <div class="price-box">
                             <span class="product-price price-render">{{ $priceProduct }} </span>
@@ -279,7 +280,7 @@
 
                     @php
                         $socials = \App\Models\Social::query()->where('status', 1)->get();
-                        
+
                     @endphp
 
                     <hr class="divider mb-0 mt-0">
@@ -296,11 +297,10 @@
                         </div>
                         <!-- End .social-icons -->
 
-                        <a href="#" data-productid="{{ $product->id }}" 
-                            class="btn-icon-wish add-wishlist"
-                                class="btn-icon-wish {{ Auth::check() &&Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}" 
-                                title="Add to Wishlist"><i
-                                class="icon-wishlist-2"></i><span>Thêm vào danh sách yêu thích</span></a>
+                        <a href="#" data-productid="{{ $product->id }}" class="btn-icon-wish add-wishlist"
+                            class="btn-icon-wish {{ Auth::check() &&Auth::user()->wishlist()->where('product_id', $product->id)->exists()? 'added-wishlist': '' }}"
+                            title="Add to Wishlist"><i class="icon-wishlist-2"></i><span>Thêm vào danh sách yêu
+                                thích</span></a>
 
                     </div>
                     <!-- End .product single-share -->
@@ -477,17 +477,43 @@
                                 </div>
                                 <!-- End .product-ratings -->
                             </div>
-                            <!-- End .product-container -->
-                            @if (checkDiscount($product))
-                                <div class="price-box">
-                                    <del class="old-price">{{ number_format($product->price) }} VND</del>
-                                    <span class="product-price">{{ number_format($product->offer) }} VND</span>
-                                </div>
-                            @else
-                                <div class="price-box">
-                                    <span class="product-price">{{ number_format($product->price) }} VND</span>
-                                </div>
-                            @endif
+                            <div class="price-box">
+                                @if ($product->type_product === 'product_variant')
+                                    @php
+                                        $priceArray = [];
+                                        foreach ($product->ProductVariants as $productVariant) {
+                                            if (checkDiscountVariant($productVariant)) {
+                                                $priceArray[] = $productVariant->offer_price_variant;
+                                            } else {
+                                                $priceArray[] = $productVariant->price_variant;
+                                            }
+                                        }
+                                        $priceProduct = number_format(min($priceArray)) . ' VND';
+                                        // sort($priceArray);
+                                        // $priceProduct = '';
+                                        // if (count(array_unique($priceArray)) === 1) {
+                                        //     $priceProduct = number_format($priceArray[0]) . ' VND';
+                                        // } else {
+                                        //     $priceProduct =
+                                        //         number_format($priceArray[0]) .
+                                        //         ' VND ~ ' .
+                                        //         number_format(end($priceArray)) .
+                                        //         ' VND';
+                                        // }
+                                    @endphp
+                                @endif
+                                @if ($product->type_product === 'product_simple')
+                                    @if (checkDiscount($product))
+                                        <del class="old-price">{{ number_format($product->price) }} VND</del>
+                                        <span class="product-price">{{ number_format($product->offer_price) }} VND</span>
+                                    @else
+                                        <span class="product-price">{{ number_format($product->price) }} VND</span>
+                                    @endif
+                                @elseif ($product->type_product === 'product_variant')
+                                    <span class="product-price">{{ $priceProduct }}</span>
+                                @endif
+                            </div>
+
 
                             <!-- End .price-box -->
                             <div class="product-action">
@@ -938,16 +964,37 @@
                                 };
                                 let priceText = '';
 
-                                if (data.variant.offer_price_variant > 0) {
-                                    // Thêm giá khuyến mãi bên cạnh
-                                    priceText =
-                                        `<span style="margin-right: 10px;">${formatCurrency(data.variant.offer_price_variant)}</span>`;
-                                    // priceText +=
-                                    //     `<span style="text-decoration: line-through red; color: black;">${formatCurrency(data.variant.price_variant)}</span> `;
+                                if (data.variant.variant_offer_start_date && data.variant
+                                    .variant_offer_end_date) {
+                                    let currentDate = new Date();
+                                    let startDate = new Date(data.variant
+                                        .variant_offer_start_date);
+                                    let endDate = new Date(data.variant
+                                        .variant_offer_end_date);
+
+                                    if (startDate <= currentDate && currentDate <= endDate &&
+                                        data.variant.offer_price_variant > 0) {
+                                        priceText =
+                                            `<span style="margin-right: 10px;">${formatCurrency(data.variant.offer_price_variant)}</span>`;
+                                    } else {
+                                        priceText =
+                                            `<span>${formatCurrency(data.variant.price_variant)}</span>`;
+                                    }
                                 } else {
                                     priceText =
                                         `<span>${formatCurrency(data.variant.price_variant)}</span>`;
                                 }
+
+                                // if (data.variant.offer_price_variant > 0) {
+                                //     // Thêm giá khuyến mãi bên cạnh
+                                //     priceText =
+                                //         `<span style="margin-right: 10px;">${formatCurrency(data.variant.offer_price_variant)}</span>`;
+                                //     // priceText +=
+                                //     //     `<span style="text-decoration: line-through red; color: black;">${formatCurrency(data.variant.price_variant)}</span> `;
+                                // } else {
+                                //     priceText =
+                                //         `<span>${formatCurrency(data.variant.price_variant)}</span>`;
+                                // }
                                 $('.price-render').html(priceText);
                                 $('.qty-product').text(data.variant.qty);
                                 // Cập nhật thuộc tính max của input số lượng
@@ -988,7 +1035,8 @@
                         $.each(availableSizes, function(size, qty) {
                             var sizeLink = $(
                                 '<li><a href="javascript:;" class="d-flex select-variant align-items-center justify-content-center size-options" data-size="' +
-                                size + '" data-attribute="size" data-value="' + size + '">' +
+                                size + '" data-attribute="size" data-value="' + size +
+                                '">' +
                                 size + '</a></li>'
                             );
                             // Kiểm tra số lượng

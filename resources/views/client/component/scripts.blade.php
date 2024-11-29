@@ -30,13 +30,13 @@
                     }
                 },
                 error: function(xhr) {
-                    if (xhr.status === 401) {
-                        // Chuyển hướng người dùng đến trang đăng nhập
-                        toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
-                        setTimeout(() => {
-                            window.location.href = '/login';
-                        }, 1500);
-                    }
+                    // if (xhr.status === 401) {
+                    //     // Chuyển hướng người dùng đến trang đăng nhập
+                    //     toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
+                    //     setTimeout(() => {
+                    //         window.location.href = '/login';
+                    //     }, 1500);
+                    // }
                 },
             })
         })
@@ -79,13 +79,13 @@
                     }
                 },
                 error: function(xhr) {
-                    if (xhr.status === 401) {
-                        // Chuyển hướng người dùng đến trang đăng nhập
-                        toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
-                        setTimeout(() => {
-                            window.location.href = '/login';
-                        }, 1500);
-                    }
+                    // if (xhr.status === 401) {
+                    //     // Chuyển hướng người dùng đến trang đăng nhập
+                    //     toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
+                    //     setTimeout(() => {
+                    //         window.location.href = '/login';
+                    //     }, 1500);
+                    // }
                 },
             })
 

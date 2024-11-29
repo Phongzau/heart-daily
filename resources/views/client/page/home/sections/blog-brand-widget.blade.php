@@ -56,9 +56,9 @@
                             <!-- End .post -->
                         @endforeach
                     </div>
-                    
+
                     <h2 class="section-title heading-border border-0 appear-animate" data-animation-name="fadeInUp">
-                       </h2>
+                    </h2>
                     <div class="brands-slider owl-carousel owl-theme images-center appear-animate"
                         data-animation-name="fadeIn" data-animation-duration="500"
                         data-owl-options="{
@@ -88,7 +88,8 @@
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a
+                                                href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -102,13 +103,33 @@
                                         <!-- End .product-container -->
 
                                         <div class="price-box">
-                                            @if ($product->offer_price)
-                                                <span class="product-price">{{ number_format($product->offer_price) }}
-                                                    VND</span>
-                                            @else
-                                                <span class="product-price">{{ number_format($product->price) }}
-                                                    VND</span>
+                                            @if ($product->type_product === 'product_variant')
+                                                @php
+                                                    $priceArray = [];
+                                                    foreach ($product->ProductVariants as $productVariant) {
+                                                        if (checkDiscountVariant($productVariant)) {
+                                                            $priceArray[] = $productVariant->offer_price_variant;
+                                                        } else {
+                                                            $priceArray[] = $productVariant->price_variant;
+                                                        }
+                                                    }
+                                                    $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                @endphp
+                                                <span class="product-price">{{ $priceProduct }}</span>
                                             @endif
+                                            @if ($product->type_product === 'product_simple')
+                                                @if (checkDiscount($product))
+                                                    <del class="old-price">{{ number_format($product->price) }}
+                                                        VND</del>
+                                                    <span
+                                                        class="product-price">{{ number_format($product->offer_price) }}
+                                                        VND</span>
+                                                @else
+                                                    <span class="product-price">{{ number_format($product->price) }}
+                                                        VND</span>
+                                                @endif
+                                            @endif
+
                                         </div>
                                         <!-- End .price-box -->
                                     </div>
@@ -131,7 +152,8 @@
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a
+                                                href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -145,12 +167,31 @@
                                         <!-- End .product-container -->
 
                                         <div class="price-box">
-                                            @if ($product->offer_price)
-                                                <span class="product-price">{{ number_format($product->offer_price) }}
-                                                    VND</span>
-                                            @else
-                                                <span class="product-price">{{ number_format($product->price) }}
-                                                    VND</span>
+                                            @if ($product->type_product === 'product_variant')
+                                                @php
+                                                    $priceArray = [];
+                                                    foreach ($product->ProductVariants as $productVariant) {
+                                                        if (checkDiscountVariant($productVariant)) {
+                                                            $priceArray[] = $productVariant->offer_price_variant;
+                                                        } else {
+                                                            $priceArray[] = $productVariant->price_variant;
+                                                        }
+                                                    }
+                                                    $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                @endphp
+                                                <span class="product-price">{{ $priceProduct }}</span>
+                                            @endif
+                                            @if ($product->type_product === 'product_simple')
+                                                @if (checkDiscount($product))
+                                                    <del class="old-price">{{ number_format($product->price) }}
+                                                        VND</del>
+                                                    <span
+                                                        class="product-price">{{ number_format($product->offer_price) }}
+                                                        VND</span>
+                                                @else
+                                                    <span class="product-price">{{ number_format($product->price) }}
+                                                        VND</span>
+                                                @endif
                                             @endif
                                         </div>
                                         <!-- End .price-box -->
@@ -173,7 +214,8 @@
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a
+                                                href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -187,12 +229,31 @@
                                         <!-- End .product-container -->
 
                                         <div class="price-box">
-                                            @if ($product->offer_price)
-                                                <span class="product-price">{{ number_format($product->offer_price) }}
-                                                    VND</span>
-                                            @else
-                                                <span class="product-price">{{ number_format($product->price) }}
-                                                    VND</span>
+                                            @if ($product->type_product === 'product_variant')
+                                                @php
+                                                    $priceArray = [];
+                                                    foreach ($product->ProductVariants as $productVariant) {
+                                                        if (checkDiscountVariant($productVariant)) {
+                                                            $priceArray[] = $productVariant->offer_price_variant;
+                                                        } else {
+                                                            $priceArray[] = $productVariant->price_variant;
+                                                        }
+                                                    }
+                                                    $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                @endphp
+                                                <span class="product-price">{{ $priceProduct }}</span>
+                                            @endif
+                                            @if ($product->type_product === 'product_simple')
+                                                @if (checkDiscount($product))
+                                                    <del class="old-price">{{ number_format($product->price) }}
+                                                        VND</del>
+                                                    <span
+                                                        class="product-price">{{ number_format($product->offer_price) }}
+                                                        VND</span>
+                                                @else
+                                                    <span class="product-price">{{ number_format($product->price) }}
+                                                        VND</span>
+                                                @endif
                                             @endif
                                         </div>
                                         <!-- End .price-box -->
@@ -216,7 +277,8 @@
                                     </figure>
 
                                     <div class="product-details">
-                                        <h3 class="product-title"> <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                        <h3 class="product-title"> <a
+                                                href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
                                         <div class="ratings-container">
@@ -230,12 +292,31 @@
                                         <!-- End .product-container -->
 
                                         <div class="price-box">
-                                            @if ($product->offer_price)
-                                                <span class="product-price">{{ number_format($product->offer_price) }}
-                                                    VND</span>
-                                            @else
-                                                <span class="product-price">{{ number_format($product->price) }}
-                                                    VND</span>
+                                            @if ($product->type_product === 'product_variant')
+                                                @php
+                                                    $priceArray = [];
+                                                    foreach ($product->ProductVariants as $productVariant) {
+                                                        if (checkDiscountVariant($productVariant)) {
+                                                            $priceArray[] = $productVariant->offer_price_variant;
+                                                        } else {
+                                                            $priceArray[] = $productVariant->price_variant;
+                                                        }
+                                                    }
+                                                    $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                @endphp
+                                                <span class="product-price">{{ $priceProduct }}</span>
+                                            @endif
+                                            @if ($product->type_product === 'product_simple')
+                                                @if (checkDiscount($product))
+                                                    <del class="old-price">{{ number_format($product->price) }}
+                                                        VND</del>
+                                                    <span
+                                                        class="product-price">{{ number_format($product->offer_price) }}
+                                                        VND</span>
+                                                @else
+                                                    <span class="product-price">{{ number_format($product->price) }}
+                                                        VND</span>
+                                                @endif
                                             @endif
                                         </div>
                                         <!-- End .price-box -->
