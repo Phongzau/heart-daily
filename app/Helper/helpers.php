@@ -205,6 +205,20 @@ function checkDiscount($product)
     return false;
 }
 
+
+/** Check if product have discount */
+
+function checkDiscountVariant($variant)
+{
+    $currentDate = date('Y-m-d');
+
+    if ($variant->offer_price_variant > 0 && $currentDate >= $variant->variant_offer_start_date && $currentDate <= $variant->variant_offer_end_date) {
+        return true;
+    }
+
+    return false;
+}
+
 /** Get Cart Total */
 function getCartTotal()
 {

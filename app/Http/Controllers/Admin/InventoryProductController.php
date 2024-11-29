@@ -106,11 +106,13 @@ class InventoryProductController extends Controller
                         $query->where('order_status', 'delivered');
                     })
                     ->sum('qty');
-                if ($variant->offer_price_variant > 0) {
+
+                if (checkDiscountVariant($variant)) {
                     $priceVariant = $variant->offer_price_variant;
                 } else {
                     $priceVariant = $variant->price_variant;
                 }
+
                 return [
                     'name' => $titleVariant,
                     'priceVariant' => number_format($priceVariant) . ' VND',
@@ -121,11 +123,16 @@ class InventoryProductController extends Controller
 
             $priceArray = [];
             foreach ($product->ProductVariants as $productVariant) {
-                if ($productVariant->offer_price_variant > 0) {
+                if (checkDiscountVariant($productVariant)) {
                     $priceArray[] = $productVariant->offer_price_variant;
                 } else {
                     $priceArray[] = $productVariant->price_variant;
                 }
+                // if ($productVariant->offer_price_variant > 0) {
+                //     $priceArray[] = $productVariant->offer_price_variant;
+                // } else {
+                //     $priceArray[] = $productVariant->price_variant;
+                // }
             }
             sort($priceArray);
             $priceProduct = '';

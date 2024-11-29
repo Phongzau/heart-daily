@@ -1,5 +1,4 @@
 @include('client.component.header')
-@include('client.component.topbar')
 <!-- End .top-notice -->
 
 <header class="header">
@@ -15,4 +14,3 @@
 </main>
 <!-- End .main -->
 @include('client.component.footer')
-
