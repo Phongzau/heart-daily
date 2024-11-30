@@ -290,7 +290,56 @@
 @push('scripts')
     <script>
        
+ //category
+ fetch('/admin/dashboard/category-statistics')
+            .then(response => response.json())
+            .then(data => {
+                var ctx = document.getElementById("myChart2").getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
 
+                        labels: data.categoryLabels,
+                        datasets: [{
+                            data: data.categorySales,
+                            backgroundColor: data.categoryColors,
+                        }],
+
+
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'bottom',
+                        },
+                    }
+                });
+            }).catch(error => console.error('Error fetching category statistics:', error));
+        //brand
+        fetch('/admin/dashboard/brand-statistics')
+            .then(response => response.json())
+            .then(data => {
+                var ctx = document.getElementById("myChart3").getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+
+                        labels: data.brandLabels,
+                        datasets: [{
+                            data: data.brandSales,
+                            backgroundColor: data.brandColors,
+                        }],
+
+
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'bottom',
+                        },
+                    }
+                });
+            }).catch(error => console.error('Error fetching brand statistics:', error));
         // review
         function loadBestRatedProducts() {
             $.ajax({
