@@ -136,19 +136,23 @@
                     @endcan
                 </ul>
             </li>
-            <li class="dropdown {{ checkActive(['admin.inventory.*','admin.suppliers.*']) }}">
+            <li class="dropdown {{ checkActive(['admin.inventory.*', 'admin.suppliers.*']) }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fa-light fa-warehouse"></i>
                     <span>Kho hàng</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ checkActive(['admin.inventory.index']) }}">
-                        <a href="{{ route('admin.inventory.index') }}" class="nav-link">
-                            <span>Kho hàng</span></a>
-                    </li>
-                    <li class="{{ checkActive(['admin.suppliers.index']) }}">
-                        <a href="{{ route('admin.suppliers.index') }}" class="nav-link">
-                            <span>Nhà cung cấp</span></a>
-                    </li>
+                    @can('view-inventory')
+                        <li class="{{ checkActive(['admin.inventory.index']) }}">
+                            <a href="{{ route('admin.inventory.index') }}" class="nav-link">
+                                <span>Kho hàng</span></a>
+                        </li>
+                    @endcan
+                    @can('view-suppliers')
+                        <li class="{{ checkActive(['admin.suppliers.index']) }}">
+                            <a href="{{ route('admin.suppliers.index') }}" class="nav-link">
+                                <span>Nhà cung cấp</span></a>
+                        </li>
+                    @endcan
                 </ul>
             </li>
             <li class="dropdown {{ checkActive(['admin.accounts.*', 'admin.roles.*']) }}">

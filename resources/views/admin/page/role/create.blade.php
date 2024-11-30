@@ -37,7 +37,7 @@
                                                         <input type="checkbox" name="permissions[]"
                                                             value="{{ $permission->name }}">
                                                         <label>
-                                                            {{ $permission->name }}
+                                                            {{ $permission->display_name }}
                                                         </label>
                                                     </div>
                                                 @endforeach

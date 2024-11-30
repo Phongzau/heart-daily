@@ -182,7 +182,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/top-products/{period}', [DashboardController::class, 'topProducts'])->name('top-products');
             Route::get('/top-revenue/{period}', [DashboardController::class, 'getTopRevenue']);
             Route::get('/best-rated-products', [DashboardController::class, 'bestRatedProducts']);
-            // Route::get('/brand-statistics/{period}', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
+            Route::get('/brand-statistics', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
+            Route::get('/category-statistics', [DashboardController::class, 'categoryStatistics'])->name('category-statistics');
         });
         // admin profile
         Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');
@@ -471,22 +472,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy')->middleware('permission:delete-orders');
         });
 
-        Route::prefix('inventory')->name('inventory.')->group(function () {
+        Route::middleware('permission:view-inventory')->prefix('inventory')->name('inventory.')->group(function () {
             Route::get('/', [InventoryProductController::class, 'index'])->name('index');
             Route::get('/export', [InventoryProductController::class, 'exportToExcel'])->name('export');
             Route::get('/{id}/qr-code', [InventoryProductController::class, 'generateQRCode'])->name('qr-code');
             Route::get('/{productId}', [InventoryProductController::class, 'productDetail'])->name('get-product-detail');
         });
         //Supplier
-        Route::prefix('suppliers')->name('suppliers.')->group(function () {
+        Route::middleware('permission:view-suppliers')->prefix('suppliers')->name('suppliers.')->group(function () {
             Route::put('change-status', [AdminSupplierController::class, 'changeStatus'])
                 ->name('change-status');
             Route::get('/', [AdminSupplierController::class, 'index'])->name('index');
-            Route::get('/create', [AdminSupplierController::class, 'create'])->name('create');
+            Route::get('/create', [AdminSupplierController::class, 'create'])->name('create')->middleware('permission:create-suppliers');
             Route::post('/', [AdminSupplierController::class, 'store'])->name('store');
-            Route::get('/{supplier}/edit', [AdminSupplierController::class, 'edit'])->name('edit');
+            Route::get('/{supplier}/edit', [AdminSupplierController::class, 'edit'])->name('edit')->middleware('permission:create-suppliers');
             Route::put('/{supplier}', [AdminSupplierController::class, 'update'])->name('update');
-            Route::delete('/{supplier}', [AdminSupplierController::class, 'destroy'])->name('destroy');
+            Route::delete('/{supplier}', [AdminSupplierController::class, 'destroy'])->name('destroy')->middleware('permission:create-suppliers');
         });
     });
 });
