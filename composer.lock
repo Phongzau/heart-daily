@@ -8540,16 +8540,16 @@
         },
         {
             "name": "yajra/laravel-datatables-html",
-            "version": "v11.6.2",
+            "version": "v11.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables-html.git",
-                "reference": "7bdb2c7ca81ff99e3b1ae8e84a9d816fe30e5673"
+                "reference": "08ccb1115c029da46c43b2a0a9daa9e4591b559a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables-html/zipball/7bdb2c7ca81ff99e3b1ae8e84a9d816fe30e5673",
-                "reference": "7bdb2c7ca81ff99e3b1ae8e84a9d816fe30e5673",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-html/zipball/08ccb1115c029da46c43b2a0a9daa9e4591b559a",
+                "reference": "08ccb1115c029da46c43b2a0a9daa9e4591b559a",
                 "shasum": ""
             },
             "require": {
@@ -8569,13 +8569,13 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "11.0-dev"
-                },
                 "laravel": {
                     "providers": [
                         "Yajra\\DataTables\\HtmlServiceProvider"
                     ]
+                },
+                "branch-alias": {
+                    "dev-master": "11.0-dev"
                 }
             },
             "autoload": {
@@ -8604,7 +8604,7 @@
             ],
             "support": {
                 "issues": "https://github.com/yajra/laravel-datatables-html/issues",
-                "source": "https://github.com/yajra/laravel-datatables-html/tree/v11.6.2"
+                "source": "https://github.com/yajra/laravel-datatables-html/tree/v11.7.0"
             },
             "funding": [
                 {
@@ -8620,7 +8620,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-11-18T10:49:52+00:00"
+            "time": "2024-11-29T01:31:05+00:00"
         },
         {
             "name": "yajra/laravel-datatables-oracle",

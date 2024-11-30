@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderProduct;
+use App\Models\Product;
 use App\Models\ProductReview;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -54,7 +55,8 @@ class DashboardController extends Controller
 
         // Lấy tên tháng
         $monthName = Carbon::createFromFormat('m', $month)->format('F');
-        $orders = Order::with('user')->orderBy('created_at', 'desc')->get();
+        $orders = Order::with('user')->orderBy('created_at', 'desc')->take(3)->get();
+        
         // Trả về view cùng dữ liệu
         return view('admin.page.dashboard', [
             'pendingCount' => $pendingCount ?? 0,
@@ -296,4 +298,5 @@ class DashboardController extends Controller
 
         return response()->json($products);
     }
-}
+
+
