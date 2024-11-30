@@ -300,3 +300,61 @@ class DashboardController extends Controller
     }
 
 
+//
+public function brandStatistics()
+{
+    $currentMonth = Carbon::now()->month;
+    $brands = Product::select('brands.name as brand', DB::raw('SUM(order_products.qty) as total_sales'))
+        ->join('brands', 'products.brand_id', '=', 'brands.id') 
+        ->join('order_products', 'products.id', '=', 'order_products.product_id')
+        ->join('orders', 'order_products.order_id', '=', 'orders.id')
+        ->where('orders.order_status', 'delivered')
+        ->whereMonth('orders.created_at', $currentMonth)
+        ->groupBy('brands.name')
+        ->orderBy('total_sales', 'desc')
+        ->get();
+
+    $brandLabels = $brands->pluck('brand');
+    $brandSales = $brands->pluck('total_sales');
+    
+    $brandColors = $brands->map(function($brand) {
+        return '#' . substr(md5($brand->brand), 0, 6); 
+    });
+
+
+    return response()->json([
+        'brandLabels' => $brandLabels,
+        'brandSales' => $brandSales,
+        'brandColors' => $brandColors,
+    ]);
+}
+//
+public function categoryStatistics()
+{
+    $currentMonth = Carbon::now()->month;
+    $categories = Product::select('category_products.title as category', DB::raw('SUM(order_products.qty) as total_sales'))
+        ->join('category_products', 'products.category_id', '=', 'category_products.id') 
+        ->join('order_products', 'products.id', '=', 'order_products.product_id')
+        ->join('orders', 'order_products.order_id', '=', 'orders.id')
+        ->where('orders.order_status', 'delivered')
+        ->whereMonth('orders.created_at', $currentMonth)
+        ->groupBy('category_products.title')
+        ->orderBy('total_sales', 'desc')
+        ->get();
+
+    $categoryLabels = $categories->pluck('category');
+    $categorySales = $categories->pluck('total_sales');
+    
+    $categoryColors = $categories->map(function($category) {
+        return '#' . substr(md5($category->category), 0, 6); 
+    });
+
+
+    return response()->json([
+        'categoryLabels' => $categoryLabels,
+        'categorySales' => $categorySales,
+        'categoryColors' => $categoryColors,
+    ]);
+}
+
+}
