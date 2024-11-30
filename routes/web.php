@@ -180,7 +180,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/top-products/{period}', [DashboardController::class, 'topProducts'])->name('top-products');
         Route::get('/top-revenue/{period}', [DashboardController::class, 'getTopRevenue']);
         Route::get('/best-rated-products', [DashboardController::class, 'bestRatedProducts']);
-        // Route::get('/brand-statistics/{period}', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
+        Route::get('/brand-statistics', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
+        Route::get('/category-statistics', [DashboardController::class, 'categoryStatistics'])->name('category-statistics');
     });
     // admin profile
     Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');

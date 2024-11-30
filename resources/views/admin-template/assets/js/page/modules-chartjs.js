@@ -108,11 +108,11 @@ var myChart = new Chart(ctx, {
       label: 'Dataset 1'
     }],
     labels: [
-      'Black',
-      'Green',
-      'Yellow',
-      'Red',
-      'Blue'
+      'Chanel',
+      'Dior',
+      'Nike',
+      'Adidas',
+      'Gucci'
     ],
   },
   options: {

@@ -174,7 +174,7 @@
         </div>
         <div class="section-body">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card">
                         <div class="card-header">
                             <h4>Bộ lọc</h4>
@@ -274,7 +274,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <div class="card">
                         <div class="card-header">
                             <h4>Danh sách sản phẩm</h4>
@@ -288,13 +288,13 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped">
                                     <thead>
-                                        <tr>
+                                        <tr class="align-top">
                                             <th>#</th>
                                             <th>Hình ảnh</th>
-                                            <th>Tên sản phẩm</th>
+                                            <th class="text-center">Tên sản phẩm<br><small class="text-secondary" style="margin-top: -5px;">(brand & danh mục)</small></th>
                                             <th>Nhà cung cấp</th>
                                             <th>Giá nhập</th>
-                                            <th>Tồn kho(số lượng)</th>
+                                            <th>Tồn kho<br><small class="text-secondary" style="margin-top: -5px;">(số lượng)</small></th>
                                             <th>Loại SP</th>
                                             <th>Ngày nhập hàng</th>
                                             <th>Thao tác</th>
@@ -307,13 +307,14 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td><img src="{{ Storage::url($product->image) }}" alt="Hình sản phẩm">
                                                     </td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <span
-                                                            class="product-name float-left">{{ limitText($product->name, 35) }}</span>
+                                                            class="product-name float-left">{{ limitText($product->name, 20) }} /
+                                                        </span>
                                                         <br>
                                                         <span class="product-category float-left">
-                                                            {{ $product->category->title }}
-                                                            - {{ $product->brand->name }} </span>
+                                                           ({{ $product->category->title }} & {{ $product->brand->name }})
+                                                        </span>
                                                     </td>
                                                     <td>{{ @$product->supplier->name }}</td>
                                                     <td>
@@ -327,9 +328,9 @@
                                                             text-danger
                                                         @elseif ($product->qty <= 20)
                                                             text-warning @endif
-@else
-@php
-$totalQty = 0;
+                                                    @else
+                                                    @php
+                                                    $totalQty = 0;
                                                             foreach ($product->ProductVariants as $productVariant) {
                                                                 $totalQty += $productVariant->qty;
                                                             } @endphp

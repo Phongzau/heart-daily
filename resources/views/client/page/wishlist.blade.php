@@ -28,14 +28,14 @@
             @if ($wishlists->isEmpty())
                 <p>Danh sách yêu thích của bạn trống.</p>
             @else
-                <table class="table table-wishlist mb-0">
+                <table class="table table-wishlist mb-0 table-responsive">
                     <thead>
                         <tr>
                             <th class="thumbnail-col"></th>
                             <th class="product-col">Sản phẩm</th>
-                            <th class="price-col">Giá</th>
-                            <th class="status-col">Tình trạng hàng</th>
-                            <th class="action-col">Trạng thái </th>
+                            <th class="price-col text-center">Giá</th>
+                            <th class="status-col text-center">Tình trạng hàng</th>
+                            <th class="action-col text-center">Trạng thái </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,11 +70,23 @@
                                             href="{{ route('product.detail', ['slug' => $wishlist->product->slug]) }}">{{ $wishlist->product->name }}</a>
                                     </h5>
                                 </td>
-                                <td class="price-box">{{ number_format($wishlist->product->price) }} VND</td>
-                                <td>
-                                    <span class="stock-status">Còn hàng</span>
+                                <td class="price-box text-center">{{ number_format($wishlist->product->price) }} VND</td>
+                                <td class="text-center">
+                                    <span class="stock-status">
+                                        @if ($wishlist->product->type_product === 'product_simple')
+                                            {{ $wishlist->product->qty > 0 ? 'Còn hàng' : 'Hết hàng' }}
+                                        @else
+                                            @php
+                                                $inStock = $wishlist->product->productVariants
+                                                    ->where('qty', '>', 0)
+                                                    ->count();
+                                            @endphp
+
+                                            {{ $inStock > 0 ? 'Còn hàng' : 'Hết hàng' }}
+                                        @endif
+                                    </span>
                                 </td>
-                                <td class="action">
+                                <td class="action text-center">
 
                                     <a href="{{ route('product.detail', ['slug' => $wishlist->product->slug]) }}"
                                         class="btn btn-dark product-type-simple btn-shop"><span>LỰA CHỌN LOẠI</span></a>

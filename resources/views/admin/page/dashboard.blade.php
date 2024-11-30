@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
                         <h4>Biểu đồ doanh số</h4>
@@ -102,55 +102,23 @@
                     </div>
                 </div>
             </div>
-
-
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Sản phẩm tốt nhất</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="owl-carousel owl-theme" id="products-carousel">
-                            {{-- <div>
-                                <div class="product-item pb-3">
-                                    <div class="product-image">
-                                        <img alt="image" src="assets/img/products/product-4-50.png" class="img-fluid">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-name">iBook Pro 2018</div>
-                                        <div class="product-review">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <div class="text-muted text-small">67 Sales</div>
-                                        <div class="product-cta">
-                                            <a href="#" class="btn btn-primary">Chi tiết</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header">
                         <h4>Danh mục & Thương hiệu</h4>
                     </div>
                     <div class="card-body">
-                        <h4>NULL</h4>
+                        <canvas id="myChart2"></canvas>
+                        <hr>
+                        <br>
+                        <canvas id="myChart3"></canvas>
                     </div>
                 </div>
             </div>
 
+
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -209,16 +177,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Sản phẩm tốt nhất</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="owl-carousel owl-theme" id="products-carousel">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h4>Hóa đơn</h4>
-                        {{-- @can('view-orders') --}}
-                        <div class="card-header-action">
-                            <a href="{{ route('admin.orders.index') }}" class="btn btn-danger">Xem thêm <i
-                                    class="fas fa-chevron-right"></i></a>
-                        </div>
-                        {{-- @endcan --}}
+
+
+
+
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive table-invoice">
@@ -287,64 +264,33 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            @if ($orders->count() >= 3)
+                                               
+                                                    <a href="{{ route('admin.orders.index') }}">Xem thêm<i
+                                                            class="fas fa-chevron-right"></i></a>
+                                              
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                </tfoot>
+
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card card-hero">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="far fa-question-circle"></i>
-                        </div>
-                        <h4>14</h4>
-                        <div class="card-description">Khách hàng cần trợ giúp</div>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="tickets-list">
-                            <a href="#" class="ticket-item">
-                                <div class="ticket-title">
-                                    <h4>Đơn hàng của tôi vẫn chưa đến</h4>
-                                </div>
-                                <div class="ticket-info">
-                                    <div>Laila Tazkiah</div>
-                                    <div class="bullet"></div>
-                                    <div class="text-primary">1 min ago</div>
-                                </div>
-                            </a>
-                            <a href="#" class="ticket-item">
-                                <div class="ticket-title">
-                                    <h4>Please cancel my order</h4>
-                                </div>
-                                <div class="ticket-info">
-                                    <div>Rizal Fakhri</div>
-                                    <div class="bullet"></div>
-                                    <div>2 hours ago</div>
-                                </div>
-                            </a>
-                            <a href="#" class="ticket-item">
-                                <div class="ticket-title">
-                                    <h4>Do you see my mother?</h4>
-                                </div>
-                                <div class="ticket-info">
-                                    <div>Syahdan Ubaidillah</div>
-                                    <div class="bullet"></div>
-                                    <div>6 hours ago</div>
-                                </div>
-                            </a>
-                            <a href="features-tickets.html" class="ticket-item ticket-more">
-                                View All <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
     </section>
 @endsection
 @push('scripts')
     <script>
+       
+
         // review
         function loadBestRatedProducts() {
             $.ajax({

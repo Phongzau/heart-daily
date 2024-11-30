@@ -25,7 +25,7 @@
 <script src="{{ asset('admin/assets/modules/owlcarousel2/dist/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('admin/assets/modules/summernote/summernote-bs4.js') }}"></script>
 <script src="{{ asset('admin/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script> --}}
+<script src="{{ asset('admin/assets/modules/izitoast/js/iziToast.min.js') }}"></script>
 <script src="{{ asset('admin/assets/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
 <script src="//cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.0/js/dataTables.bootstrap5.js"></script>
