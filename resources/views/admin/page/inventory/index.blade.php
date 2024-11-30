@@ -235,7 +235,7 @@
                                 
                                 <div class="form-group">
                                     <label>MÀU</label>
-                                    <button class="btn btn-link p-0 float-right text-primary" id="toggle-color">-</button>
+                                    <button class="btn btn-link p-0 float-right text-dark" id="toggle-color">-</button>
                                     <div class="color-box-container" id="filter-color">
                                         @foreach ($colors as $color)
                                             <div class="color-box"
@@ -251,7 +251,7 @@
                                 <!-- Kích thước -->
                                 <div class="form-group">
                                     <label>KÍCH CỠ</label>
-                                    <button class="btn btn-link p-0 float-right text-primary" id="toggle-size">-</button>
+                                    <button class="btn btn-link p-0 float-right text-dark" id="toggle-size">-</button>
                                     <div class="size-box-container" id="filter-size">
                                         @foreach ($sizes as $size)
                                             <div class="size-box" style="list-style-type:none" title="{{ $size->title }}"
@@ -597,37 +597,38 @@
 
 
             // Xử lý sự kiện cho nút thương hiệu
-            $('#toggle-brand').click(function() {
-                var brandList = $('#filter-brand');
-                if (brandList.hasClass('d-none')) {
-                    brandList.removeClass('d-none'); // Hiện danh sách
-                    brandList.slideDown(300); // Thêm hiệu ứng mượt mà
-                    $(this).text('-'); // Thay đổi chữ trên nút
-                } else {
-                    brandList.slideUp(300, function() {
-                        brandList.addClass('d-none'); // Ẩn danh sách sau khi hiệu ứng xong
-                    });
-                    $(this).text('+'); // Thay đổi chữ trên nút
-                }
-            });
+            // $('#toggle-brand').click(function() {
+            //     var brandList = $('#filter-brand');
+            //     if (brandList.hasClass('d-none')) {
+            //         brandList.removeClass('d-none'); // Hiện danh sách
+            //         brandList.slideDown(300); // Thêm hiệu ứng mượt mà
+            //         $(this).text('-'); // Thay đổi chữ trên nút
+            //     } else {
+            //         brandList.slideUp(300, function() {
+            //             brandList.addClass('d-none'); // Ẩn danh sách sau khi hiệu ứng xong
+            //         });
+            //         $(this).text('+'); // Thay đổi chữ trên nút
+            //     }
+            // });
 
             // Xử lý sự kiện cho nút danh mục
-            $('#toggle-category').click(function() {
-                var categoryList = $('#filter-category');
-                if (categoryList.hasClass('d-none')) {
-                    categoryList.removeClass('d-none'); // Hiện danh sách
-                    categoryList.slideDown(300); // Thêm hiệu ứng mượt mà
-                    $(this).text('-'); // Thay đổi chữ trên nút
-                } else {
-                    categoryList.slideUp(300, function() {
-                        categoryList.addClass('d-none'); // Ẩn danh sách sau khi hiệu ứng xong
-                    });
-                    $(this).text('+'); // Thay đổi chữ trên nút
-                }
-            });
+            // $('#toggle-category').click(function() {
+            //     var categoryList = $('#filter-category');
+            //     if (categoryList.hasClass('d-none')) {
+            //         categoryList.removeClass('d-none'); // Hiện danh sách
+            //         categoryList.slideDown(300); // Thêm hiệu ứng mượt mà
+            //         $(this).text('-'); // Thay đổi chữ trên nút
+            //     } else {
+            //         categoryList.slideUp(300, function() {
+            //             categoryList.addClass('d-none'); // Ẩn danh sách sau khi hiệu ứng xong
+            //         });
+            //         $(this).text('+'); // Thay đổi chữ trên nút
+            //     }
+            // });
 
             // Xử lý sự kiện cho nút màu sắc
-            $('#toggle-color').click(function() {
+            $('#toggle-color').click(function(e) {
+                e.preventDefault();
                 var colorContainer = $('#filter-color');
                 if (colorContainer.hasClass('d-none')) {
                     colorContainer.removeClass('d-none'); // Hiện danh sách
@@ -642,7 +643,8 @@
             });
 
             // Xử lý sự kiện cho nút kích thước
-            $('#toggle-size').click(function() {
+            $('#toggle-size').click(function(e) {
+                e.preventDefault();
                 var sizeContainer = $('#filter-size');
                 if (sizeContainer.hasClass('d-none')) {
                     sizeContainer.removeClass('d-none'); // Hiện danh sách

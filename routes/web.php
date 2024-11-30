@@ -170,320 +170,323 @@ Route::get('/contact', function () {
 
 //admin
 Route::prefix('admin')->name('admin.')->group(function () {
-
-    //dashboard
-    Route::middleware('permission:view-dashboard')->prefix('dashboard')->name('dashboard.')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('index');
-        Route::get('/order-statistics/{month}', [DashboardController::class, 'orderStatistics'])->name('order-statistics');
-        Route::get('/yearly-statistics', [DashboardController::class, 'yearlyStatistics'])->name('yearly-statistics');
-        Route::get('/top-products/{period}', [DashboardController::class, 'topProducts'])->name('top-products');
-        Route::get('/top-revenue/{period}', [DashboardController::class, 'getTopRevenue']);
-        Route::get('/best-rated-products', [DashboardController::class, 'bestRatedProducts']);
-        Route::get('/brand-statistics', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
-        Route::get('/category-statistics', [DashboardController::class, 'categoryStatistics'])->name('category-statistics');
-    });
-    // admin profile
-    Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');
-    Route::post('/update', [AdminProfileController::class, 'AdminProfileUpdate'])->name('profile.update');
-    Route::put('profile/update/password', [AdminProfileController::class, 'updatePassword'])->name('password.update');
-
-    //Brands
-    Route::middleware('permission:view-brands')->prefix('brands')->name('brands.')->group(function () {
-        Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
-        Route::get('/', [BrandController::class, 'index'])->name('index');
-        Route::get('/create', [BrandController::class, 'create'])->name('create')->middleware('permission:create-brands');
-        Route::post('/store', [BrandController::class, 'store'])->name('store');
-        Route::get('/edit/{brands}', [BrandController::class, 'edit'])->name('edit')->middleware('permission:edit-brands');
-        Route::put('/update/{brands}', [BrandController::class, 'update'])->name('update');
-        Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy')->middleware('permission:delete-brands');
-    });
-
-    //banner
-    Route::middleware('permission:view-banners')->prefix('banners')->name('banners.')->group(function () {
-        Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
-        Route::get('/', [BannerController::class, 'index'])->name('index');
-        Route::get('/create', [BannerController::class, 'create'])->name('create')->middleware('permission:create-banners');
-        Route::post('/store', [BannerController::class, 'store'])->name('store');
-        Route::get('/edit/{banner}', [BannerController::class, 'edit'])->name('edit')->middleware('permission:edit-banners');
-        Route::put('/update/{banner}', [BannerController::class, 'update'])->name('update');
-        Route::delete('/destroy/{banner}', [BannerController::class, 'destroy'])->name('destroy')->middleware('permission:delete-banners');
-
-        Route::post('/upload-image', [BannerController::class, 'uploadImage'])->name('upload.image');
-    });
-
-    //role
-    Route::middleware(['role:admin|super_admin'])->prefix('roles')->name('roles.')->group(function () {
-        Route::get('/', [RoleController::class, 'index'])->name('index');
-        Route::get('/create', [RoleController::class, 'create'])->name('create');
-        Route::post('/', [RoleController::class, 'store'])->name('store');
-        Route::get('/{role}', [RoleController::class, 'show'])->name('show');
-        Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
-        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
-        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
-    });
-
-    //category_attributes
-    Route::middleware('permission:view-categories-attributes')->prefix('category_attributes')->name('category_attributes.')->group(function () {
-        Route::put('change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/get-category-attributes', [AdminCategoryAttributeController::class, 'getCategoryAttributes'])->name('get-category-attributes');
-        Route::get('/', [AdminCategoryAttributeController::class, 'index'])->name('index');
-        Route::get('/create', [AdminCategoryAttributeController::class, 'create'])->name('create')->middleware('permission:create-categories-attributes');
-        Route::post('/', [AdminCategoryAttributeController::class, 'store'])->name('store');
-        Route::get('/{category_attribute}', [AdminCategoryAttributeController::class, 'show'])->name('show');
-        Route::get('/{category_attribute}/edit', [AdminCategoryAttributeController::class, 'edit'])->name('edit')->middleware('permission:edit-categories-attributes');
-        Route::put('/{category_attribute}', [AdminCategoryAttributeController::class, 'update'])->name('update');
-        Route::delete('/{category_attribute}', [AdminCategoryAttributeController::class, 'destroy'])->name('destroy')->middleware('permission:delete-categories-attributes');
-    });
-
-    //attributes
-    Route::middleware('permission:view-attributes')->prefix('attributes')->name('attributes.')->group(function () {
-        Route::put('change-status', [AdminAttributeController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/get-attributes/{id}', [AdminAttributeController::class, 'getAttributes'])->name('get-attributes');
-        Route::get('/', [AdminAttributeController::class, 'index'])->name('index');
-        Route::get('/create', [AdminAttributeController::class, 'create'])->name('create')->middleware('permission:create-attributes');
-        Route::post('/', [AdminAttributeController::class, 'store'])->name('store');
-        Route::get('/{attribute}', [AdminAttributeController::class, 'show'])->name('show');
-        Route::get('/{attribute}/edit', [AdminAttributeController::class, 'edit'])->name('edit')->middleware('permission:edit-attributes');
-        Route::put('/{attribute}', [AdminAttributeController::class, 'update'])->name('update');
-        Route::delete('/{attribute}', [AdminAttributeController::class, 'destroy'])->name('destroy')->middleware('permission:delete-attributes');
-    });
-
-    //category_product
-    Route::middleware('permission:view-categories-products')->prefix('category_products')->name('category_products.')->group(function () {
-        Route::put('change-status', [AdminCategoryProductController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('get-parent', [AdminCategoryProductController::class, 'getParentCategory'])
-            ->name('get-parent');
-        Route::get('/', [AdminCategoryProductController::class, 'index'])->name('index');
-        Route::get('/create', [AdminCategoryProductController::class, 'create'])->name('create')->middleware('permission:create-categories-products');
-        Route::post('/', [AdminCategoryProductController::class, 'store'])->name('store');
-        Route::get('/{category_products}', [AdminCategoryProductController::class, 'show'])->name('show');
-        Route::get('/{category_products}/edit', [AdminCategoryProductController::class, 'edit'])->name('edit')->middleware('permission:edit-categories-products');
-        Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
-        Route::delete('/{category_products}', [AdminCategoryProductController::class, 'destroy'])->name('destroy')->middleware('permission:delete-categories-products');
-    });
-
-    //menu
-    Route::middleware('permission:view-menus')->prefix('menus')->name('menus.')->group(function () {
-        Route::put('change-status', [MenuController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [MenuController::class, 'index'])->name('index');
-        Route::get('/create', [MenuController::class, 'create'])->name('create')->middleware('permission:create-menus');
-        Route::post('/', [MenuController::class, 'store'])->name('store');
-        Route::get('/{menus}', [MenuController::class, 'show'])->name('show');
-        Route::get('/{menus}/edit', [MenuController::class, 'edit'])->name('edit')->middleware('permission:edit-menus');
-        Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
-        Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy')->middleware('permission:delete-menus');
-    });
-
-    //blogs categories
-    Route::middleware('permission:view-blog-categories')->prefix('blog_categories')->name('blog_categories.')->group(function () {
-        Route::put('change-status', [AdminBlogCategoryController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [AdminBlogCategoryController::class, 'index'])->name('index');
-        Route::get('/create', [AdminBlogCategoryController::class, 'create'])->name('create')->middleware('permission:create-blog-categories');
-        Route::post('/', [AdminBlogCategoryController::class, 'store'])->name('store');
-        Route::get('/{blog_categories}', [AdminBlogCategoryController::class, 'show'])->name('show');
-        Route::get('/{blog_categories}/edit', [AdminBlogCategoryController::class, 'edit'])->name('edit')->middleware('permission:edit-blog-categories');
-        Route::put('/{blog_categories}', [AdminBlogCategoryController::class, 'update'])->name('update');
-        Route::delete('/{blog_categories}', [AdminBlogCategoryController::class, 'destroy'])->name('destroy')->middleware('permission:delete-blog-categories');
-    });
-
-    //Abouts
-    /** About page Routes */
-    Route::middleware('permission:view-abouts')->prefix('abouts')->name('abouts.')->group(function () {
-        Route::get('/', [AboutController::class, 'index'])->name('index');
-        Route::put('/update', [AboutController::class, 'update'])->name('update');
-    });
-
-    //Menu Items
-    Route::middleware('permission:view-menu-items')->prefix('menu_items')->name('menu_items.')->group(function () {
-        Route::put('change-status', [MenuItemController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('get-parent', [MenuItemController::class, 'getParentMenuItems'])
-            ->name('get-parent');
-        Route::get('/', [MenuItemController::class, 'index'])->name('index');
-        Route::get('/create', [MenuItemController::class, 'create'])->name('create')->middleware('permission:create-menu-items');
-        Route::post('/', [MenuItemController::class, 'store'])->name('store');
-        Route::get('/{menu_items}', [MenuItemController::class, 'show'])->name('show');
-        Route::get('/{menu_items}/edit', [MenuItemController::class, 'edit'])->name('edit')->middleware('permission:edit-menu-items');
-        Route::put('/{menu_items}', [MenuItemController::class, 'update'])->name('update');
-        Route::delete('/{menu_items}', [MenuItemController::class, 'destroy'])->name('destroy')->middleware('permission:delete-menu-items');
-    });
-
-    // Settings
-    /** Setting Routes */
-    Route::middleware('permission:view-settings')->prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', [SettingController::class, 'index'])->name('index');
-        Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
-        Route::put('general-setting-update', [SettingController::class, 'GeneralSettingUpdate'])->name('general-setting-update');
-    });
-
-
-    //blog
-    Route::middleware('permission:view-blogs')->prefix('blogs')->name('blogs.')->group(function () {
-        Route::put('change-status', [BlogController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [BlogController::class, 'index'])->name('index');
-        Route::get('/create', [BlogController::class, 'create'])->name('create')->middleware('permission:create-blogs');
-        Route::post('/', [BlogController::class, 'store'])->name('store');
-        Route::get('/{blogs}', [BlogController::class, 'show'])->name('show');
-        Route::get('/{blogs}/edit', [BlogController::class, 'edit'])->name('edit')->middleware('permission:edit-blogs');
-        Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
-        Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy')->middleware('permission:delete-blogs');
-    });
-
-    // user
-    Route::middleware('permission:view-accounts')->prefix('accounts')->name('accounts.')->group(function () {
-        Route::put('change-status', [ListAccountController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [ListAccountController::class, 'index'])->name('index');
-        // Route::get('/create', [ListAccountController::class, 'create'])->name('create');
-        // Route::post('/', [ListAccountController::class, 'store'])->name('store');
-        Route::get('/{accounts}', [ListAccountController::class, 'show'])->name('show');
-        Route::get('/{accounts}/edit', [ListAccountController::class, 'edit'])->name('edit')->middleware('permission:edit-accounts');
-        Route::put('/{accounts}', [ListAccountController::class, 'update'])->name('update');
-        Route::delete('/{accounts}', [ListAccountController::class, 'destroy'])->name('destroy')->middleware('permission:edit-accounts');
-    });
-
-    //Coupons
-    Route::middleware('permission:view-coupons')->prefix('coupons')->name('coupons.')->group(function () {
-        Route::put('change-status', [CouponController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [CouponController::class, 'index'])->name('index');
-        Route::get('/create', [CouponController::class, 'create'])->name('create')->middleware('permission:create-coupons');
-        Route::get('/add-coupon', [CouponController::class, 'add'])->name('add');
-        Route::post('/add-coupon', [CouponController::class, 'addCoupon'])->name('add-coupon');
-        Route::post('/', [CouponController::class, 'store'])->name('store');
-        Route::get('/{coupons}', [CouponController::class, 'show'])->name('show');
-        Route::get('/{coupons}/edit', [CouponController::class, 'edit'])->name('edit')->middleware('permission:edit-coupons');
-        Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
-        Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy')->middleware('permission:delete-coupons');
-    });
-
-    //comment blogs
-    Route::middleware('permission:view-blog-comments')->prefix('blog_comments')->name('blog_comments.')->group(function () {
-        Route::get('/', [BlogCommentController::class, 'index'])->name('index');
-        Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy')->middleware('permission:delete-blog-comments');
-    });
-
-    //product_review
-    Route::middleware('permission:view-reviews')->prefix('product_reviews')->name('product_reviews.')->group(function () {
-        Route::get('/', [ProductReviewController::class, 'index'])->name('index');
-        // Route::post('/reviews', [ProductReviewController::class, 'store'])->name('review.store');
-        Route::post('/reviews', [ProductController::class, 'reviews'])->name('review.store');
-        Route::delete('/{product_review}', [ProductReviewController::class, 'destroy'])->name('destroy')->middleware('permission:delete-reviews');
-        // Route::get('/reviews', [ProductController::class, 'getAllReviews'])->name('list');
-    });
-
-
-    //advertisement
-    Route::middleware('permission:view-advertisements')->prefix('advertisement')->name('advertisement.')->group(function () {
-        Route::put('change-status', [AdvertisementsController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [AdvertisementsController::class, 'index'])->name('index');
-        Route::put('homepage-banner-section-one', [AdvertisementsController::class, 'homepageBannerSectionOne'])->name('homepage-banner-section-one');
-        Route::put('homepage-banner-section-two', [AdvertisementsController::class, 'homepageBannerSectionTwo'])->name('homepage-banner-section-two');
-        Route::put('homepage-banner-section-three', [AdvertisementsController::class, 'homepageBannerSectionThree'])->name('homepage-banner-section-three');
-        Route::put('homepage-banner-section-four', [AdvertisementsController::class, 'homepageBannerSectionFour'])->name('homepage-banner-section-four');
-        Route::put('productpage-banner', [AdvertisementsController::class, 'productPageBanner'])->name('productpage-banner');
-        Route::put('cartpage-banner', [AdvertisementsController::class, 'cartPageBanner'])->name('cartpage-banner');
-    });
-
-    //Product
-    Route::middleware('permission:view-products')->prefix('products')->name('products.')->group(function () {
-        Route::put('change-status', [AdminProductController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::delete('/product-attributes/{prdAttributeId}', [AdminProductController::class, 'destroyProductAttribute'])->name('destroy-product-attributes');
-        Route::delete('/variants/{variantId}', [AdminProductController::class, 'destroyVariant'])->name('destroy-variant');
-        Route::post('/upload', [AdminProductController::class, 'uploadImageGalleries'])->name('upload');
-        Route::get('/', [AdminProductController::class, 'index'])->name('index');
-        Route::get('/create', [AdminProductController::class, 'create'])->name('create')->middleware('permission:create-products');
-        Route::post('/', [AdminProductController::class, 'store'])->name('store');
-        Route::get('/{products}', [AdminProductController::class, 'show'])->name('show');
-        Route::get('/{products}/edit', [AdminProductController::class, 'edit'])->name('edit')->middleware('permission:edit-products');
-        Route::put('/{products}', [AdminProductController::class, 'update'])->name('update');
-        Route::delete('/{products}', [AdminProductController::class, 'destroy'])->name('destroy')->middleware('permission:delete-products');
-    });
-
-    //Socials
-    Route::middleware('permission:view-socials')->prefix('socials')->name('socials.')->group(function () {
-        Route::put('change-status', [SocialController::class, 'socialsChangeStatus'])
-            ->name('change-status');
-        Route::get('/', [SocialController::class, 'index'])->name('index');
-        Route::get('/create', [SocialController::class, 'create'])->name('create')->middleware('permission:create-socials');
-        Route::post('/', [SocialController::class, 'store'])->name('store');
-        Route::get('/{socials}', [SocialController::class, 'show'])->name('show');
-        Route::get('/{socials}/edit', [SocialController::class, 'edit'])->name('edit')->middleware('permission:edit-socials');
-        Route::put('/{socials}', [SocialController::class, 'update'])->name('update');
-        Route::delete('/{socials}', [SocialController::class, 'destroy'])->name('destroy')->middleware('permission:delete-socials');
-    });
-
-    //popup
-    Route::middleware('permission:view-popups')->prefix('popups')->name('popups.')->group(function () {
-        Route::put('change-status', [NewletterPopupController::class, 'changeStatus'])->name('change-status');
-        Route::get('/', [NewletterPopupController::class, 'index'])->name('index');
-        Route::get('/create', [NewletterPopupController::class, 'create'])->name('create')->middleware('permission:create-popups');
-        Route::post('/store', [NewletterPopupController::class, 'store'])->name('store');
-        Route::get('/edit/{popup}', [NewletterPopupController::class, 'edit'])->name('edit')->middleware('permission:edit-popups');
-        Route::put('/update/{popup}', [NewletterPopupController::class, 'update'])->name('update');
-        Route::delete('/destroy/{popup}', [NewletterPopupController::class, 'destroy'])->name('destroy')->middleware('permission:delete-popups');
-        Route::post('/upload-image', [NewletterPopupController::class, 'uploadImage'])->name('upload.image');
-    });
-
-    //Tags
-    Route::middleware('permission:view-tags')->prefix('tags')->name('tags.')->group(function () {
-        Route::put('change-status', [TagController::class, 'tagsChangeStatus'])
-            ->name('change-status');
-        Route::get('/', [TagController::class, 'index'])->name('index');
-        Route::get('/create', [TagController::class, 'create'])->name('create')->middleware('permission:create-tags');
-        Route::post('/', [TagController::class, 'store'])->name('store');
-        Route::get('/{tags}', [TagController::class, 'show'])->name('show');
-        Route::get('/{tags}/edit', [TagController::class, 'edit'])->name('edit')->middleware('permission:edit-tags');
-        Route::put('/{tags}', [TagController::class, 'update'])->name('update');
-        Route::delete('/{tags}', [TagController::class, 'destroy'])->name('destroy')->middleware('permission:delete-tags');
-    });
-
-    //payment srtting
-    Route::middleware('permission:view-payment-settings')->prefix('payment-settings')->name('payment-settings.')->group(function () {
-        Route::prefix('vnpay-setting')->name('vnpay-setting.')->group(function () {
-            Route::get('/', [VnpaySettingController::class, 'index'])->name('index');
-            Route::put('/{id}', [VnpaySettingController::class, 'update'])->name('update');
+    Route::get('/login-admin', function () {
+        return view('admin.page.auth.login');
+    })->name('login');
+    Route::middleware(['check.admin.role'])->group(function () {
+        //dashboard
+        Route::middleware('permission:view-dashboard')->prefix('dashboard')->name('dashboard.')->group(function () {
+            Route::get('/', [DashboardController::class, 'index'])->name('index');
+            Route::get('/order-statistics/{month}', [DashboardController::class, 'orderStatistics'])->name('order-statistics');
+            Route::get('/yearly-statistics', [DashboardController::class, 'yearlyStatistics'])->name('yearly-statistics');
+            Route::get('/top-products/{period}', [DashboardController::class, 'topProducts'])->name('top-products');
+            Route::get('/top-revenue/{period}', [DashboardController::class, 'getTopRevenue']);
+            Route::get('/best-rated-products', [DashboardController::class, 'bestRatedProducts']);
+            // Route::get('/brand-statistics/{period}', [DashboardController::class, 'brandStatistics'])->name('brand-statistics');
         });
-        Route::prefix('paypal-setting')->name('paypal-setting.')->group(function () {
-            Route::put('/{paypal_setting}', [PaypalSettingController::class, 'update'])->name('update');
-            Route::post('/', [PaypalSettingController::class, 'store'])->name('store');
+        // admin profile
+        Route::get('/profile', [AdminProfileController::class, 'AdminProfile'])->name('profile');
+        Route::post('/update', [AdminProfileController::class, 'AdminProfileUpdate'])->name('profile.update');
+        Route::put('profile/update/password', [AdminProfileController::class, 'updatePassword'])->name('password.update');
+
+        //Brands
+        Route::middleware('permission:view-brands')->prefix('brands')->name('brands.')->group(function () {
+            Route::put('change-status', [BrandController::class, 'changeStatus'])->name('change-status');
+            Route::get('/', [BrandController::class, 'index'])->name('index');
+            Route::get('/create', [BrandController::class, 'create'])->name('create')->middleware('permission:create-brands');
+            Route::post('/store', [BrandController::class, 'store'])->name('store');
+            Route::get('/edit/{brands}', [BrandController::class, 'edit'])->name('edit')->middleware('permission:edit-brands');
+            Route::put('/update/{brands}', [BrandController::class, 'update'])->name('update');
+            Route::delete('/destroy/{brands}', [BrandController::class, 'destroy'])->name('destroy')->middleware('permission:delete-brands');
         });
-    });
 
-    /** Order Route **/
-    Route::middleware('permission:view-orders')->prefix('orders')->name('orders.')->group(function () {
-        Route::get('payment-status', [OrderController::class, 'changePaymentStatus'])->name('payment.status');
-        Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
-        Route::put('change-approve-status', [OrderController::class, 'changeApproveStatus'])->name('return.change-approve-status');
-        Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/return-order', [OrderController::class, 'orderReturn'])->name('return-order');
-        Route::get('/{orders}', [OrderController::class, 'show'])->name('show')->middleware('permission:edit-orders');
-        Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy')->middleware('permission:delete-orders');
-    });
+        //banner
+        Route::middleware('permission:view-banners')->prefix('banners')->name('banners.')->group(function () {
+            Route::put('change-status', [BannerController::class, 'changeStatus'])->name('change-status');
+            Route::get('/', [BannerController::class, 'index'])->name('index');
+            Route::get('/create', [BannerController::class, 'create'])->name('create')->middleware('permission:create-banners');
+            Route::post('/store', [BannerController::class, 'store'])->name('store');
+            Route::get('/edit/{banner}', [BannerController::class, 'edit'])->name('edit')->middleware('permission:edit-banners');
+            Route::put('/update/{banner}', [BannerController::class, 'update'])->name('update');
+            Route::delete('/destroy/{banner}', [BannerController::class, 'destroy'])->name('destroy')->middleware('permission:delete-banners');
 
-    Route::prefix('inventory')->name('inventory.')->group(function () {
-        Route::get('/', [InventoryProductController::class, 'index'])->name('index');
-        Route::get('/export', [InventoryProductController::class, 'exportToExcel'])->name('export');
-        Route::get('/{id}/qr-code', [InventoryProductController::class, 'generateQRCode'])->name('qr-code');
-        Route::get('/{productId}', [InventoryProductController::class, 'productDetail'])->name('get-product-detail');
-    });
-    //Supplier
-    Route::prefix('suppliers')->name('suppliers.')->group(function () {
-        Route::put('change-status', [AdminSupplierController::class, 'changeStatus'])
-            ->name('change-status');
-        Route::get('/', [AdminSupplierController::class, 'index'])->name('index');
-        Route::get('/create', [AdminSupplierController::class, 'create'])->name('create');
-        Route::post('/', [AdminSupplierController::class, 'store'])->name('store');
-        Route::get('/{supplier}/edit', [AdminSupplierController::class, 'edit'])->name('edit');
-        Route::put('/{supplier}', [AdminSupplierController::class, 'update'])->name('update');
-        Route::delete('/{supplier}', [AdminSupplierController::class, 'destroy'])->name('destroy');
+            Route::post('/upload-image', [BannerController::class, 'uploadImage'])->name('upload.image');
+        });
+
+        //role
+        Route::middleware(['role:admin|super_admin'])->prefix('roles')->name('roles.')->group(function () {
+            Route::get('/', [RoleController::class, 'index'])->name('index');
+            Route::get('/create', [RoleController::class, 'create'])->name('create');
+            Route::post('/', [RoleController::class, 'store'])->name('store');
+            Route::get('/{role}', [RoleController::class, 'show'])->name('show');
+            Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+            Route::put('/{role}', [RoleController::class, 'update'])->name('update');
+            Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+        });
+
+        //category_attributes
+        Route::middleware('permission:view-categories-attributes')->prefix('category_attributes')->name('category_attributes.')->group(function () {
+            Route::put('change-status', [AdminCategoryAttributeController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/get-category-attributes', [AdminCategoryAttributeController::class, 'getCategoryAttributes'])->name('get-category-attributes');
+            Route::get('/', [AdminCategoryAttributeController::class, 'index'])->name('index');
+            Route::get('/create', [AdminCategoryAttributeController::class, 'create'])->name('create')->middleware('permission:create-categories-attributes');
+            Route::post('/', [AdminCategoryAttributeController::class, 'store'])->name('store');
+            Route::get('/{category_attribute}', [AdminCategoryAttributeController::class, 'show'])->name('show');
+            Route::get('/{category_attribute}/edit', [AdminCategoryAttributeController::class, 'edit'])->name('edit')->middleware('permission:edit-categories-attributes');
+            Route::put('/{category_attribute}', [AdminCategoryAttributeController::class, 'update'])->name('update');
+            Route::delete('/{category_attribute}', [AdminCategoryAttributeController::class, 'destroy'])->name('destroy')->middleware('permission:delete-categories-attributes');
+        });
+
+        //attributes
+        Route::middleware('permission:view-attributes')->prefix('attributes')->name('attributes.')->group(function () {
+            Route::put('change-status', [AdminAttributeController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/get-attributes/{id}', [AdminAttributeController::class, 'getAttributes'])->name('get-attributes');
+            Route::get('/', [AdminAttributeController::class, 'index'])->name('index');
+            Route::get('/create', [AdminAttributeController::class, 'create'])->name('create')->middleware('permission:create-attributes');
+            Route::post('/', [AdminAttributeController::class, 'store'])->name('store');
+            Route::get('/{attribute}', [AdminAttributeController::class, 'show'])->name('show');
+            Route::get('/{attribute}/edit', [AdminAttributeController::class, 'edit'])->name('edit')->middleware('permission:edit-attributes');
+            Route::put('/{attribute}', [AdminAttributeController::class, 'update'])->name('update');
+            Route::delete('/{attribute}', [AdminAttributeController::class, 'destroy'])->name('destroy')->middleware('permission:delete-attributes');
+        });
+
+        //category_product
+        Route::middleware('permission:view-categories-products')->prefix('category_products')->name('category_products.')->group(function () {
+            Route::put('change-status', [AdminCategoryProductController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('get-parent', [AdminCategoryProductController::class, 'getParentCategory'])
+                ->name('get-parent');
+            Route::get('/', [AdminCategoryProductController::class, 'index'])->name('index');
+            Route::get('/create', [AdminCategoryProductController::class, 'create'])->name('create')->middleware('permission:create-categories-products');
+            Route::post('/', [AdminCategoryProductController::class, 'store'])->name('store');
+            Route::get('/{category_products}', [AdminCategoryProductController::class, 'show'])->name('show');
+            Route::get('/{category_products}/edit', [AdminCategoryProductController::class, 'edit'])->name('edit')->middleware('permission:edit-categories-products');
+            Route::put('/{category_products}', [AdminCategoryProductController::class, 'update'])->name('update');
+            Route::delete('/{category_products}', [AdminCategoryProductController::class, 'destroy'])->name('destroy')->middleware('permission:delete-categories-products');
+        });
+
+        //menu
+        Route::middleware('permission:view-menus')->prefix('menus')->name('menus.')->group(function () {
+            Route::put('change-status', [MenuController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [MenuController::class, 'index'])->name('index');
+            Route::get('/create', [MenuController::class, 'create'])->name('create')->middleware('permission:create-menus');
+            Route::post('/', [MenuController::class, 'store'])->name('store');
+            Route::get('/{menus}', [MenuController::class, 'show'])->name('show');
+            Route::get('/{menus}/edit', [MenuController::class, 'edit'])->name('edit')->middleware('permission:edit-menus');
+            Route::put('/{menus}', [MenuController::class, 'update'])->name('update');
+            Route::delete('/{menus}', [MenuController::class, 'destroy'])->name('destroy')->middleware('permission:delete-menus');
+        });
+
+        //blogs categories
+        Route::middleware('permission:view-blog-categories')->prefix('blog_categories')->name('blog_categories.')->group(function () {
+            Route::put('change-status', [AdminBlogCategoryController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [AdminBlogCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [AdminBlogCategoryController::class, 'create'])->name('create')->middleware('permission:create-blog-categories');
+            Route::post('/', [AdminBlogCategoryController::class, 'store'])->name('store');
+            Route::get('/{blog_categories}', [AdminBlogCategoryController::class, 'show'])->name('show');
+            Route::get('/{blog_categories}/edit', [AdminBlogCategoryController::class, 'edit'])->name('edit')->middleware('permission:edit-blog-categories');
+            Route::put('/{blog_categories}', [AdminBlogCategoryController::class, 'update'])->name('update');
+            Route::delete('/{blog_categories}', [AdminBlogCategoryController::class, 'destroy'])->name('destroy')->middleware('permission:delete-blog-categories');
+        });
+
+        //Abouts
+        /** About page Routes */
+        Route::middleware('permission:view-abouts')->prefix('abouts')->name('abouts.')->group(function () {
+            Route::get('/', [AboutController::class, 'index'])->name('index');
+            Route::put('/update', [AboutController::class, 'update'])->name('update');
+        });
+
+        //Menu Items
+        Route::middleware('permission:view-menu-items')->prefix('menu_items')->name('menu_items.')->group(function () {
+            Route::put('change-status', [MenuItemController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('get-parent', [MenuItemController::class, 'getParentMenuItems'])
+                ->name('get-parent');
+            Route::get('/', [MenuItemController::class, 'index'])->name('index');
+            Route::get('/create', [MenuItemController::class, 'create'])->name('create')->middleware('permission:create-menu-items');
+            Route::post('/', [MenuItemController::class, 'store'])->name('store');
+            Route::get('/{menu_items}', [MenuItemController::class, 'show'])->name('show');
+            Route::get('/{menu_items}/edit', [MenuItemController::class, 'edit'])->name('edit')->middleware('permission:edit-menu-items');
+            Route::put('/{menu_items}', [MenuItemController::class, 'update'])->name('update');
+            Route::delete('/{menu_items}', [MenuItemController::class, 'destroy'])->name('destroy')->middleware('permission:delete-menu-items');
+        });
+
+        // Settings
+        /** Setting Routes */
+        Route::middleware('permission:view-settings')->prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', [SettingController::class, 'index'])->name('index');
+            Route::put('logo-setting-update', [SettingController::class, 'logoSettingUpdate'])->name('logo-setting-update');
+            Route::put('general-setting-update', [SettingController::class, 'GeneralSettingUpdate'])->name('general-setting-update');
+        });
+
+
+        //blog
+        Route::middleware('permission:view-blogs')->prefix('blogs')->name('blogs.')->group(function () {
+            Route::put('change-status', [BlogController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [BlogController::class, 'index'])->name('index');
+            Route::get('/create', [BlogController::class, 'create'])->name('create')->middleware('permission:create-blogs');
+            Route::post('/', [BlogController::class, 'store'])->name('store');
+            Route::get('/{blogs}', [BlogController::class, 'show'])->name('show');
+            Route::get('/{blogs}/edit', [BlogController::class, 'edit'])->name('edit')->middleware('permission:edit-blogs');
+            Route::put('/{blogs}', [BlogController::class, 'update'])->name('update');
+            Route::delete('/{blogs}', [BlogController::class, 'destroy'])->name('destroy')->middleware('permission:delete-blogs');
+        });
+
+        // user
+        Route::middleware('permission:view-accounts')->prefix('accounts')->name('accounts.')->group(function () {
+            Route::put('change-status', [ListAccountController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [ListAccountController::class, 'index'])->name('index');
+            // Route::get('/create', [ListAccountController::class, 'create'])->name('create');
+            // Route::post('/', [ListAccountController::class, 'store'])->name('store');
+            Route::get('/{accounts}', [ListAccountController::class, 'show'])->name('show');
+            Route::get('/{accounts}/edit', [ListAccountController::class, 'edit'])->name('edit')->middleware('permission:edit-accounts');
+            Route::put('/{accounts}', [ListAccountController::class, 'update'])->name('update');
+            Route::delete('/{accounts}', [ListAccountController::class, 'destroy'])->name('destroy')->middleware('permission:edit-accounts');
+        });
+
+        //Coupons
+        Route::middleware('permission:view-coupons')->prefix('coupons')->name('coupons.')->group(function () {
+            Route::put('change-status', [CouponController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [CouponController::class, 'index'])->name('index');
+            Route::get('/create', [CouponController::class, 'create'])->name('create')->middleware('permission:create-coupons');
+            Route::get('/add-coupon', [CouponController::class, 'add'])->name('add');
+            Route::post('/add-coupon', [CouponController::class, 'addCoupon'])->name('add-coupon');
+            Route::post('/', [CouponController::class, 'store'])->name('store');
+            Route::get('/{coupons}', [CouponController::class, 'show'])->name('show');
+            Route::get('/{coupons}/edit', [CouponController::class, 'edit'])->name('edit')->middleware('permission:edit-coupons');
+            Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
+            Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy')->middleware('permission:delete-coupons');
+        });
+
+        //comment blogs
+        Route::middleware('permission:view-blog-comments')->prefix('blog_comments')->name('blog_comments.')->group(function () {
+            Route::get('/', [BlogCommentController::class, 'index'])->name('index');
+            Route::delete('/{blog_comments}', [BlogCommentController::class, 'destroy'])->name('destroy')->middleware('permission:delete-blog-comments');
+        });
+
+        //product_review
+        Route::middleware('permission:view-reviews')->prefix('product_reviews')->name('product_reviews.')->group(function () {
+            Route::get('/', [ProductReviewController::class, 'index'])->name('index');
+            // Route::post('/reviews', [ProductReviewController::class, 'store'])->name('review.store');
+            Route::post('/reviews', [ProductController::class, 'reviews'])->name('review.store');
+            Route::delete('/{product_review}', [ProductReviewController::class, 'destroy'])->name('destroy')->middleware('permission:delete-reviews');
+            // Route::get('/reviews', [ProductController::class, 'getAllReviews'])->name('list');
+        });
+
+
+        //advertisement
+        Route::middleware('permission:view-advertisements')->prefix('advertisement')->name('advertisement.')->group(function () {
+            Route::put('change-status', [AdvertisementsController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [AdvertisementsController::class, 'index'])->name('index');
+            Route::put('homepage-banner-section-one', [AdvertisementsController::class, 'homepageBannerSectionOne'])->name('homepage-banner-section-one');
+            Route::put('homepage-banner-section-two', [AdvertisementsController::class, 'homepageBannerSectionTwo'])->name('homepage-banner-section-two');
+            Route::put('homepage-banner-section-three', [AdvertisementsController::class, 'homepageBannerSectionThree'])->name('homepage-banner-section-three');
+            Route::put('homepage-banner-section-four', [AdvertisementsController::class, 'homepageBannerSectionFour'])->name('homepage-banner-section-four');
+            Route::put('productpage-banner', [AdvertisementsController::class, 'productPageBanner'])->name('productpage-banner');
+            Route::put('cartpage-banner', [AdvertisementsController::class, 'cartPageBanner'])->name('cartpage-banner');
+        });
+
+        //Product
+        Route::middleware('permission:view-products')->prefix('products')->name('products.')->group(function () {
+            Route::put('change-status', [AdminProductController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::delete('/product-attributes/{prdAttributeId}', [AdminProductController::class, 'destroyProductAttribute'])->name('destroy-product-attributes');
+            Route::delete('/variants/{variantId}', [AdminProductController::class, 'destroyVariant'])->name('destroy-variant');
+            Route::post('/upload', [AdminProductController::class, 'uploadImageGalleries'])->name('upload');
+            Route::get('/', [AdminProductController::class, 'index'])->name('index');
+            Route::get('/create', [AdminProductController::class, 'create'])->name('create')->middleware('permission:create-products');
+            Route::post('/', [AdminProductController::class, 'store'])->name('store');
+            Route::get('/{products}', [AdminProductController::class, 'show'])->name('show');
+            Route::get('/{products}/edit', [AdminProductController::class, 'edit'])->name('edit')->middleware('permission:edit-products');
+            Route::put('/{products}', [AdminProductController::class, 'update'])->name('update');
+            Route::delete('/{products}', [AdminProductController::class, 'destroy'])->name('destroy')->middleware('permission:delete-products');
+        });
+
+        //Socials
+        Route::middleware('permission:view-socials')->prefix('socials')->name('socials.')->group(function () {
+            Route::put('change-status', [SocialController::class, 'socialsChangeStatus'])
+                ->name('change-status');
+            Route::get('/', [SocialController::class, 'index'])->name('index');
+            Route::get('/create', [SocialController::class, 'create'])->name('create')->middleware('permission:create-socials');
+            Route::post('/', [SocialController::class, 'store'])->name('store');
+            Route::get('/{socials}', [SocialController::class, 'show'])->name('show');
+            Route::get('/{socials}/edit', [SocialController::class, 'edit'])->name('edit')->middleware('permission:edit-socials');
+            Route::put('/{socials}', [SocialController::class, 'update'])->name('update');
+            Route::delete('/{socials}', [SocialController::class, 'destroy'])->name('destroy')->middleware('permission:delete-socials');
+        });
+
+        //popup
+        Route::middleware('permission:view-popups')->prefix('popups')->name('popups.')->group(function () {
+            Route::put('change-status', [NewletterPopupController::class, 'changeStatus'])->name('change-status');
+            Route::get('/', [NewletterPopupController::class, 'index'])->name('index');
+            Route::get('/create', [NewletterPopupController::class, 'create'])->name('create')->middleware('permission:create-popups');
+            Route::post('/store', [NewletterPopupController::class, 'store'])->name('store');
+            Route::get('/edit/{popup}', [NewletterPopupController::class, 'edit'])->name('edit')->middleware('permission:edit-popups');
+            Route::put('/update/{popup}', [NewletterPopupController::class, 'update'])->name('update');
+            Route::delete('/destroy/{popup}', [NewletterPopupController::class, 'destroy'])->name('destroy')->middleware('permission:delete-popups');
+            Route::post('/upload-image', [NewletterPopupController::class, 'uploadImage'])->name('upload.image');
+        });
+
+        //Tags
+        Route::middleware('permission:view-tags')->prefix('tags')->name('tags.')->group(function () {
+            Route::put('change-status', [TagController::class, 'tagsChangeStatus'])
+                ->name('change-status');
+            Route::get('/', [TagController::class, 'index'])->name('index');
+            Route::get('/create', [TagController::class, 'create'])->name('create')->middleware('permission:create-tags');
+            Route::post('/', [TagController::class, 'store'])->name('store');
+            Route::get('/{tags}', [TagController::class, 'show'])->name('show');
+            Route::get('/{tags}/edit', [TagController::class, 'edit'])->name('edit')->middleware('permission:edit-tags');
+            Route::put('/{tags}', [TagController::class, 'update'])->name('update');
+            Route::delete('/{tags}', [TagController::class, 'destroy'])->name('destroy')->middleware('permission:delete-tags');
+        });
+
+        //payment srtting
+        Route::middleware('permission:view-payment-settings')->prefix('payment-settings')->name('payment-settings.')->group(function () {
+            Route::prefix('vnpay-setting')->name('vnpay-setting.')->group(function () {
+                Route::get('/', [VnpaySettingController::class, 'index'])->name('index');
+                Route::put('/{id}', [VnpaySettingController::class, 'update'])->name('update');
+            });
+            Route::prefix('paypal-setting')->name('paypal-setting.')->group(function () {
+                Route::put('/{paypal_setting}', [PaypalSettingController::class, 'update'])->name('update');
+                Route::post('/', [PaypalSettingController::class, 'store'])->name('store');
+            });
+        });
+
+        /** Order Route **/
+        Route::middleware('permission:view-orders')->prefix('orders')->name('orders.')->group(function () {
+            Route::get('payment-status', [OrderController::class, 'changePaymentStatus'])->name('payment.status');
+            Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
+            Route::put('change-approve-status', [OrderController::class, 'changeApproveStatus'])->name('return.change-approve-status');
+            Route::get('/', [OrderController::class, 'index'])->name('index');
+            Route::get('/return-order', [OrderController::class, 'orderReturn'])->name('return-order');
+            Route::get('/{orders}', [OrderController::class, 'show'])->name('show')->middleware('permission:edit-orders');
+            Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy')->middleware('permission:delete-orders');
+        });
+
+        Route::prefix('inventory')->name('inventory.')->group(function () {
+            Route::get('/', [InventoryProductController::class, 'index'])->name('index');
+            Route::get('/export', [InventoryProductController::class, 'exportToExcel'])->name('export');
+            Route::get('/{id}/qr-code', [InventoryProductController::class, 'generateQRCode'])->name('qr-code');
+            Route::get('/{productId}', [InventoryProductController::class, 'productDetail'])->name('get-product-detail');
+        });
+        //Supplier
+        Route::prefix('suppliers')->name('suppliers.')->group(function () {
+            Route::put('change-status', [AdminSupplierController::class, 'changeStatus'])
+                ->name('change-status');
+            Route::get('/', [AdminSupplierController::class, 'index'])->name('index');
+            Route::get('/create', [AdminSupplierController::class, 'create'])->name('create');
+            Route::post('/', [AdminSupplierController::class, 'store'])->name('store');
+            Route::get('/{supplier}/edit', [AdminSupplierController::class, 'edit'])->name('edit');
+            Route::put('/{supplier}', [AdminSupplierController::class, 'update'])->name('update');
+            Route::delete('/{supplier}', [AdminSupplierController::class, 'destroy'])->name('destroy');
+        });
     });
 });
