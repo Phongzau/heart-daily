@@ -17,7 +17,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Danh sách nhà cung cấp</h4>
-                            @can('create-categories-attributes')
+                            @can('create-suppliers')
                                 <div class="card-header-action">
                                     <a href="{{ route('admin.suppliers.create') }}" class="btn btn-primary">
                                         <i class="fas fa-plus"></i> Thêm mới

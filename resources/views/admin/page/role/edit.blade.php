@@ -38,7 +38,7 @@
                                                             value="{{ $permission->name }}"
                                                             {{ $role->permissions && $role->permissions->contains('name', $permission->name) ? 'checked' : '' }}>
                                                         <label>
-                                                            {{ $permission->name }}
+                                                            {{ $permission->display_name }}
                                                         </label>
                                                     </div>
                                                 @endforeach

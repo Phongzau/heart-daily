@@ -144,7 +144,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card gradient-bottom">
+                <div class="card">
                     <div class="card-header">
                         <h4>Top 5 Sản phẩm</h4>
                         <div class="card-header-action dropdown">
@@ -199,7 +199,7 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive table-invoice">
-                            <table class="table table-striped">
+                            <table class="table table-striped gradient-bottom">
                                 <thead>
                                     <tr>
                                         <th>ID hóa đơn</th>
@@ -480,7 +480,6 @@
                 var period = $(this).data('revenue-period');
                 var selectedText = $(this).text();
                 $('#revenue-dropdown-toggle-btn').text(selectedText);
-
                 $('.dropdown-item[data-revenue-period]').removeClass('active');
                 $(this).addClass('active');
 
