@@ -8,15 +8,6 @@
         ->merge(Message::where('receiver_id', auth()->user()->id)->pluck('sender_id'))
         ->unique();
 
-    $currentUserRole = auth()->user()->role_id;
-
-    if ($currentUserRole == 3) {
-        $users = User::whereIn('role_id', [1, 2])->get();
-    } elseif ($currentUserRole == 1 || $currentUserRole == 2) {
-        $users = User::whereIn('id', $userIds)->get();
-    } else {
-        $users = collect();
-    }
     $latestMessages = Message::where(function ($query) {
         $query->where('sender_id', auth()->user()->id)->orWhere('receiver_id', auth()->user()->id);
     })
@@ -77,10 +68,10 @@
                                                     ->count();
                                             @endphp
                                             <a href="{{ route('chat', $user->id) }}" class="user-list-item">
-                                                <div class="user-avatar">
-                                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                                <div class="user-avatar" id="user-{{ $user->id }}">
+                                                    <img src="{{ Storage::url( $user->image) }}"
                                                         alt="avatar">
-                                                    <span class="badge-dot"></span>
+                                                        <span class="badge-dot" style="{{ $user->is_online ? 'display: block;' : 'display: none;' }}"></span>
                                                 </div>
                                                 <div class="user-info">
                                                     <p class="user-name">{{ $user->name }}</p>
