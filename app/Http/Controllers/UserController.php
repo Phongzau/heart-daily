@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserStatusChanged;
 use App\Mail\ResetPassword;
 use App\Mail\ConfirmEmail;
 use App\Models\Commune;
@@ -106,6 +107,10 @@ class UserController extends Controller
             //     toastr('Đăng nhập thành công!', 'success');
             //     return redirect()->intended('admin/dashboard');
             // }
+            $user = User::find(Auth::id());
+            $user->update(['is_online' => true]);
+            broadcast(new UserStatusChanged($user));
+
             toastr('Đăng nhập thành công!', 'success');
             return redirect()->intended('/');
         } else {
@@ -175,6 +180,10 @@ class UserController extends Controller
 
     public function logout()
     {
+        $user = User::find(Auth::id());
+        $user->update(['is_online' => false]);
+        broadcast(new UserStatusChanged($user));
+
         Auth::logout();
         toastr('Bạn đã đăng xuất thành công.', 'success');
         return redirect()->route('home');

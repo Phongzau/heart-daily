@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'token',
         'status',
+        'is_online',
         'first_name',
         'last_name',
         'phone',

@@ -19,3 +19,6 @@ Broadcast::channel('coupon-channel', function () {
 Broadcast::channel('user.{id}', function (User $user, $id) {
     return (int) $user->id === (int) $id;  // Kiểm tra quyền truy cập cho người dùng với ID tương ứng
 });
+Broadcast::channel('user-status', function ($user) {
+    return true; 
+});
