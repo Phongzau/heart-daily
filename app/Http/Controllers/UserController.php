@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+// use Laravolt\Avatar\Avatar;
+use Laravolt\Avatar\Facade as Avatar;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -49,7 +52,23 @@ class UserController extends Controller
         $user->status = 0;
         $user->is_block = 1;
         $user->role_id = 4;
+
+        $avatar = Avatar::create($user->name)->toBase64();
+        
+        $avatar = str_replace('data:image/png;base64,', '', $avatar);
+        $imagePath = 'uploads/avatar/media_' . Str::random(12) . '.png';
+        Storage::disk('public')->put($imagePath, base64_decode($avatar));
+
+        // Gán đường dẫn ảnh vào cột image
+        $user->image = $imagePath;
+
         $user->save();
+
+        // $avatar = Avatar::create($user->name)->toBase64();
+        // $avatarPath = "uploads/avatar/{$user->id}.png";
+        // Storage::disk('public')->put($avatarPath, base64_decode(explode(',', $avatar)[1]));
+        // $user->avatar = $avatarPath;
+        // $user->save();
 
         $confirmationLink = route('confirm.email', ['token' => $user->token, 'email' => $user->email]);
         Mail::to($user->email)->send(new ConfirmEmail($user, $confirmationLink));
@@ -109,10 +128,10 @@ class UserController extends Controller
             // }
             $user = User::find(Auth::id());
             $user->update(['is_online' => true]);
-            broadcast(new UserStatusChanged($user));
+
 
             toastr('Đăng nhập thành công!', 'success');
-            return redirect()->intended('/');
+            return redirect()->intended();
         } else {
             toastr('Thông tin đăng nhập không chính xác.', 'error');
             return redirect()->back();
@@ -182,7 +201,7 @@ class UserController extends Controller
     {
         $user = User::find(Auth::id());
         $user->update(['is_online' => false]);
-        broadcast(new UserStatusChanged($user));
+
 
         Auth::logout();
         toastr('Bạn đã đăng xuất thành công.', 'success');

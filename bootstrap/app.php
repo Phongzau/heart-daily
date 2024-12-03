@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CheckAdminRole;
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\UpdateUserStatus;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -25,6 +26,16 @@ return Application::configure(basePath: dirname(__DIR__))
             // 'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
             'check.admin.role' => CheckAdminRole::class,
         ]);
+        // $middleware->append([
+        //     'update.user.status' => UpdateUserStatus::class,
+        // ]);
+        // protected function schedule(Schedule $schedule)
+        // {
+        //     $schedule->call(function () {
+        //         app(\App\Services\ChatService::class)->processPendingMessages();
+        //     })->everyMinute();
+        // }
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -2,6 +2,28 @@
     use Carbon\Carbon;
     use App\Models\User;
     use App\Models\Message;
+    $onlineAdmins = User::where('role_id', '<>', 4)
+        ->where('is_online', true)
+
+        ->get();
+    if ($onlineAdmins->isEmpty()) {
+        $waitingMessages = Message::where('status', 'pending')->get();
+    } else {
+        // Nếu có admin online, gửi tin nhắn cho một admin online
+        $assignedAdmin = $onlineAdmins->first(); // Chọn admin đầu tiên (có thể cải tiến theo logic ưu tiên)
+        $assignedMessages = Message::where('receiver_id', $assignedAdmin->id)
+            ->where('status', 'pending') // Lọc tin nhắn chờ
+            ->get();
+    }
+    $maxMessagesPerAdmin = 5; 
+    $adminMessageCount = $assignedAdmin ? Message::where('receiver_id', $assignedAdmin->id)
+                                         ->where('status', 'pending')
+                                         ->count() : 0;
+
+    if ($adminMessageCount >= $maxMessagesPerAdmin) {
+        // Nếu admin đã nhận đủ tin nhắn, đưa tin nhắn vào danh sách chờ
+        $waitingMessages->push($message); // Thêm tin nhắn vào danh sách chờ
+    }
 
     $userIds = Message::where('sender_id', auth()->user()->id)
         ->pluck('receiver_id')
@@ -31,6 +53,7 @@
     $users = $users->sortByDesc(function ($user) use ($latestMessageTimes) {
         return $latestMessageTimes[$user->id];
     });
+    // $availableAdmins = $onlineAdmins->sortBy('id');
 @endphp
 <section>
     <div class="container py-5">
@@ -68,10 +91,10 @@
                                                     ->count();
                                             @endphp
                                             <a href="{{ route('chat', $user->id) }}" class="user-list-item">
-                                                <div class="user-avatar" id="user-{{ $user->id }}">
-                                                    <img src="{{ Storage::url( $user->image) }}"
-                                                        alt="avatar">
-                                                        <span class="badge-dot" style="{{ $user->is_online ? 'display: block;' : 'display: none;' }}"></span>
+                                                <div class="user-avatar">
+                                                    <img src="{{ Storage::url($user->image) }}" alt="avatar">
+                                                    <span class="badge-dot"
+                                                        style="{{ $user->is_online ? 'display: block;' : 'display: none;' }}"></span>
                                                 </div>
                                                 <div class="user-info">
                                                     <p class="user-name">{{ $user->name }}</p>
