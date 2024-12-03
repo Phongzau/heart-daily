@@ -5,19 +5,7 @@ import toastr from "toastr";
 
 // Khởi tạo Toastr
 window.toastr = toastr;
-Echo.channel("user-status").listen("UserStatusChanged", (event) => {
-    console.log(`User ${event.user_id} is now ${event.status}`);
 
-    let userElement = document.getElementById("user-" + event.user_id);
-    if (userElement) {
-        let badgeDot = userElement.querySelector(".badge-dot");
-        if (event.status === "online") {
-            if (badgeDot) badgeDot.style.display = "block"; // Hiển thị trạng thái online
-        } else {
-            if (badgeDot) badgeDot.style.display = "none"; // Ẩn trạng thái offline
-        }
-    }
-});
 
 
 document.addEventListener("DOMContentLoaded", function () {
