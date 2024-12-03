@@ -2,58 +2,41 @@
     use Carbon\Carbon;
     use App\Models\User;
     use App\Models\Message;
-    $onlineAdmins = User::where('role_id', '<>', 4)
-        ->where('is_online', true)
 
-        ->get();
-    if ($onlineAdmins->isEmpty()) {
-        $waitingMessages = Message::where('status', 'pending')->get();
-    } else {
-        // Nếu có admin online, gửi tin nhắn cho một admin online
-        $assignedAdmin = $onlineAdmins->first(); // Chọn admin đầu tiên (có thể cải tiến theo logic ưu tiên)
-        $assignedMessages = Message::where('receiver_id', $assignedAdmin->id)
-            ->where('status', 'pending') // Lọc tin nhắn chờ
-            ->get();
-    }
-    $maxMessagesPerAdmin = 5; 
-    $adminMessageCount = $assignedAdmin ? Message::where('receiver_id', $assignedAdmin->id)
-                                         ->where('status', 'pending')
-                                         ->count() : 0;
+    $currentUser = auth()->user();
 
-    if ($adminMessageCount >= $maxMessagesPerAdmin) {
-        // Nếu admin đã nhận đủ tin nhắn, đưa tin nhắn vào danh sách chờ
-        $waitingMessages->push($message); // Thêm tin nhắn vào danh sách chờ
+    if ($currentUser->role_id == 4) {
+        $userIds = User::where('role_id', '<>', 4)->pluck('id');
+    }else {
+        $userIds = Message::where('receiver_id', $currentUser->id)
+            ->pluck('sender_id')
+            ->unique();
     }
 
-    $userIds = Message::where('sender_id', auth()->user()->id)
-        ->pluck('receiver_id')
-        ->merge(Message::where('receiver_id', auth()->user()->id)->pluck('sender_id'))
-        ->unique();
-
-    $latestMessages = Message::where(function ($query) {
+    $latestMessages = Message::where(function ($query) use ($currentUser) {
         $query->where('sender_id', auth()->user()->id)->orWhere('receiver_id', auth()->user()->id);
     })
         ->whereIn('sender_id', $userIds)
         ->orWhereIn('receiver_id', $userIds)
         ->orderBy('created_at', 'desc')
         ->get()
-        ->groupBy(function ($message) {
-            return $message->sender_id === auth()->user()->id ? $message->receiver_id : $message->sender_id;
+        ->groupBy(function ($message) use ($currentUser) {
+            return $message->sender_id === $currentUser->id ? $message->receiver_id : $message->sender_id;
         });
     $latestMessageTimes = [];
-    foreach ($users as $user) {
-        if (isset($latestMessages[$user->id])) {
-            $latestMessage = $latestMessages[$user->id]->first();
-            $latestMessageTimes[$user->id] = $latestMessage ? $latestMessage->created_at : null;
+    foreach ($userIds as $userId) {
+        if (isset($latestMessages[$userId])) {
+            $latestMessage = $latestMessages[$userId]->first();
+            $latestMessageTimes[$userId] = $latestMessage ? $latestMessage->created_at : null;
         } else {
-            $latestMessageTimes[$user->id] = null;
+            $latestMessageTimes[$userId] = null;
         }
     }
+    $users = User::whereIn('id', $userIds)->get();
 
     $users = $users->sortByDesc(function ($user) use ($latestMessageTimes) {
         return $latestMessageTimes[$user->id];
     });
-    // $availableAdmins = $onlineAdmins->sortBy('id');
 @endphp
 <section>
     <div class="container py-5">
@@ -71,9 +54,7 @@
                                         style="position: relative; height: 400px; overflow-y: auto;">
                                         @foreach ($users as $user)
                                             @php
-                                                $latestMessage = App\Models\Message::where(function ($query) use (
-                                                    $user,
-                                                ) {
+                                                $latestMessage = Message::where(function ($query) use ($user) {
                                                     $query
                                                         ->where('sender_id', auth()->user()->id)
                                                         ->where('receiver_id', $user->id);
@@ -85,9 +66,9 @@
                                                     })
                                                     ->orderBy('created_at', 'desc')
                                                     ->first();
-                                                $unreadCount = App\Models\Message::where('sender_id', $user->id)
+                                                $unreadCount = Message::where('sender_id', $user->id)
                                                     ->where('receiver_id', auth()->user()->id)
-                                                    ->where('status', 0) // 0 là chưa đọc
+                                                    ->where('status', 0) 
                                                     ->count();
                                             @endphp
                                             <a href="{{ route('chat', $user->id) }}" class="user-list-item">
@@ -136,13 +117,20 @@
                                             @php
                                                 $messageDate = Carbon::parse($message['created_at']);
                                                 $isToday = $messageDate->isToday();
+                                                $isSender = $message['sender'] == auth()->user()->name;
+                                                
+                                                $senderUser = App\Models\User::where('name', $message['sender'])->first();
+                                                $receiverUser = App\Models\User::where('name', $message['receiver'])->first();
+
+                                                $senderAvatar = $senderUser && $senderUser->image ? Storage::url($senderUser->image) : asset($defaultAvatar);
+                                                $receiverAvatar = $receiverUser && $receiverUser->image ? Storage::url($receiverUser->image) : asset($defaultAvatar);
                                             @endphp
                                             @if (isset($message['message']['file']))
                                                 @if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $message['message']['file']))
                                                     <div
-                                                        class="d-flex flex-row {{ $message['sender'] != auth()->user()->name ? 'justify-content-start' : 'justify-content-end' }}">
-                                                        @if ($message['sender'] != auth()->user()->name)
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+                                                        class="d-flex flex-row {{ !$isSender ? 'justify-content-start' : 'justify-content-end' }}">
+                                                        @if (!$isSender)
+                                                            <img src="{{ $senderAvatar }}"
                                                                 alt="avatar" style="width: 45px; height: 100%;">
                                                         @else
                                                             <div></div>
@@ -160,16 +148,16 @@
                                                                 {{ $isToday ? $messageDate->format('h:i A') : $messageDate->format('d/m/Y') }}
                                                             </p>
                                                         </div>
-                                                        @if ($message['sender'] == auth()->user()->name)
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                                        @if ($isSender)
+                                                            <img src="{{ $receiverAvatar }}"
                                                                 alt="avatar" style="width: 45px; height: 100%;">
                                                         @endif
                                                     </div>
                                                 @else
                                                     <div
-                                                        class="d-flex flex-row {{ $message['sender'] != auth()->user()->name ? 'justify-content-start' : 'justify-content-end' }}">
-                                                        @if ($message['sender'] != auth()->user()->name)
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+                                                        class="d-flex flex-row {{ !$isSender ? 'justify-content-start' : 'justify-content-end' }}">
+                                                        @if (!$isSender)
+                                                            <img src="{{ $senderAvatar }}"
                                                                 alt="avatar" style="width: 45px; height: 100%;">
                                                         @else
                                                             <div></div>
@@ -191,17 +179,17 @@
                                                                 {{ $isToday ? $messageDate->format('h:i A') : $messageDate->format('d/m/Y') }}
                                                             </p>
                                                         </div>
-                                                        @if ($message['sender'] == auth()->user()->name)
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                                        @if ($isSender)
+                                                            <img src="{{ $receiverAvatar }}"
                                                                 alt="avatar" style="width: 45px; height: 100%;">
                                                         @endif
                                                     </div>
                                                 @endif
                                             @elseif (isset($message['message']['text']))
                                                 <div
-                                                    class="d-flex flex-row {{ $message['sender'] != auth()->user()->name ? 'justify-content-start' : 'justify-content-end' }}">
-                                                    @if ($message['sender'] != auth()->user()->name)
-                                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+                                                    class="d-flex flex-row {{ !$isSender ? 'justify-content-start' : 'justify-content-end' }}">
+                                                    @if (!$isSender)
+                                                        <img src="{{ $senderAvatar }}"
                                                             alt="avatar 1" style="width: 45px; height: 100%;">
                                                         <div>
                                                             <p class="small p-2 ms-3 mb-1 rounded-3 bg-light">
@@ -221,7 +209,7 @@
                                                                 {{ $isToday ? $messageDate->format('h:i A') : $messageDate->format('d/m/Y') }}
                                                             </p>
                                                         </div>
-                                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                                        <img src="{{ $receiverAvatar }}"
                                                             alt="avatar 1" style="width: 45px; height: 100%;">
                                                     @endif
                                                 </div>
@@ -233,7 +221,7 @@
 
                                     <form wire:submit.prevent="sendMessage()" class="form-container">
                                         <div class="text-muted d-flex justify-content-start align-items-center">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+                                            <img src="{{ Storage::url($user->image) }}"
                                                 alt="avatar 3" style="width: 40px; height: auto;" />
                                             <textarea class="flex-grow m-2 textarea-custom" rows="1" cols="80" wire:model="message"
                                                 placeholder="Message..." style="min-height: 40px;"
