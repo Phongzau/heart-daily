@@ -68,15 +68,16 @@
                                                     })
                                                     ->orderBy('created_at', 'desc')
                                                     ->first();
-                                                $unreadCount = Message::where('sender_id', $user->id)
+                                                    $unreadCount = Message::where('sender_id', $user->id)
                                                     ->where('receiver_id', auth()->user()->id)
                                                     ->where('status', 0)
                                                     ->count();
                                             @endphp
                                             <a href="{{ route('chat', $user->id) }}" class="user-list-item">
                                                 <div class="user-avatar">
-                                                    <img src="{{ Storage::url($user->image) }}" alt="avatar">
-                                                    <span class="badge-dot"
+                                                    <img src="{{ Storage::url($user->image) }}"
+                                                        alt="avatar">
+                                                        <span class="badge-dot"
                                                         style="{{ $user->is_online ? 'display: block;' : 'display: none;' }}"></span>
                                                 </div>
                                                 <div class="user-info">
