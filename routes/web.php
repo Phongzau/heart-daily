@@ -120,9 +120,9 @@ Route::get('/abouts', [App\Http\Controllers\Client\AboutController::class, 'inde
 //product
 
 Route::prefix('product')->name('product.')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('getProducts');
     Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('ajaxGetProducts');
-    Route::get('/{slug}', [ProductController::class, 'productDetail'])->name('detail');
+    Route::get('/{slug?}', [ProductController::class, 'index'])->name('getProducts');
+    Route::get('/detail/{slug}', [ProductController::class, 'productDetail'])->name('detail');
     Route::post('/get-qty-variant', [ProductController::class, 'getQtyVariant'])->name('get-qty-variant');
     Route::get('/search', [ProductController::class, 'search'])->name('search');
     Route::post('/get-product-by-search', [ProductController::class, 'getProductBySearch'])->name('get-product-by-search');

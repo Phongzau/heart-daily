@@ -53,7 +53,7 @@ class CategoryProductDataTable extends DataTable
                 return $editBtn . $deleteBtn;
             })
             ->addColumn('parent_name', function ($query) {
-                return $query->parentId ? $query->parentId->title : '0';
+                return $query->parentId ? $query->parentId->title : 'Danh Mục Cha';
             })
             ->rawColumns(['status', 'action'])
             ->setRowId('id');
