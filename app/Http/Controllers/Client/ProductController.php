@@ -21,13 +21,17 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $slug = null)
     {
 
         $perPage = $request->input('count', 12);
         $searchQuery = $request->input('search');
         $query = Product::query()->where('status', 1);
-
+        if ($slug != null) {
+            $query->whereHas('category', function ($q) use ($slug) {
+                $q->where('slug', $slug);
+            });
+        }
         if ($searchQuery) {
             // Tìm kiếm theo tên, slug, danh mục, hoặc thương hiệu
             $query->where(function ($q) use ($searchQuery) {

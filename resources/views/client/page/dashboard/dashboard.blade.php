@@ -316,16 +316,6 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab"
-                            aria-controls="download" aria-selected="false">Tải xuống</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
-                            aria-controls="address" aria-selected="false">Địa chỉ</a>
-                    </li>
-
-                    <li class="nav-item">
                         <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab"
                             aria-controls="edit" aria-selected="false">
                             Thông tin tài khoản</a>
@@ -346,10 +336,6 @@
                 @include('client.page.dashboard.sections.dashboard')
 
                 @include('client.page.dashboard.sections.order')
-
-                @include('client.page.dashboard.sections.download')
-
-                @include('client.page.dashboard.sections.address')
 
                 @include('client.page.dashboard.sections.account-details')
 

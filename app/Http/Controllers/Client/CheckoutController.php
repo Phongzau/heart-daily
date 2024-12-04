@@ -195,7 +195,7 @@ class CheckoutController extends Controller
             if ($admins && !empty($admins)) {
                 foreach ($admins as $user) {
                     event(new CheckoutOrderComplete($user, $order));
-                    $user->notify(new BuyrderComplete($order));
+                    $user->notify(new BuyOrderComplete($order));
                 }
             }
         } catch (\Exception $e) {
