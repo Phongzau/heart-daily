@@ -7,7 +7,7 @@
 
     if ($currentUser->role_id == 4) {
         $userIds = User::where('role_id', '<>', 4)->pluck('id');
-    }else {
+    } else {
         $userIds = Message::where('receiver_id', $currentUser->id)
             ->pluck('sender_id')
             ->unique();
@@ -21,22 +21,22 @@
         ->orderBy('created_at', 'desc')
         ->get()
         ->groupBy(function ($message) use ($currentUser) {
-            return $message->sender_id === $currentUser->id ? $message->receiver_id : $message->sender_id;
+            return $message->sender_id === auth()->user()->id ? $message->receiver_id : $message->sender_id;
         });
     $latestMessageTimes = [];
-    foreach ($userIds as $userId) {
-        if (isset($latestMessages[$userId])) {
-            $latestMessage = $latestMessages[$userId]->first();
-            $latestMessageTimes[$userId] = $latestMessage ? $latestMessage->created_at : null;
+    foreach ($users as $user) {
+        if (isset($latestMessages[$user->id])) {
+            $latestMessage = $latestMessages[$user->id]->first();
+            $latestMessageTimes[$user->id] = $latestMessage ? $latestMessage->created_at : null;
         } else {
-            $latestMessageTimes[$userId] = null;
+            $latestMessageTimes[$user->id] = null;
         }
     }
     $users = User::whereIn('id', $userIds)->get();
-
     $users = $users->sortByDesc(function ($user) use ($latestMessageTimes) {
         return $latestMessageTimes[$user->id];
     });
+    $messages = Message::with('sender')->get();
 @endphp
 <section>
     <div class="container py-5">
@@ -48,13 +48,15 @@
                             <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
                                 <div class="p-3">
                                     <div class="rounded mb-3">
-                                        <h5 class="font-weight-bold mb-3 text-center text-lg">Tư Vấn</h5>
+                                        <h5 class="font-weight-bold mb-3 text-center text-lg">Nhân Viên Tư Vấn:</h5>
                                     </div>
                                     <div class="user-list-container"
                                         style="position: relative; height: 400px; overflow-y: auto;">
                                         @foreach ($users as $user)
                                             @php
-                                                $latestMessage = Message::where(function ($query) use ($user) {
+                                                $latestMessage = App\Models\Message::where(function ($query) use (
+                                                    $user,
+                                                ) {
                                                     $query
                                                         ->where('sender_id', auth()->user()->id)
                                                         ->where('receiver_id', $user->id);
@@ -68,7 +70,7 @@
                                                     ->first();
                                                 $unreadCount = Message::where('sender_id', $user->id)
                                                     ->where('receiver_id', auth()->user()->id)
-                                                    ->where('status', 0) 
+                                                    ->where('status', 0)
                                                     ->count();
                                             @endphp
                                             <a href="{{ route('chat', $user->id) }}" class="user-list-item">
@@ -89,7 +91,7 @@
                                                                     preg_match('/\.(pdf|doc|docx|xls|xlsx|ppt|pptx)$/i', $latestMessage->message['file']))
                                                                 [ File ]
                                                             @elseif (isset($latestMessage->message['text']))
-                                                                {{ $latestMessage->message['text'] }}
+                                                                {{ Str::limit($latestMessage->message['text'], 20, '...') }}
                                                             @else
                                                                 [ Tin nhắn không xác định ]
                                                             @endif
@@ -101,7 +103,7 @@
                                                     </p>
                                                     @if ($unreadCount > 0)
                                                         <span
-                                                            class="badge bg-danger user-notifications">{{ $unreadCount }}</span>
+                                                            class="badge bg-danger user-notifications text-light">{{ $unreadCount }}</span>
                                                     @endif
                                                 </div>
                                             </a>
@@ -117,23 +119,19 @@
                                             @php
                                                 $messageDate = Carbon::parse($message['created_at']);
                                                 $isToday = $messageDate->isToday();
-                                                $isSender = $message['sender'] == auth()->user()->name;
-                                                
-                                                $senderUser = App\Models\User::where('name', $message['sender'])->first();
-                                                $receiverUser = App\Models\User::where('name', $message['receiver'])->first();
 
-                                                $senderAvatar = $senderUser && $senderUser->image ? Storage::url($senderUser->image) : asset($defaultAvatar);
-                                                $receiverAvatar = $receiverUser && $receiverUser->image ? Storage::url($receiverUser->image) : asset($defaultAvatar);
+                                                $senderAvatar = Storage::url($message->sender->image);
+                                                $receiverAvatar = Storage::url(auth()->user()->image);
                                             @endphp
                                             @if (isset($message['message']['file']))
                                                 @if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $message['message']['file']))
                                                     <div
-                                                        class="d-flex flex-row {{ !$isSender ? 'justify-content-start' : 'justify-content-end' }}">
-                                                        @if (!$isSender)
-                                                            <img src="{{ $senderAvatar }}"
-                                                                alt="avatar" style="width: 45px; height: 100%;">
-                                                        @else
-                                                            <div></div>
+                                                        class="d-flex flex-row {{ $message->sender->name != auth()->user()->name ? 'justify-content-start' : 'justify-content-end' }}">
+                                                        @if ($message->sender->name != auth()->user()->name)
+                                                            <img src="{{ $senderAvatar }}" alt="avatar"
+                                                                style="width: 45px; height: 100%;">
+                                                            {{-- @else
+                                                            <div></div> --}}
                                                         @endif
                                                         <div>
                                                             <img src="{{ asset('storage/' . $message['message']['file']) }}"
@@ -148,19 +146,19 @@
                                                                 {{ $isToday ? $messageDate->format('h:i A') : $messageDate->format('d/m/Y') }}
                                                             </p>
                                                         </div>
-                                                        @if ($isSender)
-                                                            <img src="{{ $receiverAvatar }}"
-                                                                alt="avatar" style="width: 45px; height: 100%;">
+                                                        @if ($message->sender->name == auth()->user()->name)
+                                                            <img src="{{ $receiverAvatar }}" alt="avatar"
+                                                                style="width: 45px; height: 100%;">
                                                         @endif
                                                     </div>
                                                 @else
                                                     <div
-                                                        class="d-flex flex-row {{ !$isSender ? 'justify-content-start' : 'justify-content-end' }}">
-                                                        @if (!$isSender)
-                                                            <img src="{{ $senderAvatar }}"
-                                                                alt="avatar" style="width: 45px; height: 100%;">
-                                                        @else
-                                                            <div></div>
+                                                        class="d-flex flex-row {{ $message->sender->name != auth()->user()->name ? 'justify-content-start' : 'justify-content-end' }}">
+                                                        @if ($message->sender->name != auth()->user()->name)
+                                                            <img src="{{ $senderAvatar }}" alt="avatar"
+                                                                style="width: 45px; height: 100%;">
+                                                            {{-- @else
+                                                            <div></div> --}}
                                                         @endif
                                                         <div>
                                                             <p class="small p-2 ms-3 mb-1 rounded-3 bg-light">
@@ -179,18 +177,18 @@
                                                                 {{ $isToday ? $messageDate->format('h:i A') : $messageDate->format('d/m/Y') }}
                                                             </p>
                                                         </div>
-                                                        @if ($isSender)
-                                                            <img src="{{ $receiverAvatar }}"
-                                                                alt="avatar" style="width: 45px; height: 100%;">
+                                                        @if ($message->sender->name == auth()->user()->name)
+                                                            <img src="{{ $receiverAvatar }}" alt="avatar"
+                                                                style="width: 45px; height: 100%;">
                                                         @endif
                                                     </div>
                                                 @endif
                                             @elseif (isset($message['message']['text']))
                                                 <div
-                                                    class="d-flex flex-row {{ !$isSender ? 'justify-content-start' : 'justify-content-end' }}">
-                                                    @if (!$isSender)
-                                                        <img src="{{ $senderAvatar }}"
-                                                            alt="avatar 1" style="width: 45px; height: 100%;">
+                                                    class="d-flex flex-row {{ $message->sender->name != auth()->user()->name ? 'justify-content-start' : 'justify-content-end' }}">
+                                                    @if ($message->sender->name != auth()->user()->name)
+                                                        <img src="{{ $senderAvatar }}" alt="avatar 1"
+                                                            style="width: 45px; height: 100%;">
                                                         <div>
                                                             <p class="small p-2 ms-3 mb-1 rounded-3 bg-light">
                                                                 {{ htmlspecialchars($message['message']['text'], ENT_QUOTES, 'UTF-8') }}
@@ -209,35 +207,47 @@
                                                                 {{ $isToday ? $messageDate->format('h:i A') : $messageDate->format('d/m/Y') }}
                                                             </p>
                                                         </div>
-                                                        <img src="{{ $receiverAvatar }}"
-                                                            alt="avatar 1" style="width: 45px; height: 100%;">
+                                                        <img src="{{ $receiverAvatar }}" alt="avatar 1"
+                                                            style="width: 45px; height: 100%;">
                                                     @endif
                                                 </div>
                                             @endif
                                         @endforeach
-
-
                                     </div>
 
                                     <form wire:submit.prevent="sendMessage()" class="form-container">
                                         <div class="text-muted d-flex justify-content-start align-items-center">
-                                            <img src="{{ Storage::url($user->image) }}"
-                                                alt="avatar 3" style="width: 40px; height: auto;" />
+                                            <img src="{{ $receiverAvatar }}" alt="avatar 3"
+                                                style="width: 40px; height: auto;" />
+
                                             <textarea class="flex-grow m-2 textarea-custom" rows="1" cols="80" wire:model="message"
                                                 placeholder="Message..." style="min-height: 40px;"
                                                 oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';" onkeydown="handleKeyDown(event)"></textarea>
+                                            <div class="file-preview ms-2">
+                                                @if ($file)
+                                                    @if ($file->getMimeType() && str_contains($file->getMimeType(), 'image'))
+                                                        <img src="{{ $file->temporaryUrl() }}" alt="Preview"
+                                                            style="max-width: 100%; max-height: 150px; border-radius: 5px;" />
+                                                    @else
+                                                        <span
+                                                            class="text-muted">{{ $file->getClientOriginalName() }}</span>
+                                                    @endif
+                                                @endif
+                                            </div>
+
                                             <input type="file" id="file-input" wire:model="file" class="d-none"
                                                 accept="image/*,application/pdf" />
                                             <label for="file-input" class="ms-1 text-muted label-file-icon"
                                                 style="cursor: pointer;">
                                                 <i class="fas fa-paperclip"></i>
                                             </label>
-                                            <button class="send-button ms-3" type="submit" aria-label="Send message">
+
+                                            <button class="send-button ms-3" type="button" wire:click="sendMessage"
+                                                aria-label="Send message">
                                                 <i class="fas fa-paper-plane"></i>
                                             </button>
                                         </div>
                                     </form>
-
                                 </div>
                             @else
                                 <div class="col-md-6 col-lg-7 col-xl-8">
@@ -245,7 +255,6 @@
                                         đầu trò chuyện.</p>
                                 </div>
                             @endif
-
                         </div>
                     </div>
                 </div>

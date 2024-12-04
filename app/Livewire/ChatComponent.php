@@ -44,6 +44,7 @@ class ChatComponent extends Component
         }
         $this->markMessagesAsRead();
         $this->user = User::whereId($user_id)->first();
+        $this->checkAndSendThankYouMessage();
     }
 
     public function render()
@@ -76,10 +77,41 @@ class ChatComponent extends Component
 
         $this->appendChatMessage($chatMessage);
         broadcast(new MessageSendEvent($chatMessage))->toOthers();
-
         $this->message = '';
         $this->file = null;
         $this->dispatch('messageSent');
+        $this->markMessagesAsRead();
+        $this->checkAndSendThankYouMessage();
+    }
+
+    public function checkAndSendThankYouMessage()
+    {
+        $lastMessage = Message::where(function ($query) {
+            $query->where('sender_id', $this->sender_id)
+                ->where('receiver_id', $this->receiver_id);
+        })->orWhere(function ($query) {
+            $query->where('sender_id', $this->receiver_id)
+                ->where('receiver_id', $this->sender_id);
+        })
+            ->latest('created_at')
+            ->first();
+
+        if (!$lastMessage) {
+            return;
+        }
+        $now = now();
+        $lastMessageTime = $lastMessage->created_at;
+        $sender = User::find($lastMessage->sender_id);
+        if ($sender->role_id != 4 && $lastMessageTime->diffInMinutes($now) >= 5) {
+
+            $thankYouMessage = new Message();
+            $thankYouMessage->sender_id = $this->sender_id;
+            $thankYouMessage->receiver_id = $this->receiver_id;
+            $thankYouMessage->message = ['text' => 'Cảm ơn bạn đã liên hệ với chúng tôi! Bạn còn vấn đề gì cần được hỗ trợ không ạ. Nếu không chúng tôi xin kết thúc sau 5 phút nữa. Chúc bạn mua hàng vui vẻ!', 'file' => null];
+            $thankYouMessage->save();
+            broadcast(new MessageSendEvent($thankYouMessage))->toOthers();
+            $this->appendChatMessage($thankYouMessage);
+        }
     }
 
 
@@ -107,7 +139,7 @@ class ChatComponent extends Component
     {
         Message::where('receiver_id', $this->sender_id)
             ->where('sender_id', $this->receiver_id)
-            ->where('status', 0) // Chỉ lấy tin nhắn chưa đọc
-            ->update(['status' => 1]); // Đánh dấu là đã đọc
+            ->where('status', 0)
+            ->update(['status' => 1]);
     }
 }
