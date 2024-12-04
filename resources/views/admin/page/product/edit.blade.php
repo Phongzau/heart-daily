@@ -326,6 +326,8 @@
                                                                 <hr>
                                                                 <button class="btn btn-primary btn-add-variant">Thêm
                                                                     biến thể</button>
+                                                                <button id="generate-variants" class="btn btn-primary">Tạo
+                                                                    biến thể tự động</button>
                                                             @else
                                                                 <div class="attribute-container mt-3">
                                                                     <h6 style="margin-bottom: 14px">Thuộc tính</h6>
@@ -879,13 +881,17 @@
                 if (attributeData.length > 0 && attributeData.some(attr => Object.keys(attr.values).length > 0)) {
                     // Hiển thị nút "Thêm biến thể"
                     $('.btn-add-variant').show();
+                    $('#generate-variants').show();
                     $('#variantList').show();
                 } else {
                     // Ẩn nút "Thêm biến thể"
                     $('.btn-add-variant').hide();
+                    $('#generate-variants').hide();
                     $('#variantList').hide();
                 }
             }
+
+            checkAttributeData();
 
             // Khi nhấn nút "Thêm biến thể", hiển thị popup và load các thuộc tính đã chọn
             $('.btn-add-variant').click(function(e) {
@@ -1625,6 +1631,91 @@
                     },
                 })
             }
+
+            function generateVariants(attributes) {
+                let attributeValues = attributes.map(attr => {
+                    return Object.entries(attr.values).map(([id, value]) => ({
+                        attributeId: attr.id,
+                        valueId: id,
+                        valueName: value
+                    }));
+                });
+
+                function combine(arr, index = 0) {
+                    if (index >= arr.length) return [
+                        []
+                    ];
+                    let result = [];
+                    let currentAttribute = arr[index];
+                    let subCombinations = combine(arr, index + 1);
+
+                    currentAttribute.forEach(value => {
+
+                        subCombinations.forEach(subCombo => {
+                            result.push([value, ...subCombo]);
+                        });
+                    });
+                    return result;
+                }
+
+                return combine(attributeValues);
+
+            }
+
+            function createVariants(attributes) {
+                let combinations = generateVariants(attributes);
+                // console.log(combinations);
+
+                combinations.forEach((combination, index) => {
+                    let variantIdKey = combination.map(v => v.valueId).join("_");
+
+                    let variantName = combination.map(v => v.valueName).join(' / ');
+
+                    if (variants[variantIdKey]) {
+                        return;
+                    } else {
+                        variants[variantIdKey] = {
+                            value_variant: combination.map(v => v.valueId),
+                            title_variant: combination.map(v => v.valueName),
+                            price_variant: 0,
+                            offer_price_variant: 0,
+                            variant_offer_start_date: '',
+                            variant_offer_end_date: '',
+                            qty_variant: 0,
+                        };
+
+                        // Tạo phần tử mới để hiển thị biến thể
+                        let newVariantHtml = `
+                        <div class="variant-item" style="padding: 10px" data-id="${variantIdKey}">
+                            <input type="checkbox" class="checkbox-variant mr-2" data-id="${variantIdKey}">
+                            <span class="variant-name" style="margin: 16px 0px 15px 5px;">${variantName}</span>
+                            <div style="padding: 0px 20px 0px 20px;">
+                            <span class="variant-price" style="float: right;">0 VNĐ</span>
+                            <br>
+                            <span class="variant-quantity" style="float: right;">Số lượng: 0</span>
+                            </div>
+                            <button class="btn btn-primary edit-variant" style="margin: 8px 5px 12px 0px;" data-id="${variantIdKey}"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-danger delete-variant" style="margin: 8px 5px 12px 0px;" data-id="${variantIdKey}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                        `;
+
+                        $('#variantList').append(newVariantHtml);
+                    }
+                })
+            }
+
+
+            $('#generate-variants').click(function(event) {
+                event.preventDefault();
+
+                if (attributeData.length > 0 && attributeData.some(attr => Object.keys(attr.values).length >
+                        0)) {
+                    createVariants(attributeData);
+                } else {
+                    return;
+                }
+
+            })
 
             let deletedImageIds = [];
             let currentFileCount = 0; // Biến đếm số lượng tệp đã thêm
