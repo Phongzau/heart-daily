@@ -1,0 +1,22 @@
+{
+    "name": "Heart Daily",
+    "short_name": "Heart Daily",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4caf50",
+    "icons": [
+      {
+        "src": "icons/logopwa.png",
+        "sizes": "500x500",
+        "type": "image/png",
+        "platform": "mobile"
+      },
+      {
+      "src": "icons/logopwa1.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "desktop"
+      }
+    ]
+  }
