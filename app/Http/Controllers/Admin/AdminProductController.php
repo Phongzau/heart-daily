@@ -33,6 +33,20 @@ class AdminProductController extends Controller
         return $dataTable->render('admin.page.product.index');
     }
 
+    public function getCategories($categories, $parentId = 0, $level = 0)
+    {
+        $result = [];
+        foreach ($categories as $category) {
+            if ($category->parent_id == $parentId) {
+                $category->level = $level;
+                $result[] = $category;
+                $children = $this->getCategories($categories, $category->id, $level + 1);
+                $result = array_merge($result, $children);
+            }
+        }
+        return $result;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -41,8 +55,9 @@ class AdminProductController extends Controller
         $brands = Brand::query()->where('status', 1)->get();
         $tags = Tag::all();
         $suppliers = Supplier::query()->where('status', 1)->get();
-        $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
-        return view('admin.page.product.create', compact('categories', 'brands', 'tags', 'suppliers'));
+        $categories = CategoryProduct::orderBy('parent_id')->orderBy('order')->get();
+        $categoriesTree = $this->getCategories($categories);
+        return view('admin.page.product.create', compact('categoriesTree', 'brands', 'tags', 'suppliers'));
     }
 
     /**
@@ -353,7 +368,8 @@ class AdminProductController extends Controller
         $product = Product::query()->with(['ProductVariants', 'ProductImageGalleries', 'ProductAttributes'])->findOrFail($id);
         $categoryAttributes = CategoryAttribute::query()->get();
         $brands = Brand::query()->where('status', 1)->get();
-        $categories = CategoryProduct::query()->where(['parent_id' => 0, 'status' => '1'])->get();
+        $categories = CategoryProduct::orderBy('parent_id')->orderBy('order')->get();
+        $categoriesTree = $this->getCategories($categories);
         $suppliers = Supplier::query()->where('status', 1)->get();
         $tags = Tag::all();
         $selectedTags = json_decode($product->id_tags, true) ?? [];
@@ -388,7 +404,7 @@ class AdminProductController extends Controller
                 ];
             }
         }
-        return view('admin.page.product.edit', compact('product', 'brands', 'categories', 'categoryAttributes', 'convertedData', 'formattedVariants', 'tags', 'selectedTags', 'suppliers'));
+        return view('admin.page.product.edit', compact('product', 'brands', 'categoriesTree', 'categoryAttributes', 'convertedData', 'formattedVariants', 'tags', 'selectedTags', 'suppliers'));
     }
 
     /**
