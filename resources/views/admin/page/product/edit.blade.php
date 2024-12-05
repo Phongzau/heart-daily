@@ -494,10 +494,11 @@
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
                                                         <option value="" hidden>Select</option>
-                                                        @foreach ($categories as $category)
+                                                        @foreach ($categoriesTree as $category)
                                                             <option
-                                                                {{ $product->category_id === $category->id ? 'selected' : '' }}
-                                                                value="{{ $category->id }}">{{ $category->title }}
+                                                                {{ $product->category_id == $category->id ? 'selected' : '' }}
+                                                                value="{{ $category->id }}">
+                                                                {{ str_repeat('--', $category->level) . ' ' . $category->title }}
                                                             </option>
                                                         @endforeach
                                                     </select>

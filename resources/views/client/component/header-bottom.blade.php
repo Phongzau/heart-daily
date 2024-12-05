@@ -88,7 +88,7 @@
                             @php
                                 $categories = App\Models\CategoryProduct::where('status', 1)
                                     ->where('parent_id', 0)
-                                    ->orderBy('order', 'ASC')
+                                    ->orderBy('order', 'DESC')
                                     ->get();
                                 renderMenu($categories, 'product');
                             @endphp

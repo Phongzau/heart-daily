@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class ProductController extends Controller
 {
@@ -28,9 +29,14 @@ class ProductController extends Controller
         $searchQuery = $request->input('search');
         $query = Product::query()->where('status', 1);
         if ($slug != null) {
-            $query->whereHas('category', function ($q) use ($slug) {
-                $q->where('slug', $slug);
-            });
+            $parentCategory = CategoryProduct::query()->where('slug', $slug)->first();
+
+            $categoryIds = CategoryProduct::query()
+                ->where('id', $parentCategory->id)
+                ->orWhere('parent_id', $parentCategory->id)
+                ->pluck('id');
+
+            $query->whereIn('category_id', $categoryIds);
         }
         if ($searchQuery) {
             // Tìm kiếm theo tên, slug, danh mục, hoặc thương hiệu

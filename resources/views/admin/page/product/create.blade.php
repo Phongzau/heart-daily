@@ -327,8 +327,9 @@
                                                     <select id="inputState" name="category_id"
                                                         class="form-control main-category">
                                                         <option value="" hidden>Chọn</option>
-                                                        @foreach ($categories as $category)
-                                                            <option value="{{ $category->id }}">{{ $category->title }}
+                                                        @foreach ($categoriesTree as $category)
+                                                            <option value="{{ $category->id }}">
+                                                                {{ str_repeat('--', $category->level) . ' ' . $category->title }}
                                                             </option>
                                                         @endforeach
                                                     </select>
