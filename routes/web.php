@@ -153,6 +153,7 @@ Route::post('return-order', [OrderUserController::class, 'returnOrder'])->name('
 Route::post('confirm-order', [OrderUserController::class, 'confirmOrder'])->name('confirm-order');
 Route::post('cancel-order-return', [OrderUserController::class, 'cancelOrderReturn'])->name('cancel-order-return');
 Route::post('re-order', [OrderUserController::class, 'reOrder'])->name('re-order');
+Route::get('details-order', [OrderUserController::class, 'detailsOrder'])->name('details-order');
 //chat
 
 Route::get('/chat/{id?}', function ($id = null) {

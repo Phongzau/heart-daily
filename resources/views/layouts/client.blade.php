@@ -1,4 +1,4 @@
-<head>
+{{-- <head>
     <!-- PWA -->
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#4caf50">
@@ -12,7 +12,7 @@
                 .catch(err => console.error('Service Worker registration failed.', err));
         }
     </script>
-</head>
+</head> --}}
 
 @include('client.component.header')
 <!-- End .top-notice -->

@@ -210,6 +210,13 @@
     @if (Auth::check())
         window.userId = "{{ Auth::user()->id }}";
     @endif
+    // @if (session()->has('error'))
+    //     toastr.error("{{ session('error') }}");
+    //     console.log("{{ session('error') }}");
+    // @endif
+    // @if (session()->has('success'))
+    //     toastr.success("{{ session('success') }}");
+    // @endif
 </script>
 
 <a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
@@ -234,6 +241,14 @@
 
 
 <script>
+    @if (session()->has('error'))
+        toastr.error("{{ session('error') }}");
+        console.log("{{ session('error') }}");
+    @endif
+    @if (session()->has('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
     // Nếu $errors tồn tại
     @if ($errors->any())
         // Duyệt qua tất cả mảng $errors qua biến $error
