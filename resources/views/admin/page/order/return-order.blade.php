@@ -81,7 +81,12 @@
                         id: id
                     },
                     success: function(data) {
-                        toastr.success(data.message);
+                        if (data.status == 'success') {
+                            toastr.success(data.message);
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+
                     },
                     error: function(xhr, status, error) {
                         console.log(error);

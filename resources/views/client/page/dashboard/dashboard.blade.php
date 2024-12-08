@@ -256,13 +256,13 @@
         }
 
         /* Modal Content */
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 25%;
-        }
+        /* .modal-content {
+                                                                                                                                                                                                                                                                                                                                    background-color: #fefefe;
+                                                                                                                                                                                                                                                                                                                                    margin: auto;
+                                                                                                                                                                                                                                                                                                                                    padding: 20px;
+                                                                                                                                                                                                                                                                                                                                    border: 1px solid #888;
+                                                                                                                                                                                                                                                                                                                                    width: 25%;
+                                                                                                                                                                                                                                                                                                                                } */
 
         /* The Close Button */
         .close {
@@ -277,6 +277,112 @@
             color: #000;
             text-decoration: none;
             cursor: pointer;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #333;
+        }
+
+        .modal-content h4 {
+            margin-top: 0;
+            text-align: center;
+            color: #333;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* .close:hover,
+                                                                                                                                                                                                                                                                                                                            .close:focus {
+                                                                                                                                                                                                                                                                                                                                color: black;
+                                                                                                                                                                                                                                                                                                                                text-decoration: none;
+                                                                                                                                                                                                                                                                                                                                cursor: pointer;
+                                                                                                                                                                                                                                                                                                                            } */
+
+        .modal-body {
+            padding: 10px 20px;
+        }
+
+        .modal-body p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .order-items th,
+        .order-items td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .order-items th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+
+
+        /* .order-summary2 p {
+                                                                                                                                                                                                                                                                    margin: 5px 0;
+                                                                                                                                                                                                                                                                    text-align: right;
+                                                                                                                                                                                                                                                                    color: #333;
+                                                                                                                                                                                                                                                                } */
+
+        .order-summary2 {
+            font-size: 16px;
+            color: #333;
+            width: fit-content;
+            /* Đảm bảo kích thước gọn gàng */
+            margin-left: auto;
+            /* Đẩy toàn bộ nội dung sang bên phải */
+            margin-right: 20px;
+            /* Cách lề phải một khoảng */
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            /* Căn trái và phải */
+            padding: 5px 0;
+            /* Khoảng cách giữa các dòng */
+        }
+
+        .summary-row span:first-child {
+            flex: 1;
+            text-align: left;
+            /* Căn trái */
+        }
+
+        .summary-row span:last-child {
+            text-align: right;
+            /* Căn phải */
+        }
+
+        .margin-order-summary {
+            margin-right: 80px;
         }
     </style>
 @endsection
@@ -413,6 +519,57 @@
             <button id="returnOrderButton" class="btn btn-primary">Gửi yêu cầu trả hàng</button>
         </div>
     </div>
+    <div id="myModalDetailsOrder" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Chi tiết đơn hàng <span id="invoice-id"></span></h2>
+            <h4 id="status_payment"></h4>
+            <div class="modal-body">
+                <p><strong>Người nhận:</strong> <span id="buyerName"></span></p>
+                <p><strong>Số điện thoại:</strong> <span id="buyerPhone"></span></p>
+                <p><strong>Email:</strong> <span id="buyerEmail"></span></p>
+                <p><strong>Địa chỉ:</strong> <span id="buyerAddress"></span></p>
+
+                <h3>Các mặt hàng:</h3>
+                <table class="order-items">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderItems">
+                        <!-- Sản phẩm sẽ được render tại đây -->
+
+
+                    </tbody>
+                </table>
+
+                <div class="order-summary2">
+                    <div class="summary-row">
+                        <span class="margin-order-summary">Tổng tiền:</span>
+                        <span id="sub-total-order">2.000.000 VND</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="margin-order-summary">Phí ship (+):</span>
+                        <span id="shipping-fee-order">30.000 VND</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="margin-order-summary">Giảm giá (-):</span>
+                        <span id="discount-order">500.000 VND</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="margin-order-summary">Thành tiền:</span>
+                        <span id="total-order">1.530.000 VND</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="mb-5"></div><!-- margin -->
 @endsection
 
@@ -454,6 +611,64 @@
             $(window).click(function(event) {
                 if ($(event.target).is("#myModalReturnOrder")) {
                     $("#myModalReturnOrder").fadeOut();
+                }
+            });
+
+            $(document).on('click', '#myBtnDetailsOrder', function() {
+                let orderId = $(this).data('order-id');
+                $.ajax({
+                    url: "{{ route('details-order') }}",
+                    method: 'GET',
+                    data: {
+                        orderId: orderId,
+                    },
+                    success: function(data) {
+                        console.log(data);
+
+                        if (data.status == 'success') {
+                            $('#myModalDetailsOrder').fadeIn();
+                            $('#buyerName').text(data.order.address.first_name);
+                            $('#buyerPhone').text(data.order.address.phone);
+                            $('#buyerEmail').text(data.order.address.email);
+                            $('#buyerAddress').text(data.order.address.address);
+                            $('#sub-total-order').text(data.order.sub_total_order);
+                            $('#shipping-fee-order').text(data.order.cod_order);
+                            $('#discount-order').text(data.order.discount_coupon);
+                            $('#total-order').text(data.order.total_order);
+                            $('#invoice-id').text(`DH#${data.order.id}`);
+                            $('#status_payment').text(data.order.status_payment);
+                            let productTable = '';
+                            data.orderProducts.forEach((product, index) => {
+                                productTable += `
+                                    <tr>
+                                        <td>${index}</td>
+                                        <td>${product.name_product}</td>
+                                        <td>${product.qty_product}</td>
+                                        <td>${product.price_product}</td>
+                                        <td>${product.sub_price}</td>
+                                    </tr>
+                                `;
+                            })
+                            $('#orderItems').html(productTable);
+
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+
+                    },
+                })
+
+            })
+
+            $(".close").click(function() {
+                $("#myModalDetailsOrder").fadeOut();
+            });
+
+            $(window).click(function(event) {
+                if ($(event.target).is("#myModalDetailsOrder")) {
+                    $("#myModalDetailsOrder").fadeOut();
                 }
             });
 
@@ -587,34 +802,6 @@
                     }
                 });
             });
-
-            // $("#returnVideo").on("change", function() {
-            //     const file = this.files[0];
-            //     const videoPreview = $("#videoPreview");
-
-            //     if (file && file.type.startsWith("video/")) {
-            //         const reader = new FileReader();
-            //         reader.onload = function(e) {
-            //             videoPreview.attr("src", e.target.result).show();
-            //             // Kiểm tra độ dài video
-            //             const videoElement = document.createElement('video');
-            //             videoElement.src = e.target.result;
-
-            //             videoElement.onloadedmetadata = function() {
-            //                 const duration = videoElement
-            //                     .duration; // Thời gian video tính bằng giây
-            //                 if (duration > 60) { // Kiểm tra video có dài hơn 1 phút không
-            //                     alert("Video phải có độ dài dưới 1 phút.");
-            //                     $("#returnVideo").val(""); // Reset input
-            //                     videoPreview.hide(); // Ẩn video preview
-            //                 }
-            //             };
-            //         };
-            //         reader.readAsDataURL(file);
-            //     } else {
-            //         videoPreview.hide().attr("src", "");
-            //     }
-            // });
 
             // Khi người dùng chọn lý do "Lý do khác"
             $('#returnReason').change(function() {

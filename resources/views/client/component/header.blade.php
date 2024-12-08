@@ -27,12 +27,15 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/demo4.min.css') }}">
     <style>
         .promo-section {
-    background-size: cover; /* Đảm bảo ảnh bao phủ toàn bộ */
-    background-position: center; /* Căn giữa ảnh */
-    height: 240px; /* Điều chỉnh chiều cao theo ý muốn */
-    cursor: pointer; /* Hiển thị con trỏ tay để thể hiện đây là phần có thể nhấp */
-}
-
+            background-size: cover;
+            /* Đảm bảo ảnh bao phủ toàn bộ */
+            background-position: center;
+            /* Căn giữa ảnh */
+            height: 240px;
+            /* Điều chỉnh chiều cao theo ý muốn */
+            cursor: pointer;
+            /* Hiển thị con trỏ tay để thể hiện đây là phần có thể nhấp */
+        }
     </style>
 
     <script>
@@ -51,6 +54,16 @@
             s.parentNode.insertBefore(wf, s);
         })(document);
     </script>
+
+    {{-- <!-- Đăng ký Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('{{ asset('service-worker.js') }}')
+                .then(reg => console.log('Service Worker registered.', reg))
+                .catch(err => console.error('Service Worker registration failed.', err));
+        }
+    </script> --}}
 
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">

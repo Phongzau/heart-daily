@@ -16,11 +16,11 @@ return [
             'details' => 'Your package has been dropped off by the seller'
         ],
         'shipped' => [
-            'status' => 'Đã vận chuyển',
+            'status' => 'Đang vận chuyển đơn hàng đến bạn',
             'details' => 'Your package has arrived at our logistics facility',
         ],
         'delivered' => [
-            'status' => 'Đã giao hàng',
+            'status' => 'Hoàn tất đơn hàng',
             'details' => 'Đã giao hàng',
         ],
         'return' => [

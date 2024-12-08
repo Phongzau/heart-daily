@@ -79,11 +79,19 @@ class OrderController extends Controller
     public function changeApproveStatus(Request $request)
     {
         $returnOrder = OrderReturn::query()->findOrFail($request->id);
-        $returnOrder->return_status = $request->value;
+        if ($returnOrder->order->order_status == 'return') {
+            $returnOrder->return_status = $request->value;
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không thể chuyển trạng thái, đơn hàng này không trong trạng thái hoàn hàng',
+            ]);
+        }
+
         if ($returnOrder->return_status == 'completed') {
             foreach ($returnOrder->order->orderProducts as $orderProduct) {
                 $product = $orderProduct->product;
-                if (isset($product)) {
+            if (isset($product)) {
                     if ($orderProduct->product->type_product === 'product_simple') {
                         $product->qty += $orderProduct->qty;
                         $product->save();

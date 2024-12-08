@@ -17,13 +17,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use function PHPSTORM_META\map;
+
 class OrderUserController extends Controller
 {
     public function returnOrder(Request $request)
     {
         // dd($request->all());
 
-        $order = Order::query()->findOrFail($request->orderId);
+        $order = Order::query()->find($request->orderId);
         if ($order) {
             $order->order_status = 'return';
             $order->cause_cancel_order = NULL;
@@ -109,9 +111,15 @@ class OrderUserController extends Controller
 
     public function cancelOrder(Request $request)
     {
-        $order = Order::query()->findOrFail($request->orderId);
+        $order = Order::query()->find($request->orderId);
 
         if (isset($order)) {
+            if ($order->order_status == 'processed_and_ready_to_ship' || $order->order_status == 'dropped_off' || $order->order_status == 'shipped' || $order->order_status == 'delivered') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Không thể hủy đơn hàng đơn hàng đã được xử lý',
+                ]);
+            }
             $order->order_status = 'canceled';
             if ($request->cancelReason != 'khong_muon_mua_nua' && $request->cancelReason != 'gia_re_hon_o_noi_khac' && $request->cancelReason != 'thay_doi_dia_chi_giao_hang' && $request->cancelReason != 'thay_doi_phuong_thuc_thanh_toan' && $request->cancelReason != 'thay_doi_ma_giam_gia') {
                 $reasonCancelOrder = $request->cancelReason;
@@ -218,9 +226,15 @@ class OrderUserController extends Controller
 
     public function cancelOrderReturn(Request $request)
     {
-        $order = Order::query()->findOrFail($request->orderId);
+        $order = Order::query()->find($request->orderId);
 
         if (isset($order)) {
+            if ($order->order_status != 'return') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Không thể hủy đơn hàng không ở trạng thái hoàn hàng',
+                ]);
+            }
             $order->order_status = 'delivered';
             if (Storage::disk('public')->exists($order->orderReturn->video_path)) {
                 Storage::disk('public')->delete($order->orderReturn->video_path);
@@ -274,9 +288,15 @@ class OrderUserController extends Controller
 
     public function confirmOrder(Request $request)
     {
-        $order = Order::query()->findOrFail($request->orderId);
+        $order = Order::query()->find($request->orderId);
 
         if (isset($order)) {
+            if ($order->order_status != 'shipped') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Bạn không thể xác nhận đã nhận',
+                ]);
+            }
             $order->order_status = 'delivered';
             $order->payment_status = 1;
             $order->save();
@@ -325,7 +345,7 @@ class OrderUserController extends Controller
 
     public function reOrder(Request $request)
     {
-        $order = Order::query()->with(['orderProducts'])->findOrFail($request->orderId);
+        $order = Order::query()->with(['orderProducts'])->find($request->orderId);
 
         if (!$order) {
             return response()->json([
@@ -414,5 +434,45 @@ class OrderUserController extends Controller
                 'url' => '/cart',
             ]);
         }
+    }
+
+    public function detailsOrder(Request $request)
+    {
+        $order = Order::query()->with('orderProducts')->find($request->orderId);
+        // dd($order);
+
+        if ($order) {
+            $orderProducts = $order->orderProducts->map(function ($orderProduct) {
+                $variants = json_decode($orderProduct->variants, true);
+                if ($variants != null) {
+                    $name_product = $orderProduct->product_name . ' ' . '(' . implode('-', $variants) . ')';
+                } else {
+                    $name_product = $orderProduct->product_name;
+                }
+
+                return [
+                    'name_product' => $name_product,
+                    'qty_product' => $orderProduct->qty,
+                    'sub_price' => number_format($orderProduct->unit_price * $orderProduct->qty) . ' VND',
+                    'price_product' => number_format($orderProduct->unit_price) . ' VND',
+                ];
+            });
+            $coupon = json_decode($order->coupon_method);
+            $order->address = json_decode($order->order_address, true);
+            $order->sub_total_order = number_format($order->sub_total) . ' VND';
+            $order->total_order = number_format($order->amount) . ' VND';
+            $order->cod_order = number_format($order->cod) . ' VND';
+            $order->discount_coupon = $coupon != null ? number_format(getOrderDiscount($coupon->discount_type, $order->sub_total, $coupon->discount)) . ' VND' : 0 . ' VND';
+            $order->status_payment = $order->payment_status == 1 ? '(Đã thanh toán)' : '(Chưa thanh toán)';
+            return response()->json([
+                'status' => 'success',
+                'orderProducts' => $orderProducts,
+                'order' => $order,
+            ]);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Đơn hàng không tồn tại',
+        ]);
     }
 }

@@ -15,6 +15,7 @@ use App\Models\Transaction;
 use App\Models\VnpaySetting;
 use App\Models\Attribute;
 use App\Models\Coupon;
+use App\Models\ReservedStock;
 use App\Models\User;
 use App\Models\UserCoupon;
 use App\Notifications\BuyOrderComplete;
@@ -71,36 +72,191 @@ class CheckoutController extends Controller
         ])]);
 
         $paymentMethod = $request->input('payment_method');
-        $order = $this->createOrder($request);
 
-        if ($paymentMethod === 'vnpay') {
-            return $this->createPayment($order);
-        } elseif ($paymentMethod === 'paypal') {
-            return $this->payWithPaypal();
-        } else {
-            return $this->handleCodPayment();
+        DB::beginTransaction();
+        $carts = session('cart', []);
+        try {
+            foreach ($carts as $cart) {
+                $product = Product::query()->where('id', $cart['product_id'])->lockForUpdate()->first();
+
+                if (!$product) {
+                    DB::rollBack();
+                    toastr('Sản phẩm không tồn tại.', 'error');
+                    return redirect()->back();
+                }
+
+                if ($product && $product->type_product == 'product_simple') {
+                    if ($product->qty < $cart['qty']) {
+                        DB::rollBack(); // Hoàn tác giao dịch
+                        toastr('Sản phẩm' . $product->name . 'vượt quá số lượng trong kho', 'error');
+                        return redirect()->back();
+                    }
+                    // Giảm số lượng sản phẩm trong kho
+                    $product->decrement('qty', $cart['qty']);
+                    ReservedStock::updateOrCreate(
+                        [
+                            'product_id' => $product->id,
+                            'session_id' => session()->getId(),
+                        ],
+                        [
+                            'reserved_qty' => DB::raw('reserved_qty + ' . $cart['qty']),
+                            'expires_at' => now()->addMinutes(2),
+                        ]
+                    );
+                } else if ($product && $product->type_product == 'product_variant') {
+                    $attributeIdArray = [];
+                    foreach ($cart['options']['variants'] as $variant) {
+                        $slugVariant = Str::slug(strtolower($variant));
+                        $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
+                        $attributeIdArray[] = $attributeId;
+                    }
+                    $productVariant = ProductVariant::where('product_id', $product->id)
+                        ->whereJsonContains('id_variant', $attributeIdArray)
+                        ->lockForUpdate()
+                        ->first();
+                    if ($productVariant && $productVariant->qty < $cart['qty']) {
+                        DB::rollBack(); // Hoàn tác giao dịch
+                        $nameVariant = implode(' - ', $cart['options']['variants']);
+                        toastr('Biến thể ' . $nameVariant . ' của ' . $product->name . ' vượt quá số lượng trong kho', 'error');
+                        return redirect()->back();
+                    }
+                    // Giảm số lượng biến thể trong kho
+                    $productVariant->decrement('qty', $cart['qty']);
+                    ReservedStock::updateOrCreate(
+                        [
+                            'product_id' => $product->id,
+                            'session_id' => session()->getId(),
+                            'variant_id' => $productVariant->id,
+                        ],
+                        [
+                            'reserved_qty' => DB::raw('reserved_qty + ' . $cart['qty']),
+                            'expires_at' => now()->addMinutes(2),
+                        ]
+                    );
+                }
+            }
+            $order = $this->createOrder($request);
+            DB::commit(); // Xác nhận giao dịch
+
+            if ($paymentMethod === 'vnpay') {
+                return $this->createPayment($order);
+            } elseif ($paymentMethod === 'paypal') {
+                return $this->payWithPaypal();
+            } else {
+                return $this->handleCodPayment();
+            }
+        } catch (\Exception $e) {
+            DB::rollBack(); // Hoàn tác giao dịch nếu xảy ra lỗi
+            // toastr('Lỗi: ' . $e->getMessage(), 'error');
+            toastr('Có lỗi xảy ra trong quá trình xử lý đơn hàng. Vui lòng thử lại!', 'success');
+            return redirect()->back();
         }
     }
-    private function handleCodPayment()
+
+    public function paypalConfig()
     {
-        $transactionId = Str::random(10);
-        $paidAmount = getMainCartTotal();
-        $paidCurrencyName = 'VND';
-        $this->storeOrder('cod', 0, $transactionId, $paidAmount, $paidCurrencyName);
-        $this->clearSession();
-        toastr('Đơn hàng của bạn đã được đặt thành công!', 'success');
-        return redirect()->route('order.complete');
+        $paypalSetting  = PaypalSetting::query()->firstOrFail();
+        $config = [
+            'mode'    => $paypalSetting->mode === 1 ? 'live' : 'sandbox',
+            'sandbox' => [
+                'client_id'         => $paypalSetting->client_id,
+                'client_secret'     => $paypalSetting->secret_key,
+                'app_id'            => 'APP-80W284485P519543T',
+            ],
+            'live' => [
+                'client_id'         => $paypalSetting->client_id,
+                'client_secret'     => $paypalSetting->secret_key,
+                'app_id'            => env('PAYPAL_LIVE_APP_ID', ''),
+            ],
+
+            'payment_action' => 'Sale',
+            'currency'       => $paypalSetting->currency_name,
+            'notify_url'     => '',
+            'locale'         => 'en_US',
+            'validate_ssl'   => true,
+        ];
+        return $config;
     }
 
-    public function orderComplete()
+    public function payWithPaypal()
     {
-        return view('client.page.complete');
+        $config = $this->paypalConfig();
+        $paypalSetting  = PaypalSetting::query()->findOrFail(1);
+
+        $provider = new PayPalClient($config);
+        $provider->getAccessToken();
+        // $provider->setApiCredentials($config);
+        // Tính giá trị chuyển đổi thành USD
+        $total = getMainCartTotal();
+        $payableAmount = round($total / $paypalSetting->currency_rate, 2);
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+
+            "application_context" => [
+                "return_url" => route('paypal.success'),
+                "cancel_url" => route('paypal.cancel'),
+            ],
+            "purchase_units" => [
+                [
+                    "amount" => [
+                        "currency_code" => $config['currency'],
+                        "value" => $payableAmount,
+                    ],
+                ]
+            ]
+        ]);
+        if (isset($response['id']) && $response['id'] != null) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] === 'approve') {
+                    return redirect()->away($link['href']);
+                }
+            }
+        } else {
+            return redirect()->route('paypal.cancel');
+        }
+    }
+
+    public function paypalSuccess(Request $request)
+    {
+        $reservedStock = ReservedStock::query()->where('session_id', session()->getId())->get();
+        if ($reservedStock->isNotEmpty()) {
+            $config = $this->paypalConfig();
+            $provider = new PayPalClient($config);
+            $provider->getAccessToken();
+
+            $response = $provider->capturePaymentOrder($request->token);
+
+            if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+                // calculate payable amount depending on currency rate
+                $paypalSetting = PaypalSetting::query()->findOrFail(1);
+                $total = getMainCartTotal();
+                $paidAmount = round($total / $paypalSetting->currency_rate, 2);
+
+                $this->storeOrder('paypal', 1, $response['id'], $paidAmount, $paypalSetting->currency_name);
+                // Xóa các sản phẩm đã giữ trong ReservedStock
+                ReservedStock::where('session_id', session()->getId())->delete();
+                // clear session
+                $this->clearSession();
+                toastr('Thanh toán qua Paypal thành công!', 'success');
+                return redirect()->route('order.complete');
+            }
+            return redirect()->route('paypal.cancel');
+        } else {
+            toastr('Thanh toán thất bại quá thời gian thanh toán', 'error');
+            return redirect()->route('checkout');
+        }
+    }
+
+    public function paypalCancel()
+    {
+        ReservedStock::where('session_id', session()->getId())->delete();
+        toastr('Bạn vui lòng thử lại', 'error');
+        return redirect()->route('checkout');
     }
 
     public function storeOrder($paymentMethod, $paymentStatus, $transactionId, $paidAmount, $paidCurrencyName)
     {
         DB::beginTransaction();
-
         try {
             $carts = session('cart', []);
 
@@ -151,7 +307,6 @@ class CheckoutController extends Controller
 
                 if ($product->type_product == 'product_simple') {
                     $orderProduct->variants = "Không";
-                    $product->qty -= $item['qty'];
                     $product->save();
                 } else if ($product->type_product == 'product_variant') {
                     $orderProduct->variants = json_encode($item['options']['variants']);
@@ -166,7 +321,6 @@ class CheckoutController extends Controller
                     $productVariant = ProductVariant::where('product_id', $item['product_id'])
                         ->whereJsonContains('id_variant', $attributeIdArray)
                         ->first();
-                    $productVariant->qty -= $item['qty'];
                     $productVariant->save(); // Cập nhật số lượng cho biến thể
                 }
 
@@ -201,9 +355,40 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             // Rollback transaction nếu có lỗi
             DB::rollBack();
+            // Hoàn tác reserved
+            $reservedItems = ReservedStock::query()->where('session_id', session()->getId())->get();
+            foreach ($reservedItems as $item) {
+                if ($item->variant_id) {
+                    ProductVariant::query()->where('id', $item->variant_id)->increment('qty', $item->reserved_qty);
+                } else {
+                    Product::query()->where('id', $item->product_id)->increment('qty', $item->reserved_qty);
+                }
+            }
+            // Xóa bản ghi reserved sau khi hoàn tác
+            ReservedStock::query()->where('session_id', session()->getId())->delete();
             // Xử lý lỗi hoặc ghi log nếu cần
             throw $e;
         }
+    }
+
+    private function handleCodPayment()
+    {
+        $transactionId = Str::random(10);
+        $paidAmount = getMainCartTotal();
+        $paidCurrencyName = 'VND';
+        $this->storeOrder('cod', 0, $transactionId, $paidAmount, $paidCurrencyName);
+
+        // Xóa các sản phẩm đã giữ trong ReservedStock
+        ReservedStock::where('session_id', session()->getId())->delete();
+
+        $this->clearSession();
+        toastr('Đơn hàng của bạn đã được đặt thành công!', 'success');
+        return redirect()->route('order.complete');
+    }
+
+    public function orderComplete()
+    {
+        return view('client.page.complete');
     }
 
     private function createOrder($request)
@@ -328,100 +513,100 @@ class CheckoutController extends Controller
         Mail::to($user->email)->send(new OrderConfirmation($order));
     }
 
-    public function paypalConfig()
-    {
-        $paypalSetting  = PaypalSetting::query()->firstOrFail();
-        $config = [
-            'mode'    => $paypalSetting->mode === 1 ? 'live' : 'sandbox',
-            'sandbox' => [
-                'client_id'         => $paypalSetting->client_id,
-                'client_secret'     => $paypalSetting->secret_key,
-                'app_id'            => 'APP-80W284485P519543T',
-            ],
-            'live' => [
-                'client_id'         => $paypalSetting->client_id,
-                'client_secret'     => $paypalSetting->secret_key,
-                'app_id'            => env('PAYPAL_LIVE_APP_ID', ''),
-            ],
+    // public function paypalConfig()
+    // {
+    //     $paypalSetting  = PaypalSetting::query()->firstOrFail();
+    //     $config = [
+    //         'mode'    => $paypalSetting->mode === 1 ? 'live' : 'sandbox',
+    //         'sandbox' => [
+    //             'client_id'         => $paypalSetting->client_id,
+    //             'client_secret'     => $paypalSetting->secret_key,
+    //             'app_id'            => 'APP-80W284485P519543T',
+    //         ],
+    //         'live' => [
+    //             'client_id'         => $paypalSetting->client_id,
+    //             'client_secret'     => $paypalSetting->secret_key,
+    //             'app_id'            => env('PAYPAL_LIVE_APP_ID', ''),
+    //         ],
 
-            'payment_action' => 'Sale',
-            'currency'       => $paypalSetting->currency_name,
-            'notify_url'     => '',
-            'locale'         => 'en_US',
-            'validate_ssl'   => true,
-        ];
-        return $config;
-    }
+    //         'payment_action' => 'Sale',
+    //         'currency'       => $paypalSetting->currency_name,
+    //         'notify_url'     => '',
+    //         'locale'         => 'en_US',
+    //         'validate_ssl'   => true,
+    //     ];
+    //     return $config;
+    // }
 
-    public function payWithPaypal()
-    {
-        $config = $this->paypalConfig();
-        $paypalSetting  = PaypalSetting::query()->findOrFail(1);
+    // public function payWithPaypal()
+    // {
+    //     $config = $this->paypalConfig();
+    //     $paypalSetting  = PaypalSetting::query()->findOrFail(1);
 
-        $provider = new PayPalClient($config);
-        $provider->getAccessToken();
-        // $provider->setApiCredentials($config);
-        // Tính giá trị chuyển đổi thành USD
-        $total = getMainCartTotal();
-        $payableAmount = round($total / $paypalSetting->currency_rate, 2);
-        $response = $provider->createOrder([
-            "intent" => "CAPTURE",
+    //     $provider = new PayPalClient($config);
+    //     $provider->getAccessToken();
+    //     // $provider->setApiCredentials($config);
+    //     // Tính giá trị chuyển đổi thành USD
+    //     $total = getMainCartTotal();
+    //     $payableAmount = round($total / $paypalSetting->currency_rate, 2);
+    //     $response = $provider->createOrder([
+    //         "intent" => "CAPTURE",
 
-            "application_context" => [
-                "return_url" => route('paypal.success'),
-                "cancel_url" => route('paypal.cancel'),
-            ],
-            "purchase_units" => [
-                [
-                    "amount" => [
-                        "currency_code" => $config['currency'],
-                        "value" => $payableAmount,
-                    ],
-                ]
-            ]
-        ]);
+    //         "application_context" => [
+    //             "return_url" => route('paypal.success'),
+    //             "cancel_url" => route('paypal.cancel'),
+    //         ],
+    //         "purchase_units" => [
+    //             [
+    //                 "amount" => [
+    //                     "currency_code" => $config['currency'],
+    //                     "value" => $payableAmount,
+    //                 ],
+    //             ]
+    //         ]
+    //     ]);
 
-        if (isset($response['id']) && $response['id'] != null) {
-            foreach ($response['links'] as $link) {
-                if ($link['rel'] === 'approve') {
-                    return redirect()->away($link['href']);
-                }
-            }
-        } else {
-            return redirect()->route('paypal.cancel');
-        }
-    }
+    //     if (isset($response['id']) && $response['id'] != null) {
+    //         foreach ($response['links'] as $link) {
+    //             if ($link['rel'] === 'approve') {
+    //                 return redirect()->away($link['href']);
+    //             }
+    //         }
+    //     } else {
+    //         return redirect()->route('paypal.cancel');
+    //     }
+    // }
 
-    public function paypalSuccess(Request $request)
-    {
-        $config = $this->paypalConfig();
-        $provider = new PayPalClient($config);
-        $provider->getAccessToken();
+    // public function paypalSuccess(Request $request)
+    // {
+    //     $config = $this->paypalConfig();
+    //     $provider = new PayPalClient($config);
+    //     $provider->getAccessToken();
 
-        $response = $provider->capturePaymentOrder($request->token);
+    //     $response = $provider->capturePaymentOrder($request->token);
 
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            // calculate payable amount depending on currency rate
-            $paypalSetting = PaypalSetting::query()->findOrFail(1);
-            $total = getMainCartTotal();
-            $paidAmount = round($total / $paypalSetting->currency_rate, 2);
+    //     if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+    //         // calculate payable amount depending on currency rate
+    //         $paypalSetting = PaypalSetting::query()->findOrFail(1);
+    //         $total = getMainCartTotal();
+    //         $paidAmount = round($total / $paypalSetting->currency_rate, 2);
 
-            $this->storeOrder('paypal', 1, $response['id'], $paidAmount, $paypalSetting->currency_name);
+    //         $this->storeOrder('paypal', 1, $response['id'], $paidAmount, $paypalSetting->currency_name);
 
-            // clear session
-            $this->clearSession();
-            toastr('Thanh toán qua Paypal thành công!', 'success');
-            return redirect()->route('order.complete');
-        }
+    //         // clear session
+    //         $this->clearSession();
+    //         toastr('Thanh toán qua Paypal thành công!', 'success');
+    //         return redirect()->route('order.complete');
+    //     }
 
-        return redirect()->route('paypal.cancel');
-    }
+    //     return redirect()->route('paypal.cancel');
+    // }
 
-    public function paypalCancel()
-    {
-        toastr('Bạn vui lòng thử lại', 'error');
-        return redirect()->route('checkout');
-    }
+    // public function paypalCancel()
+    // {
+    //     toastr('Bạn vui lòng thử lại', 'error');
+    //     return redirect()->route('checkout');
+    // }
 
     public function clearSession()
     {

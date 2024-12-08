@@ -39,10 +39,10 @@ function orderType($type)
             return "ĐƠN HÀNG ĐÃ GỬI CHO ĐƠN VỊ VẬN CHUYỂN";
             break;
         case 'shipped':
-            return "ĐANG GIAO HÀNG";
+            return "ĐANG VẬN CHUYỂN ĐƠN HÀNG ĐẾN BẠN";
             break;
         case 'delivered':
-            return "ĐÃ NHẬN HÀNG";
+            return "HOÀN TẤT ĐƠN HÀNG";
             break;
         case 'canceled':
             return "ĐÃ HỦY ĐƠN HÀNG";

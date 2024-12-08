@@ -7,11 +7,13 @@
         <div class="order-content" id="order-{{ $order->id }}">
             <div class="order-item">
                 <div class="order-header">
-                    <span class="order-shop">HeartDaily Store - {{ $order->created_at->format('d/m/Y') }}</span>
+                    <span class="order-shop">HeartDaily Store - {{ $order->created_at->format('d/m/Y') }}
+                    </span>
                     <span class="order-status">{{ orderType($order->order_status) }}
                         @if ($order->order_status == 'return')
                             ({{ orderTypeReturn($order->orderReturn->return_status) }})
                         @endif
+                        ({{ $order->payment_status == 1 ? 'ĐÃ THANH TOÁN' : 'CHƯA THANH TOÁN' }})
                     </span>
                 </div>
                 @php
@@ -117,6 +119,8 @@
                     </div>
                     <div style="padding: 10px 0px 10px 10px;" class="order-buttons">
                         {!! renderOrderButtons($order->order_status, $order) !!}
+                        <button class="btn btn-success" id="myBtnDetailsOrder" data-order-id="{{ $order->id }}"><i
+                                class="fas fa-info"></i></button>
                     </div>
                 </div>
             </div>
