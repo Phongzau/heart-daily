@@ -181,26 +181,26 @@
         #chat-container::-webkit-scrollbar-thumb:hover {
             background: #a0a0a0;
         }
+
         .file-preview {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.file-preview img {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 2px;
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-}
+        .file-preview img {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 2px;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
 
-.file-preview span {
-    font-size: 0.9rem;
-    color: #555;
-}
-
+        .file-preview span {
+            font-size: 0.9rem;
+            color: #555;
+        }
     </style>
 @endsection
 
@@ -226,11 +226,12 @@
                 scrollToBottom();
             });
         });
-        document.addEventListener('livewire:load', function () {
-        Livewire.on('messagesRead', function () {
-            // Cập nhật lại số lượng tin nhắn chưa đọc
-            Livewire.emit('updateUnreadCount');
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('messagesRead', function() {
+                Livewire.emit('updateUnreadCount');
+            });
+
         });
-    });
+      
     </script>
 @endsection
