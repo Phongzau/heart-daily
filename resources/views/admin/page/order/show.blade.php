@@ -146,10 +146,15 @@
                                             <label for="">Trạng thái thanh toán</label>
                                             <select name="payment_status" id="payment_status" data-id="{{ $order->id }}"
                                                 class="form-control">
-                                                <option {{ $order->payment_status == 0 ? 'selected' : '' }} value="0">
-                                                    Chưa thanh toán</option>
-                                                <option {{ $order->payment_status == 1 ? 'selected' : '' }} value="1">
-                                                    Hoàn thành</option>
+                                                <option {{ $order->payment_status == 0 ? 'selected' : '' }}
+                                                    {{ $order->payment_status == 1 ? 'disabled' : '' }} value="0">
+                                                    Chưa thanh toán
+                                                </option>
+
+                                                <option {{ $order->payment_status == 1 ? 'selected' : '' }}
+                                                    {{ $order->payment_status == 0 ? 'disabled' : '' }} value="1">
+                                                    Hoàn thành
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -162,6 +167,12 @@
                                                     <option
                                                         {{ $order->order_status === 'return' && $key !== 'return' ? 'disabled' : '' }}
                                                         {{ $order->order_status !== 'return' && $key === 'return' ? 'disabled' : '' }}
+                                                        {{ $order->order_status === 'processed_and_ready_to_ship' && $key === 'pending' ? 'disabled' : '' }}
+                                                        {{ $order->order_status === 'dropped_off' && ($key === 'processed_and_ready_to_ship' || $key === 'pending') ? 'disabled' : '' }}
+                                                        {{ $order->order_status === 'shipped' && ($key === 'processed_and_ready_to_ship' || $key === 'pending' || $key === 'dropped_off') ? 'disabled' : '' }}
+                                                        {{ $order->order_status === 'delivered' && ($key === 'processed_and_ready_to_ship' || $key === 'pending' || $key === 'dropped_off' || $key === 'shipped') ? 'disabled' : '' }}
+                                                        {{ $order->order_status === 'canceled' && $key !== 'canceled' ? 'disabled' : '' }}
+                                                        {{ $key === 'canceled' ? 'disabled' : '' }}
                                                         {{ $order->order_status === $key ? 'selected' : '' }}
                                                         value="{{ $key }}">{{ $orderStatus['status'] }}
                                                     </option>
