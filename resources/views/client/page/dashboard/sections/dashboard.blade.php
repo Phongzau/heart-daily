@@ -27,23 +27,23 @@
                 </div>
             </div>
 
-            <div class="col-6 col-md-4">
+            {{-- <div class="col-6 col-md-4">
                 <div class="feature-box text-center pb-4">
                     <a href="#download" class="link-to-tab"><i class="sicon-cloud-download"></i></a>
                     <div class=" feature-box-content">
                         <h3>TẢI XUỐNG</h3>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="col-6 col-md-4">
+            {{-- <div class="col-6 col-md-4">
                 <div class="feature-box text-center pb-4">
                     <a href="#address" class="link-to-tab"><i class="sicon-location-pin"></i></a>
                     <div class="feature-box-content">
                         <h3>ĐỊA CHỈ</h3>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="col-6 col-md-4">
                 <div class="feature-box text-center pb-4">
