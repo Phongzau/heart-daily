@@ -268,10 +268,8 @@
                                     <tr>
                                         <td colspan="5" class="text-center">
                                             @if ($orders->count() >= 3)
-                                               
-                                                    <a href="{{ route('admin.orders.index') }}">Xem thêm<i
-                                                            class="fas fa-chevron-right"></i></a>
-                                              
+                                                <a href="{{ route('admin.orders.index') }}">Xem thêm<i
+                                                        class="fas fa-chevron-right"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -289,9 +287,8 @@
 @endsection
 @push('scripts')
     <script>
-       
- //category
- fetch('/admin/dashboard/category-statistics')
+        //category
+        fetch('/admin/dashboard/category-statistics')
             .then(response => response.json())
             .then(data => {
                 var ctx = document.getElementById("myChart2").getContext('2d');
@@ -369,7 +366,7 @@
                                     </div>
                                     <div class="text-muted text-small">${product.review_count} Reviews</div>
                                     <div class="product-cta">
-                                        <a href="{{ url('product') }}/${product.slug}" class="btn btn-primary">Chi tiết</a>
+                                        <a href="{{ url('product/detail') }}/${product.slug}" class="btn btn-primary">Chi tiết</a>
                                     </div>
                                 </div>
                             </div>

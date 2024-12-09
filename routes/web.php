@@ -361,7 +361,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/add-coupon', [CouponController::class, 'add'])->name('add');
             Route::post('/add-coupon', [CouponController::class, 'addCoupon'])->name('add-coupon');
             Route::post('/', [CouponController::class, 'store'])->name('store');
-            Route::get('/{coupons}', [CouponController::class, 'show'])->name('show');
+            // Route::get('/{coupons}', [CouponController::class, 'show'])->name('show');
             Route::get('/{coupons}/edit', [CouponController::class, 'edit'])->name('edit')->middleware('permission:edit-coupons');
             Route::put('/{coupons}', [CouponController::class, 'update'])->name('update');
             Route::delete('/{coupons}', [CouponController::class, 'destroy'])->name('destroy')->middleware('permission:delete-coupons');

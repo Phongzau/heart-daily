@@ -38,3 +38,11 @@ composer dump-autoload
 * Paypal:
 TK: sb-ezuwn33667932@personal.example.com
 MK: R^Pwv/0h
+
+* SuperAdmin
+TK: admin@gmail.com
+MK: 123456789 
+
+* Admin
+TK: phongzau2004@gmail.com  
+MK: 123456789 

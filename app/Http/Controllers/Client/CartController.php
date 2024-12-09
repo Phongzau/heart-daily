@@ -257,13 +257,29 @@ class CartController extends Controller
                     'discount' => number_format($coupon['discount']),
                 ]);
             } else if ($coupon['discount_type'] === 'percent') {
-                $discount = $subTotal * $coupon['discount'] / 100;
-                $total = $subTotal - $discount;
-                return response([
-                    'status' => 'success',
-                    'cart_total' =>  number_format($total),
-                    'discount' => number_format($discount),
-                ]);
+                if (isset($coupon['max_discount'])) {
+                    $maxDiscount = $coupon['max_discount'];
+                    $discount = $subTotal * $coupon['discount'] / 100;
+
+                    if ($discount > $maxDiscount) {
+                        $discount = $maxDiscount;
+                    }
+
+                    $total = $subTotal - $discount;
+                    return response([
+                        'status' => 'success',
+                        'cart_total' =>  number_format($total),
+                        'discount' => number_format($discount),
+                    ]);
+                } else {
+                    $discount = $subTotal * $coupon['discount'] / 100;
+                    $total = $subTotal - $discount;
+                    return response([
+                        'status' => 'success',
+                        'cart_total' =>  number_format($total),
+                        'discount' => number_format($discount),
+                    ]);
+                }
             }
         } else {
             $total = $this->cartTotal();
@@ -369,12 +385,22 @@ class CartController extends Controller
                 'discount' => $coupon->discount,
             ]);
         } else if ($coupon->discount_type === 'percent') {
-            Session::put('coupon', [
-                'coupon_name' => $coupon->name,
-                'coupon_code' => $coupon->code,
-                'discount_type' => 'percent',
-                'discount' => $coupon->discount,
-            ]);
+            if ($coupon->max_discount_percent && $coupon->max_discount_percent != null && $coupon->max_discount_percent > 0) {
+                Session::put('coupon', [
+                    'coupon_name' => $coupon->name,
+                    'coupon_code' => $coupon->code,
+                    'discount_type' => 'percent',
+                    'discount' => $coupon->discount,
+                    'max_discount' => $coupon->max_discount_percent,
+                ]);
+            } else {
+                Session::put('coupon', [
+                    'coupon_name' => $coupon->name,
+                    'coupon_code' => $coupon->code,
+                    'discount_type' => 'percent',
+                    'discount' => $coupon->discount,
+                ]);
+            }
         }
 
         return response([

@@ -56,7 +56,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div id="discount-row" class="row">
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label for="inputState">Loại giảm giá</label>
@@ -69,7 +69,8 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div id="discount-div"
+                                        class="@if ($coupon->discount_type) col-md-4 @else col-md-8 @endif ">
                                         <div class="form-group">
                                             <label>Giá trị chiết khấu
                                                 @if ($coupon->discount_type === 'percent')
@@ -101,39 +102,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if ($coupon->discount_type === 'percent')
+                                        <div id="max-discount-col" class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Giảm tối đa</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">đ</div>
+                                                    </div>
+                                                    <input type="number" name="max_discount_percent"
+                                                        value="{{ $coupon->max_discount_percent }}"
+                                                        class="form-control currency" placeholder="Nhập giảm tối đa">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                 </div>
-                                <ul class="nav nav-pills" id="myTab3" role="tablist">
-                                    <li class="nav-item">
-                                        <!-- Tab "Not Available" -->
-                                        <a class="nav-link
-                                        @if ($coupon->min_order_value == 0) active @endif
-                                        "
-                                            id="not-available-tab" data-toggle="tab" href="#not-available" role="tab"
-                                            aria-controls="not-available" aria-selected="true">Không có sẵn</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <!-- Tab "Minimum Order Value" -->
-                                        <a class="nav-link ml-1
-                                        @if ($coupon->min_order_value > 0) active @endif
-                                        "
-                                            id="min-order-value-tab" data-toggle="tab" href="#min-order-value"
-                                            role="tab" aria-controls="min-order-value" aria-selected="false">Giá trị đơn
-                                            hàng tói thiểu</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="myTabContent2">
-                                    <div class="tab-pane fade @if ($coupon->min_order_value == 0) show active @endif "
-                                        id="not-available" role="tabpanel" aria-labelledby="not-available-tab">
-                                        <label for="">Giá trị đơn hàng tói thiểu<code>(đ)</code></label>
-                                        <input type="number" readonly id="min_order_value" name="min_order_value"
-                                            value="0" class="form-control">
-                                    </div>
-                                    <div class="tab-pane fade @if ($coupon->min_order_value > 0) show active @endif"
-                                        id="min-order-value" role="tabpanel" aria-labelledby="min-order-value-tab">
-                                        <label for="">Giá trị đơn hàng tói thiểu<code>(đ)</code></label>
-                                        <input type="number" id="min_order_value_edit" name="min_order_value"
-                                            value="{{ $coupon->min_order_value }}" class="form-control">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="">Giá trị đơn hàng tối thiểu <code>(đ)</code></label>
+                                    <input type="number" id="min_order_value_edit" name="min_order_value"
+                                        value="{{ $coupon->min_order_value }}" class="form-control">
                                 </div>
                                 <div class="form-group mt-2">
                                     <label for="inputState">Công khai</label> <br>
@@ -170,6 +159,76 @@
 
 @push('scripts')
     <script>
+        $(document).ready(function() {
+            function updateDiscountUnit() {
+                var selectedType = $('#inputState').val();
+                var unit = selectedType === 'percent' ? '%' : (selectedType === 'amount' ? 'đ' : '?');
+                $('#discount-unit').text(unit);
+
+                if (selectedType === 'percent') {
+                    $('#discount-label').text('(' + unit + ')' + ' (không được vượt quá 100%)');
+                } else {
+                    $('#discount-label').text('(' + unit + ')');
+                }
+            }
+
+            function toggleMaxDiscountInput() {
+                var selectedType = $('#inputState').val();
+
+                if (selectedType === 'percent') {
+                    // Thay đổi `col-md-8` thành `col-md-4`
+                    $('#discount-div').removeClass('col-md-8').addClass('col-md-4');
+
+                    // Tạo trường "Giảm tối đa"
+                    var maxDiscountCol = `
+                    <div id="max-discount-col" class="col-md-4">
+                        <div class="form-group">
+                            <label>Giảm tối đa</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">đ</div>
+                                </div>
+                                <input type="number" name="max_discount_percent" value="{{ old('min_order_value') }}" class="form-control currency" placeholder="Nhập giảm tối đa">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    $('#discount-row').append(maxDiscountCol);
+                } else {
+                    // Trả lại `col-md-4` thành `col-md-8`
+
+                    // Xóa trường "Giảm tối đa" nếu đã tồn tại
+                    $('#max-discount-col').remove();
+
+                    $('#discount-div').removeClass('col-md-4').addClass('col-md-8');
+                }
+            }
+
+            // Khởi tạo
+            updateDiscountUnit();
+            // toggleMaxDiscountInput();
+
+            // Sự kiện thay đổi giá trị trong dropdown
+            $('#inputState').on('change', function() {
+                $('#discount_value').removeAttr('disabled').val('');
+                updateDiscountUnit();
+                toggleMaxDiscountInput();
+            });
+
+            // Kiểm tra giá trị nhập vào discount_value
+            $('#discount_value').on('input change', function() {
+                var selectedType = $('#inputState').val();
+                var discountValue = $(this).val();
+
+                if (selectedType === 'percent' && discountValue > 100) {
+                    $(this).val('');
+                    toastr.error('Giá trị phần trăm không được vượt quá 100%');
+                }
+            });
+        });
+    </script>
+
+    {{-- <script>
         $(document).ready(function() {
 
             function updateDiscountUnit() {
@@ -209,5 +268,5 @@
                 $('#min_order_value_edit').removeAttr('disabled');
             })
         })
-    </script>
+    </script> --}}
 @endpush
