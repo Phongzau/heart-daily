@@ -244,8 +244,18 @@ function getMainCartTotal()
         if ($coupon['discount_type'] === 'amount') {
             $total = $subTotal - $coupon['discount'];
         } else if ($coupon['discount_type'] === 'percent') {
-            $discount = $subTotal * $coupon['discount'] / 100;
-            $total = $subTotal - $discount;
+            if (isset($coupon['max_discount'])) {
+                $maxDiscount = $coupon['max_discount'];
+                $discount = $subTotal * $coupon['discount'] / 100;
+
+                if ($discount > $maxDiscount) {
+                    $discount = $maxDiscount;
+                }
+                $total = $subTotal - $discount;
+            } else {
+                $discount = $subTotal * $coupon['discount'] / 100;
+                $total = $subTotal - $discount;
+            }
         }
         // return $total;
     } else {
@@ -266,8 +276,19 @@ function getCartDiscount()
         if ($coupon['discount_type'] === 'amount') {
             return $coupon['discount'];
         } else if ($coupon['discount_type'] === 'percent') {
-            $discount = $subTotal * $coupon['discount'] / 100;
-            return $discount;
+            if (isset($coupon['max_discount'])) {
+                $maxDiscount = $coupon['max_discount'];
+                $discount = $subTotal * $coupon['discount'] / 100;
+
+                if ($discount > $maxDiscount) {
+                    $discount = $maxDiscount;
+                }
+
+                return $discount;
+            } else {
+                $discount = $subTotal * $coupon['discount'] / 100;
+                return $discount;
+            }
         }
     } else {
         return 0;
@@ -277,26 +298,38 @@ function fetchCartDiscountInfo()
 {
     if (Session::has('coupon')) {
         $coupon = Session::get('coupon');
-        return [
-            'coupon_name' => $coupon['coupon_name'],
-            'coupon_code' => $coupon['coupon_code'],
-            'discount_type' => $coupon['discount_type'],
-            'discount' => $coupon['discount'],
-        ];
+        return $coupon;
     } else {
         return null;
     }
 }
 
 // get order discount
-function getOrderDiscount($discountType, $subTotal, $discount)
+function getOrderDiscount($coupon, $subTotal)
 {
-    if ($discountType === 'amount') {
-        return $discount;
-    } else if ($discountType === 'percent') {
-        $discountValue = $subTotal * $discount / 100;
-        return $discountValue;
+    if ($coupon['discount_type'] === 'amount') {
+        return $coupon['discount'];
+    } else if ($coupon['discount_type'] === 'percent') {
+        if (isset($coupon['max_discount'])) {
+            $maxDiscount = $coupon['max_discount'];
+            $discount = $subTotal * $coupon['discount'] / 100;
+
+            if ($discount > $maxDiscount) {
+                $discount = $maxDiscount;
+            }
+
+            return $discount;
+        } else {
+            $discount = $subTotal * $coupon['discount'] / 100;
+            return $discount;
+        }
     }
+    // if ($discountType === 'amount') {
+    //     return $discount;
+    // } else if ($discountType === 'percent') {
+    //     $discountValue = $subTotal * $discount / 100;
+    //     return $discountValue;
+    // }
 }
 
 function getCartCod()

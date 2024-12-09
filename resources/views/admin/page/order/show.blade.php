@@ -1,7 +1,7 @@
 @php
     $address = json_decode($order->order_address);
     $shipping = json_decode($order->shipping_method);
-    $coupon = json_decode($order->coupon_method);
+    $coupon = json_decode($order->coupon_method, true);
 @endphp
 @extends('layouts.admin')
 
@@ -195,7 +195,8 @@
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Mã giảm giá(-)</div>
                                         <div class="invoice-detail-value">
-                                            {{ @$coupon->discount ? number_format(getOrderDiscount($coupon->discount_type, $order->sub_total, $coupon->discount)) : 0 }}
+                                            {{-- @dump($coupon) --}}
+                                            {{ @$coupon['discount'] ? number_format(getOrderDiscount($coupon, $order->sub_total)) : 0 }}
                                             VNĐ
                                         </div>
                                     </div>

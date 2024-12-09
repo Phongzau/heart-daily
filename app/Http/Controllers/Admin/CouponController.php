@@ -38,6 +38,7 @@ class CouponController extends Controller
      */
     public function store(StoreCouponRequest $request)
     {
+        // dd($request->all());
         $coupon = new Coupon();
         $coupon->name = $request->name;
         $coupon->code = $request->code;
@@ -47,6 +48,7 @@ class CouponController extends Controller
         $coupon->end_date = $request->end_date;
         $coupon->discount_type = $request->discount_type;
         $coupon->discount = $request->discount;
+        $coupon->max_discount_percent = $request->max_discount_percent;
         $coupon->min_order_value = $request->min_order_value;
         $coupon->total_used = 0;
         $coupon->is_publish = $request->is_publish;
@@ -88,6 +90,7 @@ class CouponController extends Controller
     public function update(UpdateCouponRequest $request, string $id)
     {
         $coupon = Coupon::query()->findOrFail($id);
+        $statusCoupon = $coupon->is_publish;
         $coupon->name = $request->name;
         $coupon->code = $request->code;
         $coupon->quantity = $request->quantity;
@@ -96,12 +99,13 @@ class CouponController extends Controller
         $coupon->end_date = $request->end_date;
         $coupon->discount_type = $request->discount_type;
         $coupon->discount = $request->discount;
+        $coupon->max_discount_percent = $request->max_discount_percent;
         $coupon->min_order_value = $request->min_order_value;
         $coupon->is_publish = $request->is_publish;
         $coupon->status = $request->status;
         $coupon->save();
 
-        if ($coupon->is_publish == 1) {
+        if ($statusCoupon == 0) {
             $users = User::query()->get();
             foreach ($users as $user) {
                 event(new CouponCreated($coupon, $user));

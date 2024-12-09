@@ -148,7 +148,7 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             DB::rollBack(); // Hoàn tác giao dịch nếu xảy ra lỗi
             // toastr('Lỗi: ' . $e->getMessage(), 'error');
-            toastr('Có lỗi xảy ra trong quá trình xử lý đơn hàng. Vui lòng thử lại!', 'success');
+            toastr('Có lỗi xảy ra trong quá trình xử lý đơn hàng. Vui lòng thử lại!', 'error');
             return redirect()->back();
         }
     }

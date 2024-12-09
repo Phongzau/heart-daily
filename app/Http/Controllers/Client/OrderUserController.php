@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Client;
 use App\Events\ChangeStatusOrder;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
+use App\Models\Commune;
 use App\Models\Coupon;
+use App\Models\District;
 use App\Models\Order;
 use App\Models\OrderReturn;
 use App\Models\ProductVariant;
+use App\Models\Province;
 use App\Models\User;
 use App\Models\UserCoupon;
 use App\Notifications\ChangeStatusOrder as NotificationsChangeStatusOrder;
@@ -457,13 +460,19 @@ class OrderUserController extends Controller
                     'price_product' => number_format($orderProduct->unit_price) . ' VND',
                 ];
             });
-            $coupon = json_decode($order->coupon_method);
+            $coupon = json_decode($order->coupon_method, true);
             $order->address = json_decode($order->order_address, true);
             $order->sub_total_order = number_format($order->sub_total) . ' VND';
             $order->total_order = number_format($order->amount) . ' VND';
             $order->cod_order = number_format($order->cod) . ' VND';
-            $order->discount_coupon = $coupon != null ? number_format(getOrderDiscount($coupon->discount_type, $order->sub_total, $coupon->discount)) . ' VND' : 0 . ' VND';
+            $order->discount_coupon = $coupon != null ? number_format(getOrderDiscount($coupon, $order->sub_total)) . ' VND' : 0 . ' VND';
             $order->status_payment = $order->payment_status == 1 ? '(Đã thanh toán)' : '(Chưa thanh toán)';
+            $addressName = [];
+            $addressName[] = Commune::query()->where('id', $order->address['commune_id'])->pluck('title')->first();
+            $addressName[] = District::query()->where('id', $order->address['district_id'])->pluck('title')->first();
+            $addressName[] = Province::query()->where('id', $order->address['province_id'])->pluck('title')->first();
+
+            $order->addresses = implode(', ', $addressName);
             return response()->json([
                 'status' => 'success',
                 'orderProducts' => $orderProducts,

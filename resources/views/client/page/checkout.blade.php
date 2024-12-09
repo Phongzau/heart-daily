@@ -155,13 +155,17 @@
                                 <tr>
                                     <td class="product-col">
                                         <h3 class="product-title">
-                                            {{ $item['name'] }} ×
+                                            {{ $item['name'] }}
+                                            @if (isset($item['options']['variants']))
+                                                ({{ implode(' - ', $item['options']['variants']) }})
+                                            @endif
+                                            ×
                                             <span class="product-qty">{{ $item['qty'] }}</span>
                                         </h3>
                                     </td>
 
                                     <td class="price-col">
-                                        <span>{{ number_format($item['price'] * $item['qty']) }}</span>
+                                        <span>{{ number_format($item['price'] * $item['qty']) }} VND</span>
                                     </td>
                                 </tr>
                             @endforeach

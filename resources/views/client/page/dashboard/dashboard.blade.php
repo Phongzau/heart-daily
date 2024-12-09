@@ -257,12 +257,12 @@
 
         /* Modal Content */
         /* .modal-content {
-                                                                                                                                                                                                                                                                                                                                    background-color: #fefefe;
-                                                                                                                                                                                                                                                                                                                                    margin: auto;
-                                                                                                                                                                                                                                                                                                                                    padding: 20px;
-                                                                                                                                                                                                                                                                                                                                    border: 1px solid #888;
-                                                                                                                                                                                                                                                                                                                                    width: 25%;
-                                                                                                                                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                                                                                                                                background-color: #fefefe;
+                                                                                                                                                                                                                                                                                                                                                margin: auto;
+                                                                                                                                                                                                                                                                                                                                                padding: 20px;
+                                                                                                                                                                                                                                                                                                                                                border: 1px solid #888;
+                                                                                                                                                                                                                                                                                                                                                width: 25%;
+                                                                                                                                                                                                                                                                                                                                            } */
 
         /* The Close Button */
         .close {
@@ -310,11 +310,11 @@
         }
 
         /* .close:hover,
-                                                                                                                                                                                                                                                                                                                            .close:focus {
-                                                                                                                                                                                                                                                                                                                                color: black;
-                                                                                                                                                                                                                                                                                                                                text-decoration: none;
-                                                                                                                                                                                                                                                                                                                                cursor: pointer;
-                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                        .close:focus {
+                                                                                                                                                                                                                                                                                                                                            color: black;
+                                                                                                                                                                                                                                                                                                                                            text-decoration: none;
+                                                                                                                                                                                                                                                                                                                                            cursor: pointer;
+                                                                                                                                                                                                                                                                                                                                        } */
 
         .modal-body {
             padding: 10px 20px;
@@ -346,10 +346,10 @@
 
 
         /* .order-summary2 p {
-                                                                                                                                                                                                                                                                    margin: 5px 0;
-                                                                                                                                                                                                                                                                    text-align: right;
-                                                                                                                                                                                                                                                                    color: #333;
-                                                                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                                                                margin: 5px 0;
+                                                                                                                                                                                                                                                                                text-align: right;
+                                                                                                                                                                                                                                                                                color: #333;
+                                                                                                                                                                                                                                                                            } */
 
         .order-summary2 {
             font-size: 16px;
@@ -528,7 +528,9 @@
                 <p><strong>Người nhận:</strong> <span id="buyerName"></span></p>
                 <p><strong>Số điện thoại:</strong> <span id="buyerPhone"></span></p>
                 <p><strong>Email:</strong> <span id="buyerEmail"></span></p>
-                <p><strong>Địa chỉ:</strong> <span id="buyerAddress"></span></p>
+                <p><strong>Địa chỉ:</strong> <span id="buyerAddresses"></span></p>
+                <p><strong>Địa chỉ nhận hàng:</strong> <span id="buyerAddress"></span></p>
+                <p><strong>Phương thức thanh toán:</strong> <span id="payment"></span></p>
 
                 <h3>Các mặt hàng:</h3>
                 <table class="order-items">
@@ -637,6 +639,8 @@
                             $('#total-order').text(data.order.total_order);
                             $('#invoice-id').text(`DH#${data.order.id}`);
                             $('#status_payment').text(data.order.status_payment);
+                            $('#buyerAddresses').text(data.order.addresses);
+                            $('#payment').text(data.order.payment_method.toUpperCase());
                             let productTable = '';
                             data.orderProducts.forEach((product, index) => {
                                 productTable += `
