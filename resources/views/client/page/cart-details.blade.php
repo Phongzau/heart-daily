@@ -280,7 +280,8 @@
                                             <div class="checkout-methods">
                                                 <a href="{{ route('checkout') }}"
                                                     class="btn btn-block btn-dark @if (count($carts) === 0) disabled-link @endif"
-                                                    @if (count($carts) === 0) tabindex="-1" aria-disabled="true" @endif>Tiến hành thanh toán
+                                                    @if (count($carts) === 0) tabindex="-1" aria-disabled="true" @endif>Tiến
+                                                    hành thanh toán
                                                     <i class="fa fa-arrow-right"></i></a>
                                             </div>
                                         </div><!-- End .cart-summary -->
@@ -391,6 +392,42 @@
                         }
                     },
                 })
+            })
+
+            $(document).on('change', '.product-qty', function() {
+                let input = $(this);
+                let cartKey = input.data('cartkey');
+                let quantity = parseInt(input.val());
+                $.ajax({
+                    url: "{{ route('cart.update-quantity') }}",
+                    method: "POST",
+                    data: {
+                        cartKey: cartKey,
+                        quantity: quantity,
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            let productId = '#' + cartKey;
+                            let totalAmount = data.product_total + ' VND';
+                            $(productId).text(totalAmount);
+                            renderCartSubTotal();
+                            calculateCouponDiscount()
+                        } else if (data.status === 'error') {
+                            input.val(data.current_qty);
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            // Chuyển hướng người dùng đến trang đăng nhập
+                            toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
+                            setTimeout(() => {
+                                window.location.href = '/login';
+                            }, 1500);
+                        }
+                    },
+                })
+
             })
 
             // Giảm số lượng input-group-prepend

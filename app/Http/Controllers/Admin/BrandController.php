@@ -87,6 +87,12 @@ class BrandController extends Controller
     public function destroy(string $id)
     {
         $brands = Brand::query()->findOrFail($id);
+        if ($brands->product()->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Thương hiệu có sản phẩm, vui lòng xóa sản phẩm trước khi xóa danh mục',
+            ]);
+        }
         $this->deleteImage($brands->image);
         $brands->delete();
 

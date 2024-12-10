@@ -62,14 +62,41 @@ class AdminBlogCategoryController extends Controller
         return redirect()->route('admin.blog_categories.index');
     }
 
+    // public function destroy(string $id)
+    // {
+    //     $blogCategory = BlogCategory::query()->findOrFail($id);
+    //     if ($blogCategory->blog->isEmpty()) {
+    //         $blogCategory->delete();
+    //         return response([
+    //             'status' => 'success',
+    //             'message' => 'Xóa thành công',
+    //         ]);
+    //     } else {
+    //         return response([
+    //             'status' => 'error',
+    //             'message' => 'Đang có bài viết chưa danh mục bài viết xóa nó trước để thực hiện điều này',
+    //         ]);
+    //     }
+    // }
+
     public function destroy(string $id)
     {
         $blogCategory = BlogCategory::query()->findOrFail($id);
+
+        // Kiểm tra xem danh mục có bài viết hay không
+        if ($blogCategory->blog()->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Danh mục có bài viết, vui lòng xóa bài viết trước khi xóa danh mục.',
+            ]);
+        }
+
+        // Xóa danh mục nếu không có bài viết
         $blogCategory->delete();
 
-        return response([
+        return response()->json([
             'status' => 'success',
-            'message' => 'Xóa thành công',
+            'message' => 'Xóa danh mục thành công.',
         ]);
     }
 }

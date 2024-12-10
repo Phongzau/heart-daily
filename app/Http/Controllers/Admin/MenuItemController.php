@@ -53,22 +53,22 @@ class MenuItemController extends Controller
             toastr('Giá trị order đã tồn tại trong danh mục cha!', 'error');
             return redirect()->back()->withInput();
         }
-     
-        // Tạo mới MenuItem
-    $menuItems = new MenuItem();
-    // Lưu các giá trị vào database
-    $menuItems->title = $request->title;
-    $menuItems->url = $request->url; // Lưu URL đầy đủ
-    $menuItems->parent_id = $request->parent_id;
-    $menuItems->order = $request->order;
-    $menuItems->slug = Str::slug($request->title);
-    $menuItems->menu_id = $request->menu_id;
-    $menuItems->status = $request->status;
-    $menuItems->userid_created = $request->userid_created;
-    $menuItems->userid_updated = $request->userid_updated;
 
-    // Lưu đối tượng
-    $menuItems->save();
+        // Tạo mới MenuItem
+        $menuItems = new MenuItem();
+        // Lưu các giá trị vào database
+        $menuItems->title = $request->title;
+        $menuItems->url = $request->url; // Lưu URL đầy đủ
+        $menuItems->parent_id = $request->parent_id;
+        $menuItems->order = $request->order;
+        $menuItems->slug = Str::slug($request->title);
+        $menuItems->menu_id = $request->menu_id;
+        $menuItems->status = $request->status;
+        $menuItems->userid_created = $request->userid_created;
+        $menuItems->userid_updated = $request->userid_updated;
+
+        // Lưu đối tượng
+        $menuItems->save();
 
         toastr('Tạo mới thành công!', 'success');
         return redirect()->route('admin.menu_items.index');
@@ -146,11 +146,11 @@ class MenuItemController extends Controller
     {
         $menuItems = MenuItem::query()->findOrFail($id);
         $check = MenuItem::where('parent_id', '=', $id)->first();
-        // Xóa danh mục
+        // Xóa menu
         if ($check) {
             return response([
                 'status' => 'error',
-                'message' => 'Danh mục con đang tồn tại xóa danh mục con trước khi xóa danh mục cha',
+                'message' => 'Menu cha đang tồn tại xóa menu con trước khi xóa menu cha',
             ]);
         } else {
             $menuItems->delete();

@@ -10,13 +10,18 @@ class CategoryAttribute extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 
-        'slug', 
-        'order', 
-        'status', 
-        'created_by', 
+        'title',
+        'slug',
+        'order',
+        'status',
+        'created_by',
         'updated_by'
     ];
+
+    public function attribute()
+    {
+        return $this->hasMany(Attribute::class);
+    }
 
     public function creator()
     {
@@ -27,5 +32,4 @@ class CategoryAttribute extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-
 }

@@ -165,7 +165,7 @@ Route::get('/chat/{id?}', function ($id = null) {
 
 Route::get('/contact', function () {
     return view('client.page.contact');
-})->name('contact')->middleware('auth');
+})->name('contact');
 
 
 
