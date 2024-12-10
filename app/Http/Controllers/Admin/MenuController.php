@@ -12,15 +12,18 @@ use App\Http\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
 {
-    public function index(MenuDataTable $dataTable){
+    public function index(MenuDataTable $dataTable)
+    {
         return $dataTable->render('admin.page.menus.index');
     }
 
-    public function create(){
+    public function create()
+    {
         return view('admin.page.menus.create');
     }
 
-    public function store(MenuRequest $request){
+    public function store(MenuRequest $request)
+    {
         $menu = new Menu();
         $menu->title = $request->title;
         $menu->slug = Str::slug($request->title);
@@ -30,12 +33,14 @@ class MenuController extends Controller
         return redirect()->route('admin.menus.index');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $menu = Menu::query()->findOrFail($id);
         return view('admin.page.menus.edit', compact('menu'));
     }
 
-    public function update(UpdateMenuRequest $request, $id){
+    public function update(UpdateMenuRequest $request, $id)
+    {
         $menu = Menu::query()->findOrFail($id);
         $menu->title = $request->title;
         $menu->slug = Str::slug($request->title);
@@ -48,6 +53,12 @@ class MenuController extends Controller
     public function destroy($id)
     {
         $menu = Menu::query()->findOrFail($id);
+        if ($menu->menuItems()->exists()) {
+            return response([
+                'status' => 'error',
+                'message' => 'Menu đang chứa các menu con, xóa menu con để xóa menu',
+            ]);
+        }
         $menu->delete();
 
         return response([

@@ -61,7 +61,7 @@ class AdminCategoryAttributeController extends Controller
     public function update(UpdateCategoryAttributeRequest $request, string $id)
     {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
-        
+
         if (CategoryAttribute::where('order', $request->order)
             ->where('id', '!=', $id)
             ->exists()
@@ -83,6 +83,12 @@ class AdminCategoryAttributeController extends Controller
     public function destroy(string $id)
     {
         $categoryAttribute = CategoryAttribute::query()->findOrFail($id);
+        if ($categoryAttribute->attribute()->exists()) {
+            return response([
+                'status' => 'error',
+                'message' => 'Danh mục thuộc tính chứa các thuộc tính con, xóa thuộc tính trước khi xóa danh mục.',
+            ]);
+        }
         $categoryAttribute->delete();
 
         return response([

@@ -114,7 +114,7 @@
                             if (data.status == 'success') {
                                 // Hiển thị thông báo "Deleted!" với SweetAlert2
                                 Swal.fire({
-                                    title: "Deleted!", // Tiêu đề thông báo
+                                    title: "Đã xóa thành công!", // Tiêu đề thông báo
                                     text: data
                                         .message, // Nội dung thông báo trả về từ server
                                     icon: "success" // Biểu tượng thành công
@@ -128,7 +128,7 @@
                             } else if (data.status == 'error') {
                                 // Hiển thị thông báo lỗi
                                 Swal.fire({
-                                    title: "Can't Delete", // Tiêu đề thông báo lỗi
+                                    title: "Không thể xóa", // Tiêu đề thông báo lỗi
                                     text: data
                                         .message, // Nội dung lỗi trả về từ server
                                     icon: "error", // Biểu tượng lỗi
