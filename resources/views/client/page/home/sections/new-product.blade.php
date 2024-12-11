@@ -70,7 +70,7 @@
                                                 if (empty($priceArray) && !is_array($priceArray)) {
                                                     $priceProduct = 'Không có';
                                                 } else {
-                                                    $priceProduct = number_format(min($priceArray)) . ' VND';
+                                                    $priceProduct = number_format(min($priceArray));
                                                 }
 
                                                 // dump($priceProduct);
@@ -87,16 +87,18 @@
                                                 // }
 
                                             @endphp
-                                            <span class="product-price">{{ $priceProduct }}</span>
+                                            <span
+                                                class="product-price">{{ $priceProduct }}{{ $generalSettings->currency_icon }}</span>
                                         @endif
                                         @if ($product->type_product === 'product_simple')
                                             @if (checkDiscount($product))
-                                                <del class="old-price">{{ number_format($product->price) }} VND</del>
-                                                <span class="product-price">{{ number_format($product->offer_price) }}
-                                                    VND</span>
+                                                <del
+                                                    class="old-price">{{ number_format($product->price) }}{{ $generalSettings->currency_icon }}</del>
+                                                <span
+                                                    class="product-price">{{ number_format($product->offer_price) }}{{ $generalSettings->currency_icon }}</span>
                                             @else
-                                                <span class="product-price">{{ number_format($product->price) }}
-                                                    VND</span>
+                                                <span
+                                                    class="product-price">{{ number_format($product->price) }}{{ $generalSettings->currency_icon }}</span>
                                             @endif
                                         @endif
                                         {{-- @if (checkDiscount($product))

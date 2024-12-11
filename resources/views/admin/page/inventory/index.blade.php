@@ -154,7 +154,7 @@
         .color-box.active {
 
             opacity: 0.5;
-            
+
         }
 
         .size-box.active {
@@ -228,11 +228,15 @@
                                     <label for="type_product">Loại sản phẩm</label>
                                     <select name="type_product" id="type_product" class="form-control">
                                         <option value="">Chọn loại sản phẩm</option>
-                                        <option value="product_simple" {{ request('type_product') == 'product_simple' ? 'selected' : '' }}>Đơn giản</option>
-                                        <option value="product_variant" {{ request('type_product') == 'product_variant' ? 'selected' : '' }}>Biến thể</option>
+                                        <option value="product_simple"
+                                            {{ request('type_product') == 'product_simple' ? 'selected' : '' }}>Đơn giản
+                                        </option>
+                                        <option value="product_variant"
+                                            {{ request('type_product') == 'product_variant' ? 'selected' : '' }}>Biến thể
+                                        </option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label>MÀU</label>
                                     <button class="btn btn-link p-0 float-right text-dark" id="toggle-color">-</button>
@@ -291,10 +295,12 @@
                                         <tr class="align-top">
                                             <th>#</th>
                                             <th>Hình ảnh</th>
-                                            <th class="text-center">Tên sản phẩm<br><small class="text-secondary" style="margin-top: -5px;">(brand & danh mục)</small></th>
+                                            <th class="text-center">Tên sản phẩm<br><small class="text-secondary"
+                                                    style="margin-top: -5px;">(brand & danh mục)</small></th>
                                             <th>Nhà cung cấp</th>
                                             <th>Giá nhập</th>
-                                            <th>Tồn kho<br><small class="text-secondary" style="margin-top: -5px;">(số lượng)</small></th>
+                                            <th>Tồn kho<br><small class="text-secondary" style="margin-top: -5px;">(số
+                                                    lượng)</small></th>
                                             <th>Loại SP</th>
                                             <th>Ngày nhập hàng</th>
                                             <th>Thao tác</th>
@@ -305,21 +311,24 @@
                                             @foreach ($products as $index => $product)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td><img src="{{ Storage::url($product->image) }}" alt="Hình sản phẩm">
+                                                    <td><img src="{{ Storage::url($product->image) }}"
+                                                            alt="Hình sản phẩm">
                                                     </td>
                                                     <td class="text-center">
                                                         <span
-                                                            class="product-name float-left">{{ limitText($product->name, 20) }} /
+                                                            class="product-name float-left">{{ limitText($product->name, 20) }}
+                                                            /
                                                         </span>
                                                         <br>
                                                         <span class="product-category float-left">
-                                                           ({{ $product->category->title }} & {{ $product->brand->name }})
+                                                            ({{ $product->category->title }} &
+                                                            {{ $product->brand->name }})
                                                         </span>
                                                     </td>
                                                     <td>{{ @$product->supplier->name }}</td>
                                                     <td>
 
-                                                        {{ number_format($product->price_import) . ' VND' }}
+                                                        {{ number_format($product->price_import) }}{{ $generalSettings->currency_icon }}
                                                     </td>
 
                                                     <td
@@ -328,9 +337,9 @@
                                                             text-danger
                                                         @elseif ($product->qty <= 20)
                                                             text-warning @endif
-                                                    @else
-                                                    @php
-                                                    $totalQty = 0;
+@else
+@php
+$totalQty = 0;
                                                             foreach ($product->ProductVariants as $productVariant) {
                                                                 $totalQty += $productVariant->qty;
                                                             } @endphp
@@ -551,7 +560,7 @@
                                             <tr>
                                                 <td>1</td>
                                                 <td>${product.name}</td>
-                                                <td>${product.priceProduct}</td>
+                                                <td>${product.priceProduct}{{ $generalSettings->currency_icon }}</td>
                                                 <td>${data.sold}</td>
                                                 <td>${product.qty}</td>
                                             </tr>
@@ -567,7 +576,7 @@
                                             <tr>
                                                 <td>${index + 1}</td>
                                                 <td>${variant.name}</td>
-                                                <td>${variant.priceVariant}</td>
+                                                <td>${variant.priceVariant}{{ $generalSettings->currency_icon }}</td>
                                                 <td>${variant.sold}</td>
                                                 <td>${variant.qty}</td>
                                             </tr>

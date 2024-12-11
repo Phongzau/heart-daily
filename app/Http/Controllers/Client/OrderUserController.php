@@ -456,16 +456,16 @@ class OrderUserController extends Controller
                 return [
                     'name_product' => $name_product,
                     'qty_product' => $orderProduct->qty,
-                    'sub_price' => number_format($orderProduct->unit_price * $orderProduct->qty) . ' VND',
-                    'price_product' => number_format($orderProduct->unit_price) . ' VND',
+                    'sub_price' => number_format($orderProduct->unit_price * $orderProduct->qty),
+                    'price_product' => number_format($orderProduct->unit_price),
                 ];
             });
             $coupon = json_decode($order->coupon_method, true);
             $order->address = json_decode($order->order_address, true);
-            $order->sub_total_order = number_format($order->sub_total) . ' VND';
-            $order->total_order = number_format($order->amount) . ' VND';
-            $order->cod_order = number_format($order->cod) . ' VND';
-            $order->discount_coupon = $coupon != null ? number_format(getOrderDiscount($coupon, $order->sub_total)) . ' VND' : 0 . ' VND';
+            $order->sub_total_order = number_format($order->sub_total);
+            $order->total_order = number_format($order->amount);
+            $order->cod_order = number_format($order->cod);
+            $order->discount_coupon = $coupon != null ? number_format(getOrderDiscount($coupon, $order->sub_total)) : 0;
             $order->status_payment = $order->payment_status == 1 ? '(Đã thanh toán)' : '(Chưa thanh toán)';
             $addressName = [];
             $addressName[] = Commune::query()->where('id', $order->address['commune_id'])->pluck('title')->first();

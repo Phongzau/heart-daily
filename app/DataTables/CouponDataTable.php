@@ -51,14 +51,16 @@ class CouponDataTable extends DataTable
                 return $query->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
             })
             ->addColumn('discount', function ($query) {
+                $generalSettings = app('generalSettings');
                 if ($query->discount_type === 'percent') {
                     return $query->discount . '%';
                 } else {
-                    return number_format($query->discount) . ' VND';
+                    return number_format($query->discount) . $generalSettings->currency_icon;
                 }
             })
             ->addColumn('min_order_value', function ($query) {
-                return number_format($query->min_order_value) . ' VND';
+                $generalSettings = app('generalSettings');
+                return number_format($query->min_order_value) . $generalSettings->currency_icon;
             })
             ->rawColumns(['action', 'status'])
             ->setRowId('id');

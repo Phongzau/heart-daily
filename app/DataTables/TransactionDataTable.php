@@ -24,14 +24,15 @@ class TransactionDataTable extends DataTable
                 return $query->order->id;
             })
             ->addColumn('amount', function ($query) {
+                $generalSettings = app('generalSettings');
                 // Kiểm tra phương thức thanh toán
                 if ($query->payment_method == 'paypal') {
                     // Nếu là PayPal, định dạng tiền theo USD
-                    return number_format($query->amount_real_currency, 2, '.', ',') . ' USD';
+                    return '$' . number_format($query->amount_real_currency, 2, '.', ',');
                 }
 
                 // Nếu không phải PayPal, định dạng tiền theo VNĐ
-                return number_format($query->amount) . ' VNĐ';
+                return number_format($query->amount) . $generalSettings->currency_icon;
             })
             ->rawColumns(['action']); // Ensure the action column renders HTML correctly
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\DataTables;
+
 use Carbon\Carbon;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -38,12 +39,13 @@ class OrderDataTable extends DataTable
                 return $query->user->name;
             })
             ->addColumn('amount', function ($query) {
-                return number_format($query->amount) . ' VNĐ';
+                $generalSettings = app('generalSettings');
+                return number_format($query->amount) . $generalSettings->currency_icon;
             })
             ->addColumn('date', function ($query) {
                 Carbon::setLocale('vi'); // Đặt ngôn ngữ là tiếng Việt
                 return Carbon::parse($query->created_at)->translatedFormat('d F, Y'); // Ví dụ: 12 Tháng Mười Hai, 2024
-            
+
             })
             ->addColumn('payment_status', function ($query) {
                 if ($query->payment_status == 1) {

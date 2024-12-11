@@ -5,7 +5,7 @@
 @section('css')
     <style>
         .cat-list li.active a .span, .brand-list li.active a {
-    color: #2299dd; 
+    color: #2299dd;
 }
 .size-list li.active a{
     border-color: #08C;
@@ -22,7 +22,7 @@
         foreach ($categories as $category) {
             echo '<li id="category-' . $category->id . '">';
             $hasChildren = $category->children->isNotEmpty();
-            echo '<a href="#widget-category-' . $category->id . '" class="' . ($hasChildren ? 'collapsed' : '') . '" ' . 
+            echo '<a href="#widget-category-' . $category->id . '" class="' . ($hasChildren ? 'collapsed' : '') . '" ' .
                 ($hasChildren ? 'data-toggle="collapse" role="button" aria-expanded="false" aria-controls="widget-category-' . $category->id . '"' : '') . '>';
 
             echo '<span class="span" onclick="setFilter(\'category\', ' . $category->id . '); return false;">' . $category->title . '</span>';
@@ -39,7 +39,7 @@
                 echo '</div>';
             }
 
-            
+
         }
         echo '</ul>';
     }
@@ -374,7 +374,7 @@
                         const currentDate = new Date().toISOString().split('T')[0];
                         const hasDiscount = product.offer_price > 0 && currentDate >= product
                             .offer_start_date && currentDate <= product.offer_end_date;
-                        const productDetailUrl = "{{ url('product') }}/" + product.slug;
+                        const productDetailUrl = "{{ url('product/detail') }}/" + product.slug;
                         const wishlistProductIds = data.wishlistProductIds;
                         const isInWishlist = wishlistProductIds.includes(product.id) ? 'added-wishlist' : '';
                         html += `
@@ -388,10 +388,10 @@
                                     <div class="product-label label-hot">HOT</div>
 
                                     ${hasDiscount  ? `
-                                                                                            <div class="product-label label-sale">
-                                                                                                -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                                                            </div>
-                                                                                            ` : ''}
+                                                        <div class="product-label label-sale">
+                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                        </div>
+                                                        ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -409,11 +409,11 @@
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                                                                <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                                                <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                                                                ` : `
-                                                                <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                                                                `}
+                                    <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                    <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)}{{ $generalSettings->currency_icon }}</span>
+                                    ` : `
+                                    <span class="product-price">${new Intl.NumberFormat().format(product.price)}{{ $generalSettings->currency_icon }}</span>
+                                    `}
                     </div>
                     <div class="product-action">
                         <a href="javascript:void(0)" data-productid="${product.id}" class="btn-icon-wish ${isInWishlist}" title="wishlist"><i class="icon-heart"></i></a>

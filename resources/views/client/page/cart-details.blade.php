@@ -195,7 +195,7 @@
                                             </a>
                                         </h5>
                                     </td>
-                                    <td>{{ number_format($item['price']) }} VND</td>
+                                    <td>{{ number_format($item['price']) }}{{ $generalSettings->currency_icon }}</td>
                                     <td>
                                         <div class="product-single-qty">
                                             <input class="horizontal-quantity product-qty form-control"
@@ -204,8 +204,7 @@
                                         </div><!-- End .product-single-qty -->
                                     </td>
                                     <td class="text-right"><span
-                                            id="{{ $keyCart }}">{{ number_format($item['price'] * $item['qty']) }}
-                                            VND</span>
+                                            id="{{ $keyCart }}">{{ number_format($item['price'] * $item['qty']) }}{{ $generalSettings->currency_icon }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -249,7 +248,7 @@
                                                     <tr>
                                                         <td>Tổng cộng:</td>
                                                         <td id="sub_total" style="color: black; font-weight: 700">
-                                                            {{ number_format(getCartTotal()) }} VND
+                                                            {{ number_format(getCartTotal()) }}{{ $generalSettings->currency_icon }}
                                                         </td>
                                                     </tr>
 
@@ -258,12 +257,14 @@
                                                     <tr>
                                                         <td>Phí ship (+):</td>
                                                         <td style="color: black; font-weight: 700">
-                                                            {{ number_format(getCartCod()) }} VND</td>
+                                                            {{ number_format(getCartCod()) }}{{ $generalSettings->currency_icon }}
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Mã giảm(-):</td>
                                                         <td id="discount" style="color: black; font-weight: 700">
-                                                            {{ number_format(getCartDiscount()) }} VND</td>
+                                                            {{ number_format(getCartDiscount()) }}{{ $generalSettings->currency_icon }}
+                                                        </td>
                                                     </tr>
 
                                                 </tbody>
@@ -271,8 +272,8 @@
                                                     <tr>
                                                         <td>Tổng:</td>
                                                         <td id="total" style="font-size: 16px;">
-                                                            {{ number_format(getMainCartTotal()) }}
-                                                            VND</td>
+                                                            {{ number_format(getMainCartTotal()) }}{{ $generalSettings->currency_icon }}
+                                                        </td>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -346,6 +347,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            let timeDown;
+            let isClickTriggered = false;
             // Mở modal khi nhấn nút "Choose coupon"
             // Mở sidebar và hiển thị overlay khi nhấn nút
             $("#openSidebarBtn").click(function() {
@@ -356,45 +359,143 @@
             $(".close-btn, .overlay").click(function() {
                 $("#couponSidebar").css("width", "0");
             });
-
             // Tăng số lượng input-group-append
-            $('.input-group-append').on('click', function() {
+            // $(document).on('click', '.input-group-append', function() {
+            //     let input = $(this).siblings('.product-qty');
+            //     let cartKey = input.data('cartkey');
+            //     let quantity = parseInt(input.val());
+            //     clearTimeout(timeDown);
+            //     timeDown = setTimeout(function() {
+            //         $.ajax({
+            //             url: "{{ route('cart.update-quantity') }}",
+            //             method: "POST",
+            //             data: {
+            //                 cartKey: cartKey,
+            //                 quantity: quantity,
+            //             },
+            //             success: function(data) {
+            //                 if (data.status === 'success') {
+            //                     let productId = '#' + cartKey;
+            //                     let totalAmount = data.product_total +
+            //                         '{{ $generalSettings->currency_icon }}';
+            //                     $(productId).text(totalAmount);
+            //                     renderCartSubTotal();
+            //                     calculateCouponDiscount()
+            //                 } else if (data.status === 'error') {
+            //                     input.val(data.current_qty);
+            //                     toastr.error(data.message);
+            //                 }
+            //             },
+            //             error: function(xhr) {
+            //                 if (xhr.status === 401) {
+            //                     // Chuyển hướng người dùng đến trang đăng nhập
+            //                     toastr.warning(
+            //                         'Bạn cần đăng nhập để thực hiện điều này.');
+            //                     setTimeout(() => {
+            //                         window.location.href = '/login';
+            //                     }, 1500);
+            //                 }
+            //             },
+            //         })
+            //     }, 1000);
+            // })
+            // Lắng nghe sự kiện click
+            $(document).on('click', '.input-group-append', function() {
+                isClickTriggered = true;
                 let input = $(this).siblings('.product-qty');
                 let cartKey = input.data('cartkey');
                 let quantity = parseInt(input.val());
+                console.log(timeDown);
 
-                $.ajax({
-                    url: "{{ route('cart.update-quantity') }}",
-                    method: "POST",
-                    data: {
-                        cartKey: cartKey,
-                        quantity: quantity,
-                    },
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            let productId = '#' + cartKey;
-                            let totalAmount = data.product_total + ' VND';
-                            $(productId).text(totalAmount);
-                            renderCartSubTotal();
-                            calculateCouponDiscount()
-                        } else if (data.status === 'error') {
-                            input.val(data.current_qty);
-                            toastr.error(data.message);
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 401) {
-                            // Chuyển hướng người dùng đến trang đăng nhập
-                            toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
-                            setTimeout(() => {
-                                window.location.href = '/login';
-                            }, 1500);
-                        }
-                    },
-                })
+                // Xóa hẹn giờ cũ
+                clearTimeout(timeDown);
+
+                // Tạo hẹn giờ mới
+                timeDown = setTimeout(function() {
+                    console.log('Request đang được gửi');
+                    $.ajax({
+                        url: "{{ route('cart.update-quantity') }}",
+                        method: "POST",
+                        data: {
+                            cartKey: cartKey,
+                            quantity: quantity,
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                let productId = '#' + cartKey;
+                                let totalAmount = data.product_total +
+                                    '{{ $generalSettings->currency_icon }}';
+                                $(productId).text(totalAmount);
+                                renderCartSubTotal();
+                                calculateCouponDiscount();
+                            } else if (data.status === 'error') {
+                                input.val(data.current_qty);
+                                toastr.error(data.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 401) {
+                                toastr.warning(
+                                    'Bạn cần đăng nhập để thực hiện điều này.');
+                                setTimeout(() => {
+                                    window.location.href = '/login';
+                                }, 1500);
+                            }
+                        },
+                    });
+                    isClickTriggered = false;
+                }, 1000); // Delay 1 giây sau lần click cuối cùng
+            });
+
+            // Giảm số lượng input-group-prepend
+            $(document).on('click', '.input-group-prepend', function() {
+                isClickTriggered = true;
+                let input = $(this).siblings('.product-qty');
+                let cartKey = input.data('cartkey');
+                let quantity = parseInt(input.val());
+                console.log(timeDown);
+
+                // Xóa hẹn giờ cũ
+                clearTimeout(timeDown);
+                timeDown = setTimeout(function() {
+                    console.log('Request đang được gửi');
+                    $.ajax({
+                        url: "{{ route('cart.update-quantity') }}",
+                        method: "POST",
+                        data: {
+                            cartKey: cartKey,
+                            quantity: quantity,
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                let productId = '#' + cartKey;
+                                let totalAmount = data.product_total +
+                                    '{{ $generalSettings->currency_icon }}';
+                                $(productId).text(totalAmount);
+                                renderCartSubTotal();
+                                calculateCouponDiscount();
+                            } else if (data.status === 'error') {
+                                input.val(data.current_qty);
+                                toastr.error(data.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 401) {
+                                // Chuyển hướng người dùng đến trang đăng nhập
+                                toastr.warning(
+                                    'Bạn cần đăng nhập để thực hiện điều này.');
+                                setTimeout(() => {
+                                    window.location.href = '/login';
+                                }, 1500);
+                            }
+                        },
+                    });
+                    isClickTriggered = false;
+                }, 1000);
             })
 
             $(document).on('change', '.product-qty', function() {
+                if (isClickTriggered) return;
                 let input = $(this);
                 let cartKey = input.data('cartkey');
                 let quantity = parseInt(input.val());
@@ -408,7 +509,8 @@
                     success: function(data) {
                         if (data.status === 'success') {
                             let productId = '#' + cartKey;
-                            let totalAmount = data.product_total + ' VND';
+                            let totalAmount = data.product_total +
+                                '{{ $generalSettings->currency_icon }}';
                             $(productId).text(totalAmount);
                             renderCartSubTotal();
                             calculateCouponDiscount()
@@ -427,44 +529,7 @@
                         }
                     },
                 })
-
-            })
-
-            // Giảm số lượng input-group-prepend
-            $('.input-group-prepend').on('click', function() {
-                let input = $(this).siblings('.product-qty');
-                let cartKey = input.data('cartkey');
-                let quantity = parseInt(input.val());
-
-                $.ajax({
-                    url: "{{ route('cart.update-quantity') }}",
-                    method: "POST",
-                    data: {
-                        cartKey: cartKey,
-                        quantity: quantity,
-                    },
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            let productId = '#' + cartKey;
-                            let totalAmount = data.product_total + ' VND';
-                            $(productId).text(totalAmount);
-                            renderCartSubTotal();
-                            calculateCouponDiscount();
-                        } else if (data.status === 'error') {
-                            input.val(data.current_qty);
-                            toastr.error(data.message);
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 401) {
-                            // Chuyển hướng người dùng đến trang đăng nhập
-                            toastr.warning('Bạn cần đăng nhập để thực hiện điều này.');
-                            setTimeout(() => {
-                                window.location.href = '/login';
-                            }, 1500);
-                        }
-                    },
-                })
+                console.log("hoạt động");
             })
             $(document).on('click', '.use-coupons', function() {
                 let couponCode = $(this).siblings('.coupon-details').find('.code-coupon').text();
@@ -567,7 +632,7 @@
                     url: "{{ route('cart.product-total') }}",
                     method: 'GET',
                     success: function(data) {
-                        let totalAmount = data + ' VND';
+                        let totalAmount = data + '{{ $generalSettings->currency_icon }}';
                         $('#sub_total').text(totalAmount);
                     },
                     error: function(data) {
@@ -582,8 +647,10 @@
                     method: 'GET',
                     success: function(data) {
                         if (data.status == 'success') {
-                            $('#discount').text(data.discount + ' VND');
-                            $('#total').text(data.cart_total + ' VND');
+                            $('#discount').text(data.discount +
+                                '{{ $generalSettings->currency_icon }}');
+                            $('#total').text(data.cart_total +
+                                '{{ $generalSettings->currency_icon }}');
                         }
                     },
                     error: function(data) {},

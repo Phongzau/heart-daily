@@ -159,8 +159,7 @@
 
                                                    <span class="cart-product-info">
                                                        <span class="cart-product-qty">{{ $item['qty'] }}</span> ×
-                                                       {{ number_format($item['price']) }}
-                                                       VND
+                                                       {{ number_format($item['price']) }}{{ $generalSettings->currency_icon }}
                                                    </span>
                                                </div>
                                                <!-- End .product-details -->
@@ -191,8 +190,8 @@
                                    <div class="dropdown-cart-total @if (count($carts) === 0) d-none @endif">
                                        <span>TỔNG CỘNG:</span>
 
-                                       <span class="cart-total-price float-right">{{ number_format(getCartTotal()) }}
-                                           VND</span>
+                                       <span
+                                           class="cart-total-price float-right">{{ number_format(getCartTotal()) }}{{ $generalSettings->currency_icon }}</span>
                                    </div>
                                    <!-- End .dropdown-cart-total -->
 

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\LogoSetting;
-use App\Models\GeneralSetting; 
+use App\Models\GeneralSetting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -23,14 +23,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
+        $generalSettings = GeneralSetting::query()->first();
+        // Biến toàn cục
+        app()->singleton('generalSettings', function () use ($generalSettings) {
+            return $generalSettings;
+        });
+
+        View::composer('*', function ($view) use ($generalSettings) {
             $carts = session()->get('cart', []);
             $logoSetting = LogoSetting::query()->first();
-            $generalSettings = GeneralSetting::query()->first();
             $view->with([
                 'logoSetting' => $logoSetting,
                 'generalSettings' => $generalSettings,
-                'carts'=> $carts,
+                'carts' => $carts,
             ]);
         });
 

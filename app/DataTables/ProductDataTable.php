@@ -55,7 +55,8 @@ class ProductDataTable extends DataTable
                 return $img = "<img width='100px' src='" . Storage::url($query->image) . "'>";
             })
             ->addColumn('price', function ($query) {
-                return number_format($query->price) . ' VND';
+                $generalSettings = app('generalSettings');
+                return number_format($query->price) . $generalSettings->currency_icon;
             })
             ->addColumn('type_product', function ($query) {
                 if ($query->type_product === 'product_simple') {

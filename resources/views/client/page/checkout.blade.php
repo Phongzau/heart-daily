@@ -165,7 +165,7 @@
                                     </td>
 
                                     <td class="price-col">
-                                        <span>{{ number_format($item['price'] * $item['qty']) }} VND</span>
+                                        <span>{{ number_format($item['price'] * $item['qty']) }}{{ $generalSettings->currency_icon }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -182,7 +182,7 @@
                                 </td>
 
                                 <td class="price-col">
-                                    <span>{{ number_format(getCartTotal()) }} VND</span>
+                                    <span>{{ number_format(getCartTotal()) }}{{ $generalSettings->currency_icon }}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -193,7 +193,7 @@
                                 </td>
 
                                 <td class="price-col">
-                                    <span>{{ number_format(getCartCod()) }} VND</span>
+                                    <span>{{ number_format(getCartCod()) }}{{ $generalSettings->currency_icon }}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -207,7 +207,7 @@
                                 </td>
 
                                 <td class="price-col">
-                                    -<span>{{ number_format(getCartDiscount()) }} VND</span>
+                                    -<span>{{ number_format(getCartDiscount()) }}{{ $generalSettings->currency_icon }}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -216,7 +216,8 @@
                                     <h4>Tổng thanh toán</h4>
                                 </td>
                                 <td>
-                                    <b class="total-price"><span>{{ number_format(getMainCartTotal()) }} VND</span></b>
+                                    <b
+                                        class="total-price"><span>{{ number_format(getMainCartTotal()) }}{{ $generalSettings->currency_icon }}</span></b>
                                 </td>
                             </tr>
                         </tfoot>

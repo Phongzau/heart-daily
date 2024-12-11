@@ -149,7 +149,7 @@
                                     </h4>
                                     <span class="cart-product-info">
                                         <span class="cart-product-qty">${product.qty}</span> ×
-                                        ${new Intl.NumberFormat().format(product.price)} VND
+                                        ${new Intl.NumberFormat().format(product.price)}{{ $generalSettings->currency_icon }}
                                     </span>
                                 </div>
                                 <!-- End .product-details -->
@@ -183,7 +183,7 @@
                 method: 'GET',
                 url: "{{ route('cart.product-total') }}",
                 success: function(data) {
-                    $('.cart-total-price').text(data + ' VND')
+                    $('.cart-total-price').text(data + '{{ $generalSettings->currency_icon }}')
                 },
                 error: function(data) {
 
