@@ -2,6 +2,48 @@
 @section('title')
     {{ $generalSettings->site_name }} || Danh mục sản phẩm
 @endsection
+@section('css')
+    <style>
+        .cat-list li.active a .span, .brand-list li.active a {
+    color: #2299dd; 
+}
+.size-list li.active a{
+    border-color: #08C;
+    background-color: #2299dd;
+    color: #fff;
+    text-decoration: none;
+}
+    </style>
+@endsection
+@php
+    function renderCategoryTree($categories)
+    {
+        echo '<ul class="cat-list category-list">';
+        foreach ($categories as $category) {
+            echo '<li id="category-' . $category->id . '">';
+            $hasChildren = $category->children->isNotEmpty();
+            echo '<a href="#widget-category-' . $category->id . '" class="' . ($hasChildren ? 'collapsed' : '') . '" ' . 
+                ($hasChildren ? 'data-toggle="collapse" role="button" aria-expanded="false" aria-controls="widget-category-' . $category->id . '"' : '') . '>';
+
+            echo '<span class="span" onclick="setFilter(\'category\', ' . $category->id . '); return false;">' . $category->title . '</span>';
+            if ($hasChildren) {
+                echo '<span class="toggle"></span>';
+            }
+            echo '</a>';
+            echo '</li>';
+            if ($category->children->isNotEmpty()) {
+                echo '<div class="collapse" id="widget-category-' . $category->id . '">';
+                echo '<ul class="cat-sublist category-list">';
+                renderCategoryTree($category->children);
+                echo '</ul>';
+                echo '</div>';
+            }
+
+            
+        }
+        echo '</ul>';
+    }
+@endphp
 @section('section')
     <div class="category-banner-container bg-gray">
         <div class="category-banner banner text-uppercase"
@@ -110,22 +152,16 @@
                 <div class="sidebar-wrapper">
                     <div class="widget">
                         <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true"
-                                aria-controls="widget-body-2">Danh Mục</a>
+                            <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="false"
+                                aria-controls="widget-body-2" class="collapsed">Danh Mục</a>
                         </h3>
 
-                        <div class="collapse show" id="widget-body-2">
+                        <div class="collapse" id="widget-body-2">
                             <div class="widget-body">
-                                <ul class="cat-list">
-                                    @foreach ($categories as $category)
-                                        <li id="category-{{ $category->id }}">
-                                            <a href="#"
-                                                onclick="setFilter('category', {{ $category->id }}); return false;">
-                                                {{ $category->title }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
+
+                                @php
+                                    renderCategoryTree($categories);
+                                @endphp
                             </div>
                             <!-- End .widget-body -->
 
@@ -136,13 +172,13 @@
 
                     <div class="widget">
                         <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="true"
-                                aria-controls="widget-body-3">Thương hiệu</a>
+                            <a data-toggle="collapse" href="#widget-body-3" role="button" aria-expanded="false"
+                                aria-controls="widget-body-3" class="collapsed">Thương hiệu</a>
                         </h3>
 
-                        <div class="collapse show" id="widget-body-3">
+                        <div class="collapse" id="widget-body-3">
                             <div class="widget-body">
-                                <ul class="cat-list">
+                                <ul class="cat-list brand-list">
                                     @foreach ($brands as $brand)
                                         <li id="brand-{{ $brand->id }}">
                                             <a href="#"
@@ -162,11 +198,11 @@
 
                     <div class="widget">
                         <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="true"
-                                aria-controls="widget-body-5">Khoảng Giá</a>
+                            <a data-toggle="collapse" href="#widget-body-5" role="button" aria-expanded="false"
+                                aria-controls="widget-body-5" class="collapsed">Khoảng Giá</a>
                         </h3>
 
-                        <div class="collapse show" id="widget-body-5">
+                        <div class="collapse" id="widget-body-5">
                             <div class="widget-body pb-0">
                                 <form id="price-filter-form" action="#" method="GET">
                                     <div class="shopee-price-range-filter__inputs">
@@ -204,13 +240,13 @@
 
                     <div class="widget widget-color">
                         <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="true"
-                                aria-controls="widget-body-4">MÀU</a>
+                            <a data-toggle="collapse" href="#widget-body-4" role="button" aria-expanded="false"
+                                aria-controls="widget-body-4" class="collapsed">MÀU</a>
                         </h3>
 
-                        <div class="collapse show" id="widget-body-4">
+                        <div class="collapse" id="widget-body-4">
                             <div class="widget-body pb-0">
-                                <ul class="config-swatch-list">
+                                <ul class="config-swatch-list color-list">
                                     @foreach ($colors as $color)
                                         <li id="color-{{ $color->id }}">
                                             <a href="#" style="background-color: {{ $color->code }};"
@@ -229,13 +265,13 @@
 
                     <div class="widget widget-size">
                         <h3 class="widget-title">
-                            <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="true"
-                                aria-controls="widget-body-6">Kích cỡ</a>
+                            <a data-toggle="collapse" href="#widget-body-6" role="button" aria-expanded="false"
+                                aria-controls="widget-body-6" class="collapsed">Kích cỡ</a>
                         </h3>
 
-                        <div class="collapse show" id="widget-body-6">
+                        <div class="collapse" id="widget-body-6">
                             <div class="widget-body pb-0">
-                                <ul class="config-size-list">
+                                <ul class="config-size-list size-list">
                                     @foreach ($sizes as $size)
                                         <li id="size-{{ $size->id }}">
                                             <a href="#"
@@ -278,27 +314,16 @@
 
         function setFilter(type, value) {
             if (filters[type] === value) {
-                filters[type] = null; // Bỏ chọn bộ lọc
-                document.getElementById(`${type}-${value}`).classList.remove('active'); // Xóa class "active"
+                filters[type] = null;
+                document.getElementById(`${type}-${value}`).classList.remove('active');
             } else {
                 filters[type] = value;
 
-                if (type === 'category') {
-                    document.querySelectorAll('.cat-list a').forEach(el => el.classList.remove('active'));
-                    document.getElementById(`category-${value}`).classList.add('active');
-                }
-                if (type === 'brand') {
-                    document.querySelectorAll('.brand-list a').forEach(el => el.classList.remove('active'));
-                    document.getElementById(`brand-${value}`).classList.add('active');
-                }
-                if (type === 'color') {
-                    document.querySelectorAll('.color-list a').forEach(el => el.classList.remove('active'));
-                    document.getElementById(`color-${value}`).classList.add('active');
-                }
-                if (type === 'size') {
-                    document.querySelectorAll('.size-list a').forEach(el => el.classList.remove('active'));
-                    document.getElementById(`size-${value}`).classList.add('active');
-                }
+                document.querySelectorAll(`.${type}-list li`).forEach(el => {
+                    el.classList.remove('active');
+                });
+
+                document.getElementById(`${type}-${value}`).classList.add('active');
             }
 
             loadProducts();
@@ -363,10 +388,10 @@
                                     <div class="product-label label-hot">HOT</div>
 
                                     ${hasDiscount  ? `
-                                                        <div class="product-label label-sale">
-                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                        </div>
-                                                        ` : ''}
+                                                                                            <div class="product-label label-sale">
+                                                                                                -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                                                            </div>
+                                                                                            ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -384,11 +409,11 @@
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                            <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                            <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
-                            ` : `
-                            <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
-                            `}
+                                                                <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                                                <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)} VND</span>
+                                                                ` : `
+                                                                <span class="product-price">${new Intl.NumberFormat().format(product.price)} VND</span>
+                                                                `}
                     </div>
                     <div class="product-action">
                         <a href="javascript:void(0)" data-productid="${product.id}" class="btn-icon-wish ${isInWishlist}" title="wishlist"><i class="icon-heart"></i></a>

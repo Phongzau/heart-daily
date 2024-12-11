@@ -34,20 +34,23 @@ class ProductController extends Controller
             $categoryIds = CategoryProduct::query()
                 ->where('id', $parentCategory->id)
                 ->orWhere('parent_id', $parentCategory->id)
+                ->orWhereIn('parent_id', function ($query) use ($parentCategory) {
+                    $query->select('id')->from('category_products')->where('parent_id', $parentCategory->id);
+                })
                 ->pluck('id');
 
             $query->whereIn('category_id', $categoryIds);
         }
         if ($searchQuery) {
-            // Tìm kiếm theo tên, slug, danh mục, hoặc thương hiệu
+            
             $query->where(function ($q) use ($searchQuery) {
                 $q->where('name', 'like', '%' . $searchQuery . '%')
                     ->orWhere('slug', 'like', '%' . $searchQuery . '%')
                     ->orWhereHas('category', function ($q) use ($searchQuery) {
-                        $q->where('title', 'like', '%' . $searchQuery . '%'); // Tìm theo danh mục
+                        $q->where('title', 'like', '%' . $searchQuery . '%'); 
                     })
                     ->orWhereHas('brand', function ($q) use ($searchQuery) {
-                        $q->where('name', 'like', '%' . $searchQuery . '%'); // Tìm theo thương hiệu
+                        $q->where('name', 'like', '%' . $searchQuery . '%'); 
                     });
             });
         }
@@ -61,8 +64,8 @@ class ProductController extends Controller
         $products = $query->paginate($perPage);
 
 
-        $categories = CategoryProduct::all();
-
+        $categories = CategoryProduct::query()->where('parent_id', 0)->with('children')->get();
+       
         $brands = Brand::all();
 
         $colors = Attribute::whereHas('categoryAttribute', function ($query) {
@@ -76,7 +79,7 @@ class ProductController extends Controller
         return view('client.page.product.list_product', compact('products', 'tags', 'categories', 'sizes', 'colors', 'brands', 'perPage'));
     }
 
-
+    
     public function ajaxIndex(Request $request)
     {
         $perPage = $request->input('count', 12);
@@ -97,7 +100,17 @@ class ProductController extends Controller
             });
         }
         if ($request->has('category') && $request->category) {
-            $query->where('category_id', $request->category);
+            $categoryId = $request->category;
+
+            $categoryIds = CategoryProduct::query()
+                ->where('id', $categoryId)
+                ->orWhere('parent_id', $categoryId)
+                ->orWhereIn('parent_id', function ($query) use ($categoryId) {
+                    $query->select('id')->from('category_products')->where('parent_id', $categoryId);
+                })
+                ->pluck('id');
+
+            $query->whereIn('category_id', $categoryIds);
         }
         if ($request->has('brand') && $request->brand) {
             $query->where('brand_id', $request->brand);
