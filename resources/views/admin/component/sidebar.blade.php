@@ -133,6 +133,9 @@
                         <li class="{{ checkActive(['admin.orders.return-order']) }}"><a class="nav-link"
                                 href="{{ route('admin.orders.return-order') }}">
                                 <span>Danh sách trả hàng</span></a></li>
+                        <li class="{{ checkActive(['admin.order.transaction']) }}"><a class="nav-link"
+                        href="{{ route('admin.orders.transaction') }}">
+                        <span>Thông tin giao dịch</span></a></li>
                     @endcan
                 </ul>
             </li>

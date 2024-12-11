@@ -1,7 +1,7 @@
 <?php
 
 namespace App\DataTables;
-
+use Carbon\Carbon;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -41,7 +41,9 @@ class OrderDataTable extends DataTable
                 return number_format($query->amount) . ' VNĐ';
             })
             ->addColumn('date', function ($query) {
-                return date('d-M-Y', strtotime($query->created_at));
+                Carbon::setLocale('vi'); // Đặt ngôn ngữ là tiếng Việt
+                return Carbon::parse($query->created_at)->translatedFormat('d F, Y'); // Ví dụ: 12 Tháng Mười Hai, 2024
+            
             })
             ->addColumn('payment_status', function ($query) {
                 if ($query->payment_status == 1) {
@@ -122,11 +124,11 @@ class OrderDataTable extends DataTable
     {
         return [
             Column::make('id')->title('ID'),
-            Column::make('invoice_id')->title('ID hóa đơn')->width(50),
+            Column::make('invoice_id')->title('ID hóa đơn'),
             Column::make('customer')->title('khách hàng')->width(150),
-            Column::make('date')->title('Ngày đặt')->width(150),
-            Column::make('product_qty')->title('Số lượng')->width(135),
-            Column::make('amount')->title('Số tiền')->width(150),
+            Column::make('date')->title('Ngày đặt'),
+            Column::make('product_qty')->title('Số lượng'),
+            Column::make('amount')->title('Số tiền'),
             Column::make('order_status')->title('Trạng thái đơn'),
             Column::make('payment_status')->title('Trạng thái thanh toán'),
             Column::make('payment_method')->title('Phương thức thanh toán')->width(180),

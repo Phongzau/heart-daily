@@ -94,7 +94,7 @@ class SocialDataTable extends DataTable
     {
         return [
             Column::make('id')->title('ID'),
-            Column::make('icon')->title('BIểu tượng'),
+            Column::make('icon')->title('Biểu tượng'),
             Column::make('name')->title('Tên'),
             Column::make('status')->title('Trạng thái'),
             Column::computed('action')->title('Chức năng')

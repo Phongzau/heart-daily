@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\TransactionDataTable;
 use App\DataTables\OrderDataTable;
 use App\DataTables\ReturnOrderDataTable;
 use App\Events\ChangeStatusOrder;
@@ -26,6 +27,10 @@ class OrderController extends Controller
         return $dataTable->render('admin.page.order.return-order');
     }
 
+    public function transaction(TransactionDataTable $dataTable)
+    {
+        return $dataTable->render('admin.page.order.transaction');
+    }
 
 
     public function show(string $id)

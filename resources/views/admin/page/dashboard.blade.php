@@ -364,7 +364,7 @@
                                     <div class="product-review">
                                         ${renderStars(product.avg_rating)}
                                     </div>
-                                    <div class="text-muted text-small">${product.review_count} Reviews</div>
+                                    <div class="text-muted text-small">${product.review_count} Đánh giá</div>
                                     <div class="product-cta">
                                         <a href="{{ url('product/detail') }}/${product.slug}" class="btn btn-primary">Chi tiết</a>
                                     </div>
@@ -459,7 +459,7 @@
                             <div class="media-body">
                                 <div class="media-title">${product.name}</div>
                                 <div class="mt-1">
-                                    <div class="font-weight-600 text-muted text-small">${product.sales} Sales</div>
+                                    <div class="font-weight-600 text-muted text-small">${product.sales} Sản phẩm</div>
                                 </div>
                             </div>
                         </li>
