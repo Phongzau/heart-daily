@@ -11,6 +11,7 @@ use App\Exports\ProductsExport;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\CategoryProduct;
+use App\Models\GeneralSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -91,6 +92,7 @@ class InventoryProductController extends Controller
 
     public function productDetail(string $productId)
     {
+        $generalSettings = GeneralSetting::query()->first();
         $product = Product::query()->with(['ProductVariants', 'reviews', 'category', 'brand'])->findOrFail($productId);
         $product->image_url = Storage::url($product->image);
         if ($product && $product->type_product === 'product_variant') {
@@ -115,7 +117,7 @@ class InventoryProductController extends Controller
 
                 return [
                     'name' => $titleVariant,
-                    'priceVariant' => number_format($priceVariant) . ' VND',
+                    'priceVariant' => number_format($priceVariant),
                     'qty' => $variant->qty,
                     'sold' => $sold ? $sold : 0,
                 ];
@@ -137,13 +139,13 @@ class InventoryProductController extends Controller
             sort($priceArray);
             $priceProduct = '';
             if (count(array_unique($priceArray)) === 1) {
-                $priceProduct = number_format($priceArray[0]) . ' VND';
+                $priceProduct = number_format($priceArray[0]);
             } else {
                 $priceProduct =
-                    number_format($priceArray[0]) .
-                    ' VND ~ ' .
+                    number_format($priceArray[0]) . $generalSettings->currency_icon .
+                    ' ~ ' .
                     number_format(end($priceArray)) .
-                    ' VND';
+                    $generalSettings->currency_icon;
             }
 
             $product->priceProduct = $priceProduct;
@@ -160,7 +162,7 @@ class InventoryProductController extends Controller
                     $query->where('order_status', 'delivered');
                 })
                 ->sum('qty');
-            $product->priceProduct = checkDiscount($product) ? number_format($product->offer_price) . ' VND' : number_format($product->price) . ' VND';
+            $product->priceProduct = checkDiscount($product) ? number_format($product->offer_price) : number_format($product->price);
             $product->name = limitText($product->name, 25);
             return response()->json([
                 'status' => 'success',

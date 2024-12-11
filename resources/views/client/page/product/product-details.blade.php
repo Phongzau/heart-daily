@@ -137,9 +137,10 @@
                     @if ($product->type_product === 'product_simple')
                         @if (checkDiscount($product))
                             <div class="price-box">
-                                <span class="old-price">{{ number_format($product->price) }}</span>
-                                <span class="product-price"><del>{{ number_format($product->offer_price) }}</del>
-                                    VND</span>
+                                <span
+                                    class="old-price">{{ number_format($product->price) }}{{ $generalSettings->currency_icon }}</span>
+                                <span
+                                    class="product-price"><del>{{ number_format($product->offer_price) }}{{ $generalSettings->currency_icon }}</del></span>
                             </div>
                         @else
                             <div class="price-box">
@@ -159,13 +160,14 @@
                             sort($priceArray);
                             $priceProduct = '';
                             if (count(array_unique($priceArray)) === 1) {
-                                $priceProduct = number_format($priceArray[0]) . ' VND';
+                                $priceProduct = number_format($priceArray[0]);
                             } else {
                                 $priceProduct =
                                     number_format($priceArray[0]) .
-                                    ' VND ~ ' .
+                                    $generalSettings->currency_icon .
+                                    ' ~ ' .
                                     number_format(end($priceArray)) .
-                                    ' VND';
+                                    $generalSettings->currency_icon;
                             }
 
                         @endphp
@@ -224,7 +226,8 @@
                     <div class="product-filters-container">
                         @php
                             // Sắp xếp các nhóm thuộc tính để color trước size
-                            $orderedKeys = ['Color', 'Size'];
+                            $orderedKeys = ['Color', 'Size', 'Material'];
+                            $remainingKeys = array_diff(array_keys($variantGroups), $orderedKeys); // Lấy các key không nằm trong orderedKeys
                         @endphp
 
                         @foreach ($orderedKeys as $key)
@@ -245,6 +248,25 @@
                                     </ul>
                                 </div>
                             @endif
+                        @endforeach
+
+                        @foreach ($remainingKeys as $key)
+                            <!-- In các key không nằm trong orderedKeys -->
+                            <div class="product-single-filter">
+                                <label>{{ strtolower($key) }}</label>
+                                <ul class="config-size-list">
+                                    @foreach ($variantGroups[$key] as $index => $item)
+                                        <li>
+                                            <a href="javascript:;"
+                                                class="d-flex select-variant align-items-center justify-content-center {{ strtolower($key) }}-options"
+                                                data-idproduct="{{ $product->id }}"
+                                                data-{{ strtolower($key) }}="{{ $item }}"
+                                                data-attribute="{{ strtolower($key) }}"
+                                                data-value="{{ $item }}">{{ $item }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endforeach
 
                         <div class="product-single-filter">
@@ -401,7 +423,7 @@
                             <div class="add-product-review">
                                 <h3 class="review-title">Thêm đánh giá</h3>
 
-                                <form id="reviewForm" class="comment-form m-0">
+                                <form id="reviewForm" data-slug="{{ $product->slug }}" class="comment-form m-0">
                                     <div class="rating-form">
                                         <label for="rate">Đánh giá<span class="required">*</span></label>
                                         <span class="rating-stars">
@@ -488,7 +510,7 @@
                                                 $priceArray[] = $productVariant->price_variant;
                                             }
                                         }
-                                        $priceProduct = number_format(min($priceArray)) . ' VND';
+                                        $priceProduct = number_format(min($priceArray));
                                         // sort($priceArray);
                                         // $priceProduct = '';
                                         // if (count(array_unique($priceArray)) === 1) {
@@ -504,13 +526,17 @@
                                 @endif
                                 @if ($product->type_product === 'product_simple')
                                     @if (checkDiscount($product))
-                                        <del class="old-price">{{ number_format($product->price) }} VND</del>
-                                        <span class="product-price">{{ number_format($product->offer_price) }} VND</span>
+                                        <del
+                                            class="old-price">{{ number_format($product->price) }}{{ $generalSettings->currency_icon }}</del>
+                                        <span
+                                            class="product-price">{{ number_format($product->offer_price) }}{{ $generalSettings->currency_icon }}</span>
                                     @else
-                                        <span class="product-price">{{ number_format($product->price) }} VND</span>
+                                        <span
+                                            class="product-price">{{ number_format($product->price) }}{{ $generalSettings->currency_icon }}</span>
                                     @endif
                                 @elseif ($product->type_product === 'product_variant')
-                                    <span class="product-price">{{ $priceProduct }}</span>
+                                    <span
+                                        class="product-price">{{ $priceProduct }}{{ $generalSettings->currency_icon }}</span>
                                 @endif
                             </div>
 
@@ -958,9 +984,10 @@
 
                                 const formatCurrency = (value) => {
                                     return new Intl.NumberFormat('vi-VN', {
-                                        style: 'decimal', // Không dùng currency để loại bỏ ký hiệu ₫
-                                        minimumFractionDigits: 0
-                                    }).format(value) + ' VND'; // Thêm ' VND' vào cuối
+                                            style: 'decimal', // Không dùng currency để loại bỏ ký hiệu ₫
+                                            minimumFractionDigits: 0
+                                        }).format(value) +
+                                        "{{ $generalSettings->currency_icon }}"; // Thêm ' VND' vào cuối
                                 };
                                 let priceText = '';
 
@@ -1053,15 +1080,24 @@
 
             $('.color-options.default-selected').trigger('click');
 
-            // Xử lý sự kiện nhấp vào tùy chọn kích cỡ
-            $('.config-size-list').on('click', '.size-options', function() {
-                var ulElement = $(this).closest('.config-size-list');
-                ulElement.find('.size-options').removeClass('selected');
-                ulElement.find('li').removeClass('active');
+            // // Xử lý sự kiện nhấp vào tùy chọn kích cỡ
+            // $('.config-size-list').on('click', '.size-options', function() {
+            //     var ulElement = $(this).closest('.config-size-list');
+            //     ulElement.find('.size-options').removeClass('selected');
+            //     ulElement.find('li').removeClass('active');
 
-                $(this).addClass('selected');
+            //     $(this).addClass('selected');
+            //     var liElement = $(this).closest('li');
+            //     liElement.addClass('active');
+            // });
+
+            $('.config-size-list').on('click', 'a', function() {
+                var ulElement = $(this).closest('.config-size-list');
+                ulElement.find('a').removeClass('selected');
+                ulElement.find('li').removeClass('active');
                 var liElement = $(this).closest('li');
                 liElement.addClass('active');
+                $(this).addClass('selected');
             });
 
             // Xử lý sự kiện nhấp vào nút Clear
@@ -1074,6 +1110,7 @@
             // Hàm xử lý gửi form bình luận
             $('#reviewForm').on('submit', function(e) {
                 e.preventDefault();
+                let slug = $(this).data('slug');
                 let rate = $('.rating-stars a.active').data('value');
                 let formData = new FormData(this);
                 formData.append('rate', rate);
@@ -1087,7 +1124,7 @@
                     success: function(data) {
                         console.log(data);
                         if (data.status == 'success') {
-                            getReviews(data.review.product_id);
+                            getReviews(data.review.product_id, slug);
                             $('#text-review').remove();
                             toastr.success(data.message);
                             $('#reviewForm')[0].reset(); // Đặt lại giá trị của các input
@@ -1108,7 +1145,8 @@
                 })
             })
 
-            function getReviews(productId) {
+            function getReviews(productId, slug) {
+
                 $.ajax({
                     url: "{{ route('get-reviews') }}",
                     method: 'GET',
@@ -1121,7 +1159,7 @@
                             var newUrl = $(this).attr('href').replace(
                                 /reviews\?product_id=\d+&page=\d+/,
                                 function(match) {
-                                    return "product/supreme-collegiate-half-zip?page=" +
+                                    return `product/detail/${$slug}?page=` +
                                         match.split('page=')[1];
                                 });
                             $(this).attr('href', newUrl);

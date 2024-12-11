@@ -11,7 +11,7 @@
                         if ($coupon->discount_type === 'percent') {
                             $discount = $coupon->discount . '%';
                         } elseif ($coupon->discount_type === 'amount') {
-                            $discount = number_format($coupon->discount) . ' VND';
+                            $discount = number_format($coupon->discount) . $generalSettings->currency_icon;
                         }
                     @endphp
                     <div class="coupon-card" data-code="{{ $coupon->code }}">
@@ -20,8 +20,7 @@
                             <div class="coupon-code">Mã: <span class="code-coupon">{{ $coupon->code }}</span> </div>
                             <div class="coupon-code">Giảm: {{ $discount }}</span> </div>
                             <div class="coupon-condition">Điều kiện đơn hàng:
-                                {{ number_format($coupon->min_order_value) }}
-                                VND</div>
+                                {{ number_format($coupon->min_order_value) }}{{ $generalSettings->currency_icon }}</div>
                             <div class="coupon-expiry">HSD:
                                 {{ \Carbon\Carbon::parse($coupon->end_date)->format('d/m/Y') }}
                             </div>

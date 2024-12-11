@@ -41,7 +41,8 @@ class ReturnOrderDataTable extends DataTable
                 return "<button class='btn btn-primary view-video' data-video-path='" . asset(Storage::url($query->video_path)) . "'>Xem Video</button>";
             })
             ->addColumn('refund_amount', function ($query) {
-                return number_format($query->refund_amount) . ' VND';
+                $generalSettings = app('generalSettings');
+                return number_format($query->refund_amount) . $generalSettings->currency_icon;
             })
             ->rawColumns(['order_id', 'return_status', 'video_path'])
             ->setRowId('id');

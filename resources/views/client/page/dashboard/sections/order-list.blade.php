@@ -47,12 +47,10 @@
                             <span style="float: right;
                         width: 150px;"
                                 class="original-price">({{ $product->qty }}) x
-                                {{ number_format($product->unit_price) }}
-                                VND</span>
+                                {{ number_format($product->unit_price) }}{{ $generalSettings->currency_icon }}</span>
                             <span style="float: right;
                         width: 150px;"
-                                class="discounted-price">{{ number_format($product->unit_price * $product->qty) }}
-                                VND</span>
+                                class="discounted-price">{{ number_format($product->unit_price * $product->qty) }}{{ $generalSettings->currency_icon }}</span>
                         </div>
                     </div>
                 </div>
@@ -91,11 +89,10 @@
                             </div>
                             <div class="product-price">
                                 <span style="float: right; width: 150px;" class="original-price">({{ $item->qty }})
-                                    x {{ number_format($item->unit_price) }}
-                                    VND</span>
+                                    x
+                                    {{ number_format($item->unit_price) }}{{ $generalSettings->currency_icon }}</span>
                                 <span style="float: right; width: 150px;"
-                                    class="discounted-price">{{ number_format($item->unit_price * $item->qty) }}
-                                    VND</span>
+                                    class="discounted-price">{{ number_format($item->unit_price * $item->qty) }}{{ $generalSettings->currency_icon }}</span>
                             </div>
                         </div>
                     @endforeach
@@ -115,7 +112,7 @@
                     ">({{ count($order->orderProducts) }} sản
                             phẩm)</span>
                         <span class="total-label">Thành tiền: <strong
-                                class="total-price">{{ number_format($order->amount) }} VND</strong></span>
+                                class="total-price">{{ number_format($order->amount) }}{{ $generalSettings->currency_icon }}</strong></span>
                     </div>
                     <div style="padding: 10px 0px 10px 10px;" class="order-buttons">
                         {!! renderOrderButtons($order->order_status, $order) !!}

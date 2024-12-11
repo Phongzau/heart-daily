@@ -257,12 +257,12 @@
 
         /* Modal Content */
         /* .modal-content {
-                                                                                                                                                                                                                                                                                                                                                background-color: #fefefe;
-                                                                                                                                                                                                                                                                                                                                                margin: auto;
-                                                                                                                                                                                                                                                                                                                                                padding: 20px;
-                                                                                                                                                                                                                                                                                                                                                border: 1px solid #888;
-                                                                                                                                                                                                                                                                                                                                                width: 25%;
-                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                            background-color: #fefefe;
+                                                                                                                                                                                                                                                                                                                                                            margin: auto;
+                                                                                                                                                                                                                                                                                                                                                            padding: 20px;
+                                                                                                                                                                                                                                                                                                                                                            border: 1px solid #888;
+                                                                                                                                                                                                                                                                                                                                                            width: 25%;
+                                                                                                                                                                                                                                                                                                                                                        } */
 
         /* The Close Button */
         .close {
@@ -310,11 +310,11 @@
         }
 
         /* .close:hover,
-                                                                                                                                                                                                                                                                                                                                        .close:focus {
-                                                                                                                                                                                                                                                                                                                                            color: black;
-                                                                                                                                                                                                                                                                                                                                            text-decoration: none;
-                                                                                                                                                                                                                                                                                                                                            cursor: pointer;
-                                                                                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                                                                                    .close:focus {
+                                                                                                                                                                                                                                                                                                                                                        color: black;
+                                                                                                                                                                                                                                                                                                                                                        text-decoration: none;
+                                                                                                                                                                                                                                                                                                                                                        cursor: pointer;
+                                                                                                                                                                                                                                                                                                                                                    } */
 
         .modal-body {
             padding: 10px 20px;
@@ -346,10 +346,10 @@
 
 
         /* .order-summary2 p {
-                                                                                                                                                                                                                                                                                margin: 5px 0;
-                                                                                                                                                                                                                                                                                text-align: right;
-                                                                                                                                                                                                                                                                                color: #333;
-                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                            margin: 5px 0;
+                                                                                                                                                                                                                                                                                            text-align: right;
+                                                                                                                                                                                                                                                                                            color: #333;
+                                                                                                                                                                                                                                                                                        } */
 
         .order-summary2 {
             font-size: 16px;
@@ -553,19 +553,19 @@
                 <div class="order-summary2">
                     <div class="summary-row">
                         <span class="margin-order-summary">Tổng tiền:</span>
-                        <span id="sub-total-order">2.000.000 VND</span>
+                        <span id="sub-total-order"></span>
                     </div>
                     <div class="summary-row">
                         <span class="margin-order-summary">Phí ship (+):</span>
-                        <span id="shipping-fee-order">30.000 VND</span>
+                        <span id="shipping-fee-order"></span>
                     </div>
                     <div class="summary-row">
                         <span class="margin-order-summary">Giảm giá (-):</span>
-                        <span id="discount-order">500.000 VND</span>
+                        <span id="discount-order"></span>
                     </div>
                     <div class="summary-row">
                         <span class="margin-order-summary">Thành tiền:</span>
-                        <span id="total-order">1.530.000 VND</span>
+                        <span id="total-order"></span>
                     </div>
 
                 </div>
@@ -633,10 +633,14 @@
                             $('#buyerPhone').text(data.order.address.phone);
                             $('#buyerEmail').text(data.order.address.email);
                             $('#buyerAddress').text(data.order.address.address);
-                            $('#sub-total-order').text(data.order.sub_total_order);
-                            $('#shipping-fee-order').text(data.order.cod_order);
-                            $('#discount-order').text(data.order.discount_coupon);
-                            $('#total-order').text(data.order.total_order);
+                            $('#sub-total-order').text(data.order.sub_total_order +
+                                '{{ $generalSettings->currency_icon }}');
+                            $('#shipping-fee-order').text(data.order.cod_order +
+                                '{{ $generalSettings->currency_icon }}');
+                            $('#discount-order').text(data.order.discount_coupon +
+                                '{{ $generalSettings->currency_icon }}');
+                            $('#total-order').text(data.order.total_order +
+                                '{{ $generalSettings->currency_icon }}');
                             $('#invoice-id').text(`DH#${data.order.id}`);
                             $('#status_payment').text(data.order.status_payment);
                             $('#buyerAddresses').text(data.order.addresses);
@@ -646,10 +650,10 @@
                                 productTable += `
                                     <tr>
                                         <td>${index}</td>
-                                        <td>${product.name_product}</td>
+                                        <td>${product.name_product} </td>
                                         <td>${product.qty_product}</td>
-                                        <td>${product.price_product}</td>
-                                        <td>${product.sub_price}</td>
+                                        <td>${product.price_product}{{ $generalSettings->currency_icon }}</td>
+                                        <td>${product.sub_price}{{ $generalSettings->currency_icon }}</td>
                                     </tr>
                                 `;
                             })

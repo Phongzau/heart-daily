@@ -67,7 +67,7 @@
                             <h4>Doanh thu</h4>
                         </div>
                         <div class="card-body" id="total-revenue">
-                            {{ number_format($totalRevenue, 0, ',', '.') }}₫
+                            {{ number_format($totalRevenue, 0, ',', '.') }}{{ $generalSettings->currency_icon }}
                         </div>
                     </div>
                 </div>
