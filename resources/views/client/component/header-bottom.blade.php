@@ -12,21 +12,6 @@
     // Hàm đệ quy để hiển thị các mục con
     function renderMenu($menuItems, $type)
     {
-        // echo '<ul>';
-        // foreach ($menuItems as $menuItem) {
-        //     echo '<li>';
-        //     echo '<a href="' . $menuItem->url . '">' . $menuItem->title . '</a>';
-
-        //     // Kiểm tra nếu mục này có con
-        //     if ($menuItem->children->count()) {
-        //         // Đệ quy hiển thị các mục con
-        //         renderMenu($menuItem->children);
-        //     }
-
-        //     echo '</li>';
-        // }
-        // echo '</ul>';
-
         if ($type == 'menu-item') {
             echo '<ul>';
             foreach ($menuItems as $menuItem) {
@@ -84,7 +69,7 @@
                         class="{{ $menuItem->children->count() ? 'dropdown' : '' }} {{ checkActiveClient($menuItem->url) }}">
                         <a href="{{ config('app.url') . $menuItem->url }}">{{ $menuItem->title }}</a>
 
-                        @if ($menuItem->slug === 'san-pham')
+                        @if ($menuItem->slug === 'danh-muc')
                             @php
                                 $categories = App\Models\CategoryProduct::where('status', 1)
                                     ->where('parent_id', 0)
@@ -103,26 +88,6 @@
                     </li>
                 @endforeach
 
-                {{-- <li class="dropdown">
-                    <a href="">Product</a>
-                    <ul>
-                        <li>
-                            <a href="">Nike</a>
-                        </li>
-                        <li>
-                            <a href="">Adidas</a>
-                        </li>
-                        <li>
-                            <a href="">Puma</a>
-                        </li>
-                        <li>
-                            <a href="">ADLV</a>
-                        </li>
-                        <li>
-                            <a href="">Jordan</a>
-                        </li>
-                    </ul>
-                </li> --}}
             </ul>
         </nav>
     </div>

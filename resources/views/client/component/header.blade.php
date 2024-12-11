@@ -82,6 +82,10 @@
     @yield('css-chat')
     @yield('css')
 </head>
-
+<style>
+    .active {
+        color: #007bff;
+    }
+</style>
 <body>
     <div class="page-wrapper"></div>
