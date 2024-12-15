@@ -2,6 +2,19 @@
 <html lang="en">
 
 <head>
+     <!-- PWA -->
+     <link rel="manifest" href="{{ asset('manifest.json') }}">
+     <meta name="theme-color" content="#4caf50">
+ 
+     <!-- Đăng ký Service Worker -->
+     <script>
+         if ('serviceWorker' in navigator) {
+             navigator.serviceWorker
+                 .register('{{ asset('service-worker.js') }}')
+                 .then(reg => console.log('Service Worker registered.', reg))
+                 .catch(err => console.error('Service Worker registration failed.', err));
+         }
+     </script>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}" />

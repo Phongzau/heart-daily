@@ -468,10 +468,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
             Route::put('change-approve-status', [OrderController::class, 'changeApproveStatus'])->name('return.change-approve-status');
             Route::get('/', [OrderController::class, 'index'])->name('index');
+            Route::get('/deleted', [OrderController::class, 'deletedOrders'])->name('deleted');
             Route::get('/return-order', [OrderController::class, 'orderReturn'])->name('return-order');
             Route::get('/transaction', [OrderController::class, 'transaction'])->name('transaction');
             Route::get('/{orders}', [OrderController::class, 'show'])->name('show')->middleware('permission:edit-orders');
             Route::delete('/{orders}', [OrderController::class, 'destroy'])->name('destroy')->middleware('permission:delete-orders');
+            Route::patch('/{id}/restore', [OrderController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force-delete', [OrderController::class, 'forceDelete'])->name('forceDelete');
         });
 
         Route::middleware('permission:view-inventory')->prefix('inventory')->name('inventory.')->group(function () {
