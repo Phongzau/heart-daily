@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\OrderReturn;
 use App\Models\ProductVariant;
 use App\Notifications\ChangeStatusOrder as NotificationsChangeStatusOrder;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,32 @@ class OrderController extends Controller
 {
     public function index(OrderDataTable $dataTable)
     {
+        $this->autoDeleteOrders();
         return $dataTable->render('admin.page.order.index');
+    }
+    public function autoDeleteOrders()
+    {
+        $now = Carbon::now();
+
+        $canceledOrders = Order::where('order_status', 'canceled')
+            ->where('created_at', '<=', $now->subYears(1))
+            ->get();
+
+        foreach ($canceledOrders as $order) {
+            $order->orderProducts()->delete();
+            $order->transaction()->delete();
+            $order->delete();
+        }
+
+        $deliveredOrders = Order::where('order_status', 'delivered')
+            ->where('created_at', '<=', $now->subYears(3))
+            ->get();
+
+        foreach ($deliveredOrders as $order) {
+            $order->orderProducts()->delete();
+            $order->transaction()->delete();
+            $order->delete();
+        }
     }
 
     public function orderReturn(ReturnOrderDataTable $dataTable)
@@ -42,6 +68,31 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $order = Order::query()->findOrFail($id);
+        // Kiểm tra trạng thái đơn hàng
+        if ($order->order_status == 'canceled') {
+
+            $createdAt = Carbon::parse($order->created_at);
+            $now = Carbon::now();
+            $diffInMonths = $createdAt->diffInMonths($now);
+
+            if ($diffInMonths < 6) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Không thể xóa đơn hàng đã hủy chưa đủ 6 tháng!',
+                ]);
+            }
+        } elseif ($order->order_status == 'delivered') {
+            $createdAt = Carbon::parse($order->created_at);
+            $now = Carbon::now();
+            $diffInYears = $createdAt->diffInYears($now);
+
+            if ($diffInYears < 3) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Không thể xóa đơn hàng chưa đủ 3 năm!',
+                ]);
+            }
+        }
 
         // delete order products
         $order->orderProducts()->delete();
@@ -51,9 +102,41 @@ class OrderController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Xóa thành công !',
+            'message' => 'Đã xóa mềm đơn hàng thành công!',
         ]);
     }
+    public function deletedOrders()
+    {
+        $deletedOrders = Order::onlyTrashed()->with('orderProducts', 'transaction')->get();
+
+        return view('admin.page.order.deleted', [
+            'orders' => $deletedOrders,
+        ]);
+    }
+    public function restore(string $id)
+    {
+        $order = Order::onlyTrashed()->findOrFail($id);
+        
+        $order->orderProducts()->restore();
+        $order->transaction()->restore();
+        $order->restore();
+        
+        toastr('Khôi phục đơn hàng thành công!', 'success');
+        return redirect()->route('admin.orders.index');
+    }
+    public function forceDelete(string $id)
+    {
+        $order = Order::onlyTrashed()->findOrFail($id);
+
+        $order->orderProducts()->forceDelete();
+        $order->transaction()->forceDelete();
+        $order->forceDelete();
+
+        toastr('Xóa vĩnh viễn đơn hàng thành công!', 'success');
+        return redirect()->route('admin.orders.deleted');
+    }
+
+
 
     public function changeOrderStatus(Request $request)
     {
@@ -96,7 +179,7 @@ class OrderController extends Controller
         if ($returnOrder->return_status == 'completed') {
             foreach ($returnOrder->order->orderProducts as $orderProduct) {
                 $product = $orderProduct->product;
-            if (isset($product)) {
+                if (isset($product)) {
                     if ($orderProduct->product->type_product === 'product_simple') {
                         $product->qty += $orderProduct->qty;
                         $product->save();

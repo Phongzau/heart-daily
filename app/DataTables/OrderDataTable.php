@@ -30,10 +30,17 @@ class OrderDataTable extends DataTable
                     $showBtn = "<a class='btn btn-primary' href='" . route('admin.orders.show', $query->id) . "'><i class='far fa-eye'></i></a>";
                 }
                 if (auth()->user()->can('delete-orders')) {
-                    $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.orders.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                    if ($query->order_status == 'canceled' || $query->status_order == 'delivered') {
+                        $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.orders.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
+                    } else {
+                        $deleteBtn = "<a class='disabled-link btn btn-secondary delete-item ml-2'><i class='far fa-trash-alt'></i></a>";
+                    }
                     // $statusBtn = "<a class='btn btn-warning ml-2' href='" . route('admin.products.edit', $query->id) . "'><i class='fas fa-truck'></i></a>";
                 }
                 return $showBtn . $deleteBtn; //. $statusBtn
+            })
+            ->filter(function ($query) {
+                $query->whereNull('deleted_at');
             })
             ->addColumn('customer', function ($query) {
                 return $query->user->name;
@@ -78,7 +85,7 @@ class OrderDataTable extends DataTable
                         return "<span class='badge bg-secondary '>Trả hàng</span>";
                         break;
                     case 'canceled':
-                        return "<span class='badge bg-success'>Hủy bỏ</span>";
+                        return "<span class='badge bg-danger'>Hủy bỏ</span>";
                         break;
                     default:
                         # code...
