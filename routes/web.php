@@ -465,7 +465,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /** Order Route **/
         Route::middleware('permission:view-orders')->prefix('orders')->name('orders.')->group(function () {
             Route::get('payment-status', [OrderController::class, 'changePaymentStatus'])->name('payment.status');
-            Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('order.status');
+            Route::get('order-status', [OrderController::class, 'changeOrderStatus'])->name('status');
             Route::put('change-approve-status', [OrderController::class, 'changeApproveStatus'])->name('return.change-approve-status');
             Route::get('/', [OrderController::class, 'index'])->name('index');
             Route::get('/deleted', [OrderController::class, 'deletedOrders'])->name('deleted');

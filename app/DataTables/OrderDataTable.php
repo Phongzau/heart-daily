@@ -30,7 +30,7 @@ class OrderDataTable extends DataTable
                     $showBtn = "<a class='btn btn-primary' href='" . route('admin.orders.show', $query->id) . "'><i class='far fa-eye'></i></a>";
                 }
                 if (auth()->user()->can('delete-orders')) {
-                    if ($query->order_status == 'canceled' || $query->status_order == 'delivered') {
+                    if ($query->order_status == 'canceled' || $query->order_status == 'return' || $query->status_order == 'delivered') {
                         $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.orders.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
                     } else {
                         $deleteBtn = "<a class='disabled-link btn btn-secondary delete-item ml-2'><i class='far fa-trash-alt'></i></a>";
@@ -101,8 +101,31 @@ class OrderDataTable extends DataTable
      */
     public function query(Order $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+
+        // Lọc theo trạng thái đơn hàng
+        if (request()->has('order_status') && request()->order_status != '') {
+            $query->where('order_status', request()->order_status);
+        }
+
+        // Lọc theo trạng thái thanh toán
+        if (request()->has('payment_status') && request()->payment_status != '') {
+            $query->where('payment_status', request()->payment_status);
+        }
+
+        // Lọc theo ngày bắt đầu
+        if (request()->has('start_date') && request()->start_date != '') {
+            $query->whereDate('created_at', '>=', request()->start_date);
+        }
+
+        // Lọc theo ngày kết thúc
+        if (request()->has('end_date') && request()->end_date != '') {
+            $query->whereDate('created_at', '<=', request()->end_date);
+        }
+
+        return $query;
     }
+
 
     /**
      * Optional method if you want to use the html builder.
@@ -134,7 +157,7 @@ class OrderDataTable extends DataTable
         return [
             Column::make('id')->title('ID'),
             Column::make('invoice_id')->title('ID hóa đơn'),
-            Column::make('customer')->title('khách hàng')->width(150),
+            Column::make('customer')->title('Khách hàng')->width(150),
             Column::make('date')->title('Ngày đặt'),
             Column::make('product_qty')->title('Số lượng'),
             Column::make('amount')->title('Số tiền'),
