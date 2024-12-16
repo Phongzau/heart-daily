@@ -171,6 +171,7 @@
                                                         {{ $order->order_status === 'shipped' && ($key === 'processed_and_ready_to_ship' || $key === 'pending' || $key === 'dropped_off') ? 'disabled' : '' }}
                                                         {{ $order->order_status === 'delivered' && ($key === 'processed_and_ready_to_ship' || $key === 'pending' || $key === 'dropped_off' || $key === 'shipped') ? 'disabled' : '' }}
                                                         {{ $order->order_status === 'canceled' && $key !== 'canceled' ? 'disabled' : '' }}
+                                                        {{ $order->order_status !==  'delivered' && $key === 'delivered' ? 'disabled' : '' }}
                                                         {{ $key === 'canceled' ? 'disabled' : '' }}
                                                         {{ $order->order_status === $key ? 'selected' : '' }}
                                                         value="{{ $key }}">{{ $orderStatus['status'] }}
@@ -233,7 +234,7 @@
                 let id = $(this).data('id');
                 $.ajax({
                     method: 'GET',
-                    url: "{{ route('admin.orders.order.status') }}",
+                    url: "{{ route('admin.orders.status') }}",
                     data: {
                         status: status,
                         id: id,

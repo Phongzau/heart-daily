@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         $now = Carbon::now();
 
-        $canceledOrders = Order::where('order_status', 'canceled')
+        $canceledOrders = Order::whereIn('order_status', ['canceled', 'return'])
             ->where('created_at', '<=', $now->subYears(1))
             ->get();
 
@@ -69,7 +69,7 @@ class OrderController extends Controller
     {
         $order = Order::query()->findOrFail($id);
         // Kiểm tra trạng thái đơn hàng
-        if ($order->order_status == 'canceled') {
+        if ($order->order_status == 'canceled' || $order->order_status == 'return') {
 
             $createdAt = Carbon::parse($order->created_at);
             $now = Carbon::now();
@@ -78,7 +78,7 @@ class OrderController extends Controller
             if ($diffInMonths < 6) {
                 return response([
                     'status' => 'error',
-                    'message' => 'Không thể xóa đơn hàng đã hủy chưa đủ 6 tháng!',
+                    'message' => 'Không thể xóa đơn hàng đã hủy hoặc trả hàng chưa đủ 6 tháng!',
                 ]);
             }
         } elseif ($order->order_status == 'delivered') {
@@ -116,11 +116,11 @@ class OrderController extends Controller
     public function restore(string $id)
     {
         $order = Order::onlyTrashed()->findOrFail($id);
-        
+
         $order->orderProducts()->restore();
         $order->transaction()->restore();
         $order->restore();
-        
+
         toastr('Khôi phục đơn hàng thành công!', 'success');
         return redirect()->route('admin.orders.index');
     }
