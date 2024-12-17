@@ -124,7 +124,7 @@
                        @endif
 
 
-                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i
+                       <a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist" style="position: relative;"><i
                                class="fa-light fa-heart"></i><span class=" badge-circle total_wishlist"></span></a>
 
                        <div class="dropdown cart-dropdown">
