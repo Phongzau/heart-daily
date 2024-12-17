@@ -33,6 +33,6 @@ class ConfirmEmail extends Mailable
     public function build()
     {
         return $this->subject('Xác nhận đăng ký tài khoản')
-                    ->view('client.page.auth.emails.confirm');
+            ->view('client.page.auth.emails.confirm');
     }
 }

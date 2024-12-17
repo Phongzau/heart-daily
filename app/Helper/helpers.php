@@ -169,8 +169,10 @@ function renderOrderButtons($order_status, $order)
             break;
 
         case 'return':
-            if ($order->orderReturn->return_status == 'pending' || $order->orderReturn->return_status == 'approved') {
+            if ($order->orderReturn->return_status == 'pending') {
                 $buttons .= '<button class="btn btn-danger cancel-order-return" data-order-id="' . $order->id . '">Hủy hoàn hàng</button>';
+            } else if ($order->orderReturn->return_status == 'approved') {
+                $buttons .= '<button class="btn btn-danger cancel-order-return" disabled data-order-id="' . $order->id . '">Hủy hoàn hàng</button>';
             }
             break;
 
@@ -262,6 +264,9 @@ function getMainCartTotal()
         // return getCartTotal();
         $total = $subTotal;
     }
+    if (Session::has('point')) {
+        $total -= Session::get('point')['point_value'];
+    }
     $total += $cod;
 
     return $total;
@@ -294,6 +299,7 @@ function getCartDiscount()
         return 0;
     }
 }
+
 function fetchCartDiscountInfo()
 {
     if (Session::has('coupon')) {

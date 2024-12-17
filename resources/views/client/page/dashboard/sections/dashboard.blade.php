@@ -56,6 +56,15 @@
 
             <div class="col-6 col-md-4">
                 <div class="feature-box text-center pb-4">
+                    <a href="#withdraw" class="link-to-tab"><i class="fas fa-wallet"></i></a>
+                    <div class="feature-box-content">
+                        <h3>RÚT ĐIỂM</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4">
+                <div class="feature-box text-center pb-4">
                     <a href="{{ route('wishlist.index') }}"><i class="sicon-heart"></i></a>
                     <div class="feature-box-content">
                         <h3>DANH SÁCH ƯA THÍCH</h3>

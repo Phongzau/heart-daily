@@ -126,7 +126,7 @@
     <!-- End .row -->
     <nav class="toolbox toolbox-pagination">
         <div class="toolbox-item toolbox-show"></div>
-        <ul class="pagination toolbox-item" id="pagination-links">
+        <ul class="pagination pagination-text pagination-order toolbox-item" data-source='order' id="pagination-links">
             {{ $orders->appends(request()->query())->links() }}
         </ul>
     </nav>

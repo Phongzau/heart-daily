@@ -223,7 +223,7 @@
                             <strong><a href="#" class="product-category">ÁO LEN</a></strong>
                         </li> --}}
                     </ul>
-                    <div class="product-filters-container">
+                    <div id="product-filters" class="product-filters-container">
                         @php
                             // Sắp xếp các nhóm thuộc tính để color trước size
                             $orderedKeys = ['Color', 'Size', 'Material'];
@@ -549,7 +549,7 @@
                                 <a href="{{ route('product.detail', ['slug' => $product->slug]) }}"
                                     class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN
                                         LOẠI</span></a>
-                                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
+                                <a href="ajax/product-quick-view.html" class="btn-quickview2" title="Quick View"><i
                                         class="fas fa-external-link-alt"></i></a>
                             </div>
                         </div>
@@ -943,7 +943,7 @@
                 }
             });
 
-            var countOptions = $('.product-single-filter').length - 1;
+            var countOptions = $('#product-filters').find($('.product-single-filter')).length - 1;
 
             // Lấy giá trị của input số lượng và min, max từ thuộc tính của input
             var $qtyInput = $('input[name="qty"]');
@@ -962,7 +962,8 @@
             // Chọn biến thể
             $(document).on('click', '.select-variant', function() {
                 let selectedOptions = {};
-                let currentOptions = $('.product-single-filter a.selected').length;
+                let currentOptions = $('#product-filters').find($('.product-single-filter a.selected'))
+                    .length;
                 if (countOptions === currentOptions) {
                     $('.product-single-filter a.selected').each(function() {
                         const attribute = $(this).data('attribute');

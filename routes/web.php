@@ -32,11 +32,13 @@ use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PaypalSettingController;
 use App\Http\Controllers\Admin\VnpaySettingController;
+use App\Http\Controllers\Admin\WithdrawRequestController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\OrderUserController;
 use App\Http\Controllers\Client\WishlistController;
+use App\Http\Controllers\Client\WithdrawController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -88,6 +90,11 @@ Route::middleware('auth')->group(function () {
     Route::get('paypal/payment', [CheckoutController::class, 'payWithPaypal'])->name('paypal.payment');
     Route::get('paypal/success', [CheckoutController::class, 'paypalSuccess'])->name('paypal.success');
     Route::get('paypal/cancel', [CheckoutController::class, 'paypalCancel'])->name('paypal.cancel');
+    Route::get('withdraw-send-otp', [WithdrawController::class, 'sendOtp'])->name('send-otp');
+    Route::get('withdraw-resend-otp', [WithdrawController::class, 'reSendOtp'])->name('resend-otp');
+    Route::post('withdraw-verify-otp', [WithdrawController::class, 'verifyOtp'])->name('verify-otp');
+    Route::get('get-history-withdraw', [WithdrawController::class, 'getHistoryWithdraw'])->name('get-history-withdraw');
+    Route::get('withdraw-detail', [WithdrawController::class, 'withdrawDetail'])->name('withdraw-detail');
 });
 
 // Cart Routes
@@ -102,7 +109,7 @@ Route::get('cart/remove-product/{cartKey}', [CartController::class, 'removeProdu
 Route::get('get-cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
 Route::get('cart-products', [CartController::class, 'getCartProducts'])->name('cart-products');
 Route::post('cart/remove-sidebar-product', [CartController::class, 'removeSidebarProduct'])->name('cart.remove-sidebar-product');
-
+Route::post('use-point', [CartController::class, 'usePoint'])->name('use-point');
 //blog
 Route::get('blog-details/{slug}', [App\Http\Controllers\Client\BlogController::class, 'blogDetails'])->name('blog-details');
 Route::get('/blogs/{category?}', [App\Http\Controllers\Client\BlogController::class, 'blogs'])->name('blogs');
@@ -124,6 +131,7 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('/{slug?}', [ProductController::class, 'index'])->name('getProducts');
     Route::get('/detail/{slug}', [ProductController::class, 'productDetail'])->name('detail');
     Route::post('/get-qty-variant', [ProductController::class, 'getQtyVariant'])->name('get-qty-variant');
+    Route::post('/quickview', [ProductController::class, 'getQuickView'])->name('quickview');
     Route::get('/search', [ProductController::class, 'search'])->name('search');
     Route::post('/get-product-by-search', [ProductController::class, 'getProductBySearch'])->name('get-product-by-search');
 });
@@ -493,6 +501,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{supplier}/edit', [AdminSupplierController::class, 'edit'])->name('edit')->middleware('permission:create-suppliers');
             Route::put('/{supplier}', [AdminSupplierController::class, 'update'])->name('update');
             Route::delete('/{supplier}', [AdminSupplierController::class, 'destroy'])->name('destroy')->middleware('permission:create-suppliers');
+        });
+        // Withdraw
+        Route::prefix('withdraws')->name('withdraws.')->group(function () {
+            // Route::put('change-status', [AdminSupplierController::class, 'changeStatus'])
+            //     ->name('change-status');
+            Route::get('withdraw-status', [WithdrawRequestController::class, 'changeWithdrawStatus'])->name('change-status');
+            Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
+            Route::get('/{withdraws}', [WithdrawRequestController::class, 'show'])->name('show');
         });
     });
 });

@@ -244,13 +244,27 @@ class CartController extends Controller
         return number_format($total);
     }
 
+    public function getTotalCart()
+    {
+        $carts = session()->get('cart', []);
+        $total = 0;
+        foreach ($carts as $cart) {
+            $total += $cart['price'] * $cart['qty'];
+        }
+        $total += 30000;
+        return $total;
+    }
+
     public function couponCalculation()
     {
         if (Session::has('coupon')) {
             $coupon = Session::get('coupon');
-            $subTotal = getCartTotal();
+            $subTotal = $this->getTotalCart();
             if ($coupon['discount_type'] === 'amount') {
                 $total = $subTotal - $coupon['discount'];
+                if (Session::has('point')) {
+                    $total -= Session::get('point')['point_value'];
+                }
                 return response([
                     'status' => 'success',
                     'cart_total' =>  number_format($total),
@@ -266,6 +280,10 @@ class CartController extends Controller
                     }
 
                     $total = $subTotal - $discount;
+                    if (Session::has('point')) {
+                        dd(Session::get('point')['point_value']);
+                        $total -= Session::get('point')['point_value'];
+                    }
                     return response([
                         'status' => 'success',
                         'cart_total' =>  number_format($total),
@@ -274,6 +292,9 @@ class CartController extends Controller
                 } else {
                     $discount = $subTotal * $coupon['discount'] / 100;
                     $total = $subTotal - $discount;
+                    if (Session::has('point')) {
+                        $total -= Session::get('point')['point_value'];
+                    }
                     return response([
                         'status' => 'success',
                         'cart_total' =>  number_format($total),
@@ -282,10 +303,13 @@ class CartController extends Controller
                 }
             }
         } else {
-            $total = $this->cartTotal();
+            $total = $this->getTotalCart();
+            if (Session::has('point')) {
+                $total -= Session::get('point')['point_value'];
+            }
             return response()->json([
                 'status' => 'success',
-                'cart_total' => $total,
+                'cart_total' => number_format($total),
                 'discount' => 0,
             ]);
         }
@@ -461,5 +485,72 @@ class CartController extends Controller
     {
         $carts = session()->get('cart', []);
         return $carts;
+    }
+
+    function getAmountTotal()
+    {
+        $subTotal = getCartTotal();
+        $cod = getCartCod();
+        if (Session::has('coupon')) {
+            $coupon = Session::get('coupon');
+            if ($coupon['discount_type'] === 'amount') {
+                $total = $subTotal - $coupon['discount'];
+            } else if ($coupon['discount_type'] === 'percent') {
+                if (isset($coupon['max_discount'])) {
+                    $maxDiscount = $coupon['max_discount'];
+                    $discount = $subTotal * $coupon['discount'] / 100;
+
+                    if ($discount > $maxDiscount) {
+                        $discount = $maxDiscount;
+                    }
+                    $total = $subTotal - $discount;
+                } else {
+                    $discount = $subTotal * $coupon['discount'] / 100;
+                    $total = $subTotal - $discount;
+                }
+            }
+        } else {
+            $total = $subTotal;
+        }
+
+        $total += $cod;
+
+        return $total;
+    }
+
+    public function usePoint(Request $request)
+    {
+        $request->validate([
+            'point' => ['required', 'min:1', 'integer'],
+        ], [
+            'point.required' => 'Điểm không được bỏ trống',
+            'point.min' => 'Tối thiểu 1 điểm',
+            'point.integer' => 'Điểm phải là số',
+        ]);
+
+        $user = Auth::user();
+        $total = $this->getAmountTotal();
+        if ($request->point > $total) {
+            $useablePoint = $total;
+        } else {
+            $useablePoint = $request->point;
+        }
+
+        if ($request->point > $user->point) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Số điểm sử dụng vượt quá số điểm hiện có',
+            ]);
+        }
+
+        Session::put('point', [
+            'point_value' => (float)$useablePoint,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Sử dụng thành công $useablePoint điểm",
+            'useablePoint' => number_format($useablePoint),
+        ]);
     }
 }

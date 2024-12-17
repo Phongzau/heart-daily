@@ -2,6 +2,7 @@
     $address = json_decode($order->order_address);
     $shipping = json_decode($order->shipping_method);
     $coupon = json_decode($order->coupon_method, true);
+    $point = json_decode($order->point_method, true);
 @endphp
 @extends('layouts.admin')
 
@@ -128,7 +129,9 @@
                                                 @endif
 
                                             </td>
-                                            <td class="text-center">{{ number_format($product->unit_price) }}{{ $generalSettings->currency_icon }}</td>
+                                            <td class="text-center">
+                                                {{ number_format($product->unit_price) }}{{ $generalSettings->currency_icon }}
+                                            </td>
                                             <td class="text-center">{{ $product->qty }}</td>
                                             <td class="text-right">
                                                 {{ number_format($product->unit_price * $product->qty + $product->variant_total) }}{{ $generalSettings->currency_icon }}
@@ -185,7 +188,8 @@
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Tổng</div>
                                         <div class="invoice-detail-value">
-                                            {{ number_format($order->sub_total) }}{{ $generalSettings->currency_icon }}</div>
+                                            {{ number_format($order->sub_total) }}{{ $generalSettings->currency_icon }}
+                                        </div>
                                     </div>
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Vận chuyển(+)</div>
@@ -195,10 +199,18 @@
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Mã giảm giá(-)</div>
                                         <div class="invoice-detail-value">
-                                            {{-- @dump($coupon) --}}
                                             {{ @$coupon['discount'] ? number_format(getOrderDiscount($coupon, $order->sub_total)) : 0 }}{{ $generalSettings->currency_icon }}
                                         </div>
                                     </div>
+                                    @if (@$point)
+                                        <div class="invoice-detail-item">
+                                            <div class="invoice-detail-name">Điểm(-)</div>
+                                            <div class="invoice-detail-value">
+                                                {{ number_format($point['point_value']) }}{{ $generalSettings->currency_icon }}
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <hr class="mt-2 mb-2">
                                     <div class="invoice-detail-item">
                                         <div class="invoice-detail-name">Tổng cộng</div>
