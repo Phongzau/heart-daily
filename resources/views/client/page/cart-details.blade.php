@@ -475,7 +475,8 @@
                     },
                     success: function(data) {
                         if (data.status == 'success') {
-                            toastr.success(data.message);
+                            toastr.success(data.message +
+                                '{{ $generalSettings->currency_icon }}');
                             if ($('#pointTr').length) {
                                 $('#pointTr').find($('#pointTd')).html(data.useablePoint +
                                     "{{ $generalSettings->currency_icon }}");
@@ -492,6 +493,7 @@
                             }
                             renderCartSubTotal();
                             calculateCouponDiscount();
+                            $("#myModalUsePoint").fadeOut();
                         } else if (data.status == 'error') {
                             toastr.error(data.message);
                         }
@@ -822,6 +824,11 @@
                                 '{{ $generalSettings->currency_icon }}');
                             $('#total').text(data.cart_total +
                                 '{{ $generalSettings->currency_icon }}');
+                            if ($('#pointTr').length) {
+                                $('#pointTd').text(data.point_value +
+                                    "{{ $generalSettings->currency_icon }}");
+                            }
+
                         }
                     },
                     error: function(data) {},

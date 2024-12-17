@@ -50,4 +50,26 @@ class WithdrawRequestController extends Controller
             ]);
         }
     }
+
+    public function sendFeedback(Request $request)
+    {
+        $request->validate([
+            'feedback' => 'required|max:500',
+        ]);
+
+        $withdrawRequest = WithdrawRequest::find($request->id);
+        if ($withdrawRequest) {
+            $withdrawRequest->admin_feedback = $request->feedback;
+            $withdrawRequest->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Phản hồi thành công',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Đơn rút không tồn tại',
+            ]);
+        }
+    }
 }

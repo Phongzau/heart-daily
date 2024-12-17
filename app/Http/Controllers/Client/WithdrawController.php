@@ -154,12 +154,11 @@ class WithdrawController extends Controller
                         'point' => $request->point,
                         'equivalent_money' => $request->point,
                         'bank_name' => $request->bankName,
+                        'final_balance' => Auth::user()->point - $request->point,
                         'account_name' => $request->accountName,
                         'bank_account' => $request->bankAccount,
                         'status' => 'processing',
                     ]);
-
-
 
                     if ($user) {
                         $user->point -= $request->point;
@@ -224,4 +223,6 @@ class WithdrawController extends Controller
             ]);
         }
     }
+
+
 }

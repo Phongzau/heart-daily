@@ -36,7 +36,19 @@ class WithdrawRequestDataTable extends DataTable
                 $generalSettings = app('generalSettings');
                 return number_format($query->equivalent_money) . $generalSettings->currency_icon;
             })
-            ->rawColumns(['user_id', 'action'])
+            ->addColumn('status', function ($query) {
+                switch ($query->status) {
+                    case 'reject':
+                        return '<span class="badge bg-danger">Từ chối</span>';
+                    case 'processing':
+                        return '<span class="badge bg-warning">Đang xử lý</span>';
+                    case 'complete':
+                        return '<span class="badge bg-success">Hoàn thành</span>';
+                    default:
+                        return '<span class="badge bg-secondary">Không xác định</span>';
+                }
+            })
+            ->rawColumns(['user_id', 'action', 'status'])
             ->setRowId('id');
     }
 

@@ -11,6 +11,7 @@ class WithdrawRequest extends Model
         'point',
         'equivalent_money',
         'bank_name',
+        'final_balance',
         'account_name',
         'bank_account',
         'status',

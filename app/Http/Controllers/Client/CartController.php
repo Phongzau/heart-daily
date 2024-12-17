@@ -145,6 +145,8 @@ class CartController extends Controller
 
     public function cartDetails()
     {
+        // Session::forget('coupon');
+        // Session::forget('point');
         $carts = session()->get('cart', []);
         if (count($carts) === 0) {
             Session::forget('coupon');
@@ -262,13 +264,19 @@ class CartController extends Controller
             $subTotal = $this->getTotalCart();
             if ($coupon['discount_type'] === 'amount') {
                 $total = $subTotal - $coupon['discount'];
+                // $total giá sau khuyến mãi
                 if (Session::has('point')) {
+                    if ($total < Session::get('point')['point_value']) {
+                        $refundPoint = Session::get('point')['point_value'] - $total;
+                        Session::put('point', ['point_value' => Session::get('point')['point_value'] - $refundPoint]);
+                    }
                     $total -= Session::get('point')['point_value'];
                 }
                 return response([
                     'status' => 'success',
                     'cart_total' =>  number_format($total),
                     'discount' => number_format($coupon['discount']),
+                    'point_value' => number_format(Session::get('point')['point_value']),
                 ]);
             } else if ($coupon['discount_type'] === 'percent') {
                 if (isset($coupon['max_discount'])) {
@@ -281,24 +289,33 @@ class CartController extends Controller
 
                     $total = $subTotal - $discount;
                     if (Session::has('point')) {
-                        dd(Session::get('point')['point_value']);
+                        if ($total < Session::get('point')['point_value']) {
+                            $refundPoint = Session::get('point')['point_value'] - $total;
+                            Session::put('point', ['point_value' => Session::get('point')['point_value'] - $refundPoint]);
+                        }
                         $total -= Session::get('point')['point_value'];
                     }
                     return response([
                         'status' => 'success',
                         'cart_total' =>  number_format($total),
                         'discount' => number_format($discount),
+                        'point_value' => number_format(Session::get('point')['point_value']),
                     ]);
                 } else {
                     $discount = $subTotal * $coupon['discount'] / 100;
                     $total = $subTotal - $discount;
                     if (Session::has('point')) {
+                        if ($total < Session::get('point')['point_value']) {
+                            $refundPoint = Session::get('point')['point_value'] - $total;
+                            Session::put('point', ['point_value' => Session::get('point')['point_value'] - $refundPoint]);
+                        }
                         $total -= Session::get('point')['point_value'];
                     }
                     return response([
                         'status' => 'success',
                         'cart_total' =>  number_format($total),
                         'discount' => number_format($discount),
+                        'point_value' => number_format(Session::get('point')['point_value']),
                     ]);
                 }
             }
@@ -311,6 +328,7 @@ class CartController extends Controller
                 'status' => 'success',
                 'cart_total' => number_format($total),
                 'discount' => 0,
+                'point_value' => number_format(Session::get('point')['point_value']),
             ]);
         }
     }
@@ -547,9 +565,16 @@ class CartController extends Controller
             'point_value' => (float)$useablePoint,
         ]);
 
+        if ($request->point > $total) {
+            return response()->json([
+                'status' => 'success',
+                'message' => "Bạn chỉ được sử dụng tối đa " . number_format($useablePoint) . " điểm tương đương với số tiền đơn hàng là: " . number_format($useablePoint),
+                'useablePoint' => number_format($useablePoint),
+            ]);
+        }
         return response()->json([
             'status' => 'success',
-            'message' => "Sử dụng thành công $useablePoint điểm",
+            'message' => "Sử dụng thành công " . number_format($useablePoint) . "điểm",
             'useablePoint' => number_format($useablePoint),
         ]);
     }
