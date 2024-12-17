@@ -61,23 +61,16 @@
                         </div>
                     </div>
                     <!-- Nội Dung Phản Hồi -->
-                    <div id="admin-feedback-card" class="card mt-4 d-none">
+                    <div id="admin-feedback-card" class="card mt-4 @if ($withdrawRequest->status != 'rejected') d-none @endif ">
                         <div class="">
                             <h4>Gửi Phản Hồi Cho Khách</h4>
                         </div>
                         <div class="">
-                            <textarea id="admin-feedback" rows="4" class="form-control" placeholder="Nhập nội dung phản hồi..."></textarea>
+                            <textarea id="admin-feedback" rows="4" class="form-control" placeholder="Nhập nội dung phản hồi...">{{ @$withdrawRequest->admin_feedback }}</textarea>
                             <button id="send-feedback" class="btn btn-danger mt-3">Gửi Phản Hồi</button>
                         </div>
                     </div>
-                    <!-- Nội Dung Phản Hồi Từ Admin -->
-                    @if ($withdrawRequest->status == 'rejected')
-                        <hr>
-                        <div class="mb-3">
-                            <label class="font-weight-bold text-danger">Nội Dung Phản Hồi Từ Admin</label>
-                            <p class="text-danger">{{ $withdrawRequest->admin_feedback }}</p>
-                        </div>
-                    @endif
+
                 </div>
             </div>
         </div>
@@ -155,7 +148,11 @@
             });
             let previousStatus = $('#status-select').val();
             $('#status-select').on('change', function() {
-                if ($(this).val() === 'rejected') {
+                let currentStatus = $(this).val();
+                let id = "{{ $withdrawRequest->id }}";
+
+                // Hiển thị/ẩn feedback dựa trên trạng thái hiện tại
+                if (currentStatus === 'rejected') {
                     $('#admin-feedback-card').removeClass('d-none').slideDown();
                 } else {
                     $('#admin-feedback-card').slideUp(function() {
@@ -163,33 +160,44 @@
                     });
                 }
 
-                let status = $(this).val();
-                let id = "{{ $withdrawRequest->id }}";
-
                 $.ajax({
                     url: "{{ route('admin.withdraws.change-status') }}",
                     method: 'GET',
                     data: {
-                        status: status,
+                        status: currentStatus,
                         id: id,
                     },
                     success: function(data) {
                         if (data.status == 'success') {
                             toastr.success(data.message);
-                            previousStatus = status;
+                            previousStatus = currentStatus;
                         } else if (data.status == 'error') {
                             toastr.error(data.message);
-                            if (previousStatus != 'rejected') {
+
+                            // Khôi phục trạng thái trước đó
+                            $('#status-select').val(previousStatus);
+                            // Quản lý hiển thị lại feedback nếu trạng thái trước là "rejected"
+                            if (previousStatus === 'rejected') {
+                                $('#admin-feedback-card').removeClass('d-none').slideDown();
+                            } else {
                                 $('#admin-feedback-card').slideUp(function() {
                                     $(this).addClass('d-none');
                                 });
                             }
-                            $('#status-select').val(previousStatus);
                         }
                     },
                     error: function(data) {
                         toastr.error('Có lỗi xảy ra. Vui lòng thử lại.');
-                        $('#status-select').val(previousStatus); // Khôi phục trạng thái trước
+
+                        $('#status-select').val(previousStatus);
+                        // currentStatus = previousStatus;
+                        if (previousStatus === 'rejected') {
+                            $('#admin-feedback-card').removeClass('d-none').slideDown();
+                        } else {
+                            $('#admin-feedback-card').slideUp(function() {
+                                $(this).addClass('d-none');
+                            });
+                        }
                     }
                 })
 
@@ -198,7 +206,6 @@
             // Gửi phản hồi qua AJAX
             $('#send-feedback').on('click', function() {
                 let feedback = $('#admin-feedback').val();
-                let status = $('#status-select').val();
                 let requestId = "{{ $withdrawRequest->id }}";
 
                 if (feedback.trim() === '') {
@@ -207,25 +214,25 @@
                 }
 
 
-                // $.ajax({
-                //     method: "POST",
-                //     data: {
-                //         id: requestId,
-                //         status: status,
-                //         feedback: feedback
-                //     },
-                //     success: function(response) {
-                //         if (response.success) {
-                //             alert('Phản hồi đã được gửi thành công!');
-                //             location.reload(); // Reload để cập nhật giao diện
-                //         } else {
-                //             alert('Có lỗi xảy ra, vui lòng thử lại!');
-                //         }
-                //     },
-                //     error: function() {
-                //         alert('Lỗi kết nối đến server!');
-                //     }
-                // });
+                $.ajax({
+                    url: "{{ route('send-feedback') }}",
+                    method: "POST",
+                    data: {
+                        id: requestId,
+                        feedback: feedback
+                    },
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            toastr.success(response.message);
+                            location.reload(); // Reload để cập nhật giao diện
+                        } else if (response.status == 'error') {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Lỗi kết nối đến server!');
+                    }
+                });
             });
         })
     </script>

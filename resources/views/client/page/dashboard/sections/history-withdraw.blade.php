@@ -19,6 +19,10 @@
                         <strong>{{ number_format($withDraw->equivalent_money) }}{{ $generalSettings->currency_icon }}
                         </strong>
                     </p>
+                    <p class="mb-0 text-muted">Số dư cuối:
+                        <strong>{{ number_format($withDraw->final_balance) }}{{ $generalSettings->currency_icon }}
+                        </strong>
+                    </p>
                 </div>
                 <div>
                     <span style="font-size:14px"
@@ -40,7 +44,7 @@
                     </span>
                     <div class="mt-2">
                         <btn style="font-size: 11px;
-    width: 100%; border-radius: 3px;"
+                            width: 100%; border-radius: 3px;"
                             data-withdraw-id="{{ $withDraw->id }}" id="myBtnWithdraw" class="btn btn-success btn-sm">Xem
                             chi tiết
                         </btn>
