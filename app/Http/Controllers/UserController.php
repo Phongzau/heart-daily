@@ -10,6 +10,7 @@ use App\Models\District;
 use App\Models\Order;
 use App\Models\Province;
 use App\Models\User;
+use App\Models\WithdrawRequest;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class UserController extends Controller
         $user->role_id = 4;
 
         $avatar = Avatar::create($user->name)->toBase64();
-        
+
         $avatar = str_replace('data:image/png;base64,', '', $avatar);
         $imagePath = 'uploads/avatar/media_' . Str::random(12) . '.png';
         Storage::disk('public')->put($imagePath, base64_decode($avatar));
@@ -317,13 +318,22 @@ class UserController extends Controller
         }
 
         // Phân trang đơn hàng
-        $orders = $query->orderBy('created_at', 'desc')->paginate(6);
+        $orders = $query->orderBy('created_at', 'desc')->paginate(5);
+
+        $withDraws = WithdrawRequest::query()
+            ->where('user_id', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
 
         if ($request->ajax()) {
-            return view('client.page.dashboard.sections.order-list', compact('orders'))->render();
+            if ($request->get('source') === 'order') {
+                return view('client.page.dashboard.sections.order-list', compact('orders'))->render();
+            } else if ($request->get('source') === 'withdraw') {
+                return view('client.page.dashboard.sections.history-withdraw', compact('withDraws'))->render();
+            }
         }
 
-        return view('client.page.dashboard.dashboard', compact('orders'));
+        return view('client.page.dashboard.dashboard', compact('orders', 'withDraws'));
     }
 
     public function getProvinces()

@@ -210,6 +210,21 @@
                                     -<span>{{ number_format(getCartDiscount()) }}{{ $generalSettings->currency_icon }}</span>
                                 </td>
                             </tr>
+                            @if (session()->has('point'))
+                                <tr>
+                                    <td class="product-col">
+                                        <h3 class="product-title">
+                                            Điểm
+                                        </h3>
+                                    </td>
+
+                                    <td class="price-col">
+                                        -<span>{{ number_format(session()->get('point')['point_value']) }}{{ $generalSettings->currency_icon }}</span>
+                                    </td>
+                                </tr>
+                            @endif
+
+
                             <tr>
 
                                 <td>

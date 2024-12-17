@@ -113,7 +113,7 @@
                                     </span></a>
                             @endif
 
-                            <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
+                            <a href="#" class="btn-quickview2 btnQuickView" data-productid="{{$product->id}}" title="Quick View"><i
                                     class="fas fa-external-link-alt"></i></a>
                         </div>
                     </div>

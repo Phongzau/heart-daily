@@ -32,8 +32,8 @@ class ReturnOrderDataTable extends DataTable
                 <option " . ($query->return_status == 'pending' ? 'selected' : '') . " value='pending'>Chưa giải quyết</option>
                 <option " . ($query->return_status == 'approved' ? 'selected' : '') . " value='approved'>Đã duyệt</option>
                 <option " . ($query->return_status == 'rejected' ? 'selected' : '') . " value='rejected'>Từ chối</option>
-                <option " . ($query->return_status == 'contact_refund' ? 'selected' : '') . " value='contact_refund'>Liên hệ hoàn tiền</option>
                 <option " . ($query->return_status == 'completed' ? 'selected' : '') . " value='completed'>Hoàn tiền thành công</option>
+                <option " . ($query->return_status == 'canceled' ? 'selected' : '') . " value='canceled'>Hủy bỏ</option>
                 </select>";
             })
 
@@ -42,7 +42,13 @@ class ReturnOrderDataTable extends DataTable
             })
             ->addColumn('refund_amount', function ($query) {
                 $generalSettings = app('generalSettings');
-                return number_format($query->refund_amount) . $generalSettings->currency_icon;
+                $amount = $query->order->amount - getCartCod();
+                $point = json_decode($query->order->point_method, true);
+                if ($point && isset($point['point_value'])) {
+                    $usedPoint = $point['point_value'];
+                    $amount += $usedPoint;
+                }
+                return number_format($amount) . $generalSettings->currency_icon;
             })
             ->rawColumns(['order_id', 'return_status', 'video_path'])
             ->setRowId('id');

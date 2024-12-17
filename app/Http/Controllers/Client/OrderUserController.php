@@ -10,6 +10,7 @@ use App\Models\Coupon;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\OrderReturn;
+use App\Models\PointTransaction;
 use App\Models\ProductVariant;
 use App\Models\Province;
 use App\Models\User;
@@ -27,7 +28,6 @@ class OrderUserController extends Controller
     public function returnOrder(Request $request)
     {
         // dd($request->all());
-
         $order = Order::query()->find($request->orderId);
         if ($order) {
             $order->order_status = 'return';
@@ -90,7 +90,7 @@ class OrderUserController extends Controller
                 })
                 ->orderByDesc('created_at');
 
-            $orders = $ordersQuery->paginate(6, ['*'], 'page', $page)->appends([
+            $orders = $ordersQuery->paginate(5, ['*'], 'page', $page)->appends([
                 'status' => $status,
                 'from_date' => $fromDate,
                 'to_date' => $toDate,
@@ -115,7 +115,6 @@ class OrderUserController extends Controller
     public function cancelOrder(Request $request)
     {
         $order = Order::query()->find($request->orderId);
-
         if (isset($order)) {
             if ($order->order_status == 'processed_and_ready_to_ship' || $order->order_status == 'dropped_off' || $order->order_status == 'shipped' || $order->order_status == 'delivered') {
                 return response()->json([
@@ -130,7 +129,56 @@ class OrderUserController extends Controller
                 $reasonCancelOrder = checkReasonCancel($request->cancelReason);
             }
             $order->cause_cancel_order = $reasonCancelOrder;
+            $point = json_decode($order->point_method, true);
+            $user = User::query()->find(Auth::user()->id);
+            $total = $order->amount;
+            if ($point) {
+                // Nếu có điểm đã sử dụng
+                $usedPoint = $point['point_value'];
+
+                // Chỉ hoàn lại điểm nếu đơn hàng đã thanh toán
+                if ($order->payment_status == 1) {
+                    $total += $usedPoint;
+                    $user->point += $total;
+                    $user->save();
+
+                    // Ghi lại giao dịch hoàn điểm
+                    PointTransaction::create([
+                        'user_id' => $order->user_id,
+                        'order_id' => $order->id,
+                        'type' => 'refund',
+                        'points' => $total,
+                        'description' => "Hoàn điểm đơn hủy #$order->id",
+                    ]);
+                } else {
+                    // Nếu đơn hàng chưa thanh toán, chỉ hoàn lại điểm đã sử dụng mà không cộng tiền
+                    $user->point += $usedPoint;
+                    $user->save();
+
+                    PointTransaction::create([
+                        'user_id' => $order->user_id,
+                        'order_id' => $order->id,
+                        'type' => 'refund',
+                        'points' => $usedPoint,
+                        'description' => "Hoàn điểm đơn hủy (chưa thanh toán) #$order->id",
+                    ]);
+                }
+            } else if ($order->payment_status == 1) {
+                // Nếu không có điểm và đơn hàng đã thanh toán thành công
+                $user->point += $total;  // Cộng tiền vào điểm người dùng
+                $user->save();
+
+                PointTransaction::create([
+                    'user_id' => $order->user_id,
+                    'order_id' => $order->id,
+                    'type' => 'refund',
+                    'points' => $total,
+                    'description' => "Hoàn điểm đơn hủy #$order->id",
+                ]);
+            }
             $order->save();
+
+
             if ($order->coupon_method != 'null') {
                 $couponMethod = json_decode($order->coupon_method, true);
                 $coupon = Coupon::query()->where('code', $couponMethod['coupon_code'])->first();
@@ -189,7 +237,6 @@ class OrderUserController extends Controller
             $fromDate = $request->input('from_date');
             $toDate = $request->input('to_date');
             $page = $request->input('page', 1); // Lấy trang hiện tại
-
             // Tạo truy vấn với các tham số lọc
             $ordersQuery = Order::query()
                 ->with(['orderProducts'])
@@ -204,8 +251,7 @@ class OrderUserController extends Controller
                     return $query->whereDate('created_at', '<=', $toDate);
                 })
                 ->orderByDesc('created_at');
-
-            $orders = $ordersQuery->paginate(6, ['*'], 'page', $page)->appends([
+            $orders = $ordersQuery->paginate(5, ['*'], 'page', $page)->appends([
                 'status' => $status,
                 'from_date' => $fromDate,
                 'to_date' => $toDate,
@@ -216,7 +262,7 @@ class OrderUserController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Hủy đơn hàng thành công',
+                'message' => 'Hủy đơn hàng thành công.',
                 'updatedOrderHtml' => $updatedOrderHtml,
             ]);
         }
@@ -238,6 +284,15 @@ class OrderUserController extends Controller
                     'message' => 'Không thể hủy đơn hàng không ở trạng thái hoàn hàng',
                 ]);
             }
+            if ($order->orderReturn) {
+                if ($order->orderReturn->return_status == 'approved' || $order->orderReturn->return_status == 'completed') {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Không thể hủy đơn hoàn, vui lòng tải lại trang web',
+                    ]);
+                }
+            }
+
             $order->order_status = 'delivered';
             if (Storage::disk('public')->exists($order->orderReturn->video_path)) {
                 Storage::disk('public')->delete($order->orderReturn->video_path);
@@ -267,7 +322,7 @@ class OrderUserController extends Controller
                 })
                 ->orderByDesc('created_at');
 
-            $orders = $ordersQuery->paginate(6, ['*'], 'page', $page)->appends([
+            $orders = $ordersQuery->paginate(5, ['*'], 'page', $page)->appends([
                 'status' => $status,
                 'from_date' => $fromDate,
                 'to_date' => $toDate,
@@ -287,7 +342,6 @@ class OrderUserController extends Controller
             'message' => 'Đơn hàng không tồn tại',
         ]);
     }
-
 
     public function confirmOrder(Request $request)
     {
@@ -325,7 +379,7 @@ class OrderUserController extends Controller
                 })
                 ->orderByDesc('created_at');
 
-            $orders = $ordersQuery->paginate(6, ['*'], 'page', $page)->appends([
+            $orders = $ordersQuery->paginate(5, ['*'], 'page', $page)->appends([
                 'status' => $status,
                 'from_date' => $fromDate,
                 'to_date' => $toDate,
@@ -363,7 +417,6 @@ class OrderUserController extends Controller
 
         foreach ($order->orderProducts as $orderProduct) {
             $product = $orderProduct->product;
-            $productPrice = checkDiscount($product) ? $product->offer_price : $product->price;
             if (isset($product) && !empty($product)) {
                 if ($product->type_product === 'product_variant') {
                     // Lấy ra biến thể
@@ -379,6 +432,7 @@ class OrderUserController extends Controller
                         ->whereJsonContains('id_variant', $attributeIdArray)
                         ->first();
                     if ($productVariant && $productVariant->qty > 0) {
+                        $productPrice = checkDiscountVariant($productVariant) ? $productVariant->offer_price_variant : $productVariant->price_variant;
                         $newQty = min($productVariant->qty, $orderProduct->qty);
 
                         // Tạo cartKey duy nhất cho biến thể
@@ -399,6 +453,7 @@ class OrderUserController extends Controller
                         continue;
                     }
                 } else if ($product->type_product === 'product_simple') {
+                    $productPrice = checkDiscount($product) ? $product->offer_price : $product->price;
                     // Xử lý sản phẩm đơn giản
                     $cartKey = $product->id;
                     if ($product->qty > 0) {
@@ -462,6 +517,11 @@ class OrderUserController extends Controller
             });
             $coupon = json_decode($order->coupon_method, true);
             $order->address = json_decode($order->order_address, true);
+            $point = json_decode($order->point_method, true);
+            if ($point) {
+                $order->point = number_format($point['point_value']);
+            }
+
             $order->sub_total_order = number_format($order->sub_total);
             $order->total_order = number_format($order->amount);
             $order->cod_order = number_format($order->cod);

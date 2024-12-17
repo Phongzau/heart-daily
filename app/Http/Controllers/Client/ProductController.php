@@ -42,15 +42,15 @@ class ProductController extends Controller
             $query->whereIn('category_id', $categoryIds);
         }
         if ($searchQuery) {
-            
+
             $query->where(function ($q) use ($searchQuery) {
                 $q->where('name', 'like', '%' . $searchQuery . '%')
                     ->orWhere('slug', 'like', '%' . $searchQuery . '%')
                     ->orWhereHas('category', function ($q) use ($searchQuery) {
-                        $q->where('title', 'like', '%' . $searchQuery . '%'); 
+                        $q->where('title', 'like', '%' . $searchQuery . '%');
                     })
                     ->orWhereHas('brand', function ($q) use ($searchQuery) {
-                        $q->where('name', 'like', '%' . $searchQuery . '%'); 
+                        $q->where('name', 'like', '%' . $searchQuery . '%');
                     });
             });
         }
@@ -65,7 +65,7 @@ class ProductController extends Controller
 
 
         $categories = CategoryProduct::query()->where('parent_id', 0)->with('children')->get();
-       
+
         $brands = Brand::all();
 
         $colors = Attribute::whereHas('categoryAttribute', function ($query) {
@@ -79,14 +79,14 @@ class ProductController extends Controller
         return view('client.page.product.list_product', compact('products', 'tags', 'categories', 'sizes', 'colors', 'brands', 'perPage'));
     }
 
-    
+
     public function ajaxIndex(Request $request)
     {
         $perPage = $request->input('count', 12);
         $orderby = $request->input('orderby', 'menu_order');
         $currentDate = Carbon::now()->toDateString();
 
-        $query = Product::with('brand')->where('status', 1);
+        $query = Product::with('brand', 'reviews')->where('status', 1);
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -269,6 +269,7 @@ class ProductController extends Controller
             $variantGroups[$category] = array_values(array_unique($attributes));
         }
         // dd($variantGroups);
+        // dd($variantGroups);
         if ($request->ajax()) {
             return view('client.page.product.review-list', compact('reviews'))->render();
         }
@@ -413,6 +414,67 @@ class ProductController extends Controller
 
         return response()->json([
             'products' => $finalResults,
+        ]);
+    }
+
+    public function getQuickView(Request $request)
+    {
+        $product = Product::query()
+            ->with([
+                'ProductImageGalleries',
+                'ProductVariants',
+            ])
+            ->find($request->idProduct);
+        $reviews = ProductReview::query()->where('product_id', $product->id)->orderBy('id', 'DESC')->get();
+        if (!$product) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không có sản phẩm này',
+            ]);
+        }
+
+        if ($product->type_product == 'product_variant') {
+            $variantGroups = [];
+            $variantArray = [];
+            foreach ($product->ProductVariants as $variant) {
+                $variantIds = json_decode($variant->id_variant, true);
+
+                foreach ($variantIds as $variantId) {
+                    $attribute = Attribute::query()->with('categoryAttribute')->findOrFail($variantId);
+
+                    // Kiểm tra danh mục thuộc tính
+                    if ($attribute->categoryAttribute->title === 'Color') {
+                        $currentVariant['color'] = $attribute->title; // Lưu màu sắc
+                    } elseif ($attribute->categoryAttribute->title === 'Size') {
+                        $currentVariant['size'] = $attribute->title; // Lưu kích cỡ
+                    }
+                    $variantGroups[$attribute->categoryAttribute->title][] = $attribute->title;
+                }
+
+                // Nếu có cả màu sắc và kích cỡ, thêm vào mảng biến thể
+                if (isset($currentVariant['color']) && isset($currentVariant['size'])) {
+                    $color = $currentVariant['color'];
+                    $size = $currentVariant['size'];
+
+                    // Khởi tạo mảng cho màu nếu chưa có
+                    if (!isset($variantArray[$color])) {
+                        $variantArray[$color] = [];
+                    }
+                    $variantArray[$color][$size] = $variant->qty;
+                }
+            }
+
+            $variantDataJson = json_encode($variantArray);
+            foreach ($variantGroups as $category => $attributes) {
+                $variantGroups[$category] = array_values(array_unique($attributes));
+            }
+        }
+
+        $quickViewHtml = view('client.partials.quickview3', compact('product', 'reviews', 'variantGroups'))->render();
+
+        return response()->json([
+            'status' => 'success',
+            'updatedQuickViewHtml' => $quickViewHtml,
         ]);
     }
 }

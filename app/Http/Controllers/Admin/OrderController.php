@@ -10,10 +10,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Order;
 use App\Models\OrderReturn;
+use App\Models\PointTransaction;
 use App\Models\ProductVariant;
 use App\Notifications\ChangeStatusOrder as NotificationsChangeStatusOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -57,7 +59,6 @@ class OrderController extends Controller
     {
         return $dataTable->render('admin.page.order.transaction');
     }
-
 
     public function show(string $id)
     {
@@ -166,52 +167,163 @@ class OrderController extends Controller
 
     public function changeApproveStatus(Request $request)
     {
+        $request->validate([
+            'id' => ['required', 'integer', 'exists:order_returns,id'],
+        ]);
+
         $returnOrder = OrderReturn::query()->findOrFail($request->id);
-        if ($returnOrder->order->order_status == 'return') {
-            $returnOrder->return_status = $request->value;
-        } else {
+
+        if ($returnOrder->order->order_status !== 'return') {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Không thể chuyển trạng thái, đơn hàng này không trong trạng thái hoàn hàng',
             ]);
         }
 
-        if ($returnOrder->return_status == 'completed') {
-            foreach ($returnOrder->order->orderProducts as $orderProduct) {
-                $product = $orderProduct->product;
-                if (isset($product)) {
-                    if ($orderProduct->product->type_product === 'product_simple') {
-                        $product->qty += $orderProduct->qty;
-                        $product->save();
-                    } else if ($orderProduct->product->type_product === 'product_variant') {
-                        $variants = json_decode($orderProduct->variants, true);
-                        $attributeIdArray = [];
-                        foreach ($variants as $variant) {
-                            $nameVariant = strtolower($variant);
-                            $slugVariant = Str::slug($nameVariant);
-                            $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
-                            if ($attributeId) {
-                                $attributeIdArray[] = $attributeId;
-                            }
-                        }
-                        if (count($attributeIdArray) === count($variants)) {
-                            $productVariant = ProductVariant::where('product_id', $orderProduct->product_id)
-                                ->whereJsonContains('id_variant', $attributeIdArray)
-                                ->first();
-                            if ($productVariant) {
-                                $productVariant->qty += $orderProduct->qty;
-                                $productVariant->save();
+        // Logic hủy bỏ đơn hoàn
+        if ($request->value === 'canceled') {
+            if ($returnOrder->return_status === 'completed') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Không thể hủy bỏ đơn hàng đã thành công',
+                ]);
+            }
+            if ($returnOrder->order) {
+                $returnOrder->order->order_status = 'delivered';
+                $returnOrder->order->save();
+            }
+            // Xóa đơn hoàn hàng
+            $returnOrder->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đơn hoàn hàng đã được hủy bỏ thành công.',
+            ]);
+        }
+
+
+        DB::beginTransaction();
+
+        try {
+            $returnOrder->return_status = $request->value;
+
+            if ($returnOrder->return_status == 'completed') {
+                foreach ($returnOrder->order->orderProducts as $orderProduct) {
+                    $product = $orderProduct->product;
+                    if ($product) {
+                        if ($product->type_product === 'product_simple') {
+                            $product->qty += $orderProduct->qty;
+                            $product->save();
+                        } else if ($product->type_product === 'product_variant') {
+                            $variants = json_decode($orderProduct->variants, true);
+                            if (is_array($variants)) {
+                                $attributeIdArray = Attribute::query()
+                                    ->whereIn('slug', array_map(fn($v) => Str::slug(strtolower($v)), $variants))
+                                    ->pluck('id')
+                                    ->toArray();
+
+                                if (count($attributeIdArray) === count($variants)) {
+                                    $productVariant = ProductVariant::where('product_id', $orderProduct->product_id)
+                                        ->whereJsonContains('id_variant', $attributeIdArray)
+                                        ->first();
+
+                                    if ($productVariant) {
+                                        $productVariant->qty += $orderProduct->qty;
+                                        $productVariant->save();
+                                    } else {
+                                        throw new \Exception('Không tìm thấy biến thể sản phẩm.');
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
-        }
-        $returnOrder->save();
+                // Hoàn tiền lại cho user
+                $amount = $returnOrder->order->amount;
+                if ($returnOrder->order->user) {
+                    $point = json_decode($returnOrder->order->point_method, true);
+                    if ($point && isset($point['point_value'])) {
+                        $usedPoint = $point['point_value'];
+                        $amount += $usedPoint;
+                        $order = $returnOrder->order;
+                        PointTransaction::create([
+                            'user_id' => $order->user_id,
+                            'order_id' => $order->id,
+                            'type' => 'refund',
+                            'points' => $amount,
+                            'description' => "Hoàn điểm đơn hoàn #$order->id",
+                        ]);
+                    } else {
+                        $order = $returnOrder->order;
+                        PointTransaction::create([
+                            'user_id' => $order->user_id,
+                            'order_id' => $order->id,
+                            'type' => 'refund',
+                            'points' => $amount,
+                            'description' => "Hoàn điểm đơn hoàn #$order->id",
+                        ]);
+                    }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Cập nhật trạng thái thành công',
-        ]);
+                    // Cộng điểm lại cho user
+                    $returnOrder->order->user->point += $amount - getCartCod();
+                    $returnOrder->order->user->save();
+                }
+            }
+
+            $returnOrder->save();
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật trạng thái thành công',
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Đã xảy ra lỗi khi cập nhật trạng thái:' . $th->getMessage(),
+            ]);
+        }
     }
+
+
+
+    // if ($returnOrder->return_status == 'completed') {
+    //     foreach ($returnOrder->order->orderProducts as $orderProduct) {
+    //         $product = $orderProduct->product;
+    //         if (isset($product)) {
+    //             if ($orderProduct->product->type_product === 'product_simple') {
+    //                 $product->qty += $orderProduct->qty;
+    //                 $product->save();
+    //             } else if ($orderProduct->product->type_product === 'product_variant') {
+    //                 $variants = json_decode($orderProduct->variants, true);
+    //                 $attributeIdArray = [];
+    //                 foreach ($variants as $variant) {
+    //                     $nameVariant = strtolower($variant);
+    //                     $slugVariant = Str::slug($nameVariant);
+    //                     $attributeId = Attribute::query()->where('slug', $slugVariant)->pluck('id')->first();
+    //                     if ($attributeId) {
+    //                         $attributeIdArray[] = $attributeId;
+    //                     }
+    //                 }
+    //                 if (count($attributeIdArray) === count($variants)) {
+    //                     $productVariant = ProductVariant::where('product_id', $orderProduct->product_id)
+    //                         ->whereJsonContains('id_variant', $attributeIdArray)
+    //                         ->first();
+    //                     if ($productVariant) {
+    //                         $productVariant->qty += $orderProduct->qty;
+    //                         $productVariant->save();
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     $returnOrder->order->user->point += $returnOrder->order->amount;
+    // }
+    // $returnOrder->save();
+
+    // return response()->json([
+    //     'status' => 'success',
+    //     'message' => 'Cập nhật trạng thái thành công',
+    // ]);
 }

@@ -92,15 +92,18 @@
                                                 href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
+                                        @php
+                                            $averageRating = $product->reviews->avg('rate');
+                                            $ratingWidth = ($averageRating / 5) * 100;
+                                        @endphp
                                         <div class="ratings-container">
                                             <div class="product-ratings">
-                                                <span class="ratings" style="width:100%"></span>
+                                                <span class="ratings" style="width: {{ $ratingWidth }}%"></span>
                                                 <!-- End .ratings -->
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-container -->
 
                                         <div class="price-box">
                                             @if ($product->type_product === 'product_variant')
@@ -156,15 +159,18 @@
                                                 href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
+                                        @php
+                                            $averageRating = $product->reviews->avg('rate');
+                                            $ratingWidth = ($averageRating / 5) * 100;
+                                        @endphp
                                         <div class="ratings-container">
                                             <div class="product-ratings">
-                                                <span class="ratings" style="width:100%"></span>
+                                                <span class="ratings" style="width: {{ $ratingWidth }}%"></span>
                                                 <!-- End .ratings -->
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-container -->
 
                                         <div class="price-box">
                                             @if ($product->type_product === 'product_variant')
@@ -218,15 +224,18 @@
                                                 href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
+                                        @php
+                                            $averageRating = $product->reviews->avg('rate');
+                                            $ratingWidth = ($averageRating / 5) * 100;
+                                        @endphp
                                         <div class="ratings-container">
                                             <div class="product-ratings">
-                                                <span class="ratings" style="width:100%"></span>
+                                                <span class="ratings" style="width: {{ $ratingWidth }}%"></span>
                                                 <!-- End .ratings -->
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-container -->
 
                                         <div class="price-box">
                                             @if ($product->type_product === 'product_variant')
@@ -281,15 +290,18 @@
                                                 href="{{ route('product.detail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
                                         </h3>
 
+                                        @php
+                                            $averageRating = $product->reviews->avg('rate');
+                                            $ratingWidth = ($averageRating / 5) * 100;
+                                        @endphp
                                         <div class="ratings-container">
                                             <div class="product-ratings">
-                                                <span class="ratings" style="width:100%"></span>
+                                                <span class="ratings" style="width: {{ $ratingWidth }}%"></span>
                                                 <!-- End .ratings -->
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <!-- End .product-ratings -->
                                         </div>
-                                        <!-- End .product-container -->
 
                                         <div class="price-box">
                                             @if ($product->type_product === 'product_variant')

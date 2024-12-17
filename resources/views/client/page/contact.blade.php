@@ -109,7 +109,7 @@
             </div> --}}
 
             <div class="col-lg-12">
-                <h2 class="mt-6 mb-1">Frequently Asked Questions</h2>
+                <h2 class="mt-6 mb-1">Các câu hỏi thường hỏi</h2>
                 <div id="accordion">
                     <!-- Câu hỏi 1 -->
                     <div class="card card-accordion">

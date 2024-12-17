@@ -4,15 +4,17 @@
 @endsection
 @section('css')
     <style>
-        .cat-list li.active a .span, .brand-list li.active a {
-    color: #2299dd;
-}
-.size-list li.active a{
-    border-color: #08C;
-    background-color: #2299dd;
-    color: #fff;
-    text-decoration: none;
-}
+        .cat-list li.active a .span,
+        .brand-list li.active a {
+            color: #2299dd;
+        }
+
+        .size-list li.active a {
+            border-color: #08C;
+            background-color: #2299dd;
+            color: #fff;
+            text-decoration: none;
+        }
     </style>
 @endsection
 @php
@@ -22,10 +24,23 @@
         foreach ($categories as $category) {
             echo '<li id="category-' . $category->id . '">';
             $hasChildren = $category->children->isNotEmpty();
-            echo '<a href="#widget-category-' . $category->id . '" class="' . ($hasChildren ? 'collapsed' : '') . '" ' .
-                ($hasChildren ? 'data-toggle="collapse" role="button" aria-expanded="false" aria-controls="widget-category-' . $category->id . '"' : '') . '>';
+            echo '<a href="#widget-category-' .
+                $category->id .
+                '" class="' .
+                ($hasChildren ? 'collapsed' : '') .
+                '" ' .
+                ($hasChildren
+                    ? 'data-toggle="collapse" role="button" aria-expanded="false" aria-controls="widget-category-' .
+                        $category->id .
+                        '"'
+                    : '') .
+                '>';
 
-            echo '<span class="span" onclick="setFilter(\'category\', ' . $category->id . '); return false;">' . $category->title . '</span>';
+            echo '<span class="span" onclick="setFilter(\'category\', ' .
+                $category->id .
+                '); return false;">' .
+                $category->title .
+                '</span>';
             if ($hasChildren) {
                 echo '<span class="toggle"></span>';
             }
@@ -38,8 +53,6 @@
                 echo '</ul>';
                 echo '</div>';
             }
-
-
         }
         echo '</ul>';
     }
@@ -366,10 +379,22 @@
                     return response.json();
                 })
                 .then(data => {
+                    console.log(data);
+
                     const productList = document.getElementById('product-list');
                     let html = ''
 
                     data.products.data.forEach(product => {
+                        let totalRate = 0;
+                        product.reviews.forEach(review => {
+                            totalRate += review.rate;
+                        })
+                        let ratings = totalRate / product.reviews.length;
+                        let ratingWidth = (ratings / 5) * 100;
+                        console.log(ratingWidth);
+                        if (isNaN(ratingWidth)) {
+                            ratingWidth = 0;
+                        }
                         const brandName = product.brand ? product.brand.name : ' ';
                         const currentDate = new Date().toISOString().split('T')[0];
                         const hasDiscount = product.offer_price > 0 && currentDate >= product
@@ -377,6 +402,8 @@
                         const productDetailUrl = "{{ url('product/detail') }}/" + product.slug;
                         const wishlistProductIds = data.wishlistProductIds;
                         const isInWishlist = wishlistProductIds.includes(product.id) ? 'added-wishlist' : '';
+                        const typeProduct = product.type_product == 'product_simple' ? 1 : 0;
+
                         html += `
                     <div class="col-6 col-sm-4 col-md-3">
                         <div class="product-default">
@@ -388,10 +415,10 @@
                                     <div class="product-label label-hot">HOT</div>
 
                                     ${hasDiscount  ? `
-                                                        <div class="product-label label-sale">
-                                                            -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                                        </div>
-                                                        ` : ''}
+                                            <div class="product-label label-sale">
+                                                -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                            </div>
+                                            ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -403,22 +430,30 @@
                                 <h3 class="product-title"><a href="${productDetailUrl}">${product.name}</a></h3>
                                 <div class="ratings-container">
                     <div class="product-ratings">
-                        <span class="ratings" style="width:100%"></span>
+                        <span class="ratings" style="width: ${ratingWidth}%"></span>
                         <span class="tooltiptext tooltip-top"></span>
                     </div>
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                                    <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                    <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)}{{ $generalSettings->currency_icon }}</span>
-                                    ` : `
-                                    <span class="product-price">${new Intl.NumberFormat().format(product.price)}{{ $generalSettings->currency_icon }}</span>
-                                    `}
+                                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)}{{ $generalSettings->currency_icon }}</span>
+                                        ` : `
+                                        <span class="product-price">${new Intl.NumberFormat().format(product.price)}{{ $generalSettings->currency_icon }}</span>
+                                        `}
                     </div>
                     <div class="product-action">
                         <a href="javascript:void(0)" data-productid="${product.id}" class="btn-icon-wish ${isInWishlist}" title="wishlist"><i class="icon-heart"></i></a>
-                        <a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>SELECT OPTIONS</span></a>
-                        <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                        ${typeProduct ? `
+                        <form class="shopping-cart-form">
+                            <input name="qty" hidden value="1" type="number">
+                            <input type="text" hidden name="product_id" value="${product.id}">
+                            <button type="submit"
+                            class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
+                            class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ</span></button>
+                        </form>` : `<a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN LOẠI'</span></a>`}
+
+                        <a href="ajax/product-quick-view.html" class="btn-quickview2" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
                     </div>
                 </div>
                 </div>

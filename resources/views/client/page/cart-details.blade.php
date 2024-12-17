@@ -127,6 +127,43 @@
             color: #ffffff;
             background-color: #2299dd;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -235,10 +272,18 @@
                                             </form>
                                         </div>
                                     </div><!-- End .float-left -->
-                                    <div class="">
+                                    <div style="display: inline-flex;" class="">
                                         <button class="btn choose-coupon btn-sm" id="openSidebarBtn" type="submit">Chọn
                                             mã giảm giá</button>
+
+                                        <button id="myBtnUsePoint" class="btn btn-sm btn-success" style="margin:0px"
+                                            id="payWithPoints">
+                                            Sử dụng điểm
+                                        </button>
+
                                     </div>
+
+
                                     <div style="width: 350px;" class="float-right">
                                         <div class="cart-summary">
                                             <h3>TỔNG GIỎ HÀNG</h3>
@@ -253,7 +298,7 @@
                                                     </tr>
 
                                                 </tbody>
-                                                <tbody>
+                                                <tbody id="tbody-cart">
                                                     <tr>
                                                         <td>Phí ship (+):</td>
                                                         <td style="color: black; font-weight: 700">
@@ -266,7 +311,14 @@
                                                             {{ number_format(getCartDiscount()) }}{{ $generalSettings->currency_icon }}
                                                         </td>
                                                     </tr>
-
+                                                    @if (session()->has('point'))
+                                                        <tr id="pointTr">
+                                                            <td>Điểm(-):</td>
+                                                            <td id="pointTd" style="color: black; font-weight: 700">
+                                                                {{ number_format(session()->get('point')['point_value']) }}{{ $generalSettings->currency_icon }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -294,6 +346,43 @@
                 </div><!-- End .cart-table-container -->
             </div><!-- End .col-lg-8 -->
         </div><!-- End .row -->
+        @if (auth()->check())
+            @php
+                $userPoints = auth()->user()->point; // Lấy số điểm hiện có của user
+                $pointToMoney = number_format($userPoints, 0, ',', '.'); // Quy đổi số điểm sang tiền
+            @endphp
+            <div id="myModalUsePoint" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h4>Quy đổi điểm để thanh toán</h4>
+
+                    <!-- Hiển thị thông tin số point và tương ứng số tiền -->
+                    <p>Bạn hiện có <strong>{{ $userPoints }}</strong> điểm, tương đương <strong>{{ $pointToMoney }}
+                            {{ $generalSettings->currency_icon }}</strong>.</p>
+
+                    <p><code></code>1.000 điểm tương ứng với <strong>1.000 {{ $generalSettings->currency_icon }}</strong>.
+                    </p>
+
+                    <!-- Input nhập số point muốn sử dụng -->
+                    <div class="form-group">
+                        <label for="pointsInput">Nhập số điểm bạn muốn sử dụng:</label>
+                        <input type="number" id="pointsInput"
+                            value="{{ session()->has('point') ? session()->get('point')['point_value'] : 0 }}"
+                            min="0" max="{{ $userPoints }}" class="form-control" placeholder="Nhập điểm...">
+                    </div>
+                    <p>Giá tiền tương ứng: <strong
+                            id="equivalentMoney">{{ number_format(session()->has('point') ? session()->get('point')['point_value'] : 0) }}
+                            {{ $generalSettings->currency_icon }}</strong>
+                    </p>
+
+
+                    <!-- Nút xác nhận sử dụng điểm -->
+                    <button id="confirmUsePoints" class="btn btn-primary">Xác nhận sử dụng điểm</button>
+
+                </div>
+            </div>
+        @endif
+
         {{-- <div class="row">
             <div class="col-lg-8">
             </div>
@@ -348,7 +437,7 @@
                 }
             });
             let timeDown;
-            let isClickTriggered = false;
+            let isClickTriggered = true;
             // Mở modal khi nhấn nút "Choose coupon"
             // Mở sidebar và hiển thị overlay khi nhấn nút
             $("#openSidebarBtn").click(function() {
@@ -359,6 +448,88 @@
             $(".close-btn, .overlay").click(function() {
                 $("#couponSidebar").css("width", "0");
             });
+
+            $(document).on('click', '#myBtnUsePoint', function() {
+                $('#myModalUsePoint').fadeIn();
+            })
+
+            $(".close").click(function() {
+                $("#myModalUsePoint").fadeOut();
+            });
+
+            $(window).click(function(event) {
+                if ($(event.target).is("#myModalUsePoint")) {
+                    $("#myModalUsePoint").fadeOut();
+                }
+            });
+
+            $(document).on('click', '#confirmUsePoints', function(e) {
+                e.preventDefault();
+                let inputPoint = $('#pointsInput').val();
+
+                $.ajax({
+                    url: "{{ route('use-point') }}",
+                    method: "POST",
+                    data: {
+                        point: inputPoint,
+                    },
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            toastr.success(data.message);
+                            if ($('#pointTr').length) {
+                                $('#pointTr').find($('#pointTd')).html(data.useablePoint +
+                                    "{{ $generalSettings->currency_icon }}");
+                            } else {
+                                let newRow = `
+                                    <tr id="pointTr">
+                                        <td>Điểm(-):</td>
+                                        <td id="pointTd" style="color: black; font-weight: 700">
+                                            ${data.useablePoint}{{ $generalSettings->currency_icon }}
+                                        </td>
+                                    </tr>
+                                `
+                                $('#tbody-cart').append(newRow);
+                            }
+                            renderCartSubTotal();
+                            calculateCouponDiscount();
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function(data) {
+                        let errors = data.responseJSON.errors;
+                        if (errors) {
+                            $.each(errors, function(key, value) {
+                                toastr.error(value);
+                            })
+                        }
+                    }
+                })
+            })
+
+            $(document).on('keyup', '#pointsInput', function() {
+                let points = parseInt($(this).val());
+                let userPoints = "{{ $userPoints }}";
+                let money = 0;
+
+                if (isNaN(points) || points === "") {
+                    points = 0;
+                }
+
+                if (points < 0) {
+                    $(this).val(0);
+                    points = 0;
+                } else if (points > userPoints) {
+                    $(this).val(userPoints);
+                    points = parseInt(userPoints);
+                }
+
+
+                money = points.toLocaleString('vi-VN');
+
+                $('#equivalentMoney').html(`${money} {{ $generalSettings->currency_icon }}`)
+            })
+
             // Tăng số lượng input-group-append
             // $(document).on('click', '.input-group-append', function() {
             //     let input = $(this).siblings('.product-qty');

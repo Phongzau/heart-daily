@@ -15,6 +15,7 @@ use App\Models\Transaction;
 use App\Models\VnpaySetting;
 use App\Models\Attribute;
 use App\Models\Coupon;
+use App\Models\PointTransaction;
 use App\Models\ReservedStock;
 use App\Models\User;
 use App\Models\UserCoupon;
@@ -72,7 +73,10 @@ class CheckoutController extends Controller
         ])]);
 
         $paymentMethod = $request->input('payment_method');
-
+        $totalAmount = getMainCartTotal();
+        if ($totalAmount <= 0) {
+            $paymentMethod = 'cod';
+        }
         DB::beginTransaction();
         $carts = session('cart', []);
         try {
@@ -147,7 +151,7 @@ class CheckoutController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack(); // Hoàn tác giao dịch nếu xảy ra lỗi
-            // toastr('Lỗi: ' . $e->getMessage(), 'error');
+            toastr('Lỗi: ' . $e->getMessage(), 'error');
             toastr('Có lỗi xảy ra trong quá trình xử lý đơn hàng. Vui lòng thử lại!', 'error');
             return redirect()->back();
         }
@@ -268,12 +272,36 @@ class CheckoutController extends Controller
             $order->amount = getMainCartTotal();
             $order->product_qty = count($carts);
             $order->payment_method = $paymentMethod;
-            $order->payment_status = $paymentStatus;
+            if ($order->amount == 0) {
+                $order->payment_status = 1;
+            } else {
+                $order->payment_status = $paymentStatus;
+            }
+
             $order->order_address = json_encode(session()->get('address'));
             $order->cod = getCartCod();
             $order->coupon_method = json_encode(session()->get('coupon'));
+            $order->point_method = json_encode(session()->get('point'));
             $order->order_status = 'pending';
             $order->save();
+
+            if (session()->has('point')) {
+                $user = User::query()->find(Auth::user()->id);
+                $pointValue = session()->get('point')['point_value'];
+
+                // Trừ điểm và lưu lại user
+                $user->point -= $pointValue;
+                $user->save();
+
+                // Tạo PointTransaction sau khi $order đã được lưu
+                PointTransaction::create([
+                    'user_id' => $order->user_id,
+                    'order_id' => $order->id,
+                    'type' => 'redeem',
+                    'points' => $pointValue,
+                    'description' => "Thanh toán đơn hàng #$order->id",
+                ]);
+            }
 
             $sessionCoupon = session()->get('coupon', []);
             if (!empty($sessionCoupon) && isset($sessionCoupon['coupon_code'])) {
@@ -613,5 +641,6 @@ class CheckoutController extends Controller
         session()->forget('cart');
         session()->forget('coupon');
         session()->forget('address');
+        session()->forget('point');
     }
 }

@@ -134,8 +134,8 @@
                                 href="{{ route('admin.orders.return-order') }}">
                                 <span>Danh sách trả hàng</span></a></li>
                         <li class="{{ checkActive(['admin.order.transaction']) }}"><a class="nav-link"
-                        href="{{ route('admin.orders.transaction') }}">
-                        <span>Thông tin giao dịch</span></a></li>
+                                href="{{ route('admin.orders.transaction') }}">
+                                <span>Thông tin giao dịch</span></a></li>
                     @endcan
                 </ul>
             </li>
@@ -173,6 +173,9 @@
                                 href="{{ route('admin.roles.index') }}">
                                 <span>Phân quyền</span></a></li>
                     @endif
+                    <li class="{{ checkActive(['admin.withdraws.*']) }}"><a class="nav-link"
+                            href="{{ route('admin.withdraws.index') }}">
+                            <span>Yêu cầu rút tiền</span></a></li>
                 </ul>
             </li>
             @can('view-socials')

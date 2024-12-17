@@ -6,6 +6,7 @@
             }
         });
         let debounceTimer;
+
         $('.add-to-cart-simple').on('click', function(e) {
             e.preventDefault();
             let form = $(this).closest('.shopping-cart-form');
@@ -311,5 +312,188 @@
                 $('#searchResults').removeClass('hidden');
             }
         });
+
+        $(document).on('click', '.btnQuickView', function(e) {
+            e.preventDefault();
+            // let idProduct = $(this).data('productid');
+
+            // $.ajax({
+            //     url: "{{ route('product.quickview') }}",
+            //     method: "POST",
+            //     data: {
+            //         idProduct,
+            //     },
+            //     success: function(data) {
+            //         if (data.status == "success") {
+            //             $('#modal-body-quickview').html(data.updatedQuickViewHtml);
+            //         } else if (data.status == "error") {
+            //             toastr.error(data.message);
+            //         }
+            //     },
+            //     error: function(error) {
+
+            //     },
+            // })
+
+            $('#quickViewModal').fadeIn();
+        })
+
+        $(".close").click(function() {
+            $("#quickViewModal").fadeOut();
+        });
+
+        // var countOptions = $('.product-single-filter').length - 1;
+
+        // // Lấy giá trị của input số lượng và min, max từ thuộc tính của input
+        // var $qtyInput = $('input[name="qty"]');
+        // var minQty = parseInt($qtyInput.attr('min'));
+        // var maxQty = parseInt($qtyInput.attr('max'));
+
+        // $qtyInput.on('change', function() {
+        //     var currentQty = parseInt($qtyInput.val());
+        //     if (currentQty < minQty) {
+        //         $qtyInput.val(minQty);
+        //     } else if (currentQty > maxQty) {
+        //         $qtyInput.val(maxQty);
+        //     }
+        // });
+
+        // // Chọn biến thể
+        // $(document).on('click', '.select-variant', function() {
+        //     let selectedOptions = {};
+        //     let currentOptions = $('.product-single-filter a.selected').length;
+        //     if (countOptions === currentOptions) {
+        //         $('.product-single-filter a.selected').each(function() {
+        //             const attribute = $(this).data('attribute');
+        //             const value = $(this).data('value');
+        //             // Cập nhật vào đối tượng selectedOptions
+        //             selectedOptions[attribute] = value;
+        //         });
+        //         let idPrd = $('.product-single-filter a.selected').data('idproduct');
+        //         $.ajax({
+        //             url: "{{ route('product.get-qty-variant') }}",
+        //             method: 'POST',
+        //             data: {
+        //                 product_id: idPrd,
+        //                 variants: selectedOptions,
+        //             },
+        //             success: function(data) {
+
+        //                 if (data.status === 'success') {
+
+        //                     const formatCurrency = (value) => {
+        //                         return new Intl.NumberFormat('vi-VN', {
+        //                                 style: 'decimal', // Không dùng currency để loại bỏ ký hiệu ₫
+        //                                 minimumFractionDigits: 0
+        //                             }).format(value) +
+        //                             "{{ $generalSettings->currency_icon }}"; // Thêm ' VND' vào cuối
+        //                     };
+        //                     let priceText = '';
+
+        //                     if (data.variant.variant_offer_start_date && data.variant
+        //                         .variant_offer_end_date) {
+        //                         let currentDate = new Date();
+        //                         let startDate = new Date(data.variant
+        //                             .variant_offer_start_date);
+        //                         let endDate = new Date(data.variant
+        //                             .variant_offer_end_date);
+
+        //                         if (startDate <= currentDate && currentDate <= endDate &&
+        //                             data.variant.offer_price_variant > 0) {
+        //                             priceText =
+        //                                 `<span style="margin-right: 10px;">${formatCurrency(data.variant.offer_price_variant)}</span>`;
+        //                         } else {
+        //                             priceText =
+        //                                 `<span>${formatCurrency(data.variant.price_variant)}</span>`;
+        //                         }
+        //                     } else {
+        //                         priceText =
+        //                             `<span>${formatCurrency(data.variant.price_variant)}</span>`;
+        //                     }
+
+        //                     // if (data.variant.offer_price_variant > 0) {
+        //                     //     // Thêm giá khuyến mãi bên cạnh
+        //                     //     priceText =
+        //                     //         `<span style="margin-right: 10px;">${formatCurrency(data.variant.offer_price_variant)}</span>`;
+        //                     //     // priceText +=
+        //                     //     //     `<span style="text-decoration: line-through red; color: black;">${formatCurrency(data.variant.price_variant)}</span> `;
+        //                     // } else {
+        //                     //     priceText =
+        //                     //         `<span>${formatCurrency(data.variant.price_variant)}</span>`;
+        //                     // }
+        //                     $('.price-render').html(priceText);
+        //                     $('.qty-product').text(data.variant.qty);
+        //                     // Cập nhật thuộc tính max của input số lượng
+        //                     $qtyInput.attr('max', data.variant.qty);
+        //                     minQty = parseInt($qtyInput.attr('min'));
+        //                     maxQty = parseInt($qtyInput.attr('max'));
+
+        //                     // Nếu số lượng hiện tại lớn hơn số lượng tối đa mới, điều chỉnh lại giá trị
+        //                     if (parseInt($qtyInput.val()) > data.qty) {
+        //                         $qtyInput.val(data.qty);
+        //                     }
+        //                 }
+        //             },
+        //             error: function(error) {
+
+        //             },
+        //         })
+        //     }
+        // })
+
+        // // Xử lý sự kiện nhấp vào tùy chọn màu
+        // $('.color-options').click(function() {
+        //     // Bỏ chọn tất cả các màu trước đó
+        //     $('.color-options').removeClass('selected');
+
+        //     $(this).addClass('selected');
+        //     // Xóa các kích cỡ hiện tại
+        //     var ulElement = $('.size-options').closest('.config-size-list');
+        //     if (ulElement) {
+        //         var selectedColor = $(this).data('color'); // Lấy màu đã chọn
+        //         var availableSizes = variantData[
+        //             selectedColor]; // Lấy các kích cỡ tương ứng với màu đã chọn
+
+        //         ulElement.empty();
+
+        //         // Hiển thị các kích cỡ liên quan đến màu đã chọn
+        //         if (availableSizes) {
+        //             $.each(availableSizes, function(size, qty) {
+        //                 var sizeLink = $(
+        //                     '<li><a href="javascript:;" class="d-flex select-variant align-items-center justify-content-center size-options" data-size="' +
+        //                     size + '" data-attribute="size" data-value="' + size +
+        //                     '">' +
+        //                     size + '</a></li>'
+        //                 );
+        //                 // Kiểm tra số lượng
+        //                 if (qty <= 0) {
+        //                     sizeLink.find('a').addClass('disabled').css('pointer-events',
+        //                         'none');;
+        //                 }
+
+        //                 ulElement.append(sizeLink);
+        //             });
+        //         }
+        //     }
+        // });
+
+        // $('.color-options.default-selected').trigger('click');
+
+        // $('.config-size-list').on('click', 'a', function() {
+        //     var ulElement = $(this).closest('.config-size-list');
+        //     ulElement.find('a').removeClass('selected');
+        //     ulElement.find('li').removeClass('active');
+        //     var liElement = $(this).closest('li');
+        //     liElement.addClass('active');
+        //     $(this).addClass('selected');
+        // });
+
+        // Xử lý sự kiện nhấp vào nút Clear
+        // $('.clear-btn').click(function() {
+        //     $('.color-options').removeClass('selected'); // Xóa class selected nếu cần
+        //     console.log("Filters cleared");
+        // });
+
+
     });
 </script>

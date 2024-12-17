@@ -132,7 +132,7 @@
                                                     CHỌN LOẠI
                                                 </span></a>
                                         @endif
-                                        <a href="ajax/product-quick-view.html" class="btn-quickview"
+                                        <a href="ajax/product-quick-view.html" class="btn-quickview2"
                                             title="Quick View"><i class="fas fa-external-link-alt"></i></a>
                                     </div>
                                 </div>

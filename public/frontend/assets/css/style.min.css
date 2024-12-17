@@ -7435,7 +7435,7 @@ figure .porto-loading-icon {
 
 .product-default .btn-add-cart,
 .product-default .btn-icon-wish,
-.product-default .btn-quickview {
+.product-default .btn-quickview2 {
     border: 1px solid #f4f4f4;
     background: #f4f4f4;
     color: #6f6e6b;
@@ -7443,7 +7443,7 @@ figure .porto-loading-icon {
 }
 
 .product-default .btn-icon-wish,
-.product-default .btn-quickview {
+.product-default .btn-quickview2 {
     display: inline-block;
     position: absolute;
     top: 0;
@@ -7457,17 +7457,17 @@ figure .porto-loading-icon {
 }
 
 .product-default .btn-icon-wish.checked,
-.product-default .btn-quickview.checked {
+.product-default .btn-quickview2.checked {
     color: #e27c7c
 }
 
 .product-default .btn-icon-wish.checked i:before,
-.product-default .btn-quickview.checked i:before {
+.product-default .btn-quickview2.checked i:before {
     content: ""
 }
 
 .product-default .btn-icon-wish:hover,
-.product-default .btn-quickview:hover {
+.product-default .btn-quickview2:hover {
     color: #333
 }
 
@@ -7480,7 +7480,7 @@ figure .porto-loading-icon {
     color: #da5555
 }
 
-.product-default .btn-quickview {
+.product-default .btn-quickview2 {
     font-size: 1.4rem;
     right: 0
 }
@@ -7516,11 +7516,11 @@ figure .porto-loading-icon {
 }
 
 .product-default.product-unfold .btn-icon-wish,
-.product-default.product-unfold .btn-quickview {
+.product-default.product-unfold .btn-quickview2 {
     position: relative
 }
 
-.product-default.product-unfold:hover .product-action a.btn-quickview {
+.product-default.product-unfold:hover .product-action a.btn-quickview2 {
     right: 0
 }
 
@@ -7562,7 +7562,7 @@ figure .porto-loading-icon {
     left: -40px
 }
 
-.product-default:hover .product-action a.btn-quickview {
+.product-default:hover .product-action a.btn-quickview2 {
     right: -40px
 }
 
@@ -7640,7 +7640,7 @@ figure .porto-loading-icon {
 
 .ratings-container .ratings:before {
     content: "";
-    color: #6a6a6d
+    color: #ffa426;
 }
 
 .product-select-group {
@@ -8030,7 +8030,7 @@ figure .porto-loading-icon {
     border-right: none
 }
 
-.divide-line:not(.up-effect) .product-default .btn-quickview {
+.divide-line:not(.up-effect) .product-default .btn-quickview2 {
     width: calc(100% - 30px);
     margin: 0 15px
 }
@@ -8079,7 +8079,7 @@ figure .porto-loading-icon {
     position: relative
 }
 
-.inner-quickview figure .btn-quickview {
+.inner-quickview figure .btn-quickview2 {
     position: absolute;
     padding: 0.8rem 1.4rem;
     bottom: 0;
@@ -8103,7 +8103,7 @@ figure .porto-loading-icon {
     z-index: 2
 }
 
-.inner-quickview figure .btn-quickview:hover {
+.inner-quickview figure .btn-quickview2:hover {
     color: #fff;
     opacity: 1
 }
@@ -8145,7 +8145,7 @@ figure .porto-loading-icon {
     padding-top: 1px
 }
 
-.inner-quickview:hover .btn-quickview {
+.inner-quickview:hover .btn-quickview2 {
     visibility: visible;
     opacity: 0.85
 }
@@ -8185,7 +8185,7 @@ figure .porto-loading-icon {
 }
 
 .inner-icon .btn-icon-wish,
-.inner-icon .btn-quickview {
+.inner-icon .btn-quickview2 {
     top: auto
 }
 
@@ -8198,7 +8198,7 @@ figure .porto-loading-icon {
     box-shadow: none
 }
 
-.inner-icon:not(.product-widget):hover figure .btn-quickview {
+.inner-icon:not(.product-widget):hover figure .btn-quickview2 {
     padding-top: 1.2rem;
     padding-bottom: 1.3rem;
     transition: padding-top 0.2s, padding-bottom 0.2s, opacity 0.2s
@@ -8206,7 +8206,7 @@ figure .porto-loading-icon {
 
 .inner-icon .btn-add-cart,
 .inner-icon .btn-icon-wish,
-.inner-icon .btn-quickview {
+.inner-icon .btn-quickview2 {
     background-color: transparent
 }
 
@@ -8280,14 +8280,14 @@ figure .porto-loading-icon {
 
 .left-details .btn-add-cart,
 .left-details .btn-icon-wish,
-.left-details .btn-quickview {
+.left-details .btn-quickview2 {
     background-color: #f4f4f4;
     border-color: #f4f4f4;
     color: black
 }
 
 .left-details .btn-icon-wish,
-.left-details .btn-quickview {
+.left-details .btn-quickview2 {
     transform: none
 }
 
@@ -8314,7 +8314,7 @@ figure .porto-loading-icon {
     transform: translateY(0)
 }
 
-.hidden-description:hover .product-action a.btn-quickview {
+.hidden-description:hover .product-action a.btn-quickview2 {
     left: 0
 }
 
@@ -8350,7 +8350,7 @@ figure .porto-loading-icon {
     margin-bottom: 0
 }
 
-.hidden-description .btn-quickview {
+.hidden-description .btn-quickview2 {
     transform: none;
     background-color: #08C;
     color: #fff;
@@ -8367,11 +8367,11 @@ figure .porto-loading-icon {
     line-height: 45px
 }
 
-.hidden-description:hover .product-action .btn-quickview {
+.hidden-description:hover .product-action .btn-quickview2 {
     opacity: 0.85
 }
 
-.hidden-description:hover .product-action .btn-quickview:hover {
+.hidden-description:hover .product-action .btn-quickview2:hover {
     opacity: 1;
     color: #fff
 }
@@ -8466,7 +8466,7 @@ figure .porto-loading-icon {
 }
 
 .product-overlay figure .btn-icon-group,
-.product-overlay figure .btn-quickview {
+.product-overlay figure .btn-quickview2 {
     z-index: 1
 }
 
@@ -8536,17 +8536,17 @@ figure .porto-loading-icon {
 }
 
 .product-overlay:hover figure .btn-icon,
-.product-overlay:hover figure .btn-quickview,
+.product-overlay:hover figure .btn-quickview2,
 .product-overlay:nth-child(2n):hover figure .btn-icon,
-.product-overlay:nth-child(2n):hover figure .btn-quickview {
+.product-overlay:nth-child(2n):hover figure .btn-quickview2 {
     opacity: 0.85;
     visibility: visible
 }
 
 .product-overlay:hover figure .btn-icon:hover,
-.product-overlay:hover figure .btn-quickview:hover,
+.product-overlay:hover figure .btn-quickview2:hover,
 .product-overlay:nth-child(2n):hover figure .btn-icon:hover,
-.product-overlay:nth-child(2n):hover figure .btn-quickview:hover {
+.product-overlay:nth-child(2n):hover figure .btn-quickview2:hover {
     opacity: 1
 }
 
@@ -8581,7 +8581,7 @@ figure .porto-loading-icon {
 }
 
 .overlay-dark figure .btn-icon-group,
-.overlay-dark figure .btn-quickview {
+.overlay-dark figure .btn-quickview2 {
     z-index: 1
 }
 
@@ -8594,7 +8594,7 @@ figure .porto-loading-icon {
     margin-left: 8px
 }
 
-.overlay-dark figure .btn-quickview {
+.overlay-dark figure .btn-quickview2 {
     border: 2px solid #fff;
     background-color: #4d4d4a;
     border-radius: 2rem;
@@ -8647,16 +8647,16 @@ figure .porto-loading-icon {
 }
 
 .overlay-dark:hover figure .btn-icon,
-.overlay-dark:hover figure .btn-quickview,
+.overlay-dark:hover figure .btn-quickview2,
 .overlay-dark:nth-child(2n):hover figure .btn-icon,
-.overlay-dark:nth-child(2n):hover figure .btn-quickview {
+.overlay-dark:nth-child(2n):hover figure .btn-quickview2 {
     opacity: 0.85
 }
 
 .overlay-dark:hover figure .btn-icon:hover,
-.overlay-dark:hover figure .btn-quickview:hover,
+.overlay-dark:hover figure .btn-quickview2:hover,
 .overlay-dark:nth-child(2n):hover figure .btn-icon:hover,
-.overlay-dark:nth-child(2n):hover figure .btn-quickview:hover {
+.overlay-dark:nth-child(2n):hover figure .btn-quickview2:hover {
     background-color: #4d4d4a;
     opacity: 1
 }
@@ -8699,14 +8699,14 @@ figure .porto-loading-icon {
     object-fit: cover
 }
 
-.creative-grid .overlay-dark figure .btn-quickview {
+.creative-grid .overlay-dark figure .btn-quickview2 {
     padding: 8px 15px;
     max-width: 128px;
     max-height: 41px;
     border-radius: 5rem
 }
 
-.creative-grid .inner-icon:not(.product-widget):hover figure .btn-quickview {
+.creative-grid .inner-icon:not(.product-widget):hover figure .btn-quickview2 {
     padding-top: 7px
 }
 
@@ -8738,11 +8738,11 @@ figure .porto-loading-icon {
     margin-bottom: 0
 }
 
-.inner-btn figure .btn-quickview {
+.inner-btn figure .btn-quickview2 {
     background-color: #fff
 }
 
-.inner-btn figure .btn-quickview i {
+.inner-btn figure .btn-quickview2 i {
     font-size: 1.4rem
 }
 
@@ -8886,7 +8886,7 @@ figure .porto-loading-icon {
 }
 
 .product-list .btn-icon-wish,
-.product-list .btn-quickview {
+.product-list .btn-quickview2 {
     position: static;
     opacity: 1;
     background-color: #f4f4f4;
@@ -21249,14 +21249,14 @@ tbody .product-col {
     text-indent: 0
 }
 
-.wishlist-table-container .btn-quickview {
+.wishlist-table-container .btn-quickview2 {
     margin-right: 6px;
     background: #f4f4f4;
     color: #222529;
     font-family: "Open Sans", sans-serif
 }
 
-.wishlist-table-container .btn-quickview:hover {
+.wishlist-table-container .btn-quickview2:hover {
     background-color: #08C;
     color: #fff
 }
