@@ -79,29 +79,15 @@
 
             </ul>
 
-            <ul class="mobile-menu">
-                <li><a href="login.html">My Account</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="wishlist.html">My Wishlist</a></li>
-                <li><a href="cart.html">Cart</a></li>
-                <li><a href="login.html" class="login-link">Log In</a></li>
-            </ul>
         </nav>
         <!-- End .mobile-nav -->
-
-        <form class="search-wrapper mb-2" action="#">
-            <input type="text" class="form-control mb-0" placeholder="Search..." required />
-            <button class="btn icon-search text-white bg-transparent p-0" type="submit"></button>
-        </form>
-
+        
         <div class="social-icons">
-            <a href="#" class="social-icon social-facebook icon-facebook" target="_blank">
+         @foreach ($socials as $social)
+            <a href="{{ $social->url }}" class="social-icon" target="_blank">
+                <i class="{{ @$social->icon }}"></i>
             </a>
-            <a href="#" class="social-icon social-twitter icon-twitter" target="_blank">
-            </a>
-            <a href="#" class="social-icon social-instagram icon-instagram" target="_blank">
-            </a>
+         @endforeach
         </div>
     </div>
     <!-- End .mobile-menu-wrapper -->
