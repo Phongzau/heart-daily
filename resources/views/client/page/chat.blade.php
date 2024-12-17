@@ -73,11 +73,11 @@
 
         /* Danh sách người dùng */
         .user-list-container {
-            max-height: 500px;
+            max-height: 50%;
             overflow-y: auto;
             padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
+            background-color: #e5f2fa;
+            border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
