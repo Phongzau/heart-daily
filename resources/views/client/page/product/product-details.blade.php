@@ -412,6 +412,7 @@
                                     ->reviews()
                                     ->where('user_id', Auth::user()->id)
                                     ->first();
+                                    
                                 if (!$countComments) {
                                     $isBrought = true;
                                 } else {
