@@ -390,32 +390,19 @@
                         </div>
                         @php
                             if (auth()->check()) {
-                                $isBrought = false;
-                                $orders = \App\Models\Order::query()
+                                $isBrought = \App\Models\Order::query()
                                     ->where([
-                                        'user_id' => auth()->user()->id,
+                                        'user_id' => auth()->id(),
                                         'order_status' => 'delivered',
                                     ])
-                                    ->get();
-                                foreach ($orders as $key => $order) {
-                                    $existItem = $order
-                                        ->orderProducts()
-                                        ->where('product_id', $product->id)
-                                        ->first();
-                                    if (isset($existItem)) {
-                                        $isBrought = true;
-                                        break;
-                                    }
-                                }
+                                    ->whereHas('orderProducts', function ($query) use ($product) {
+                                        $query->where('product_id', $product->id);
+                                    })
+                                    ->exists();
 
-                                $countComments = $product
-                                    ->reviews()
-                                    ->where('user_id', Auth::user()->id)
-                                    ->first();
-                                    
-                                if (!$countComments) {
-                                    $isBrought = true;
-                                } else {
+                                $hasComment = $product->reviews()->where('user_id', auth()->id())->exists();
+
+                                if ($hasComment || !$isBrought) {
                                     $isBrought = false;
                                 }
                             }
@@ -468,12 +455,14 @@
                             <a href="{{ route('product.detail', ['slug' => $product->slug]) }}">
                                 <img src="{{ Storage::url($product->image) }}" width="280" height="280"
                                     alt="product">
-                                <img src="
+                                <img src="{{ Storage::url($product->image) }}" width="280" height="280"
+                                    alt="product">
+                                {{-- <img src="
                                 @if (isset($product->ProductImageGalleries[0]->image)) {{ Storage::url($product->ProductImageGalleries[0]->image) }}
                                 @else
                                     {{ Storage::url($product->image) }} @endif
                                     "width="280"
-                                    height="280" alt="product">
+                                    height="280" alt="product"> --}}
                             </a>
                             <div class="label-group">
                                 <div class="product-label label-hot">HOT</div>
