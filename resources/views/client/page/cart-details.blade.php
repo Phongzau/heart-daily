@@ -820,6 +820,8 @@
                     method: 'GET',
                     success: function(data) {
                         if (data.status == 'success') {
+                            console.log(data);
+
                             $('#discount').text(data.discount +
                                 '{{ $generalSettings->currency_icon }}');
                             $('#total').text(data.cart_total +

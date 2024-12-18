@@ -271,12 +271,18 @@ class CartController extends Controller
                         Session::put('point', ['point_value' => Session::get('point')['point_value'] - $refundPoint]);
                     }
                     $total -= Session::get('point')['point_value'];
+
+                    return response([
+                        'status' => 'success',
+                        'cart_total' =>  number_format($total),
+                        'discount' => number_format($coupon['discount']),
+                        'point_value' => number_format(Session::get('point')['point_value']),
+                    ]);
                 }
                 return response([
                     'status' => 'success',
                     'cart_total' =>  number_format($total),
                     'discount' => number_format($coupon['discount']),
-                    'point_value' => number_format(Session::get('point')['point_value']),
                 ]);
             } else if ($coupon['discount_type'] === 'percent') {
                 if (isset($coupon['max_discount'])) {
@@ -294,12 +300,18 @@ class CartController extends Controller
                             Session::put('point', ['point_value' => Session::get('point')['point_value'] - $refundPoint]);
                         }
                         $total -= Session::get('point')['point_value'];
+
+                        return response([
+                            'status' => 'success',
+                            'cart_total' =>  number_format($total),
+                            'discount' => number_format($discount),
+                            'point_value' => number_format(Session::get('point')['point_value']),
+                        ]);
                     }
                     return response([
                         'status' => 'success',
                         'cart_total' =>  number_format($total),
                         'discount' => number_format($discount),
-                        'point_value' => number_format(Session::get('point')['point_value']),
                     ]);
                 } else {
                     $discount = $subTotal * $coupon['discount'] / 100;
@@ -310,12 +322,18 @@ class CartController extends Controller
                             Session::put('point', ['point_value' => Session::get('point')['point_value'] - $refundPoint]);
                         }
                         $total -= Session::get('point')['point_value'];
+
+                        return response([
+                            'status' => 'success',
+                            'cart_total' =>  number_format($total),
+                            'discount' => number_format($discount),
+                            'point_value' => number_format(Session::get('point')['point_value']),
+                        ]);
                     }
                     return response([
                         'status' => 'success',
                         'cart_total' =>  number_format($total),
                         'discount' => number_format($discount),
-                        'point_value' => number_format(Session::get('point')['point_value']),
                     ]);
                 }
             }
@@ -323,12 +341,17 @@ class CartController extends Controller
             $total = $this->getTotalCart();
             if (Session::has('point')) {
                 $total -= Session::get('point')['point_value'];
+                return response()->json([
+                    'status' => 'success',
+                    'cart_total' => number_format($total),
+                    'discount' => 0,
+                    'point_value' => number_format(Session::get('point')['point_value']),
+                ]);
             }
             return response()->json([
                 'status' => 'success',
                 'cart_total' => number_format($total),
                 'discount' => 0,
-                'point_value' => number_format(Session::get('point')['point_value']),
             ]);
         }
     }
