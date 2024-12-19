@@ -135,22 +135,22 @@ function renderOrderButtons($order_status, $order)
     switch ($order_status) {
         case 'pending':
             $buttons .= '<button class="btn btn-danger cancel-order-button" id="myBtnCancelOrder" data-order-id="' . $order->id . '">Hủy Đơn Hàng</button>';
-            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            $buttons .= '<a href="' . route('chat') . '" class="btn btn-warning">Liên Hệ Người Bán</a>';
             break;
 
         case 'processed_and_ready_to_ship':
             $buttons .= '<button class="btn btn-danger" disabled>Hủy Đơn Hàng</button>';
-            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            $buttons .= '<a href="' . route('chat') . '" class="btn btn-warning">Liên Hệ Người Bán</a>';
             break;
 
         case 'dropped_off':
             $buttons .= '<button class="btn btn-success" disabled>Đã Nhận Hàng</button>';
-            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            $buttons .= '<a href="' . route('chat') . '" class="btn btn-warning">Liên Hệ Người Bán</a>';
             break;
 
         case 'shipped':
             $buttons .= '<button class="btn btn-success confirm-order-button" data-order-id="' . $order->id . '">Đã Nhận Hàng</button>';
-            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            $buttons .= '<a href="' . route('chat') . '" class="btn btn-warning">Liên Hệ Người Bán</a>';
             break;
 
         case 'delivered':
@@ -161,7 +161,7 @@ function renderOrderButtons($order_status, $order)
             }
 
             $buttons .= '<button class="btn btn-primary reorder-button" data-order-id="' . $order->id . '">Mua Lại</button>';
-            $buttons .= '<button class="btn btn-warning">Liên Hệ Người Bán</button>';
+            $buttons .= '<a href="' . route('chat') . '" class="btn btn-warning">Liên Hệ Người Bán</a>';
             break;
 
         case 'canceled':

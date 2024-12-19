@@ -652,8 +652,15 @@
                 </form>
             </div>
 
-            <!-- Bước 2: Xác thực OTP -->
+            <!-- Bước 2: Nhập mã 2FA -->
             <div class="modal-body d-none" id="step2">
+                <label for="google2faCode" class="form-label">Nhập mã 2FA</label>
+                <input type="text" class="form-control" id="google2faCode" name="google2faCode"
+                    placeholder="Nhập mã 2FA từ ứng dụng xác thực" maxlength="6">
+            </div>
+
+            <!-- Bước 3: Xác thực OTP -->
+            <div class="modal-body d-none" id="step3">
                 <span id="countdownTimer" style="float: right;font-weight: bold;"></span>
                 <input type="text" class="form-control" id="otpCode" placeholder="Nhập mã OTP">
             </div>
@@ -666,14 +673,19 @@
                 <!-- Nút cho Bước 1 -->
                 <button type="button" style="border-radius: 5px" class="btn btn-primary" id="continueStep">Tiếp
                     Tục</button>
-
                 <!-- Nút cho Bước 2 -->
+                <button type="button" style="border-radius: 5px" class="btn btn-success d-none" id="verify2FACode">Xác
+                    Thực 2FA</button>
+                <!-- Nút cho Bước 3 -->
                 <button type="button" style="border-radius: 5px" class="btn btn-success d-none" id="verifyOTP">Xác Thực
                     OTP</button>
             </div>
         </div>
 
     </div>
+
+
+
 
     <div class="modal" id="withdrawDetailModal">
         <div class="modal-dialog modal-lg">
@@ -754,6 +766,8 @@
                 }
             });
 
+
+
             $(document).on('click', '#continueStep', function() {
                 let errors = [];
 
@@ -788,74 +802,81 @@
                     });
                     return;
                 }
+                $('#step1').addClass('d-none');
+                $('#step2').removeClass('d-none');
+                $('#continueStep').addClass('d-none');
+                $('#verify2FACode').removeClass('d-none');
+            });
 
+
+            $(document).on('click', '#verify2FACode', function() {
+                let google2faCode = $('#google2faCode').val().trim();
+
+                if (!google2faCode) {
+                    toastr.error('Vui lòng nhập mã 2FA!');
+                    return;
+                }
                 $.ajax({
-                    url: "{{ route('send-otp') }}",
-                    method: "GET",
-                    beforeSend: function() {
-                        $('#continueStep').text("Đang Thực Hiện");
+                    url: "{{ route('verify-2fa') }}",
+                    method: "POST",
+                    data: {
+                        google2faCode: google2faCode
                     },
                     success: function(data) {
                         if (data.status == 'success') {
-                            $('#continueStep').text('Tiếp Tục');
-                            toastr.success(data.message);
-                            $('#step1').addClass('d-none');
-                            $('#step2').removeClass('d-none');
-                            $('#backStep').removeClass('d-none');
-                            // Ẩn nút "Continue Step", hiển thị nút "Verify OTP"
-                            $('#continueStep').addClass('d-none');
+
+                            $('#step2').addClass('d-none');
+                            $('#step3').removeClass('d-none');
+                            $('#verify2FACode').addClass('d-none');
                             $('#verifyOTP').removeClass('d-none');
-                            $('#resendOTP').removeClass('d-none');
-                            let display = $('#countdownTimer');
-                            if (data.start) {
-                                startCountdown(90, display);
-                            }
-                        } else if (data.status == 'error') {
-                            $('#continueStep').text('Tiếp Tục');
+                            $('#backStep').removeClass('d-none');
+                            toastr.success('2FA xác thực thành công!');
+                            $.ajax({
+                                url: "{{ route('send-otp') }}",
+                                method: "GET",
+                                beforeSend: function() {
+                                    $('#continueStep').text("Đang Thực Hiện");
+                                },
+                                success: function(data) {
+                                    if (data.status == 'success') {
+                                        toastr.success(data.message);
+                                        let display = $('#countdownTimer');
+                                        if (data.start) {
+                                            startCountdown(90, display);
+                                        }
+                                    } else {
+                                        $('#continueStep').text('Tiếp Tục');
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error: function(error) {
+                                    toastr.error('Có lỗi xảy ra khi gửi OTP!');
+                                }
+                            });
+
+
+                        } else {
+
                             toastr.error(data.message);
                         }
                     },
-                    error: function(error) {
-
+                    error: function() {
+                        toastr.error('Có lỗi xảy ra khi xác thực mã 2FA!');
                     }
-                })
-            })
-
-            $(document).on('click', '#backStep', function() {
-                $('#step1').removeClass('d-none');
-                $('#continueStep').removeClass('d-none');
-                $('#backStep').addClass('d-none');
-                $('#step2').addClass('d-none');
-                $('#resendOTP').addClass('d-none');
-                $('#verifyOTP').addClass('d-none');
-            })
-
-            $(document).on('click', '#resendOTP', function() {
-                $.ajax({
-                    url: "{{ route('resend-otp') }}",
-                    method: "GET",
-                    success: function(data) {
-                        if (data.status == 'success') {
-                            toastr.success(data.message);
-                            let display = $('#countdownTimer');
-                            startCountdown(90, display);
-                        } else if (data.status == 'error') {
-                            toastr.error(data.message);
-                        }
-                    },
-                    error: function(error) {
-
-                    }
-                })
-            })
+                });
+            });
 
             $(document).on('click', '#verifyOTP', function() {
                 let otpCode = $('#otpCode').val().trim();
-                // Lấy giá trị từ các ô input
                 let amount = $('#withdrawAmount').val().trim();
                 let bankAccount = $('#bankAccount').val().trim();
                 let accountName = $('#accountName').val().trim();
                 let bankName = $('#bankName').val().trim();
+
+                if (!otpCode) {
+                    toastr.error('Vui lòng nhập mã OTP!');
+                    return;
+                }
                 $.ajax({
                     url: "{{ route('verify-otp') }}",
                     method: "POST",
@@ -889,10 +910,62 @@
                         }
                     },
                     error: function(error) {
+                        toastr.error("Có lỗi xảy ra khi xác thực mã OTP!");
+                        $('#verifyOTP').text("Xác Thực OTP");
+                    }
+                })
 
+            })
+
+            $(document).on('click', '#backStep', function() {
+                if ($('#step2').is(':visible')) {
+                    $('#step2').addClass('d-none');
+                    $('#step1').removeClass('d-none');
+                    $('#continueStep').removeClass('d-none');
+                    $('#verify2FACode').addClass('d-none');
+                } else if ($('#step3').is(':visible')) {
+                    $('#step3').addClass('d-none');
+                    $('#step2').removeClass('d-none');
+                    $('#verify2FACode').removeClass('d-none');
+                    $('#verifyOTP').addClass('d-none');
+                }
+            });
+
+            $(document).on('click', '#resendOTP', function() {
+                $.ajax({
+                    url: "{{ route('resend-otp') }}",
+                    method: "GET",
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            toastr.success(data.message);
+                            let display = $('#countdownTimer');
+                            startCountdown(90, display);
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                        }
                     },
+                    error: function(error) {
+                        toastr.error("Có lỗi xảy ra khi gửi lại mã OTP!");
+                    }
                 })
             })
+
+            function startCountdown(duration, display) {
+                var timer = duration,
+                    minutes, seconds;
+                var countdownInterval = setInterval(function() {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+                    display.text(minutes + ":" + seconds);
+
+                    if (--timer < 0) {
+                        clearInterval(countdownInterval);
+                        $('#resendOTP').removeClass('d-none');
+                    }
+                }, 1000);
+            }
 
             function loadHistoryWithdraw() {
                 $.ajax({
@@ -923,61 +996,23 @@
                 })
             }
 
-            function resetModalWithdraw(point) {
-                let newModal = `
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="withdrawModalLabel">Tạo Lệnh Rút Điểm
-                                (10.000{{ $generalSettings->currency_icon }} ~ 50.000.000{{ $generalSettings->currency_icon }})</h5>
-                            <span class="close">&times;</span>
-                        </div>
-
-                        <!-- Bước 1: Nhập thông tin -->
-                        <div class="modal-body" id="step1">
-                            <form id="withdrawForm">
-                                <div class="mb-2">
-                                    <label for="withdrawAmount" class="form-label">Nhập Số Điểm <code>(Số điểm khả dụng:
-                                            ${point} điểm)</code></label>
-                                    <input type="number" class="form-control" id="withdrawAmount" placeholder="Nhập số tiền">
-                                    <p>Giá tiền tương ứng: <strong id="equivalentMoney"></strong>
-                                    </p>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="bankName" class="form-label">Tên Ngân Hàng</label>
-                                    <input type="text" class="form-control" id="bankName" placeholder="Nhập tên ngân hàng">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="accountName" class="form-label">Tên Chủ Tài Khoản</label>
-                                    <input type="text" class="form-control" id="accountName"
-                                        placeholder="Nhập tên chủ tài khoản">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="bankAccount" class="form-label">Số Tài Khoản</label>
-                                    <input type="number" class="form-control" id="bankAccount" placeholder="Nhập số tài khoản">
-                                </div>
-
-                            </form>
-                        </div>
-
-                        <!-- Bước 2: Xác thực OTP -->
-                        <div class="modal-body d-none" id="step2">
-                            <span id="countdownTimer" style="float: right;font-weight: bold;"></span>
-                            <input type="text" class="form-control" id="otpCode" placeholder="Nhập mã OTP">
-                        </div>
-                        <button id="resendOTP" class="btn btn-link mb-2 d-none">Gửi lại mã OTP</button>
-
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary d-none" id="backStep">Quay Lại</button>
-                            <!-- Nút cho Bước 1 -->
-                            <button type="button" class="btn btn-primary" id="continueStep">Tiếp Tục</button>
-
-                            <!-- Nút cho Bước 2 -->
-                            <button type="button" class="btn btn-success d-none" id="verifyOTP">Xác Thực OTP</button>
-                        </div>
-                    </div>
-                `;
-                $('#withdrawModal').html(newModal);
+            function resetModalWithdraw(currentPoints) {
+                $('#withdrawAmount').val('');
+                $('#bankName').val('');
+                $('#accountName').val('');
+                $('#bankAccount').val('');
+                $('#google2faCode').val('');
+                $('#otpCode').val('');
+                $('#step1').removeClass('d-none');
+                $('#step2').addClass('d-none');
+                $('#step3').addClass('d-none');
+                $('#continueStep').removeClass('d-none');
+                $('#verify2FACode').addClass('d-none');
+                $('#verifyOTP').addClass('d-none');
+                $('#backStep').addClass('d-none');
+                $('#withdrawModal').modal('hide');
+                // Cập nhật lại số dư sau khi rút
+                $('#currentPoints').text(currentPoints); // Đảm bảo có phần tử #currentPoints
             }
 
             $(document).on('keyup', '#withdrawAmount', function() {
@@ -1057,10 +1092,6 @@
                     $("#withdrawDetailModal").fadeOut();
                 }
             });
-
-
-
-
 
             $(document).on('click', '#myBtnCancelOrder', function() {
                 $('#myModalCancelOrder').fadeIn();
