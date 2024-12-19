@@ -54,6 +54,10 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/forgot-password', [UserController::class, 'showForgotPasswordForm'])->name('forgot.password');
 Route::post('/forgot-password', [UserController::class, 'sendResetLink'])->name('send.reset.link');
 Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm'])->name('password.reset');
+
+Route::get('/check-2fa-status', [UserController::class, 'checkTwoFactorStatus'])->name('check.2fa.status');
+Route::post('/user/verify-2fa', [UserController::class, 'verifyTwoFactor'])->name('user.verify2fa');
+Route::post('/user/disable-2fa', [UserController::class, 'disableTwoFactor'])->name('user.disable2fa');
 //profile
 
 // Route::group(['middleware' => ['auth', 'verified']], function () {

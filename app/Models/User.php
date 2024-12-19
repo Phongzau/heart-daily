@@ -34,6 +34,8 @@ class User extends Authenticatable
         'district_id',
         'commune_id',
         'address',
+        'google2fa_secret',
+        'google2fa_enabled',
     ];
 
     /**

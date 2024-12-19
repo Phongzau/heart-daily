@@ -92,7 +92,7 @@ class CheckoutController extends Controller
                 if ($product && $product->type_product == 'product_simple') {
                     if ($product->qty < $cart['qty']) {
                         DB::rollBack(); // Hoàn tác giao dịch
-                        toastr('Sản phẩm' . $product->name . 'vượt quá số lượng trong kho', 'error');
+                        toastr('Sản phẩm ' . $product->name . ' vượt quá số lượng trong kho', 'error');
                         return redirect()->back();
                     }
                     // Giảm số lượng sản phẩm trong kho
@@ -520,19 +520,42 @@ class CheckoutController extends Controller
                 $transactionId = $request->vnp_TransactionNo;
                 $paidAmount = $request->vnp_Amount / 100;
                 $paidCurrencyName = 'VND';
-                $this->storeOrder('vnpay', true, $transactionId, $paidAmount, $paidCurrencyName);
-                $this->clearSession();
+                try {
+                    $this->storeOrder('vnpay', true, $transactionId, $paidAmount, $paidCurrencyName);
+                    ReservedStock::where('session_id', session()->getId())->delete();
+                    $this->clearSession();
 
-                toastr('Thanh toán qua VNPay thành công!', 'success');
-                return redirect()->route('order.complete');
+                    toastr('Thanh toán qua VNPay thành công!', 'success');
+                    return redirect()->route('order.complete');
+                } catch (\Exception $e) {
+                    toastr('Có lỗi xảy ra trong quá trình xử lý phản hồi từ VNPay. Vui lòng liên hệ bộ phận hỗ trợ.', 'error');
+                    return redirect()->route('checkout');
+                }
             } else {
+                $this->releaseReservedStock();
                 toastr('Thanh toán qua VNPay thất bại!', 'error');
                 return redirect()->route('checkout');
             }
         } else {
+            $this->releaseReservedStock();
             toastr('Chữ ký bảo mật không chính xác!', 'error');
             return redirect()->route('checkout');
         }
+    }
+    private function releaseReservedStock()
+    {
+        $reservedItems = ReservedStock::where('session_id', session()->getId())->get();
+
+        foreach ($reservedItems as $item) {
+            if ($item->variant_id) {
+                ProductVariant::where('id', $item->variant_id)->increment('qty', $item->reserved_qty);
+            } else {
+
+                Product::where('id', $item->product_id)->increment('qty', $item->reserved_qty);
+            }
+        }
+
+        ReservedStock::where('session_id', session()->getId())->delete();
     }
 
     private function sendOrderConfirmation($order)
