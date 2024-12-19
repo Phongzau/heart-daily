@@ -30,7 +30,7 @@ class OrderDataTable extends DataTable
                     $showBtn = "<a class='btn btn-primary' href='" . route('admin.orders.show', $query->id) . "'><i class='far fa-eye'></i></a>";
                 }
                 if (auth()->user()->can('delete-orders')) {
-                    if ($query->order_status == 'canceled' || $query->order_status == 'return' || $query->status_order == 'delivered') {
+                    if ($query->order_status == 'canceled' || $query->order_status == 'return' || $query->order_status == 'delivered') {
                         $deleteBtn = "<a class='btn btn-danger delete-item ml-2' href='" . route('admin.orders.destroy', $query->id) . "'><i class='far fa-trash-alt'></i></a>";
                     } else {
                         $deleteBtn = "<a class='disabled-link btn btn-secondary delete-item ml-2'><i class='far fa-trash-alt'></i></a>";

@@ -11,10 +11,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use PragmaRX\Google2FA\Google2FA;
 
 class WithdrawController extends Controller
 {
-    public function sendOtp()
+    public function sendOtp(Request $request)
     {
         $withdrawReq = WithdrawRequest::query()
             ->where('user_id', Auth::id())
@@ -102,6 +103,22 @@ class WithdrawController extends Controller
                 ]);
             }
         }
+    }
+
+    public function verify2FA(Request $request)
+    {
+        $user = Auth::user();
+        $google2fa = new Google2FA();
+
+        $valid = $google2fa->verifyKey(auth()->user()->google2fa_secret, $request->input('google2faCode'));
+
+        if ($valid) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Mã 2FA hợp lệ!',
+            ]);
+        }
+        return response()->json(['status' => 'error','message' => 'Mã 2FA không hợp lệ!',]);
     }
 
     public function reSendOtp()
