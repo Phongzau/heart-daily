@@ -168,6 +168,9 @@
 @endsection
 
 @section('section')
+    @php
+        $userPoints = 0;
+    @endphp
     <div class="container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
             <li class="active">
@@ -438,6 +441,7 @@
             });
             let timeDown;
             let isClickTriggered = true;
+
             // Mở modal khi nhấn nút "Choose coupon"
             // Mở sidebar và hiển thị overlay khi nhấn nút
             $("#openSidebarBtn").click(function() {
@@ -450,7 +454,13 @@
             });
 
             $(document).on('click', '#myBtnUsePoint', function() {
-                $('#myModalUsePoint').fadeIn();
+                if ($('#myModalUsePoint').length) {
+                    $('#myModalUsePoint').fadeIn();
+                } else {
+                    toastr.error('Bạn phải đăng nhập để sử dụng điểm');
+                }
+
+
             })
 
             $(".close").click(function() {
@@ -508,7 +518,6 @@
                     }
                 })
             })
-
             $(document).on('keyup', '#pointsInput', function() {
                 let points = parseInt($(this).val());
                 let userPoints = "{{ $userPoints }}";
@@ -526,11 +535,12 @@
                     points = parseInt(userPoints);
                 }
 
-
                 money = points.toLocaleString('vi-VN');
 
                 $('#equivalentMoney').html(`${money} {{ $generalSettings->currency_icon }}`)
             })
+
+
 
             // Tăng số lượng input-group-append
             // $(document).on('click', '.input-group-append', function() {
