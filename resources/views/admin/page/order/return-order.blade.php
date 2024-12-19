@@ -72,7 +72,7 @@
             $('body').on('change', '.is_approve', function() {
                 let value = $(this).val();
                 let id = $(this).data('id');
-
+                let currentSelect = $(this);
                 $.ajax({
                     url: "{{ route('admin.orders.return.change-approve-status') }}",
                     method: 'PUT',
@@ -85,8 +85,8 @@
                             toastr.success(data.message);
                         } else if (data.status == 'error') {
                             toastr.error(data.message);
+                            currentSelect.val(data.current_status);
                         }
-
                     },
                     error: function(xhr, status, error) {
                         console.log(error);

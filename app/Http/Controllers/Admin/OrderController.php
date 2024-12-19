@@ -142,14 +142,43 @@ class OrderController extends Controller
     public function changeOrderStatus(Request $request)
     {
         $order = Order::query()->findOrFail($request->id);
+
+        // Trạng thái hiện tại của đơn hàng
+        $currentStatus = $order->order_status;
+
+        $newStatus = $request->input('status');
+
+        // Danh sách trạng thái hợp lệ
+        $validTransitions = [
+            'pending' => ['processed_and_ready_to_ship'],
+            'processed_and_ready_to_ship' => ['dropped_off'],
+            'dropped_off' => ['shipped'],
+            'shipped' => ['delivered', 'return'],
+            'delivered' => [],
+            'return' => [],
+            'canceled' => [],
+        ];
+
+        // Kiểm tra trạng thái mới có hợp lệ không
+        if (
+            !array_key_exists($currentStatus, $validTransitions) ||
+            !in_array($newStatus, $validTransitions[$currentStatus])
+        ) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Chuyển trạng thái không thành công. Vui lòng reload lại trang.',
+            ]);
+        }
+
         $order->order_status = $request->status;
         $order->save();
         $user = $order->user;
         event(new ChangeStatusOrder($order->user, $order));
         $user->notify(new NotificationsChangeStatusOrder($order));
-        return response([
+        return response()->json([
             'status' => 'success',
-            'message' => 'Cập nhật trạng thái thành công'
+            'message' => 'Cập nhật trạng thái thành công',
+            'current_status' => $request->status,
         ]);
     }
 
@@ -167,6 +196,40 @@ class OrderController extends Controller
 
     public function changeApproveStatus(Request $request)
     {
+        // $request->validate([
+        //     'id' => ['required', 'integer', 'exists:order_returns,id'],
+        // ]);
+
+        // $returnOrder = OrderReturn::query()->findOrFail($request->id);
+
+        // if ($returnOrder->order->order_status !== 'return') {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Không thể chuyển trạng thái, đơn hàng này không trong trạng thái hoàn hàng',
+        //     ]);
+        // }
+
+        // // Logic hủy bỏ đơn hoàn
+        // if ($request->value === 'canceled') {
+        //     if ($returnOrder->return_status === 'completed') {
+        //         return response()->json([
+        //             'status' => 'error',
+        //             'message' => 'Không thể hủy bỏ đơn hàng đã thành công',
+        //         ]);
+        //     }
+        //     if ($returnOrder->order) {
+        //         $returnOrder->order->order_status = 'delivered';
+        //         $returnOrder->order->save();
+        //     }
+        //     // Xóa đơn hoàn hàng
+        //     $returnOrder->delete();
+
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Đơn hoàn hàng đã được hủy bỏ thành công.',
+        //     ]);
+        // }
+
         $request->validate([
             'id' => ['required', 'integer', 'exists:order_returns,id'],
         ]);
@@ -180,9 +243,32 @@ class OrderController extends Controller
             ]);
         }
 
+        $currentStatus = $returnOrder->return_status;
+        $newStatus = $request->value;
+
+        // Danh sách trạng thái hợp lệ
+        $validTransitions = [
+            'pending' => ['approved', 'canceled'],
+            'approved' => ['completed', 'canceled', 'rejected'],
+            'rejected' => [],
+            'completed' => [],
+            'canceled' => [],
+        ];
+
+        // Kiểm tra trạng thái mới có hợp lệ không
+        if (!isset($validTransitions[$currentStatus]) || !in_array($newStatus, $validTransitions[$currentStatus])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không thể chuyển trạng thái từ "' . $currentStatus . '" sang "' . $newStatus . '".',
+                'current_status' => $currentStatus,
+            ]);
+        }
+
         // Logic hủy bỏ đơn hoàn
-        if ($request->value === 'canceled') {
-            if ($returnOrder->return_status === 'completed') {
+        if ($newStatus === 'canceled') {
+            if (
+                $currentStatus === 'completed'
+            ) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Không thể hủy bỏ đơn hàng đã thành công',
@@ -202,12 +288,14 @@ class OrderController extends Controller
         }
 
 
+
         DB::beginTransaction();
 
         try {
-            $returnOrder->return_status = $request->value;
+            // $returnOrder->return_status = $request->value;
+            $returnOrder->return_status = $newStatus;
 
-            if ($returnOrder->return_status == 'completed') {
+            if ($newStatus == 'completed') {
                 foreach ($returnOrder->order->orderProducts as $orderProduct) {
                     $product = $orderProduct->product;
                     if ($product) {

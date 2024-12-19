@@ -174,7 +174,7 @@
                                                         {{ $order->order_status === 'shipped' && ($key === 'processed_and_ready_to_ship' || $key === 'pending' || $key === 'dropped_off') ? 'disabled' : '' }}
                                                         {{ $order->order_status === 'delivered' && ($key === 'processed_and_ready_to_ship' || $key === 'pending' || $key === 'dropped_off' || $key === 'shipped') ? 'disabled' : '' }}
                                                         {{ $order->order_status === 'canceled' && $key !== 'canceled' ? 'disabled' : '' }}
-                                                        {{ $order->order_status !==  'delivered' && $key === 'delivered' ? 'disabled' : '' }}
+                                                        {{ $order->order_status !== 'delivered' && $key === 'delivered' ? 'disabled' : '' }}
                                                         {{ $key === 'canceled' ? 'disabled' : '' }}
                                                         {{ $order->order_status === $key ? 'selected' : '' }}
                                                         value="{{ $key }}">{{ $orderStatus['status'] }}
@@ -240,7 +240,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            let orderStatus = $('#order_status').val();
             $('#order_status').on('change', function() {
                 let status = $(this).val();
                 let id = $(this).data('id');
@@ -254,6 +254,10 @@
                     success: function(data) {
                         if (data.status == 'success') {
                             toastr.success(data.message);
+                            orderStatus = data.current_status;
+                        } else if (data.status == 'error') {
+                            toastr.error(data.message);
+                            $('#order_status').val(orderStatus);
                         }
                     },
                     error: function(data) {
