@@ -18,6 +18,10 @@
     </style>
 @endsection
 @php
+    $product_page_banner_section = \App\Models\Advertisement::query()
+        ->where('key', 'product_page_banner_section')
+        ->first();
+    $product_page_banner_section = json_decode($product_page_banner_section?->value);
     function renderCategoryTree($categories)
     {
         echo '<ul class="cat-list category-list">';
@@ -58,27 +62,24 @@
     }
 @endphp
 @section('section')
-    <div class="category-banner-container bg-gray">
-        <div class="category-banner banner text-uppercase"
-            style="background: no-repeat 60%/cover url({{ asset('frontend/assets/images/banners/banner-top.jpg') }});">
-            <div class="container position-relative">
-                <div class="row">
-                    <div class="pl-lg-5 pb-5 pb-md-0 col-md-5 col-xl-4 col-lg-4 offset-1">
-                        <h3>Electronic<br>SALEOFF</h3>
-                        <a href="#" class="btn btn-dark">Get Yours!</a>
-                    </div>
-                    <div class="pl-lg-3 col-md-4 offset-md-0 offset-1 pt-3">
-                        <div class="coupon-sale-content">
-                            <h4 class="m-b-1 coupon-sale-text bg-white text-transform-none">Exclusive COUPON
-                            </h4>
-                            <h5 class="mb-2 coupon-sale-text d-block ls-10 p-0"><i class="ls-0">LÊN TỚI</i><b
-                                    class="text-dark">$100</b>Sale</h5>
-                        </div>
+
+        <div style="margin: 0px;
+    padding: 0px;" class="category-banner banner text-uppercase">
+            @if (isset($product_page_banner_section->banner_one) && $product_page_banner_section->banner_one->status)
+                <div class="banner banner1 banner-sm-vw d-flex align-items-center appear-animate"
+                    data-animation-name="fadeInLeftShorter" data-animation-delay="500">
+                    <figure class="w-100">
+                        <img src="{{ Storage::url($product_page_banner_section->banner_one->banner_image) }}" alt="Banner One"
+                        style="max-height: 300px; max-width: 100%; height: auto; object-fit: cover;" />
+                    </figure>
+                    <div class="banner-layer">
+                        <a href="{{ $product_page_banner_section->banner_one->banner_url }}" target="_blank">
+                        </a>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
-    </div>
+
 
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -415,10 +416,10 @@
                                     <div class="product-label label-hot">HOT</div>
 
                                     ${hasDiscount  ? `
-                                            <div class="product-label label-sale">
-                                                -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
-                                            </div>
-                                            ` : ''}
+                                                <div class="product-label label-sale">
+                                                    -${Math.round(((product.price - product.offer_price) / product.price) * 100)}%
+                                                </div>
+                                                ` : ''}
                                 </div>
                             </figure>
                             <div class="product-details">
@@ -436,22 +437,22 @@
                 </div>
                     <div class="price-box">
                         ${hasDiscount  ? `
-                                        <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
-                                        <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)}{{ $generalSettings->currency_icon }}</span>
-                                        ` : `
-                                        <span class="product-price">${new Intl.NumberFormat().format(product.price)}{{ $generalSettings->currency_icon }}</span>
-                                        `}
+                                            <span class="old-price">${new Intl.NumberFormat().format(product.price)}</span>
+                                            <span class="product-price">${new Intl.NumberFormat().format(product.offer_price)}{{ $generalSettings->currency_icon }}</span>
+                                            ` : `
+                                            <span class="product-price">${new Intl.NumberFormat().format(product.price)}{{ $generalSettings->currency_icon }}</span>
+                                            `}
                     </div>
                     <div class="product-action">
                         <a href="javascript:void(0)" data-productid="${product.id}" class="btn-icon-wish ${isInWishlist}" title="wishlist"><i class="icon-heart"></i></a>
                         ${typeProduct ? `
-                        <form class="shopping-cart-form">
-                            <input name="qty" hidden value="1" type="number">
-                            <input type="text" hidden name="product_id" value="${product.id}">
-                            <button type="submit"
-                            class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
-                            class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ</span></button>
-                        </form>` : `<a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN LOẠI'</span></a>`}
+                            <form class="shopping-cart-form">
+                                <input name="qty" hidden value="1" type="number">
+                                <input type="text" hidden name="product_id" value="${product.id}">
+                                <button type="submit"
+                                class="btn-icon add-to-cart-simple btn-add-cart product-type-simple"><i
+                                class="icon-shopping-cart"></i><span>THÊM VÀO GIỎ</span></button>
+                            </form>` : `<a href="${productDetailUrl}" class="btn-icon btn-add-cart"><i class="fa fa-arrow-right"></i><span>LỰA CHỌN LOẠI'</span></a>`}
 
                         <a href="ajax/product-quick-view.html" class="btn-quickview2" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
                     </div>

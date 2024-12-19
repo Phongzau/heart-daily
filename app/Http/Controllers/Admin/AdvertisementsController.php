@@ -28,13 +28,13 @@ class AdvertisementsController extends Controller
         // $homepage_section_banner_four = Advertisement::query()->where('key', 'homepage_section_banner_four')->first();
         // $homepage_section_banner_four = json_decode($homepage_section_banner_four?->value);
 
-        // $product_page_banner_section = Advertisement::query()->where('key', 'product_page_banner_section')->first();
-        // $product_page_banner_section = json_decode($product_page_banner_section?->value);
+         $product_page_banner_section = Advertisement::query()->where('key', 'product_page_banner_section')->first();
+         $product_page_banner_section = json_decode($product_page_banner_section?->value);
 
-        // $cart_page_banner_section = Advertisement::query()->where('key', 'cart_page_banner_section')->first();
-        // $cart_page_banner_section = json_decode($cart_page_banner_section?->value);
+         //$cart_page_banner_section = Advertisement::query()->where('key', 'cart_page_banner_section')->first();
+         //$cart_page_banner_section = json_decode($cart_page_banner_section?->value);
 
-        return view('admin.page.advertisement.index', compact(['homepage_section_banner_one',]));
+        return view('admin.page.advertisement.index', compact(['homepage_section_banner_one','product_page_banner_section']));
     }
 
     /**
@@ -97,7 +97,7 @@ class AdvertisementsController extends Controller
 
         ]);
 
-        // xử lí upload ảnh 
+        // xử lí upload ảnh
         $bannerSectionOne = Advertisement::query()->where('key', 'homepage_section_banner_one')->first();
         $sectionOne = json_decode($bannerSectionOne?->value);
         $imagePath = $this->updateImage($request, 'banner_one_image', $sectionOne?->banner_one_image->banner_one ?? '', 'advertisement');
@@ -139,7 +139,7 @@ class AdvertisementsController extends Controller
             'banner_url_two' => ['url'],
         ]);
 
-        // xử lí upload ảnh 
+        // xử lí upload ảnh
         $bannerSectionTwo = Advertisement::query()->where('key', 'homepage_section_banner_two')->first();
         $sectionTwo = json_decode($bannerSectionTwo?->value);
         $imagePath = $this->updateImage($request, 'banner_image_two', $sectionTwo->banner_image_two->banner_image ?? '', 'advertisement');
@@ -171,7 +171,7 @@ class AdvertisementsController extends Controller
             'banner_url_three'=> ['url'],
         ]);
 
-        // xử lí upload ảnh 
+        // xử lí upload ảnh
         $bannerSectionThree = Advertisement::query()->where('key', 'homepage_section_banner_three')->first();
         $sectionThree = json_decode($bannerSectionThree?->value);
         $imagePath = $this->updateImage($request, 'banner_image_three', $sectionThree->banner_image_three->banner_image ?? '', 'advertisement');
