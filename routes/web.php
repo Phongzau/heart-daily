@@ -98,7 +98,6 @@ Route::middleware('auth')->group(function () {
     Route::get('withdraw-resend-otp', [WithdrawController::class, 'reSendOtp'])->name('resend-otp');
     Route::post('withdraw-verify-otp', [WithdrawController::class, 'verifyOtp'])->name('verify-otp');
     Route::get('get-history-withdraw', [WithdrawController::class, 'getHistoryWithdraw'])->name('get-history-withdraw');
-
     Route::get('withdraw-detail', [WithdrawController::class, 'withdrawDetail'])->name('withdraw-detail');
     Route::post('send-feedback', [WithdrawRequestController::class, 'sendFeedback'])->name('send-feedback');
 });
