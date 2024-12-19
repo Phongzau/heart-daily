@@ -48,5 +48,9 @@ return [
     //     'vnp_Url' => env('VNP_URL'),
     //     'vnp_Returnurl' => env('VNP_RETURN_URL'),
     // ],
+    'google2fa' => [
+        'enabled' => env('GOOGLE_2FA_ENABLED', true),
+    ],
+
 
 ];

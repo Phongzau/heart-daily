@@ -23,10 +23,44 @@ use Illuminate\Support\Str;
 // use Laravolt\Avatar\Avatar;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
+use PragmaRX\Google2FA\Google2FA;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UserController extends Controller
 {
-    use ImageUploadTrait;
+    public function verifyTwoFactor(Request $request)
+    {
+        $google2fa = new Google2FA();
+        $valid = $google2fa->verifyKey(auth()->user()->google2fa_secret, $request->input('one_time_password'));
+
+        if ($valid) {
+            auth()->user()->update(['google2fa_enabled' => true]);
+            return redirect()->route('user.dashboard')->with('success', 'Đã bật 2FA thành công!');
+        }
+
+        return back()->withErrors(['one_time_password' => 'Mã 2FA được cung cấp không hợp lệ.']);
+    }
+    public function disableTwoFactor(Request $request)
+    {
+        $google2fa = new Google2FA();
+        $valid = $google2fa->verifyKey(auth()->user()->google2fa_secret, $request->input('one_time_password'));
+        if ($valid) {
+            auth()->user()->update([
+                'google2fa_secret' => null,
+                'google2fa_enabled' => false,
+            ]);
+
+            return redirect()->route('user.dashboard')->with('success', 'Đã tắt 2FA thành công!');
+        }
+
+        return back()->withErrors(['one_time_password' => 'Mã 2FA được cung cấp không hợp lệ.']);
+    }
+    public function checkTwoFactorStatus()
+    {
+        return response()->json([
+            'two_fa_enabled' => auth()->user()->google2fa_enabled,
+        ]);
+    }
     public function index()
     {
         return view('client.page.auth.login');
@@ -173,10 +207,11 @@ class UserController extends Controller
         $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|string|min:8|confirmed',
+            'two_factor_code' => 'nullable|string',
         ]);
 
         // Lấy ra user
-        $user = User::find(Auth::id());
+        $user = Auth::user();
 
         // Kiểm tra mật khẩu hiện tại có khớp không
         if (!Hash::check($request->current_password, $user->password)) {
@@ -188,6 +223,16 @@ class UserController extends Controller
         if (Hash::check($request->new_password, $user->password)) {
             toastr('Mật khẩu mới không được trùng với mật khẩu hiện tại.', 'error');
             return back();
+        }
+
+        if ($user->google2fa_enabled) {
+            $google2fa = new Google2FA();
+            $valid = $google2fa->verifyKey($user->google2fa_secret, $request->two_factor_code);
+
+            if (!$valid) {
+                toastr('Mã 2FA không hợp lệ.', 'error');
+                return back();
+            }
         }
 
         // Cập nhật mật khẩu mới
@@ -300,6 +345,27 @@ class UserController extends Controller
 
     public function userDashboard(Request $request)
     {
+        $user = auth()->user();
+
+        if (empty($user->google2fa_secret)) {
+            $google2fa = new Google2FA();
+            $secret = $google2fa->generateSecretKey();
+            $user->google2fa_secret = $secret;
+            $user->save();
+        } else {
+
+            $secret = $user->google2fa_secret;
+        }
+
+        $otpauthUrl = (new Google2FA())->getQRCodeUrl(
+            config('app.name'),
+            $user->email,
+            $secret
+        );
+        $qrCodeUrl = QrCode::size(200)->generate($otpauthUrl);
+        // $is2FAEnabled = !empty($user->google2fa_secret);
+
+        auth()->user()->update(['google2fa_secret' => $secret]);
         // Khởi tạo query để lấy danh sách đơn hàng của người dùng
         $query = Order::query()->with('orderProducts')
             ->where('user_id', Auth::user()->id);
@@ -333,7 +399,7 @@ class UserController extends Controller
             }
         }
 
-        return view('client.page.dashboard.dashboard', compact('orders', 'withDraws'));
+        return view('client.page.dashboard.dashboard', compact('qrCodeUrl', 'secret', 'orders', 'withDraws'));
     }
 
     public function getProvinces()
