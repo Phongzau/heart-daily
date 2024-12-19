@@ -16,6 +16,16 @@ class WithdrawController extends Controller
 {
     public function sendOtp()
     {
+        $withdrawReq = WithdrawRequest::query()
+            ->where('user_id', Auth::id())
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+        if ($withdrawReq >= 2) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không được rút điểm quá 2 lần 1 ngày',
+            ]);
+        }
         $otpData = OtpRequest::where('email', Auth::user()->email)->first();
         if ($otpData) {
             $otp_sent_at = Carbon::parse($otpData->otp_send_at);
@@ -140,13 +150,25 @@ class WithdrawController extends Controller
                             'message' => 'Có lỗi xảy ra',
                         ]);
                     }
-
+                    if ($request->point < 100000) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Số điểm tối thiểu 100.000đ',
+                        ]);
+                    } else if ($request->point > 1000000) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Số điểm tối đa 1.000.000đ',
+                        ]);
+                    }
                     if ($request->point > $user->point) {
                         return response()->json([
                             'status' => 'error',
                             'message' => 'Số điểm vượt quá số điểm hiện có',
                         ]);
                     }
+
+
                     $otpData->delete();
 
                     WithdrawRequest::create([
@@ -223,6 +245,4 @@ class WithdrawController extends Controller
             ]);
         }
     }
-
-
 }
