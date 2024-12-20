@@ -158,7 +158,7 @@
                     @endcan
                 </ul>
             </li>
-            <li class="dropdown {{ checkActive(['admin.accounts.*', 'admin.roles.*']) }}">
+            <li class="dropdown {{ checkActive(['admin.accounts.*', 'admin.roles.*', 'admin.withdraws.*']) }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fa-regular fa-user-pen"></i>
                     <span>Tài khoản</span></a>
