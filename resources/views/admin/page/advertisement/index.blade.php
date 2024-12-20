@@ -25,9 +25,9 @@
                                         <a class="list-group-item list-group-item-action" id="list-profile-list"
                                             data-toggle="list" href="#list-settings" role="tab">Homepage banner section
                                             second</a>
-                                        <a class="list-group-item list-group-item-action" id="list-messages-list"
+                                        {{-- <a class="list-group-item list-group-item-action" id="list-messages-list"
                                             data-toggle="list" href="#list-messages" role="tab">Homepage banner section
-                                            three</a>
+                                            three</a> --}}
                                         <a class="list-group-item list-group-item-action" id="list-settings-list"
                                             data-toggle="list" href="#list-product" role="tab">Product page banner</a>
                                     </div>
