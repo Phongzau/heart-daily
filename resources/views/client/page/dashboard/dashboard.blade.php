@@ -806,6 +806,7 @@
                 $('#step2').removeClass('d-none');
                 $('#continueStep').addClass('d-none');
                 $('#verify2FACode').removeClass('d-none');
+                $('#backStep').removeClass('d-none');
             });
 
 
@@ -830,6 +831,7 @@
                             $('#verify2FACode').addClass('d-none');
                             $('#verifyOTP').removeClass('d-none');
                             $('#backStep').removeClass('d-none');
+                            $('#resendOTP').removeClass('d-none');
                             toastr.success('2FA xác thực thành công!');
                             $.ajax({
                                 url: "{{ route('send-otp') }}",
@@ -950,22 +952,7 @@
                 })
             })
 
-            function startCountdown(duration, display) {
-                var timer = duration,
-                    minutes, seconds;
-                var countdownInterval = setInterval(function() {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
-                    display.text(minutes + ":" + seconds);
-
-                    if (--timer < 0) {
-                        clearInterval(countdownInterval);
-                        $('#resendOTP').removeClass('d-none');
-                    }
-                }, 1000);
-            }
+         
 
             function loadHistoryWithdraw() {
                 $.ajax({

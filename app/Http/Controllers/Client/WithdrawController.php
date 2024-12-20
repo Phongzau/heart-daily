@@ -15,7 +15,7 @@ use PragmaRX\Google2FA\Google2FA;
 
 class WithdrawController extends Controller
 {
-    public function sendOtp(Request $request)
+    public function sendOtp()
     {
         $withdrawReq = WithdrawRequest::query()
             ->where('user_id', Auth::id())

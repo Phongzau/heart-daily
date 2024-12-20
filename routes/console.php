@@ -11,3 +11,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 FacadesSchedule::command('stock:release-expired')->everyMinute();
+// FacadesSchedule::command('orders:update-status')->daily();

@@ -35,10 +35,11 @@ class UserController extends Controller
 
         if ($valid) {
             auth()->user()->update(['google2fa_enabled' => true]);
-            return redirect()->route('user.dashboard')->with('success', 'Đã bật 2FA thành công!');
+            toastr('Đã bật 2FA thành công!', 'success');
+            return redirect()->route('user.dashboard');
         }
-
-        return back()->withErrors(['one_time_password' => 'Mã 2FA được cung cấp không hợp lệ.']);
+        toastr('Mã 2FA được cung cấp không hợp lệ.', 'error');
+        return back();
     }
     public function disableTwoFactor(Request $request)
     {
@@ -49,11 +50,11 @@ class UserController extends Controller
                 'google2fa_secret' => null,
                 'google2fa_enabled' => false,
             ]);
-
-            return redirect()->route('user.dashboard')->with('success', 'Đã tắt 2FA thành công!');
+            toastr('Đã tắt bật 2FA thành công!', 'success');
+            return redirect();
         }
-
-        return back()->withErrors(['one_time_password' => 'Mã 2FA được cung cấp không hợp lệ.']);
+        toastr('Mã 2FA được cung cấp không hợp lệ.', 'error');
+        return back();
     }
     public function checkTwoFactorStatus()
     {

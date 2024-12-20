@@ -193,9 +193,9 @@
                                     <label>Giá tiền</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" name="price_min" id="price_min"
-                                            value="{{ request('price_min') }}" placeholder="Tối thiểu">
+                                            value="{{ request('price_min') }}" placeholder="Tối thiểu" title="Tối thiểu">
                                         <input type="number" class="form-control" name="price_max" id="price_max"
-                                            value="{{ request('price_max') }}" placeholder="Tối đa">
+                                            value="{{ request('price_max') }}" placeholder="Tối đa" title="Tối đa">
                                     </div>
                                 </div>
 
